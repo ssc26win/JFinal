@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+<Configure class="org.mortbay.jetty.webapp.WebAppContext">
+    <Set name="parentLoaderPriority">true</Set>
+    <New id="DB" class="org.mortbay.jetty.plus.naming.Resource">
+        <Arg>java:/comp/env/jdbc/DB</Arg>
+        <Arg>
+            <New class="org.apache.commons.dbcp.BasicDataSource">
+                <Set name="driverClassName">com.mysql.jdbc.Driver</Set>
+                <Set name="url">jdbc:mysql://localhost:3306/yc_platform?autoReconnect=true&amp;useUnicode=true&amp;characterEncoding=UTF-8</Set>
+                <Set name="username">root</Set>
+                <Set name="password">root</Set>
+                <Set name="maxActive">20</Set>
+                <Set name="parentLoaderPriority">true</Set>
+            </New>
+        </Arg>
+    </New>
+    <New id="Read" class="org.mortbay.jetty.plus.naming.Resource">
+        <Arg>java:/comp/env/jdbc/DBRead</Arg>
+        <Arg>
+            <New class="org.apache.commons.dbcp.BasicDataSource">
+                <Set name="driverClassName">com.mysql.jdbc.Driver</Set>
+                <Set name="url">jdbc:mysql://localhost:3306/yc_platform?autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull</Set>
+                <Set name="username">root</Set>
+                <Set name="password">root</Set>
+                <Set name="maxActive">20</Set>
+                <Set name="parentLoaderPriority">true</Set>
+            </New>
+        </Arg>
+    </New>
+
+</Configure>

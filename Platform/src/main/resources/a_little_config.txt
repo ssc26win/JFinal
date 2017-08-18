@@ -1,0 +1,8 @@
+jdbcUrl = jdbc:mysql://localhost:3306/yc_platform?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+user = root
+password = root
+static_url=http://localhost:8080/upload/
+uploadPath=/Users/yulong/remote/platform/src/main/webapp/upload/
+res_url=http://localhost:8080/res/
+devMode=true
+app_key=80b8a85d78bf4f87baa0994a38b48825
