@@ -27,6 +27,11 @@ public class _MappingKit {
 		arp.addMapping("sys_role_res", "id", SysRoleRes.class);
 		arp.addMapping("sys_user", "id", SysUser.class);
 		arp.addMapping("sys_user_role", "id", SysUserRole.class);
+        arp.addMapping("t_company", "id", Company.class);
+        arp.addMapping("t_actual_data", "id", ActualData.class);
+        arp.addMapping("t_water_index", "id", ActualData.class);
+        arp.addMapping("t_water_meter", "id", ActualData.class);
+        arp.addMapping("t_well", "id", ActualData.class);
 	}
 }
 
