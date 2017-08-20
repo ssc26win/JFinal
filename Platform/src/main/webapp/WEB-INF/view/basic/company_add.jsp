@@ -35,6 +35,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号</label>
+                            <div class="col-xs-12 col-sm-9">
+                                <div class="clearfix">
+                                    <input type="text"  name="name" ${id ne null?'readonly':'' } value="${item.innerCode}" class="col-xs-12 col-sm-6">
+                                </div>
+                            </div>
+                        </div>
+                            <div class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="street">所属乡镇或街道</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
@@ -51,23 +59,31 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="des">描述</label>
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="customerType">用户类型</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text"  name="des" value="${item.des}" class="col-xs-12 col-sm-6">
+                                        <input type="text"  name="des" value="${item.customerType}" class="col-xs-12 col-sm-6">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="des">描述</label>
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterUseType">取水用途</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text"  name="des" value="${item.des}" class="col-xs-12 col-sm-6">
+                                        <input type="text"  name="des" value="${item.waterUseType}" class="col-xs-12 col-sm-6">
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="phone">手机号</label>
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="contact">联系人</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="text"  name="des" value="${item.contact}" class="col-xs-12 col-sm-6">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="phone">联系电话</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
                                         <input type="text"  name="phone" value="${item.phone}" class="col-xs-12 col-sm-6">
@@ -75,7 +91,31 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="email">邮箱</label>
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="postalCode">邮政编码</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="text" name="email" value="${item.postalCode}" class="col-xs-12 col-sm-6">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="department">管水部门</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="text" name="email" value="${item.department}" class="col-xs-12 col-sm-6">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="email">水井数量</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="text" name="email" value="${item.email}" class="col-xs-12 col-sm-6">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="email">一级表数量</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
                                         <input type="text" name="email" value="${item.email}" class="col-xs-12 col-sm-6">
@@ -83,6 +123,22 @@
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="remotemeterCount">远传表数量</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="text" name="email" value="${item.remotemeterCount}" class="col-xs-12 col-sm-6">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="uniType">节水型单位类型</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="text" name="email" value="${item.uniType}" class="col-xs-12 col-sm-6">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="clearfix form-actions" align="center">
                                 <div class="col-md-offset-3 col-md-9">
                                     <button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">

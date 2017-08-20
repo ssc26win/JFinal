@@ -44,8 +44,6 @@ public class SysUser extends BaseSysUser<SysUser>
 	private static final long serialVersionUID = -1982696969221258167L;
 	public static SysUser me = new SysUser();
 	
-	
-	
 	/**
 	 * 权限集
 	 */

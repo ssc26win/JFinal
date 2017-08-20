@@ -1,5 +1,7 @@
 package com.shangsc.platform.model;
 
+import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseWaterMeter;
 
 /**
@@ -8,4 +10,15 @@ import com.shangsc.platform.model.base.BaseWaterMeter;
 @SuppressWarnings("serial")
 public class WaterMeter extends BaseWaterMeter<WaterMeter> {
 	public static final WaterMeter me = new WaterMeter();
+
+    public Page<WaterMeter> getWaterMeterPage(int page, int rows, String keyword, String orderbyStr) {
+        String select="select * from ";
+        StringBuffer sqlExceptSelect = new StringBuffer("t_water_meter twm");
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
+
+    public InvokeResult deleteData(Long id) {
+        this.deleteById(id);
+        return InvokeResult.success();
+    }
 }

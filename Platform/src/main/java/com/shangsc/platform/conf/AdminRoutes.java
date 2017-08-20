@@ -42,9 +42,14 @@ public class AdminRoutes extends Routes{
 
         add("/basic/actual", CompanyController.class,"/WEB-INF/view/basic");
         add("/basic/company", CompanyController.class,"/WEB-INF/view/basic");
+        add("/basic/meter", CompanyController.class,"/WEB-INF/view/basic");
         add("/basic/well", CompanyController.class,"/WEB-INF/view/basic");
         add("/basic/water", CompanyController.class,"/WEB-INF/view/basic");
 
+        add("/statis/readnum", CompanyController.class,"/WEB-INF/view/statis");
+        add("/statis/daily", CompanyController.class,"/WEB-INF/view/statis");
+        add("/statis/month", CompanyController.class,"/WEB-INF/view/statis");
+        add("/statis/year", CompanyController.class,"/WEB-INF/view/statis");
 	}
 
 }

@@ -6,7 +6,6 @@ import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Company;
-import com.shangsc.platform.model.SysUser;
 
 /**
  * @Author ssc
@@ -21,7 +20,6 @@ public class CompanyController extends BaseController {
         render("company_index.jsp");
     }
 
-
     @RequiresPermissions(value={"/basic/company"})
     public void getListData() {
         String keyword=this.getPara("name");
@@ -32,36 +30,39 @@ public class CompanyController extends BaseController {
     @RequiresPermissions(value={"/basic/company"})
     public void add() {
         Integer id = this.getParaToInt("id");
-
         if(id!=null){
             this.setAttr("item", Company.me.findById(id));
         }
         this.setAttr("id", id);
-
         render("company_add.jsp");
     }
 
     @RequiresPermissions(value={"/basic/company"})
     public void save(){
-        String username=this.getPara("name");
-        String password=this.getPara("password");
-        String phone=this.getPara("phone");
-        String email=this.getPara("email");
-        Integer id=this.getParaToInt("id");
-        String des=this.getPara("des");
-        InvokeResult result=SysUser.me.save(id, username, password, des,phone, email);
+        Long id = this.getParaToLong("id");
+        String name = this.getPara("name");
+        String innerCode = this.getPara("innerCode");
+        String street = this.getPara("street");
+        String address = this.getPara("address");
+        Integer customerType = this.getParaToInt("customerType");
+        Integer waterUseType = this.getParaToInt("waterUseType");
+        String contact = this.getPara("contact");
+        String phone = this.getPara("phone");
+        String postalCode = this.getPara("postalCode");
+        String department = this.getPara("department");
+        Integer wellCount = this.getParaToInt("wellCount");
+        Integer firstWatermeterCount = this.getParaToInt("firstWatermeterCount");
+        Integer remotemeterCount = this.getParaToInt("remotemeterCount");
+        Integer unitType = this.getParaToInt("unitType");
+        InvokeResult result = Company.me.save(id, name, innerCode, street, address, customerType, waterUseType,
+                contact, phone, postalCode, department, wellCount, firstWatermeterCount, remotemeterCount, unitType);
         this.renderJson(result);
     }
 
     @RequiresPermissions(value={"/basic/company"})
     public void delete(){
-        String username=this.getPara("name");
-        String password=this.getPara("password");
-        String phone=this.getPara("phone");
-        String email=this.getPara("email");
-        Integer id=this.getParaToInt("id");
-        String des=this.getPara("des");
-        InvokeResult result=SysUser.me.save(id, username, password, des,phone, email);
+        Long id = this.getParaToLong("id");
+        InvokeResult result = Company.me.deleteData(id);
         this.renderJson(result);
     }
 }

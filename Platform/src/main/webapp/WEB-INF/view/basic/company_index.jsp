@@ -55,7 +55,7 @@
                         <div class="span12 control-group">
                             <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
                             <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
-                            <jc:button className="btn btn-danger" id="btn-unvisible" textName="删除"/>
+                            <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
                         </div>
                     </div>
                     <!-- PAGE CONTENT BEGINS -->
@@ -99,12 +99,21 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
-                { label: '单位名称', name: 'name', width: 75 },
-                { label: '单位编号', name: 'innerCode', width: 75 ,sortable:false},
-                { label: '所属乡镇或街道', name: 'street', width: 150 },
-                { label: '单位地址', name: 'address', width: 150 ,sortable:false},
-
-                { label: '创建时间', name: 'createTime', width: 150 },
+                { label: '单位名称', name: 'name', width: 45, sortable:false},
+                { label: '单位编号', name: 'innerCode', width: 45, sortable:false},
+                { label: '所属乡镇或街道', name: 'street', width: 100, sortable:false},
+                { label: '单位地址', name: 'address', width: 100,sortable:false},
+                { label: '用户类型', name: 'innerCode', width: 45, sortable:false},
+                { label: '取水用途', name: 'innerCode', width: 45, sortable:false},
+                { label: '联系人', name: 'innerCode', width: 40, sortable:false},
+                { label: '联系电话', name: 'innerCode', width: 45, sortable:false},
+                { label: '邮政编码', name: 'innerCode', width: 45, sortable:false},
+                { label: '管水部门', name: 'innerCode', width: 45, sortable:false},
+                { label: '水井数量', name: 'innerCode', width: 45, sortable:false},
+                { label: '一级表数量', name: 'innerCode', width: 45, sortable:false},
+                { label: '远传表数量', name: 'innerCode', width: 45, sortable:false},
+                { label: '节约用水型单位类型', name: 'street', width: 100, sortable:false},
+                { label: '创建时间', name: 'createTime', width: 100, sortable:true}
             ],
             viewrecords: true,
             height: 280,
@@ -146,28 +155,24 @@
                 content: '${context_path}/basic/company/add'
             });
         });
-        $("#btn-visible").click(function(){
-            setVisible(1);
+        $("#btn-deleteData").click(function(){
+            deleteData();
         });
-        $("#btn-unvisible").click(function(){
-            setVisible(0);
-        });
-
         $("#btn-edit").click(function(){//添加页面
             var rid = getOneSelectedRows();
             if(rid == -1){
-                layer.msg("请选择一个用户", {
+                layer.msg("请选择一个记录", {
                     icon: 2,
                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 });
             }else if(rid == -2 ){
-                layer.msg("只能选择一个用户", {
+                layer.msg("只能选择一个记录", {
                     icon: 2,
                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                 });
             }else {
                 parent.layer.open({
-                    title:'修改用户信息',
+                    title:'修改单位信息',
                     type: 2,
                     area: ['770px', '430px'],
                     fix: false, //不固定
@@ -192,6 +197,7 @@
             if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
         })
     }
+
     /**获取选中的列***/
     function getSelectedRows() {
         var grid = $("#grid-table");
@@ -207,6 +213,7 @@
             return result;
         }
     }
+
     function getOneSelectedRows() {
         var grid = $("#grid-table");
         var rowKey = grid.getGridParam("selrow");
@@ -221,12 +228,12 @@
             }
         }
     }
-    function setVisible(status){
+
+    function deleteData(){
         var submitData = {
-            "ids" : getSelectedRows(),
-            "visible":status
+            "ids" : getSelectedRows()
         };
-        $.post("${context_path}/basic/company/setVisible", submitData,function(data) {
+        $.post("${context_path}/basic/company/delete", submitData,function(data) {
             if (data.code == 0) {
                 layer.msg("操作成功", {
                     icon: 1,
