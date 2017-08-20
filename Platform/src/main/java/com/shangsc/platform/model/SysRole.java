@@ -28,7 +28,7 @@ import com.shangsc.platform.model.base.BaseSysRole;
 import java.util.*;
 
 /**
- * @author eason
+ * @author ssc
  * 系统角色
  */
 public class SysRole extends BaseSysRole<SysRole>
@@ -40,7 +40,7 @@ public class SysRole extends BaseSysRole<SysRole>
 	private static final long serialVersionUID = 2374713709626532804L;
 	public static final SysRole me = new SysRole(); 
 	/**
-	 * @author eason	
+	 * @author ssc
 	 * @param uid
 	 * @return
 	 */

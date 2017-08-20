@@ -27,7 +27,7 @@ import com.jfinal.aop.Invocation;
 
 /**
  * 日志拦截器
- * @author eason
+ * @author ssc
  */
 public class SysLogInterceptor implements Interceptor {
 	

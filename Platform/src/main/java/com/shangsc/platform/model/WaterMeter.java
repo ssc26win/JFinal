@@ -7,5 +7,5 @@ import com.shangsc.platform.model.base.BaseWaterMeter;
  */
 @SuppressWarnings("serial")
 public class WaterMeter extends BaseWaterMeter<WaterMeter> {
-	public static final WaterMeter dao = new WaterMeter();
+	public static final WaterMeter me = new WaterMeter();
 }

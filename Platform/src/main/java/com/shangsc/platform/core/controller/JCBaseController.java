@@ -22,14 +22,14 @@ import java.util.LinkedHashMap;
 
 /**
  * 
- * @author eason
+ * @author ssc
  *
  */
 public abstract class JCBaseController extends Controller {
 	public static final int BUFFER_SIZE = 1024 * 1024;
 	/**
 	 * 获取排序对象
-	 * @author eason	
+	 * @author ssc
 	 * @return
 	 */
 	protected LinkedHashMap<String,String> getOrderby(){
@@ -43,7 +43,7 @@ public abstract class JCBaseController extends Controller {
 	}
 	/**
 	 * 获取排序字符串
-	 * @author eason	
+	 * @author ssc
 	 * @return
 	 */
 	protected String getOrderbyStr(){
@@ -56,7 +56,7 @@ public abstract class JCBaseController extends Controller {
 	}
 	/**
 	 * 获取每几页
-	 * @author eason	
+	 * @author ssc
 	 * @return
 	 */
 	protected int getPage(){
@@ -64,7 +64,7 @@ public abstract class JCBaseController extends Controller {
 	}
 	/**
 	 * 获取每页数量
-	 * @author eason	
+	 * @author ssc
 	 * @return
 	 */
 	protected int getRows(){

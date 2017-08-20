@@ -28,7 +28,7 @@ import com.shangsc.platform.model.base.BaseSysRes;
 
 import java.util.*;
 /**
- * @author eason
+ * @author ssc
  * 系统资源
  */
 public class SysRes extends BaseSysRes<SysRes>
@@ -116,7 +116,7 @@ public class SysRes extends BaseSysRes<SysRes>
 	}
 	/**
 	 * 获取用户的所有资源
-	 * @author eason	
+	 * @author ssc
 	 * @param uid
 	 * @return
 	 */
@@ -134,7 +134,7 @@ public class SysRes extends BaseSysRes<SysRes>
 	}
 	/**
 	 * 获取系统用户资源
-	 * @author eason	
+	 * @author ssc
 	 * @param uid 访问的用户ID
 	 * @param uri 当前访问的资源地址
 	 * @return
@@ -207,7 +207,7 @@ public class SysRes extends BaseSysRes<SysRes>
 
 	/**
 	 * 
-	 * @author eason	
+	 * @author ssc
 	 * @param uid 用户ID
 	 * @param type 菜单|功能
 	 * @return

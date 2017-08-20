@@ -18,7 +18,7 @@ package com.shangsc.platform.core.view;
 
 /**
  * 门面调用封装
- * @author eason
+ * @author ssc
  *
  */
 public class InvokeResult {

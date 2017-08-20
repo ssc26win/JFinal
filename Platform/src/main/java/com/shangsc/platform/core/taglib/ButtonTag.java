@@ -25,7 +25,7 @@ import com.jfinal.kit.StrKit;
 
 /**
  * 功能按钮
- * @author eason
+ * @author ssc
  *
  */
 public class ButtonTag extends TagSupport{

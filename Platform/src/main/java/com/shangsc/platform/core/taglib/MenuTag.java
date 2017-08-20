@@ -24,7 +24,7 @@ import com.shangsc.platform.model.SysRes;
 import com.shangsc.platform.model.SysUser;
 /**
  * 系统菜单
- * @author eason
+ * @author ssc
  * 2014年8月9日
  */
 public class MenuTag extends TagSupport{

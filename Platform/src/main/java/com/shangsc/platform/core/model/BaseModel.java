@@ -59,7 +59,7 @@ public abstract class BaseModel<M extends Model<M>> extends Model<M> {
 	}
 	/**
 	 * 持久化再返回该对象
-	 * @author eason	
+	 * @author ssc
 	 * @return
 	 */
 	public M persist(){
@@ -146,7 +146,7 @@ public abstract class BaseModel<M extends Model<M>> extends Model<M> {
 	}
 	/**
 	 * 转化成 JqGridjson格式
-	 * @author Eason Pan
+	 * @author ssc Pan
 	 * @return
 	 */
 	public JqGridModel toJqGridView(Page<M> pageInfo){

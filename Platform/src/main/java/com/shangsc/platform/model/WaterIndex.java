@@ -7,5 +7,5 @@ import com.shangsc.platform.model.base.BaseWaterIndex;
  */
 @SuppressWarnings("serial")
 public class WaterIndex extends BaseWaterIndex<WaterIndex> {
-	public static final WaterIndex dao = new WaterIndex();
+	public static final WaterIndex me = new WaterIndex();
 }

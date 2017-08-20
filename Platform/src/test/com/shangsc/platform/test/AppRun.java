@@ -3,7 +3,7 @@ package com.shangsc.platform.test;
 import com.jfinal.core.JFinal;
 /**
  * 应用启动入口
- * @author eason
+ * @author ssc
  *
  */
 public class AppRun {

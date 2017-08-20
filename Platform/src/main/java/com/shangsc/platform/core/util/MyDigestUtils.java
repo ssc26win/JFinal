@@ -47,7 +47,7 @@ public class MyDigestUtils {
 	  }
 	 /**
 	  * 加密密码
-	  * @author eason	
+	  * @author ssc
 	  * @param str
 	  * @param key
 	  * @return

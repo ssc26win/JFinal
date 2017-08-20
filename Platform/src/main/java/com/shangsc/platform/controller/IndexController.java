@@ -30,7 +30,7 @@ import com.jfinal.kit.StrKit;
 
 /**
  * 首页、登陆、登出
- * @author eason
+ * @author ssc
  */
 @Clear(SysLogInterceptor.class)
 @RequiresPermissions(value={"/"})

@@ -16,7 +16,7 @@
 package com.shangsc.platform.core.cache;
 /**
  * 缓存名称
- * @author eason
+ * @author ssc
  *
  */
 public final class CacheName {

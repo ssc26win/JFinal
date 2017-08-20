@@ -7,5 +7,5 @@ import com.shangsc.platform.model.base.BaseWell;
  */
 @SuppressWarnings("serial")
 public class Well extends BaseWell<Well> {
-	public static final Well dao = new Well();
+	public static final Well me = new Well();
 }

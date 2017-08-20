@@ -18,7 +18,7 @@ package com.shangsc.platform.conf;
 import com.jfinal.config.Routes;
 /**
  * 前端Routes配置
- * @author eason
+ * @author ssc
  *
  */
 public class FrontRoutes extends Routes{

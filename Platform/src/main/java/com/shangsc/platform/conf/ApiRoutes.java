@@ -18,7 +18,7 @@ package com.shangsc.platform.conf;
 import com.jfinal.config.Routes;
 /**
  * APP端Routes配置
- * @author eason
+ * @author ssc
  *
  */
 public class ApiRoutes extends Routes{

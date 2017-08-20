@@ -33,7 +33,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
- * @author eason
+ * @author ssc
  * 系统用户
  */
 public class SysUser extends BaseSysUser<SysUser>
@@ -61,7 +61,7 @@ public class SysUser extends BaseSysUser<SysUser>
 	}
 	/**
 	 * 用户登陆
-	 * @author eason	
+	 * @author ssc
 	 * @param username
 	 * @param pwd
 	 * @return
@@ -85,7 +85,7 @@ public class SysUser extends BaseSysUser<SysUser>
 	}
 	/**
 	 * 获取用户拥有的角色列表，最多查20个
-	 * @author eason	
+	 * @author ssc
 	 * @param uid
 	 * @return
 	 */

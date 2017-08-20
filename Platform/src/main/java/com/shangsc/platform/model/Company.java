@@ -1,5 +1,7 @@
 package com.shangsc.platform.model;
 
+import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseCompany;
 
 /**
@@ -7,5 +9,33 @@ import com.shangsc.platform.model.base.BaseCompany;
  */
 @SuppressWarnings("serial")
 public class Company extends BaseCompany<Company> {
-	public static final Company dao = new Company();
+	public static final Company me = new Company();
+    /**
+     *
+     */
+    private static final long serialVersionUID = -1982696969221258167L;
+    public InvokeResult saveCompany() {
+        Company company = new Company();
+        //company.setInnerCode();
+        //if(id!=null){
+        //    company.update();
+        //}else{
+        //    company.save();
+        //}
+        return InvokeResult.success();
+    }
+
+    public InvokeResult deleteData(Integer id) {
+        this.deleteById(id);
+        return InvokeResult.success();
+    }
+
+    public Page<Company> getCompanyPage(int page, int rows, String keyword,
+                                        String orderbyStr) {
+        String select="select * from ";
+        StringBuffer sqlExceptSelect=new StringBuffer("t_company tc");
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
+
+
 }

@@ -32,7 +32,7 @@ import java.util.Set;
 /**
  * 日志管理.
  *
- * @author eason
+ * @author ssc
  */
 @Clear(SysLogInterceptor.class)
 public class LogController extends JCBaseController {

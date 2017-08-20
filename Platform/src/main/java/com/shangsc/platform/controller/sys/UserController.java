@@ -15,21 +15,21 @@
  */
 package com.shangsc.platform.controller.sys;
 
-import java.util.List;
-
+import com.jfinal.aop.Before;
+import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.tx.Tx;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.JCBaseController;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.SysRole;
 import com.shangsc.platform.model.SysUser;
-import com.jfinal.aop.Before;
-import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.tx.Tx;
+
+import java.util.List;
 
 /**
  * 系统用户管理.
- * @author eason
+ * @author ssc
  */
 public class UserController extends JCBaseController {
 	

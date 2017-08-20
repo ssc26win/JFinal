@@ -20,7 +20,7 @@ import com.shangsc.platform.model.base.BaseSysLog;
 import java.util.Date;
 
 /**
- * @author eason
+ * @author ssc
  * 系统日志
  */
 @SuppressWarnings("serial")

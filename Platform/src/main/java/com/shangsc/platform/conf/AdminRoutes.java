@@ -26,7 +26,7 @@ import com.shangsc.platform.controller.sys.UserController;
 import com.jfinal.config.Routes;
 /**
  * 后台管理Routes配置
- * @author eason
+ * @author ssc
  *
  */
 public class AdminRoutes extends Routes{

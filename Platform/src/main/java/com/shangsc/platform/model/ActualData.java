@@ -7,5 +7,5 @@ import com.shangsc.platform.model.base.BaseActualData;
  */
 @SuppressWarnings("serial")
 public class ActualData extends BaseActualData<ActualData> {
-	public static final ActualData dao = new ActualData();
+	public static final ActualData me = new ActualData();
 }

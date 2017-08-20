@@ -29,13 +29,13 @@ import com.shangsc.platform.model.SysUser;
 import com.jfinal.kit.PropKit;
 /**
  * 
- * @author eason
+ * @author ssc
  */
 public class IWebUtils {
 	
 	/**
 	 * 获取系统用户
-	 * @author eason
+	 * @author ssc
 	 * @param HttpSession
 	 * @return
 	 */
@@ -45,7 +45,7 @@ public class IWebUtils {
 	}
 	/**
 	 * 保存登陆用户
-	 * @author eason
+	 * @author ssc
 	 * @param HttpSession
 	 * @param user
 	 */
@@ -73,7 +73,7 @@ public class IWebUtils {
 	
 	/**
 	 * 获取当前登陆的用户
-	 * @author eason
+	 * @author ssc
 	 * @param request
 	 * @return
 	 */

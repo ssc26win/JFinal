@@ -37,7 +37,7 @@ public class DateUtils {
 	}
 	/**
 	 * unix时间戳转成日期
-	 * @author eason
+	 * @author ssc
 	 * 2015年1月28日
 	 * @param timestamp
 	 * @return
@@ -70,7 +70,7 @@ public class DateUtils {
     }    
     /**
      * 
-     * @author eason	
+     * @author ssc
      * @param smdate yyyy-MM-dd
      * @param bdate yyyy-MM-dd
      * @return
@@ -94,7 +94,7 @@ public class DateUtils {
     } 
 	/**
 	 * 转化为秒时间戳
-	 * @author eason
+	 * @author ssc
 	 * 2015年1月16日
 	 * @param date
 	 * @return
@@ -477,7 +477,7 @@ public class DateUtils {
     }
     /**
      * yyyy-M-d
-     * @author eason	
+     * @author ssc
      * @param data
      * @return
      */
