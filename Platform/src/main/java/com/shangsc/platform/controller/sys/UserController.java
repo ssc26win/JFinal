@@ -44,7 +44,6 @@ public class UserController extends BaseController {
 		Page<SysUser> pageInfo=SysUser.me.getSysUserPage(getPage(), this.getRows(),keyword,this.getOrderbyStr());
 		this.renderJson(JqGridModelUtils.toJqGridView(pageInfo)); 
 	}
-	
 
 	@RequiresPermissions(value={"/sys/user"})
 	public void setVisible(){

@@ -25,6 +25,14 @@ public abstract class BaseWaterIndex<M extends BaseWaterIndex<M>> extends BaseMo
 		return get("company_id");
 	}
 
+	public void setInnerCode(String innerCode) {
+		set("inner_code", innerCode);
+	}
+
+	public String getInnerCode() {
+		return get("inner_code");
+	}
+
 	public void setWaterUse(String waterUse) {
 		set("water_use", waterUse);
 	}

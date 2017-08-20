@@ -109,7 +109,7 @@
 				hoverrows:true,
 				viewrecords:false,
 				gridview:true,
-				height:"370px",
+				height:600,
 				sortname:"seq",
 				scrollrows:true,
 				multiselect: true,//checkbox多选

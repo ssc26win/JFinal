@@ -9,35 +9,35 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseSysRole<M extends BaseSysRole<M>> extends BaseModel<M> implements IBean {
 
-	public void setId(java.lang.Integer id) {
+	public void setId(Integer id) {
 		set("id", id);
 	}
 
-	public java.lang.Integer getId() {
+	public Integer getId() {
 		return get("id");
 	}
 
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		set("name", name);
 	}
 
-	public java.lang.String getName() {
+	public String getName() {
 		return get("name");
 	}
 
-	public void setDes(java.lang.String des) {
+	public void setDes(String des) {
 		set("des", des);
 	}
 
-	public java.lang.String getDes() {
+	public String getDes() {
 		return get("des");
 	}
 
-	public void setSeq(java.lang.Integer seq) {
+	public void setSeq(Integer seq) {
 		set("seq", seq);
 	}
 
-	public java.lang.Integer getSeq() {
+	public Integer getSeq() {
 		return get("seq");
 	}
 
@@ -49,11 +49,11 @@ public abstract class BaseSysRole<M extends BaseSysRole<M>> extends BaseModel<M>
 		return get("createdate");
 	}
 
-	public void setStatus(java.lang.Integer status) {
+	public void setStatus(Integer status) {
 		set("status", status);
 	}
 
-	public java.lang.Integer getStatus() {
+	public Integer getStatus() {
 		return get("status");
 	}
 

@@ -9,35 +9,35 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseDictType<M extends BaseDictType<M>> extends BaseModel<M> implements IBean {
 
-	public void setId(java.lang.Integer id) {
+	public void setId(Integer id) {
 		set("id", id);
 	}
 
-	public java.lang.Integer getId() {
+	public Integer getId() {
 		return get("id");
 	}
 
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		set("name", name);
 	}
 
-	public java.lang.String getName() {
+	public String getName() {
 		return get("name");
 	}
 
-	public void setRemark(java.lang.String remark) {
+	public void setRemark(String remark) {
 		set("remark", remark);
 	}
 
-	public java.lang.String getRemark() {
+	public String getRemark() {
 		return get("remark");
 	}
 
-	public void setUpdateTime(java.lang.Integer updateTime) {
+	public void setUpdateTime(Integer updateTime) {
 		set("update_time", updateTime);
 	}
 
-	public java.lang.Integer getUpdateTime() {
+	public Integer getUpdateTime() {
 		return get("update_time");
 	}
 

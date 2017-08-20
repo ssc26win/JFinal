@@ -9,27 +9,27 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseSysUserRole<M extends BaseSysUserRole<M>> extends BaseModel<M> implements IBean {
 
-	public void setId(java.lang.Integer id) {
+	public void setId(Integer id) {
 		set("id", id);
 	}
 
-	public java.lang.Integer getId() {
+	public Integer getId() {
 		return get("id");
 	}
 
-	public void setUserId(java.lang.Integer userId) {
+	public void setUserId(Integer userId) {
 		set("user_id", userId);
 	}
 
-	public java.lang.Integer getUserId() {
+	public Integer getUserId() {
 		return get("user_id");
 	}
 
-	public void setRoleId(java.lang.Integer roleId) {
+	public void setRoleId(Integer roleId) {
 		set("role_id", roleId);
 	}
 
-	public java.lang.Integer getRoleId() {
+	public Integer getRoleId() {
 		return get("role_id");
 	}
 

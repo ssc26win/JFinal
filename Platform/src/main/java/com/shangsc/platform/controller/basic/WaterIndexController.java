@@ -11,9 +11,9 @@ import com.shangsc.platform.core.controller.BaseController;
  */
 public class WaterIndexController extends BaseController {
 
-    @RequiresPermissions(value = {"/basic/water"})
+    @RequiresPermissions(value = {"/basic/waterindex"})
     public void index() {
-        render("water_use_index.jsp");
+        render("water_index.jsp");
     }
 
 }

@@ -9,43 +9,43 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseSysLog<M extends BaseSysLog<M>> extends BaseModel<M> implements IBean {
 
-	public void setId(java.lang.Integer id) {
+	public void setId(Integer id) {
 		set("id", id);
 	}
 
-	public java.lang.Integer getId() {
+	public Integer getId() {
 		return get("id");
 	}
 
-	public void setUid(java.lang.Integer uid) {
+	public void setUid(Integer uid) {
 		set("uid", uid);
 	}
 
-	public java.lang.Integer getUid() {
+	public Integer getUid() {
 		return get("uid");
 	}
 
-	public void setFrom(java.lang.String from) {
+	public void setFrom(String from) {
 		set("from", from);
 	}
 
-	public java.lang.String getFrom() {
+	public String getFrom() {
 		return get("from");
 	}
 
-	public void setIp(java.lang.String ip) {
+	public void setIp(String ip) {
 		set("ip", ip);
 	}
 
-	public java.lang.String getIp() {
+	public String getIp() {
 		return get("ip");
 	}
 
-	public void setUrl(java.lang.String url) {
+	public void setUrl(String url) {
 		set("url", url);
 	}
 
-	public java.lang.String getUrl() {
+	public String getUrl() {
 		return get("url");
 	}
 
@@ -57,35 +57,35 @@ public abstract class BaseSysLog<M extends BaseSysLog<M>> extends BaseModel<M> i
 		return get("date");
 	}
 
-	public void setErrMsg(java.lang.String errMsg) {
+	public void setErrMsg(String errMsg) {
 		set("err_msg", errMsg);
 	}
 
-	public java.lang.String getErrMsg() {
+	public String getErrMsg() {
 		return get("err_msg");
 	}
 
-	public void setErrCode(java.lang.Integer errCode) {
+	public void setErrCode(Integer errCode) {
 		set("err_code", errCode);
 	}
 
-	public java.lang.Integer getErrCode() {
+	public Integer getErrCode() {
 		return get("err_code");
 	}
 
-	public void setClassName(java.lang.String className) {
+	public void setClassName(String className) {
 		set("class_name", className);
 	}
 
-	public java.lang.String getClassName() {
+	public String getClassName() {
 		return get("class_name");
 	}
 
-	public void setMethodName(java.lang.String methodName) {
+	public void setMethodName(String methodName) {
 		set("method_name", methodName);
 	}
 
-	public java.lang.String getMethodName() {
+	public String getMethodName() {
 		return get("method_name");
 	}
 
@@ -97,19 +97,19 @@ public abstract class BaseSysLog<M extends BaseSysLog<M>> extends BaseModel<M> i
 		return get("start_time");
 	}
 
-	public void setSpendTime(java.lang.Long spendTime) {
+	public void setSpendTime(Long spendTime) {
 		set("spend_time", spendTime);
 	}
 
-	public java.lang.Long getSpendTime() {
+	public Long getSpendTime() {
 		return get("spend_time");
 	}
 
-	public void setParams(java.lang.String params) {
+	public void setParams(String params) {
 		set("params", params);
 	}
 
-	public java.lang.String getParams() {
+	public String getParams() {
 		return get("params");
 	}
 

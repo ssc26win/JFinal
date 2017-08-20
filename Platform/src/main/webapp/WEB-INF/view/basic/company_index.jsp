@@ -56,6 +56,7 @@
                             <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
                             <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
                             <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
+                            <jc:button className="btn btn-success" id="btn-exportData" textName="导出"/>
                         </div>
                     </div>
                     <!-- PAGE CONTENT BEGINS -->
@@ -99,24 +100,24 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
-                { label: '单位名称', name: 'name', width: 45, sortable:false},
-                { label: '单位编号', name: 'innerCode', width: 45, sortable:false},
+                { label: '单位名称', name: 'name', width: 75, sortable:false},
+                { label: '单位编号', name: 'inner_code', width: 45, sortable:false},
                 { label: '所属乡镇或街道', name: 'street', width: 100, sortable:false},
                 { label: '单位地址', name: 'address', width: 100,sortable:false},
-                { label: '用户类型', name: 'innerCode', width: 45, sortable:false},
-                { label: '取水用途', name: 'innerCode', width: 45, sortable:false},
-                { label: '联系人', name: 'innerCode', width: 40, sortable:false},
-                { label: '联系电话', name: 'innerCode', width: 45, sortable:false},
-                { label: '邮政编码', name: 'innerCode', width: 45, sortable:false},
-                { label: '管水部门', name: 'innerCode', width: 45, sortable:false},
-                { label: '水井数量', name: 'innerCode', width: 45, sortable:false},
-                { label: '一级表数量', name: 'innerCode', width: 45, sortable:false},
-                { label: '远传表数量', name: 'innerCode', width: 45, sortable:false},
-                { label: '节约用水型单位类型', name: 'street', width: 100, sortable:false},
-                { label: '创建时间', name: 'createTime', width: 100, sortable:true}
+                { label: '用户类型', name: 'customer_type', width: 45, sortable:false},
+                { label: '取水用途', name: 'waterUse_type', width: 45, sortable:false},
+                { label: '联系人', name: 'contact', width: 40, sortable:false},
+                { label: '联系电话', name: 'phone', width: 50, sortable:false},
+                { label: '邮政编码', name: 'postal_code', width: 45, sortable:false},
+                { label: '管水部门', name: 'department', width: 45, sortable:false},
+                { label: '水井数量', name: 'well_count', width: 45, sortable:false},
+                { label: '一级表数量', name: 'first_watermeter_count', width: 45, sortable:false},
+                { label: '远传表数量', name: 'remotemeter_count', width: 45, sortable:false},
+                { label: '节约用水型单位类型', name: 'unit_type', width: 80, sortable:false},
+                { label: '创建时间', name: 'create_time', width: 100, sortable:true}
             ],
             viewrecords: true,
-            height: 280,
+            height: 600,
             rowNum: 10,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
@@ -133,8 +134,8 @@
         $(window).triggerHandler('resize.jqGrid');
 
         $(window).bind('resize', function() {
-            //$("#jqgrid").setGridWidth($(window).width()*0.75);
-            //	$("#grid-table").setGridHeight($(window).height()-200);
+            $("#jqgrid").setGridWidth($(window).width()*0.75);
+            $("#grid-table").setGridHeight($(window).height()-200);
         });
         $("#btn_search").click(function(){
             //此处可以添加对查询数据的合法验证

@@ -9,19 +9,19 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseSysLoginRecord<M extends BaseSysLoginRecord<M>> extends BaseModel<M> implements IBean {
 
-	public void setId(java.lang.Integer id) {
+	public void setId(Integer id) {
 		set("id", id);
 	}
 
-	public java.lang.Integer getId() {
+	public Integer getId() {
 		return get("id");
 	}
 
-	public void setSysUid(java.lang.Integer sysUid) {
+	public void setSysUid(Integer sysUid) {
 		set("sys_uid", sysUid);
 	}
 
-	public java.lang.Integer getSysUid() {
+	public Integer getSysUid() {
 		return get("sys_uid");
 	}
 
@@ -33,19 +33,19 @@ public abstract class BaseSysLoginRecord<M extends BaseSysLoginRecord<M>> extend
 		return get("login_date");
 	}
 
-	public void setLoginErrTimes(java.lang.Integer loginErrTimes) {
+	public void setLoginErrTimes(Integer loginErrTimes) {
 		set("login_err_times", loginErrTimes);
 	}
 
-	public java.lang.Integer getLoginErrTimes() {
+	public Integer getLoginErrTimes() {
 		return get("login_err_times");
 	}
 
-	public void setLoginStatus(java.lang.Integer loginStatus) {
+	public void setLoginStatus(Integer loginStatus) {
 		set("login_status", loginStatus);
 	}
 
-	public java.lang.Integer getLoginStatus() {
+	public Integer getLoginStatus() {
 		return get("login_status");
 	}
 

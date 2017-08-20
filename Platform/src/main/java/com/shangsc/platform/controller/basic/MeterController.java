@@ -5,7 +5,6 @@ import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
-import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.WaterMeter;
 
 /**
@@ -41,22 +40,17 @@ public class MeterController extends BaseController {
     @RequiresPermissions(value={"/basic/meter"})
     public void save(){
         Long id = this.getParaToLong("id");
-        String name = this.getPara("name");
+        Long companyId = this.getParaToLong("companyId");
         String innerCode = this.getPara("innerCode");
-        String street = this.getPara("street");
-        String address = this.getPara("address");
-        Integer customerType = this.getParaToInt("customerType");
+        String lineNum = this.getPara("lineNum");
+        String meterNum = this.getPara("meterNum");
+        Integer watersType = this.getParaToInt("watersType");
         Integer waterUseType = this.getParaToInt("waterUseType");
-        String contact = this.getPara("contact");
-        String phone = this.getPara("phone");
-        String postalCode = this.getPara("postalCode");
-        String department = this.getPara("department");
-        Integer wellCount = this.getParaToInt("wellCount");
-        Integer firstWatermeterCount = this.getParaToInt("firstWatermeterCount");
-        Integer remotemeterCount = this.getParaToInt("remotemeterCount");
-        Integer unitType = this.getParaToInt("unitType");
-        InvokeResult result = Company.me.save(id, name, innerCode, street, address, customerType, waterUseType,
-                contact, phone, postalCode, department, wellCount, firstWatermeterCount, remotemeterCount, unitType);
+        String meterAttr = this.getPara("meterAttr");
+        Integer chargeType = this.getParaToInt("chargeType");
+        String billingCycle = this.getPara("billingCycle");
+        InvokeResult result = WaterMeter.me.save(id, companyId, innerCode, lineNum, meterNum,
+                watersType, waterUseType, meterAttr, chargeType, billingCycle);
         this.renderJson(result);
     }
 

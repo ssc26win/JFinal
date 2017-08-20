@@ -272,6 +272,7 @@ DROP TABLE IF EXISTS `t_actual_data`;
 CREATE TABLE `t_actual_data` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `company_id` bigint(20) DEFAULT NULL COMMENT '单位id',
+  `inner_code` varchar(50) DEFAULT NULL COMMENT '单位编号',
   `line_num` varchar(255) DEFAULT NULL COMMENT '路别',
   `watermeter_num` varchar(50) DEFAULT NULL COMMENT '表号',
   `waters_type` tinyint(4) DEFAULT NULL COMMENT '水源类型',
@@ -287,6 +288,7 @@ DROP TABLE IF EXISTS `t_water_index`;
 CREATE TABLE `t_water_index` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `company_id` bigint(20) DEFAULT NULL COMMENT '单位id',
+  `inner_code` varchar(50) DEFAULT NULL COMMENT '单位编号',
   `water_use` varchar(255) DEFAULT NULL COMMENT '取水用途',
   `water_index` int(11) DEFAULT NULL COMMENT '年用水指标',
   `January` int(11) DEFAULT NULL COMMENT '一月',
@@ -308,6 +310,7 @@ DROP TABLE IF EXISTS `t_water_meter`;
 CREATE TABLE `t_water_meter` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `company_id` bigint(20) DEFAULT NULL COMMENT '单位id',
+  `inner_code` varchar(50) DEFAULT NULL COMMENT '单位编号',
   `line_num` int(11) DEFAULT NULL COMMENT '路别',
   `meter_num` varchar(50) DEFAULT NULL COMMENT '表号',
   `waters_type` tinyint(4) DEFAULT NULL COMMENT '水源类型',
@@ -321,10 +324,11 @@ CREATE TABLE `t_water_meter` (
 
 DROP TABLE IF EXISTS `t_well`;
 CREATE TABLE `t_well` (
-  `id` bigint(20) NOT NULL COMMENT 'id',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `code` varchar(255) DEFAULT NULL COMMENT '水井编号',
   `name` varchar(255) DEFAULT NULL COMMENT '水井名称',
   `company_id` bigint(20) DEFAULT NULL COMMENT '单位id',
+  `inner_code` varchar(50) DEFAULT NULL COMMENT '单位编号',
   `township` varchar(100) DEFAULT NULL COMMENT '乡',
   `village` varchar(100) DEFAULT NULL COMMENT '村',
   `address` varchar(100) DEFAULT NULL COMMENT '水井地址',
@@ -349,5 +353,17 @@ CREATE TABLE `t_well` (
   `licence` tinyint(2) DEFAULT NULL COMMENT '是否已办理取水许可证',
   `licence_code` varchar(50) DEFAULT NULL COMMENT '取水许可证编号',
   `water_withdrawals` int(11) DEFAULT NULL COMMENT '年许可取水量（万立方米）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT '水井信息';
+
+DROP TABLE IF EXISTS `t_ad`;
+CREATE TABLE `t_ad` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `title` varchar(100) DEFAULT NULL COMMENT '标题',
+  `content` varchar(500) DEFAULT NULL COMMENT '内容',
+  `img_url` varchar(255) DEFAULT NULL COMMENT '图片地址',
+  `memo` varchar(500) DEFAULT NULL COMMENT '备注',
+  `create_user` varchar(50) DEFAULT NULL COMMENT '创建人',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT '水井信息';

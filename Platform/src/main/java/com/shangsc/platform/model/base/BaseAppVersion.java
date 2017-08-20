@@ -9,19 +9,19 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseAppVersion<M extends BaseAppVersion<M>> extends BaseModel<M> implements IBean {
 
-	public void setId(java.lang.Integer id) {
+	public void setId(Integer id) {
 		set("id", id);
 	}
 
-	public java.lang.Integer getId() {
+	public Integer getId() {
 		return get("id");
 	}
 
-	public void setContent(java.lang.String content) {
+	public void setContent(String content) {
 		set("content", content);
 	}
 
-	public java.lang.String getContent() {
+	public String getContent() {
 		return get("content");
 	}
 
@@ -33,59 +33,59 @@ public abstract class BaseAppVersion<M extends BaseAppVersion<M>> extends BaseMo
 		return get("create_time");
 	}
 
-	public void setLinkUrl(java.lang.String linkUrl) {
+	public void setLinkUrl(String linkUrl) {
 		set("link_url", linkUrl);
 	}
 
-	public java.lang.String getLinkUrl() {
+	public String getLinkUrl() {
 		return get("link_url");
 	}
 
-	public void setNatureNo(java.lang.Integer natureNo) {
+	public void setNatureNo(Integer natureNo) {
 		set("nature_no", natureNo);
 	}
 
-	public java.lang.Integer getNatureNo() {
+	public Integer getNatureNo() {
 		return get("nature_no");
 	}
 
-	public void setOs(java.lang.String os) {
+	public void setOs(String os) {
 		set("os", os);
 	}
 
-	public java.lang.String getOs() {
+	public String getOs() {
 		return get("os");
 	}
 
-	public void setUrl(java.lang.String url) {
+	public void setUrl(String url) {
 		set("url", url);
 	}
 
-	public java.lang.String getUrl() {
+	public String getUrl() {
 		return get("url");
 	}
 
-	public void setVersionNo(java.lang.String versionNo) {
+	public void setVersionNo(String versionNo) {
 		set("version_no", versionNo);
 	}
 
-	public java.lang.String getVersionNo() {
+	public String getVersionNo() {
 		return get("version_no");
 	}
 
-	public void setStatus(java.lang.Integer status) {
+	public void setStatus(Integer status) {
 		set("status", status);
 	}
 
-	public java.lang.Integer getStatus() {
+	public Integer getStatus() {
 		return get("status");
 	}
 
-	public void setIsForce(java.lang.Integer isForce) {
+	public void setIsForce(Integer isForce) {
 		set("is_force", isForce);
 	}
 
-	public java.lang.Integer getIsForce() {
+	public Integer getIsForce() {
 		return get("is_force");
 	}
 

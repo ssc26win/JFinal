@@ -9,59 +9,59 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseSysUser<M extends BaseSysUser<M>> extends BaseModel<M> implements IBean {
 
-	public void setId(java.lang.Integer id) {
+	public void setId(Integer id) {
 		set("id", id);
 	}
 
-	public java.lang.Integer getId() {
+	public Integer getId() {
 		return get("id");
 	}
 
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		set("name", name);
 	}
 
-	public java.lang.String getName() {
+	public String getName() {
 		return get("name");
 	}
 
-	public void setPwd(java.lang.String pwd) {
+	public void setPwd(String pwd) {
 		set("pwd", pwd);
 	}
 
-	public java.lang.String getPwd() {
+	public String getPwd() {
 		return get("pwd");
 	}
 
-	public void setDes(java.lang.String des) {
+	public void setDes(String des) {
 		set("des", des);
 	}
 
-	public java.lang.String getDes() {
+	public String getDes() {
 		return get("des");
 	}
 
-	public void setStatus(java.lang.Integer status) {
+	public void setStatus(Integer status) {
 		set("status", status);
 	}
 
-	public java.lang.Integer getStatus() {
+	public Integer getStatus() {
 		return get("status");
 	}
 
-	public void setIcon(java.lang.String icon) {
+	public void setIcon(String icon) {
 		set("icon", icon);
 	}
 
-	public java.lang.String getIcon() {
+	public String getIcon() {
 		return get("icon");
 	}
 
-	public void setEmail(java.lang.String email) {
+	public void setEmail(String email) {
 		set("email", email);
 	}
 
-	public java.lang.String getEmail() {
+	public String getEmail() {
 		return get("email");
 	}
 
@@ -73,19 +73,19 @@ public abstract class BaseSysUser<M extends BaseSysUser<M>> extends BaseModel<M>
 		return get("createdate");
 	}
 
-	public void setPhone(java.lang.String phone) {
+	public void setPhone(String phone) {
 		set("phone", phone);
 	}
 
-	public java.lang.String getPhone() {
+	public String getPhone() {
 		return get("phone");
 	}
 
-	public void setToken(java.lang.String token) {
+	public void setToken(String token) {
 		set("token", token);
 	}
 
-	public java.lang.String getToken() {
+	public String getToken() {
 		return get("token");
 	}
 

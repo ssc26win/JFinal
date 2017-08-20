@@ -9,59 +9,59 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseDictData<M extends BaseDictData<M>> extends BaseModel<M> implements IBean {
 
-	public void setId(java.lang.Integer id) {
+	public void setId(Integer id) {
 		set("id", id);
 	}
 
-	public java.lang.Integer getId() {
+	public Integer getId() {
 		return get("id");
 	}
 
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		set("name", name);
 	}
 
-	public java.lang.String getName() {
+	public String getName() {
 		return get("name");
 	}
 
-	public void setValue(java.lang.String value) {
+	public void setValue(String value) {
 		set("value", value);
 	}
 
-	public java.lang.String getValue() {
+	public String getValue() {
 		return get("value");
 	}
 
-	public void setRemark(java.lang.String remark) {
+	public void setRemark(String remark) {
 		set("remark", remark);
 	}
 
-	public java.lang.String getRemark() {
+	public String getRemark() {
 		return get("remark");
 	}
 
-	public void setSeq(java.lang.Integer seq) {
+	public void setSeq(Integer seq) {
 		set("seq", seq);
 	}
 
-	public java.lang.Integer getSeq() {
+	public Integer getSeq() {
 		return get("seq");
 	}
 
-	public void setUpdateTime(java.lang.Integer updateTime) {
+	public void setUpdateTime(Integer updateTime) {
 		set("update_time", updateTime);
 	}
 
-	public java.lang.Integer getUpdateTime() {
+	public Integer getUpdateTime() {
 		return get("update_time");
 	}
 
-	public void setDictTypeId(java.lang.Integer dictTypeId) {
+	public void setDictTypeId(Integer dictTypeId) {
 		set("dict_type_id", dictTypeId);
 	}
 
-	public java.lang.Integer getDictTypeId() {
+	public Integer getDictTypeId() {
 		return get("dict_type_id");
 	}
 

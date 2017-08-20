@@ -17,12 +17,12 @@ public abstract class BaseWell<M extends BaseWell<M>> extends BaseModel<M> imple
 		return get("id");
 	}
 
-	public void setCode(String code) {
-		set("code", code);
+	public void setWellCode(String wellCode) {
+		set("well_code", wellCode);
 	}
 
-	public String getCode() {
-		return get("code");
+	public String getWellCode() {
+		return get("well_code");
 	}
 
 	public void setName(String name) {
@@ -39,6 +39,14 @@ public abstract class BaseWell<M extends BaseWell<M>> extends BaseModel<M> imple
 
 	public Long getCompanyId() {
 		return get("company_id");
+	}
+
+	public void setInnerCode(String innerCode) {
+		set("inner_code", innerCode);
+	}
+
+	public String getInnerCode() {
+		return get("inner_code");
 	}
 
 	public void setTownship(String township) {
@@ -65,12 +73,12 @@ public abstract class BaseWell<M extends BaseWell<M>> extends BaseModel<M> imple
 		return get("address");
 	}
 
-	public void setCreateDate(java.util.Date createDate) {
-		set("create_date", createDate);
+	public void setStartDate(java.util.Date startDate) {
+		set("start_date", startDate);
 	}
 
-	public java.util.Date getCreateDate() {
-		return get("create_date");
+	public java.util.Date getStartDate() {
+		return get("start_date");
 	}
 
 	public void setWellDepth(Integer wellDepth) {

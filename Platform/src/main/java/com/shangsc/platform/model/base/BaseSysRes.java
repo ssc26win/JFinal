@@ -9,67 +9,67 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseSysRes<M extends BaseSysRes<M>> extends BaseModel<M> implements IBean {
 
-	public void setId(java.lang.Integer id) {
+	public void setId(Integer id) {
 		set("id", id);
 	}
 
-	public java.lang.Integer getId() {
+	public Integer getId() {
 		return get("id");
 	}
 
-	public void setPid(java.lang.Integer pid) {
+	public void setPid(Integer pid) {
 		set("pid", pid);
 	}
 
-	public java.lang.Integer getPid() {
+	public Integer getPid() {
 		return get("pid");
 	}
 
-	public void setName(java.lang.String name) {
+	public void setName(String name) {
 		set("name", name);
 	}
 
-	public java.lang.String getName() {
+	public String getName() {
 		return get("name");
 	}
 
-	public void setDes(java.lang.String des) {
+	public void setDes(String des) {
 		set("des", des);
 	}
 
-	public java.lang.String getDes() {
+	public String getDes() {
 		return get("des");
 	}
 
-	public void setUrl(java.lang.String url) {
+	public void setUrl(String url) {
 		set("url", url);
 	}
 
-	public java.lang.String getUrl() {
+	public String getUrl() {
 		return get("url");
 	}
 
-	public void setIconCls(java.lang.String iconCls) {
+	public void setIconCls(String iconCls) {
 		set("iconCls", iconCls);
 	}
 
-	public java.lang.String getIconCls() {
+	public String getIconCls() {
 		return get("iconCls");
 	}
 
-	public void setSeq(java.lang.Integer seq) {
+	public void setSeq(Integer seq) {
 		set("seq", seq);
 	}
 
-	public java.lang.Integer getSeq() {
+	public Integer getSeq() {
 		return get("seq");
 	}
 
-	public void setType(java.lang.Integer type) {
+	public void setType(Integer type) {
 		set("type", type);
 	}
 
-	public java.lang.Integer getType() {
+	public Integer getType() {
 		return get("type");
 	}
 
@@ -81,19 +81,19 @@ public abstract class BaseSysRes<M extends BaseSysRes<M>> extends BaseModel<M> i
 		return get("modifydate");
 	}
 
-	public void setEnabled(java.lang.Integer enabled) {
+	public void setEnabled(Integer enabled) {
 		set("enabled", enabled);
 	}
 
-	public java.lang.Integer getEnabled() {
+	public Integer getEnabled() {
 		return get("enabled");
 	}
 
-	public void setLevel(java.lang.Integer level) {
+	public void setLevel(Integer level) {
 		set("level", level);
 	}
 
-	public java.lang.Integer getLevel() {
+	public Integer getLevel() {
 		return get("level");
 	}
 

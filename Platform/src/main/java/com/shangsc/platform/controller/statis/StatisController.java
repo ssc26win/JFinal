@@ -34,8 +34,29 @@ public class StatisController extends BaseController {
         render("year_use.jsp");
     }
 
+    @RequiresPermissions(value={"/statis/readnum"})
+    public void getreadnumListData() {
+        String keyword = this.getPara("name");
+        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+    }
+
     @RequiresPermissions(value={"/statis/daily"})
-    public void getListData() {
+    public void getdailyListData() {
+        String keyword = this.getPara("name");
+        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+    }
+
+    @RequiresPermissions(value={"/statis/month"})
+    public void getmonthListData() {
+        String keyword = this.getPara("name");
+        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+    }
+
+    @RequiresPermissions(value={"/statis/year"})
+    public void getyearListData() {
         String keyword = this.getPara("name");
         Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));

@@ -3,9 +3,15 @@ package com.shangsc.platform.controller.basic;
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
+import com.shangsc.platform.core.model.Condition;
+import com.shangsc.platform.core.model.Operators;
+import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Company;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @Author ssc
@@ -23,7 +29,11 @@ public class CompanyController extends BaseController {
     @RequiresPermissions(value={"/basic/company"})
     public void getListData() {
         String keyword=this.getPara("name");
-        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        Set<Condition> conditions=new HashSet<Condition>();
+        if(CommonUtils.isNotEmpty(keyword)){
+            conditions.add(new Condition("name", Operators.LIKE, keyword));
+        }
+        Page<Company> pageInfo = Company.me.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
     }
 
