@@ -6,7 +6,7 @@
 
 ### 使用步骤
 
-- 在你本地创建jcbase数据库，再导入db/yc_platform.sql，在a_little_config.txt配置文件对应更改你的数据库连接相关参数
+- 在你本地创建jcbase数据库，再导入db/yc_platform.sql，在config.txt配置文件对应更改你的数据库连接相关参数
 - 用eclipse选择以maven的方式导入项目
 - 运行项目，执行src/test/com/shangsc/platform/test/AppRun.java 即可
 - 默认系统用户为admin,密码123456

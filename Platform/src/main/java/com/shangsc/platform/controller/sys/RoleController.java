@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
-import com.shangsc.platform.core.controller.JCBaseController;
+import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
@@ -29,7 +29,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 
-public class RoleController extends JCBaseController {
+public class RoleController extends BaseController {
 	
 
 	@RequiresPermissions(value={"/sys/role"})

@@ -7,7 +7,7 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
-import com.shangsc.platform.core.controller.JCBaseController;
+import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.FileUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
@@ -17,7 +17,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 
-public class AppVersionController extends JCBaseController {
+public class AppVersionController extends BaseController {
 	
 	@RequiresPermissions(value={"/app"})
 	public void index() {

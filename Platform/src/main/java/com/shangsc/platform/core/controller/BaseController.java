@@ -25,7 +25,7 @@ import java.util.LinkedHashMap;
  * @author ssc
  *
  */
-public abstract class JCBaseController extends Controller {
+public abstract class BaseController extends Controller {
 	public static final int BUFFER_SIZE = 1024 * 1024;
 	/**
 	 * 获取排序对象

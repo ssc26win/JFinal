@@ -19,7 +19,7 @@ import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.SysLogInterceptor;
-import com.shangsc.platform.core.controller.JCBaseController;
+import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
@@ -35,7 +35,7 @@ import java.util.Set;
  * @author ssc
  */
 @Clear(SysLogInterceptor.class)
-public class LogController extends JCBaseController {
+public class LogController extends BaseController {
 
 	@RequiresPermissions
 	public void index() {

@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
-import com.shangsc.platform.core.controller.JCBaseController;
+import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
@@ -29,7 +29,7 @@ import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.DictType;
 import com.jfinal.plugin.activerecord.Page;
 
-public class DictController extends JCBaseController {
+public class DictController extends BaseController {
 	
 
 	@RequiresPermissions(value={"/dict"})

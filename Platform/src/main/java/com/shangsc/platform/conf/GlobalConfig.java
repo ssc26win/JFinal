@@ -39,14 +39,14 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * API引导式配置
  */
-public class JcConfig extends JFinalConfig {
+public class GlobalConfig extends JFinalConfig {
 
 	/**
 	 * 配置常量
 	 */
 	public void configConstant(Constants me) {
 		// 加载少量必要配置，随后可用PropKit.get(...)获取值
-		PropKit.use("a_little_config.txt");
+		PropKit.use("config.txt");
 		me.setDevMode(PropKit.getBoolean("devMode", false));
 		me.setViewType(ViewType.JSP);
 		me.setError404View("/page/404.jsp");

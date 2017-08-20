@@ -120,7 +120,6 @@ public class IndexController extends Controller {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 }
 

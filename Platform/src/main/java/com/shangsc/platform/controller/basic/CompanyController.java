@@ -2,7 +2,7 @@ package com.shangsc.platform.controller.basic;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
-import com.shangsc.platform.core.controller.JCBaseController;
+import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Company;
@@ -14,7 +14,7 @@ import com.shangsc.platform.model.SysUser;
  * @Version 1.0.0
  * @Desc
  */
-public class CompanyController extends JCBaseController {
+public class CompanyController extends BaseController {
 
     @RequiresPermissions(value={"/basic/company"})
     public void index() {
@@ -32,6 +32,7 @@ public class CompanyController extends JCBaseController {
     @RequiresPermissions(value={"/basic/company"})
     public void add() {
         Integer id = this.getParaToInt("id");
+
         if(id!=null){
             this.setAttr("item", Company.me.findById(id));
         }

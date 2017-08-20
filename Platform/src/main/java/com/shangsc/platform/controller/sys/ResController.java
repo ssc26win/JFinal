@@ -20,12 +20,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
-import com.shangsc.platform.core.controller.JCBaseController;
+import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.SysRes;
 import com.jfinal.kit.JsonKit;
 
-public class ResController extends JCBaseController {
+public class ResController extends BaseController {
 	
 	@RequiresPermissions(value={"/sys/res"})
 	public void index() { 

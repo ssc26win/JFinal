@@ -2,7 +2,7 @@ package com.shangsc.platform.model;
 
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
-import com.shangsc.platform.conf.JcConfig;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.plugin.generator.Generator;
 
 import javax.sql.DataSource;
@@ -13,8 +13,8 @@ import javax.sql.DataSource;
 public class _CodeGenerator {
 	
 	public static DataSource getDataSource() {
-		PropKit.use("a_little_config.txt");
-		C3p0Plugin c3p0Plugin = JcConfig.createC3p0Plugin();
+		PropKit.use("config.txt");
+		C3p0Plugin c3p0Plugin = GlobalConfig.createC3p0Plugin();
 		c3p0Plugin.start();
 		return c3p0Plugin.getDataSource();
 	}
