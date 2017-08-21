@@ -47,76 +47,41 @@
                                         <div class="step-pane active" id="step1">
                                             <form class="form-horizontal" id="validation-form" method="post">
                                                 <div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="versionNo">版本号:</label>
+                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="versionNo">标题:</label>
 
                                                     <div class="col-xs-12 col-sm-9">
                                                         <div class="clearfix">
-                                                            <input type="text" name="versionNo" id="versionNo" class="col-xs-12 col-sm-6" value="${item.versionNo}"/>
+                                                            <input type="text" name="title" id="title" class="col-xs-12 col-sm-6" value="${item.title}"/>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="file_upload">软件包:</label>
-
+                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="content">内容</label>
+                                                    <div class="col-xs-12 col-sm-9">
+                                                        <div class="clearfix">
+                                                            <input type="text" name="content" value="${item.content}" class="col-xs-12 col-sm-6">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="file_upload">图片:</label>
                                                     <div class="col-xs-12 col-sm-9">
                                                         <div class="clearfix">
                                                             <div class="cover-area" style="border: 1px solid #e0e0e0;width: 80%;border-radius:5px;padding: 5px 0 0 5px;">
                                                                 <div class="cover-hd">
                                                                     <input id="file_upload" name="file_upload" type="file" />
-                                                                    <input id="url" class="cover-input" value="${item.url}" name="url" type="hidden" />
+                                                                    <input id="imgUrl" class="cover-input" value="${item.imgUrl}" name="imgUrl" type="hidden" />
                                                                 </div>
                                                                 <p id="upload-tip" class="upload-tip"></p>
                                                                 <p id="apkArea" class="cover-bd" style="display: ${action eq 'add'?'none':''}">
-                                                                    <a class="vb cover-del" href="#" style="width: 600px;">${item.url}</a>
+                                                                    <a class="vb cover-del" href="#" style="width: 600px;">${item.imgUrl}</a>
                                                                 </p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="os">系统:</label>
-
-                                                    <div class="col-xs-12 col-sm-9">
-                                                        <div class="clearfix">
-                                                            <select name="os" id="os" class="span3">
-                                                                <option value="android" ${item.os eq 'android'?'selected':''}>android</option>
-                                                                <option value="ios" ${item.os eq 'ios'?'selected':''}>ios</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="natureNo">自然数版本号:</label>
-
-                                                    <div class="col-xs-12 col-sm-9">
-                                                        <div class="clearfix">
-                                                            <input type="text" name="natureNo" id="natureNo"  value="${item.natureNo}"/>
-                                                            <span class="maroon"></span><span class="help-inline">数字越大版本越新</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="linkUrl">外链地址:</label>
-                                                    <div class="col-xs-12 col-sm-9">
-                                                        <div class="clearfix">
-                                                            <input type="text" name="linkUrl" id="linkUrl" class="col-xs-12 col-sm-6" value="${item.linkUrl }"/>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="os">强制升级:</label>
-
-                                                    <div class="col-xs-12 col-sm-9">
-                                                        <div class="clearfix">
-                                                            <select name="isForce" id="isForce" class="span3">
-                                                                <option value="0" ${item.isForce eq 0?'selected':''}>否</option>
-                                                                <option value="1" ${item.isForce eq 1?'selected':''}>是</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="status">是否启用:</label>
+                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="status">是否发布:</label>
 
                                                     <div class="col-xs-12 col-sm-9">
                                                         <div class="clearfix">
@@ -124,15 +89,6 @@
                                                                 <option value="0" ${item.status eq 0?'selected':''}>否</option>
                                                                 <option value="1" ${item.status eq 1?'selected':''}>是</option>
                                                             </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="content">更新说明:</label>
-
-                                                    <div class="col-xs-12 col-sm-9">
-                                                        <div class="clearfix">
-                                                            <textarea rows="5" cols="50" name="content" id="content">${item.content}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -170,7 +126,7 @@
         $('#file_upload').uploadify({
             //校验数据
             'swf' : '${res_url}uploadify/uploadify.swf', //指定上传控件的主体文件，默认‘uploader.swf’
-            'uploader' : '/app/uploadApk', //指定服务器端上传处理文件，默认‘upload.php’
+            'uploader' : '/basic/ad/uploadImg', //指定服务器端上传处理文件，默认‘upload.php’
             'auto' : true, //手动上传
             'buttonImage' : '${res_url}uploadify/uploadify-upload.png', //浏览按钮背景图片
             'width' :110,
@@ -178,7 +134,7 @@
             'cancelImg': 'uploadify/uploadify-cancel.png',
             //'buttonText': '选 择应用',
             'multi' : false, //单文件上传
-            'fileTypeExts' : '*.apk', //允许上传的文件后缀
+            'fileTypeExts' : '*.jpg;*.jpeg;*.png;*.gif;*.swf;', //允许上传的文件后缀
             'fileSizeLimit' : '50MB', //上传文件的大小限制，单位为B, KB, MB, 或 GB
             'successTimeout' : 30, //成功等待时间
             'onUploadSuccess' : function(file, data,response) {//每成功完成一次文件上传时触发一次
@@ -267,17 +223,13 @@
 
                 var submitData = {
                     id:"${item.id}",
+                    title:$("#title").val(),
                     content: $("#content").val(),
-                    linkUrl:$("#linkUrl").val(),
-                    natureNo:$("#natureNo").val(),
-                    os:$("#os").val(),
-                    url:$("#url").val(),
-                    versionNo:$("#versionNo").val(),
-                    status:$("#status").val(),
-                    isForce:$("#isForce").val()
+                    imgUrl:$("#imgUrl").val(),
+                    status:$("#status").val()
                 };
                 $btn.addClass("disabled");
-                $.post('/app/saveApp', submitData,function(data) {
+                $.post('/basic/ad/save', submitData,function(data) {
                     $btn.removeClass("disabled");
                     if(data.code==0){
                         window.parent.reloadGrid(); //重新载入
@@ -285,8 +237,7 @@
                             icon: 1,
                             time: 2000 //2秒关闭（如果不配置，默认是3秒）
                         },function(){
-                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                            parent.layer.close(index); //再执行关闭
+                           closeView();
                         });
                     }else{
                         layer.msg(data.msg, {

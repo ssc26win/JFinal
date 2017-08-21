@@ -107,7 +107,7 @@
         { label: '创建时间', name: 'create_time', width: 100, sortable:false}
       ],
       viewrecords: true,
-      height: 600,
+      height: 560,
       rowNum: 10,
       multiselect: true,//checkbox多选
       altRows: true,//隔行变色
@@ -140,7 +140,7 @@
       parent.layer.open({
         title:'添加广告',
         type: 2,
-        area: ['770px', '430px'],
+        area: ['770px', '450px'],
         fix: false, //不固定
         maxmin: true,
         content: '${context_path}/basic/ad/add'
@@ -165,7 +165,7 @@
         parent.layer.open({
           title:'修改广告信息',
           type: 2,
-          area: ['770px', '430px'],
+          area: ['770px', '450px'],
           fix: false, //不固定
           maxmin: true,
           content: '${context_path}/basic/ad/add?id='+rid
