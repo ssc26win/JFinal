@@ -11,6 +11,7 @@ import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.*;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Ad;
+import com.shangsc.platform.model.AppVersion;
 import com.shangsc.platform.model.SysUser;
 
 import java.io.File;
@@ -46,6 +47,12 @@ public class AdController extends BaseController {
             this.setAttr("item", Ad.dao.findById(id));
         }
         this.setAttr("id", id);
+        String action="add";
+        if(id!=null){
+            this.setAttr("item", AppVersion.dao.findById(id));
+            action="edit";
+        }
+        this.setAttr("action", action);
         render("ad_add.jsp");
     }
 

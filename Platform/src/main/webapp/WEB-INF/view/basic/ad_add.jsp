@@ -158,17 +158,10 @@
                 title:{
                     required: true
                 },
-                versionNo:{
+                imgUrl:{
                     required: true
                 },
-                natureNo:{
-                    required: true,
-                    number:true
-                },
-                url:{
-                    required: true
-                },
-                contents:{
+                content:{
                     required: true
                 }
 
@@ -177,17 +170,10 @@
                 title:{
                     required: "软件名不能为空"
                 },
-                versionNo:{
-                    required: "版本号不能为空",
-                },
-                natureNo:{
-                    required: "自然版本号不能为空",
-                    number:"自然版本号必须为整数"
-                },
-                url:{
+                imgUrl:{
                     required: "请上传文件包"
                 },
-                contents:{
+                content:{
                     required: "更新内容不能为空"
                 }
             },

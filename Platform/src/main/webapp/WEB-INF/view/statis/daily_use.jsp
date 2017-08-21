@@ -42,6 +42,9 @@
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                                         搜索
                                                     </button>
+                                                    <button type="button" id="exportData" class="btn btn-success btn-sm" style="margin-left:10px;">
+                                                        导出
+                                                    </button>
                                                 </span>
                                         </div>
                                     </div>
@@ -50,13 +53,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12">
-                    <div class="row-fluid" style="margin-bottom: 5px;">
-                        <div class="span12 control-group">
-                            <jc:button className="btn btn-primary" id="btn-add" textName="查询"/>
-                            <jc:button className="btn btn-success" id="btn-exportData" textName="导出"/>
-                        </div>
-                    </div>
+                <div class="col-xs-12" style="margin-bottom: 5px;">
                     <!-- PAGE CONTENT BEGINS -->
                     <table id="grid-table"></table>
 

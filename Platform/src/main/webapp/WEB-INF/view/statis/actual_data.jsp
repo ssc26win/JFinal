@@ -96,7 +96,7 @@
     });
 
     $("#grid-table").jqGrid({
-      url:'${context_path}/basic/actual/getListData',
+      url:'${context_path}/statis/actual/getListData',
       mtype: "GET",
       datatype: "json",
       colModel: [
@@ -112,7 +112,7 @@
         { label: '电池电压', name: 'voltage', width: 100, sortable:true}
       ],
       viewrecords: true,
-      height: 600,
+      height: 560,
       rowNum: 10,
       multiselect: true,//checkbox多选
       altRows: true,//隔行变色
@@ -145,10 +145,10 @@
       parent.layer.open({
         title:'添加新单位',
         type: 2,
-        area: ['770px', '430px'],
+        area: ['770px', '580px'],
         fix: false, //不固定
         maxmin: true,
-        content: '${context_path}/basic/actual/add'
+        content: '${context_path}/statis/actual/add'
       });
     });
     $("#btn-deleteData").click(function(){
@@ -170,10 +170,10 @@
         parent.layer.open({
           title:'修改单位信息',
           type: 2,
-          area: ['770px', '430px'],
+          area: ['770px', '580px'],
           fix: false, //不固定
           maxmin: true,
-          content: '${context_path}/basic/actual/add?id='+rid
+          content: '${context_path}/statis/actual/add?id='+rid
         });
       }
     });
@@ -229,7 +229,7 @@
     var submitData = {
       "ids" : getSelectedRows()
     };
-    $.post("${context_path}/basic/actual/delete", submitData,function(data) {
+    $.post("${context_path}/statis/actual/delete", submitData,function(data) {
       if (data.code == 0) {
         layer.msg("操作成功", {
           icon: 1,
