@@ -5,7 +5,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-    <title>远传水表管理系统</title>
+    <title>水表管理系统</title>
     <meta name="description" content="overview &amp; stats" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
@@ -60,20 +60,20 @@
                         <div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
 
-                            <div class="alert alert-block alert-success">
-                                <button type="button" class="close" data-dismiss="alert">
-                                    <i class="icon-remove"></i>
-                                </button>
+                            <%--<div class="alert alert-block alert-success">--%>
+                                <%--<button type="button" class="close" data-dismiss="alert">--%>
+                                    <%--<i class="icon-remove"></i>--%>
+                                <%--</button>--%>
 
-                                <i class="icon-ok green"></i>
+                                <%--<i class="icon-ok green"></i>--%>
 
-                                欢迎使用
-                                <strong class="green">
-                                    Ace后台管理系统
-                                    <small>(v1.2)</small>
-                                </strong>
-                                ,轻量级好用的后台管理系统模版.
-                            </div>
+                                <%--欢迎使用--%>
+                                <%--<strong class="green">--%>
+                                    <%--Ace后台管理系统--%>
+                                    <%--<small>(v1.2)</small>--%>
+                                <%--</strong>--%>
+                                <%--,轻量级好用的后台管理系统模版.--%>
+                            <%--</div>--%>
 
                             <div class="row">
                                 <div class="space-6"></div>
@@ -594,54 +594,54 @@
         });
 
 
-        $('#recent-box [data-rel="tooltip"]').tooltip({placement: tooltip_placement});
-        function tooltip_placement(context, source) {
-            var $source = $(source);
-            var $parent = $source.closest('.tab-content')
-            var off1 = $parent.offset();
-            var w1 = $parent.width();
+//        $('#recent-box [data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+//        function tooltip_placement(context, source) {
+//            var $source = $(source);
+//            var $parent = $source.closest('.tab-content')
+//            var off1 = $parent.offset();
+//            var w1 = $parent.width();
+//
+//            var off2 = $source.offset();
+//            var w2 = $source.width();
+//
+//            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+//            return 'left';
+//        }
 
-            var off2 = $source.offset();
-            var w2 = $source.width();
 
-            if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
-            return 'left';
-        }
-
-
-        $('.dialogs,.comments').slimScroll({
-            height: '300px'
-        });
+//        $('.dialogs,.comments').slimScroll({
+//            height: '300px'
+//        });
 
 
         //Android's default browser somehow is confused when tapping on label which will lead to dragging the task
         //so disable dragging when clicking on label
-        var agent = navigator.userAgent.toLowerCase();
-        if("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
-            $('#tasks').on('touchstart', function(e){
-                var li = $(e.target).closest('#tasks li');
-                if(li.length == 0)return;
-                var label = li.find('label.inline').get(0);
-                if(label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation() ;
-            });
-
-        $('#tasks').sortable({
-                    opacity:0.8,
-                    revert:true,
-                    forceHelperSize:true,
-                    placeholder: 'draggable-placeholder',
-                    forcePlaceholderSize:true,
-                    tolerance:'pointer',
-                    stop: function( event, ui ) {//just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
-                        $(ui.item).css('z-index', 'auto');
-                    }
-                }
-        );
-        $('#tasks').disableSelection();
-        $('#tasks input:checkbox').removeAttr('checked').on('click', function(){
-            if(this.checked) $(this).closest('li').addClass('selected');
-            else $(this).closest('li').removeClass('selected');
-        });
+//        var agent = navigator.userAgent.toLowerCase();
+//        if("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
+//            $('#tasks').on('touchstart', function(e){
+//                var li = $(e.target).closest('#tasks li');
+//                if(li.length == 0)return;
+//                var label = li.find('label.inline').get(0);
+//                if(label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation() ;
+//            });
+//
+//        $('#tasks').sortable({
+//                    opacity:0.8,
+//                    revert:true,
+//                    forceHelperSize:true,
+//                    placeholder: 'draggable-placeholder',
+//                    forcePlaceholderSize:true,
+//                    tolerance:'pointer',
+//                    stop: function( event, ui ) {//just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
+//                        $(ui.item).css('z-index', 'auto');
+//                    }
+//                }
+//        );
+//        $('#tasks').disableSelection();
+//        $('#tasks input:checkbox').removeAttr('checked').on('click', function(){
+//            if(this.checked) $(this).closest('li').addClass('selected');
+//            else $(this).closest('li').removeClass('selected');
+//        });
 
 
     })

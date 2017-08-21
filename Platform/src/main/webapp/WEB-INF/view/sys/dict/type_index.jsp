@@ -103,7 +103,7 @@
                     { label: '操作', name: 'id',formatter:fmatterOperation, width:120,sortable:false}
                 ],
 				viewrecords: true,
-                height: 280,
+                height: 540,
                 rowNum: 20,
                 sortname:"id",
                 sortorder:"desc",
