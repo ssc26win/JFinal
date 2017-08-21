@@ -214,7 +214,7 @@
         var $btn = $("#submit-btn");
         if($btn.hasClass("disabled")) return;
         var postData=$("#validation-form").serializeJson();
-        $.post("${context_path}/basic/well/save" ,postData,
+        $.post("${context_path}/basic/waterindex/save" ,postData,
                 function(data){
                   if(data.code==0){
                     parent.reloadGrid(); //重新载入
@@ -222,8 +222,7 @@
                       icon: 1,
                       time: 2000 //2秒关闭（如果不配置，默认是3秒）
                     },function(){
-                      var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                      parent.layer.close(index); //再执行关闭
+                      closeView();
                     });
                   }else {
                     layer.msg(data.msg, {

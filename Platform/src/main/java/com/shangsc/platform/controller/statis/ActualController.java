@@ -9,11 +9,9 @@ import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.ActualData;
-import com.shangsc.platform.model.WaterMeter;
 import com.shangsc.platform.util.CodeNumUtil;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,12 +23,12 @@ import java.util.Set;
  */
 public class ActualController extends BaseController {
 
-    @RequiresPermissions(value={"/basic/actual"})
+    @RequiresPermissions(value={"/statis/actual"})
     public void index() {
         render("actual_data.jsp");
     }
 
-    @RequiresPermissions(value={"/basic/actual"})
+    @RequiresPermissions(value={"/statis/actual"})
     public void getListData() {
         String keyword=this.getPara("name");
         Set<Condition> conditions=new HashSet<Condition>();
@@ -44,7 +42,7 @@ public class ActualController extends BaseController {
     /**
      * 实时数据接口
      */
-    @RequiresPermissions(value={"/basic/actual"})
+    @RequiresPermissions(value={"/statis/actual"})
     public void add() {
         Integer id = this.getParaToInt("id");
         if(id!=null){
@@ -54,7 +52,7 @@ public class ActualController extends BaseController {
         render("actual_add.jsp");
     }
 
-    @RequiresPermissions(value={"/basic/actual"})
+    @RequiresPermissions(value={"/statis/actual"})
     public void save(){
         Long id = this.getParaToLong("id");
         Long companyId = this.getParaToLong("companyId");

@@ -176,7 +176,17 @@
             },
             messages: {
                 name:{
-                    required: "请输入用户名"
+                    required: "请输入单位名称"
+                }
+            },
+            rules: {
+                innerCode:{
+                    required: true
+                }
+            },
+            messages: {
+                innerCode:{
+                    required: "请输入单位编码"
                 }
             },
             highlight: function (e) {
@@ -216,8 +226,7 @@
                                     icon: 1,
                                     time: 2000 //2秒关闭（如果不配置，默认是3秒）
                                 },function(){
-                                    var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                                    parent.layer.close(index); //再执行关闭
+                                    closeView();
                                 });
                             }else {
                                 layer.msg(data.msg, {

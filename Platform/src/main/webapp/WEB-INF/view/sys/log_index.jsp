@@ -106,7 +106,7 @@
                     { label: '操作时间', name: 'start_time', width:100}
                 ],
 				viewrecords: true,
-                height: 600,
+                height: 560,
                 rowNum: 20,
                 sortname:"id",
                 sortorder:"desc",

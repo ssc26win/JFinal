@@ -115,7 +115,7 @@
                 { label: '创建时间', name: 'create_time', width: 100, sortable:true}
             ],
             viewrecords: true,
-            height: 600,
+            height: 560,
             rowNum: 10,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色

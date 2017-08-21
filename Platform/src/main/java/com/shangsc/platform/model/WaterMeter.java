@@ -40,13 +40,13 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         if (null != id && id > 0l) {
             WaterMeter meter = this.findById(id);
             if (meter == null) {
-                return InvokeResult.failure("更新失败单位, 该单位不存在");
+                return InvokeResult.failure("更新失败, 该水表不存在");
             }
             meter = setProp(meter, companyId, innerCode, lineNum, meterNum, watersType, waterUseType, meterAttr, chargeType, billingCycle);
             meter.update();
         } else {
             if (this.hasExist(meterNum)) {
-                return InvokeResult.failure("单位名称或编号已存在");
+                return InvokeResult.failure("水表编号已存在");
             } else {
                 WaterMeter meter = new WaterMeter();
                 meter = setProp(meter, companyId, innerCode, lineNum, meterNum, watersType, waterUseType, meterAttr, chargeType, billingCycle);

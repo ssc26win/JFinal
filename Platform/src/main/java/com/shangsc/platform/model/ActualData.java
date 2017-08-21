@@ -18,7 +18,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		if (null != id && id > 0l) {
 			ActualData actualData = this.findById(id);
 			if (actualData == null) {
-				return InvokeResult.failure("更新失败单位, 该单位不存在");
+				return InvokeResult.failure("更新失败, 该记录不存在");
 			}
 			actualData = setProp(actualData, companyId, innerCode, lineNum, meterNum, watersType, alarm, netWater, state, voltage);
 			actualData.update();

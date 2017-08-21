@@ -38,7 +38,7 @@ public class Well extends BaseWell<Well> {
 		if (null != id && id > 0l) {
 			Well well = this.findById(id);
 			if (well == null) {
-				return InvokeResult.failure("更新失败单位, 该单位不存在");
+				return InvokeResult.failure("更新失败, 该水井不存在");
 			}
 			well = setProp(well, companyId, innerCode, name, wellNum, township, village, address, wellDepth, groundDepth, oneselfWell,
 					innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
@@ -46,7 +46,7 @@ public class Well extends BaseWell<Well> {
 			well.update();
 		} else {
 			if (this.hasExist(wellNum)) {
-				return InvokeResult.failure("单位名称或编号已存在");
+				return InvokeResult.failure("水井编号已存在");
 			} else {
 				Well well = new Well();
 				well = setProp(well, companyId, innerCode, name, wellNum, township, village, address, wellDepth, groundDepth, oneselfWell,

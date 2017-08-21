@@ -1,19 +1,20 @@
 package com.shangsc.platform.controller.basic;
 
+import com.google.common.collect.Maps;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.upload.UploadFile;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
-import com.shangsc.platform.core.util.CommonUtils;
-import com.shangsc.platform.core.util.IWebUtils;
-import com.shangsc.platform.core.util.JqGridModelUtils;
+import com.shangsc.platform.core.util.*;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Ad;
 import com.shangsc.platform.model.SysUser;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.io.File;
+import java.util.*;
 
 /**
  * @Author ssc
@@ -65,5 +66,24 @@ public class AdController extends BaseController {
         Long id = this.getParaToLong("id");
         InvokeResult result = Ad.dao.deleteData(id);
         this.renderJson(result);
+    }
+
+    @RequiresPermissions(value={"/basic/ad"})
+    public void uploadImg() {
+        String dataStr= DateUtils.format(new Date(), "yyyyMMddHHmm");
+        List<UploadFile> flist = this.getFiles("/temp", 1024*1024*50);
+        Map<String,Object> data= Maps.newHashMap();
+        if(flist.size()>0){
+            UploadFile uf=flist.get(0);
+            String status_url= PropKit.get("static_url");
+            String fileUrl="ad_img/"+dataStr+"/"+uf.getFileName();
+            String newFile=PropKit.get("uploadPath")+fileUrl;
+            FileUtils.mkdir(newFile, false);
+            FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);
+            uf.getFile().delete();
+            data.put("staticUrl",status_url);
+            data.put("fileUrl",fileUrl);
+            renderJson(data);
+        }
     }
 }

@@ -3,7 +3,7 @@
 					<a href="javascript:;" class="navbar-brand">
 						<small>
 							<i class="fa fa-leaf"></i>
-                            远传水表管理系统
+                            水表管理系统
 						</small>
 					</a>
 				</div>
