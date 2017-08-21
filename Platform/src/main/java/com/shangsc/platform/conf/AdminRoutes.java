@@ -16,13 +16,14 @@
 package com.shangsc.platform.conf;
 
 import com.jfinal.config.Routes;
-import com.shangsc.platform.controller.ActualController;
 import com.shangsc.platform.controller.ImageController;
 import com.shangsc.platform.controller.IndexController;
 import com.shangsc.platform.controller.app.AppVersionController;
+import com.shangsc.platform.controller.basic.AdController;
 import com.shangsc.platform.controller.basic.CompanyController;
 import com.shangsc.platform.controller.basic.MeterController;
 import com.shangsc.platform.controller.basic.WellController;
+import com.shangsc.platform.controller.statis.ActualController;
 import com.shangsc.platform.controller.statis.StatisController;
 import com.shangsc.platform.controller.sys.*;
 
@@ -44,17 +45,19 @@ public class AdminRoutes extends Routes{
 		add("/app", AppVersionController.class,"/WEB-INF/view/app");
 		add("/image", ImageController.class,"/WEB-INF/view/image");
 
-        add("/basic/actual", ActualController.class,"/WEB-INF/view/basic");
+        add("/basic/company", CompanyController.class, "/WEB-INF/view/basic");
+        add("/basic/meter", MeterController.class, "/WEB-INF/view/basic");
+        add("/basic/well", WellController.class, "/WEB-INF/view/basic");
+        add("/basic/waterindex", CompanyController.class, "/WEB-INF/view/basic");
 
-        add("/basic/company", CompanyController.class,"/WEB-INF/view/basic");
-        add("/basic/meter", MeterController.class,"/WEB-INF/view/basic");
-        add("/basic/well", WellController.class,"/WEB-INF/view/basic");
-        add("/basic/waterindex", CompanyController.class,"/WEB-INF/view/basic");
+		add("/basic/ad", AdController.class, "/WEB-INF/view/basic");
 
-        add("/statis/readnum", StatisController.class,"/WEB-INF/view/statis");
-        add("/statis/daily", StatisController.class,"/WEB-INF/view/statis");
-        add("/statis/month", StatisController.class,"/WEB-INF/view/statis");
-        add("/statis/year", StatisController.class,"/WEB-INF/view/statis");
+		add("/statis/actual", ActualController.class, "/WEB-INF/view/statis");
+
+        add("/statis/readnum", StatisController.class, "/WEB-INF/view/statis");
+        add("/statis/daily", StatisController.class, "/WEB-INF/view/statis");
+        add("/statis/month", StatisController.class, "/WEB-INF/view/statis");
+        add("/statis/year", StatisController.class, "/WEB-INF/view/statis");
 	}
 
 }

@@ -33,116 +33,116 @@ public abstract class BaseWaterIndex<M extends BaseWaterIndex<M>> extends BaseMo
 		return get("inner_code");
 	}
 
-	public void setWaterUse(String waterUse) {
-		set("water_use", waterUse);
+	public void setWaterUseType(String waterUseType) {
+		set("water_use_type", waterUseType);
 	}
 
-	public String getWaterUse() {
-		return get("water_use");
+	public String getWaterUseType() {
+		return get("water_use_type");
 	}
 
-	public void setWaterIndex(Integer waterIndex) {
+	public void setWaterIndex(java.math.BigDecimal waterIndex) {
 		set("water_index", waterIndex);
 	}
 
-	public Integer getWaterIndex() {
+	public java.math.BigDecimal getWaterIndex() {
 		return get("water_index");
 	}
 
-	public void setJanuary(Integer January) {
-		set("January", January);
+	public void setJanuary(java.math.BigDecimal january) {
+		set("january", january);
 	}
 
-	public Integer getJanuary() {
-		return get("January");
+	public java.math.BigDecimal getJanuary() {
+		return get("january");
 	}
 
-	public void setFebruary(Integer February) {
-		set("February", February);
+	public void setFebruary(java.math.BigDecimal february) {
+		set("february", february);
 	}
 
-	public Integer getFebruary() {
-		return get("February");
+	public java.math.BigDecimal getFebruary() {
+		return get("february");
 	}
 
-	public void setMarch(Integer March) {
-		set("March", March);
+	public void setMarch(java.math.BigDecimal march) {
+		set("march", march);
 	}
 
-	public Integer getMarch() {
-		return get("March");
+	public java.math.BigDecimal getMarch() {
+		return get("march");
 	}
 
-	public void setApril(Integer April) {
-		set("April", April);
+	public void setApril(java.math.BigDecimal april) {
+		set("april", april);
 	}
 
-	public Integer getApril() {
-		return get("April");
+	public java.math.BigDecimal getApril() {
+		return get("april");
 	}
 
-	public void setMay(Integer May) {
-		set("May", May);
+	public void setMay(java.math.BigDecimal may) {
+		set("may", may);
 	}
 
-	public Integer getMay() {
-		return get("May");
+	public java.math.BigDecimal getMay() {
+		return get("may");
 	}
 
-	public void setJune(Integer June) {
-		set("June", June);
+	public void setJune(java.math.BigDecimal june) {
+		set("june", june);
 	}
 
-	public Integer getJune() {
-		return get("June");
+	public java.math.BigDecimal getJune() {
+		return get("june");
 	}
 
-	public void setJuly(Integer July) {
-		set("July", July);
+	public void setJuly(java.math.BigDecimal july) {
+		set("july", july);
 	}
 
-	public Integer getJuly() {
-		return get("July");
+	public java.math.BigDecimal getJuly() {
+		return get("july");
 	}
 
-	public void setAugust(Integer August) {
-		set("August", August);
+	public void setAugust(java.math.BigDecimal august) {
+		set("august", august);
 	}
 
-	public Integer getAugust() {
-		return get("August");
+	public java.math.BigDecimal getAugust() {
+		return get("august");
 	}
 
-	public void setSeptember(Integer September) {
-		set("September", September);
+	public void setSeptember(java.math.BigDecimal september) {
+		set("september", september);
 	}
 
-	public Integer getSeptember() {
-		return get("September");
+	public java.math.BigDecimal getSeptember() {
+		return get("september");
 	}
 
-	public void setOctober(Integer October) {
-		set("October", October);
+	public void setOctober(java.math.BigDecimal october) {
+		set("october", october);
 	}
 
-	public Integer getOctober() {
-		return get("October");
+	public java.math.BigDecimal getOctober() {
+		return get("october");
 	}
 
-	public void setNovember(Integer November) {
-		set("November", November);
+	public void setNovember(java.math.BigDecimal november) {
+		set("november", november);
 	}
 
-	public Integer getNovember() {
-		return get("November");
+	public java.math.BigDecimal getNovember() {
+		return get("november");
 	}
 
-	public void setDecember(Integer December) {
-		set("December", December);
+	public void setDecember(java.math.BigDecimal december) {
+		set("december", december);
 	}
 
-	public Integer getDecember() {
-		return get("December");
+	public java.math.BigDecimal getDecember() {
+		return get("december");
 	}
 
 }

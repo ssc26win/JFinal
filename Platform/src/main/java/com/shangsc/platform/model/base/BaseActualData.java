@@ -41,12 +41,12 @@ public abstract class BaseActualData<M extends BaseActualData<M>> extends BaseMo
 		return get("line_num");
 	}
 
-	public void setMeterId(String meterId) {
-		set("meter_id", meterId);
+	public void setMeterNum(String meterNum) {
+		set("meter_num", meterNum);
 	}
 
-	public String getMeterId() {
-		return get("meter_id");
+	public String getMeterNum() {
+		return get("meter_num");
 	}
 
 	public void setWatersType(Integer watersType) {
@@ -65,11 +65,11 @@ public abstract class BaseActualData<M extends BaseActualData<M>> extends BaseMo
 		return get("alarm");
 	}
 
-	public void setNetWater(Integer netWater) {
+	public void setNetWater(java.math.BigDecimal netWater) {
 		set("net_water", netWater);
 	}
 
-	public Integer getNetWater() {
+	public java.math.BigDecimal getNetWater() {
 		return get("net_water");
 	}
 

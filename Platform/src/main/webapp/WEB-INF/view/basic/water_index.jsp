@@ -96,25 +96,26 @@
         });
 
         $("#grid-table").jqGrid({
-            url:'${context_path}/basic/company/getListData',
+            url:'${context_path}/basic/waterindex/getListData',
             mtype: "GET",
             datatype: "json",
             colModel: [
                 { label: '单位名称', name: 'name', width: 75, sortable:false},
                 { label: '单位编号', name: 'inner_code', width: 45, sortable:false},
-                { label: '所属乡镇或街道', name: 'street', width: 100, sortable:false},
-                { label: '单位地址', name: 'address', width: 100,sortable:false},
-                { label: '用户类型', name: 'customer_type', width: 45, sortable:false},
-                { label: '取水用途', name: 'waterUse_type', width: 45, sortable:false},
-                { label: '联系人', name: 'contact', width: 40, sortable:false},
-                { label: '联系电话', name: 'phone', width: 50, sortable:false},
-                { label: '邮政编码', name: 'postal_code', width: 45, sortable:false},
-                { label: '管水部门', name: 'department', width: 45, sortable:false},
-                { label: '水井数量', name: 'well_count', width: 45, sortable:false},
-                { label: '一级表数量', name: 'first_watermeter_count', width: 45, sortable:false},
-                { label: '远传表数量', name: 'remotemeter_count', width: 45, sortable:false},
-                { label: '节约用水型单位类型', name: 'unit_type', width: 80, sortable:false},
-                { label: '创建时间', name: 'create_time', width: 100, sortable:true}
+                { label: '取水用途', name: 'water_use_type', width: 100, sortable:false},
+                { label: '年用水指标', name: 'water_index', width: 100,sortable:false},
+                { label: '一月', name: 'january', width: 45, sortable:false},
+                { label: '二月', name: 'february', width: 45, sortable:false},
+                { label: '三月', name: 'march', width: 40, sortable:false},
+                { label: '四月', name: 'april', width: 50, sortable:false},
+                { label: '五月', name: 'may', width: 45, sortable:false},
+                { label: '六月', name: 'june', width: 45, sortable:false},
+                { label: '七月', name: 'july', width: 45, sortable:false},
+                { label: '八月', name: 'august', width: 45, sortable:false},
+                { label: '九月', name: 'september', width: 45, sortable:false},
+                { label: '十月', name: 'october', width: 80, sortable:false},
+                { label: '十一月', name: 'november', width: 100, sortable:true},
+                { label: '十一月', name: 'december', width: 100, sortable:true}
             ],
             viewrecords: true,
             height: 280,
@@ -148,12 +149,12 @@
         });
         $("#btn-add").click(function(){//添加页面
             parent.layer.open({
-                title:'添加新单位',
+                title:'添加',
                 type: 2,
                 area: ['770px', '430px'],
                 fix: false, //不固定
                 maxmin: true,
-                content: '${context_path}/basic/company/add'
+                content: '${context_path}/basic/waterindex/add'
             });
         });
         $("#btn-deleteData").click(function(){
@@ -178,7 +179,7 @@
                     area: ['770px', '430px'],
                     fix: false, //不固定
                     maxmin: true,
-                    content: '${context_path}/basic/company/add?id='+rid
+                    content: '${context_path}/basic/waterindex/add?id='+rid
                 });
             }
         });
@@ -234,7 +235,7 @@
         var submitData = {
             "ids" : getSelectedRows()
         };
-        $.post("${context_path}/basic/company/delete", submitData,function(data) {
+        $.post("${context_path}/basic/waterindex/delete", submitData,function(data) {
             if (data.code == 0) {
                 layer.msg("操作成功", {
                     icon: 1,

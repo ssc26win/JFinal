@@ -17,12 +17,12 @@ public abstract class BaseWell<M extends BaseWell<M>> extends BaseModel<M> imple
 		return get("id");
 	}
 
-	public void setWellCode(String wellCode) {
-		set("well_code", wellCode);
+	public void setWellNum(String wellNum) {
+		set("well_num", wellNum);
 	}
 
-	public String getWellCode() {
-		return get("well_code");
+	public String getWellNum() {
+		return get("well_num");
 	}
 
 	public void setName(String name) {
@@ -81,19 +81,19 @@ public abstract class BaseWell<M extends BaseWell<M>> extends BaseModel<M> imple
 		return get("start_date");
 	}
 
-	public void setWellDepth(Integer wellDepth) {
+	public void setWellDepth(java.math.BigDecimal wellDepth) {
 		set("well_depth", wellDepth);
 	}
 
-	public Integer getWellDepth() {
+	public java.math.BigDecimal getWellDepth() {
 		return get("well_depth");
 	}
 
-	public void setGroundDepth(Integer groundDepth) {
+	public void setGroundDepth(java.math.BigDecimal groundDepth) {
 		set("ground_depth", groundDepth);
 	}
 
-	public Integer getGroundDepth() {
+	public java.math.BigDecimal getGroundDepth() {
 		return get("ground_depth");
 	}
 
@@ -105,11 +105,11 @@ public abstract class BaseWell<M extends BaseWell<M>> extends BaseModel<M> imple
 		return get("oneself_well");
 	}
 
-	public void setInnerDiameter(Integer innerDiameter) {
+	public void setInnerDiameter(java.math.BigDecimal innerDiameter) {
 		set("inner_diameter", innerDiameter);
 	}
 
-	public Integer getInnerDiameter() {
+	public java.math.BigDecimal getInnerDiameter() {
 		return get("inner_diameter");
 	}
 
@@ -193,12 +193,12 @@ public abstract class BaseWell<M extends BaseWell<M>> extends BaseModel<M> imple
 		return get("name_code");
 	}
 
-	public void setWaterType(Integer waterType) {
-		set("water_type", waterType);
+	public void setWatersType(Integer watersType) {
+		set("waters_type", watersType);
 	}
 
-	public Integer getWaterType() {
-		return get("water_type");
+	public Integer getWatersType() {
+		return get("waters_type");
 	}
 
 	public void setUseEfficiency(String useEfficiency) {
@@ -233,11 +233,11 @@ public abstract class BaseWell<M extends BaseWell<M>> extends BaseModel<M> imple
 		return get("licence_code");
 	}
 
-	public void setWaterWithdrawals(Integer waterWithdrawals) {
+	public void setWaterWithdrawals(java.math.BigDecimal waterWithdrawals) {
 		set("water_withdrawals", waterWithdrawals);
 	}
 
-	public Integer getWaterWithdrawals() {
+	public java.math.BigDecimal getWaterWithdrawals() {
 		return get("water_withdrawals");
 	}
 

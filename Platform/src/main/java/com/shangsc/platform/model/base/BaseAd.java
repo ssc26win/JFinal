@@ -41,6 +41,14 @@ public abstract class BaseAd<M extends BaseAd<M>> extends BaseModel<M> implement
 		return get("img_url");
 	}
 
+	public void setStatus(Integer status) {
+		set("status", status);
+	}
+
+	public Integer getStatus() {
+		return get("status");
+	}
+
 	public void setMemo(String memo) {
 		set("memo", memo);
 	}

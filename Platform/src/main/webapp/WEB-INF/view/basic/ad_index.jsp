@@ -56,7 +56,7 @@
               <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
               <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
               <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
-              <jc:button className="btn btn-success" id="btn-exportData" textName="导出"/>
+              <jc:button className="btn btn-success" id="btn-pubilsh" textName="发布"/>
             </div>
           </div>
           <!-- PAGE CONTENT BEGINS -->
@@ -96,20 +96,15 @@
     });
 
     $("#grid-table").jqGrid({
-      url:'${context_path}/basic/actual/getListData',
+      url:'${context_path}/basic/ad/getListData',
       mtype: "GET",
       datatype: "json",
       colModel: [
-        { label: '单位名称', name: 'name', width: 120, sortable:false},
-        { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
-        { label: '路别', name: 'line_num', width: 100, sortable:false},
-        { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
-        { label: '水源类型', name: 'waters_type', width: 45, sortable:false},
-        { label: '告警', name: 'alarm', width: 45, sortable:false},
-        { label: '净用水量', name: 'net_water', width: 40, sortable:false},
-        { label: '状态', name: 'state', width: 50, sortable:false},
-        { label: '抄表时间', name: 'write_time', width: 100, sortable:true},
-        { label: '电池电压', name: 'voltage', width: 100, sortable:true}
+        { label: '标题', name: 'title', width: 100, sortable:false},
+        { label: '内容', name: 'content', width: 150, sortable:false},
+        { label: '图片地址', name: 'img_url', width: 100, sortable:false},
+        { label: '发布状态', name: 'status', width: 100,sortable:false},
+        { label: '创建时间', name: 'create_time', width: 100, sortable:false}
       ],
       viewrecords: true,
       height: 600,
@@ -143,12 +138,12 @@
     });
     $("#btn-add").click(function(){//添加页面
       parent.layer.open({
-        title:'添加新单位',
+        title:'添加广告',
         type: 2,
         area: ['770px', '430px'],
         fix: false, //不固定
         maxmin: true,
-        content: '${context_path}/basic/actual/add'
+        content: '${context_path}/basic/ad/add'
       });
     });
     $("#btn-deleteData").click(function(){
@@ -168,12 +163,12 @@
         });
       }else {
         parent.layer.open({
-          title:'修改单位信息',
+          title:'修改广告信息',
           type: 2,
           area: ['770px', '430px'],
           fix: false, //不固定
           maxmin: true,
-          content: '${context_path}/basic/actual/add?id='+rid
+          content: '${context_path}/basic/ad/add?id='+rid
         });
       }
     });
@@ -229,7 +224,7 @@
     var submitData = {
       "ids" : getSelectedRows()
     };
-    $.post("${context_path}/basic/actual/delete", submitData,function(data) {
+    $.post("${context_path}/basic/ad/delete", submitData,function(data) {
       if (data.code == 0) {
         layer.msg("操作成功", {
           icon: 1,

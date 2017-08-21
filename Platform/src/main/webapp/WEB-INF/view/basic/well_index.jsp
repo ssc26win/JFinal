@@ -96,19 +96,37 @@
         });
 
         $("#grid-table").jqGrid({
-            url:'${context_path}/basic/meter/getListData',
+            url:'${context_path}/basic/well/getListData',
             mtype: "GET",
             datatype: "json",
             colModel: [
                 { label: '单位编号', name: 'inner_code', width: 45, sortable:false},
-                { label: '路别', name: 'line_num', width: 100, sortable:false},
-                { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
-                { label: '水源类型', name: 'waters_type', width: 45, sortable:false},
-                { label: '取水用途', name: 'water_use', width: 150, sortable:false},
-                { label: '水表属性', name: 'meter_attr', width: 40, sortable:false},
-                { label: '收费类型', name: 'charge_type', width: 50, sortable:false},
-                { label: '计费周期', name: 'billing_cycle', width: 45, sortable:false},
-                { label: '注册日期', name: 'regist_date', width: 100, sortable:false}
+                { label: '水井编号', name: 'well_num', width: 100, sortable:false},
+                { label: '水井名称', name: 'name', width: 100,sortable:false},
+                { label: '乡', name: 'township', width: 45, sortable:false},
+                { label: '村', name: 'village', width: 150, sortable:false},
+                { label: '水井地址', name: 'address', width: 40, sortable:false},
+                { label: '成井时间（年）', name: 'start_date', width: 50, sortable:false},
+                { label: '井深（米）', name: 'well_depth', width: 45, sortable:false},
+                { label: '地下水埋深（米）', name: 'ground_depth', width: 100, sortable:false},
+                { label: '是否为单位自备井', name: 'oneself_well', width: 100, sortable:false},
+                { label: '井口井管内径（毫米）', name: 'inner_diameter', width: 100, sortable:false},
+                { label: '井壁管材料', name: 'material', width: 100, sortable:false},
+                { label: '应用状况', name: 'application', width: 100, sortable:false},
+                { label: '是否已配套机电设备', name: 'electromechanics', width: 100, sortable:false},
+                { label: '是否已安装水量计量设施', name: 'calculate_water', width: 100, sortable:false},
+                { label: '水泵型号', name: 'pump_model', width: 100, sortable:false},
+                { label: '水量计量设施类型', name: 'calculate_type', width: 100, sortable:false},
+                { label: '是否为规模以上地下水水源地的水井', name: 'above_scale', width: 100, sortable:false},
+                { label: '所在地貌类型区', name: 'geomorphic_type', width: 100, sortable:false},
+                { label: '所取用地下水的类型', name: 'ground_type', width: 100, sortable:false},
+                { label: '所在水资源三级区名称及编码', name: 'name_code', width: 100, sortable:false},
+                { label: '水源类型', name: 'waters_type', width: 100, sortable:false},
+                { label: '主要取水用途及效益', name: 'use_efficiency', width: 100, sortable:false},
+                { label: '取水量确定方法', name: 'method', width: 100, sortable:false},
+                { label: '是否已办理取水许可证', name: 'licence', width: 100, sortable:false},
+                { label: '取水许可证编号', name: 'licence_code', width: 100, sortable:false},
+                { label: '年许可取水量（万立方米）', name: 'water_withdrawals', width: 100, sortable:false}
             ],
             viewrecords: true,
             height: 280,
@@ -147,7 +165,7 @@
                 area: ['770px', '430px'],
                 fix: false, //不固定
                 maxmin: true,
-                content: '${context_path}/basic/meter/add'
+                content: '${context_path}/basic/well/add'
             });
         });
         $("#btn-deleteData").click(function(){
@@ -172,7 +190,7 @@
                     area: ['770px', '430px'],
                     fix: false, //不固定
                     maxmin: true,
-                    content: '${context_path}/basic/meter/add?id='+rid
+                    content: '${context_path}/basic/well/add?id='+rid
                 });
             }
         });
@@ -228,7 +246,7 @@
         var submitData = {
             "ids" : getSelectedRows()
         };
-        $.post("${context_path}/basic/meter/delete", submitData,function(data) {
+        $.post("${context_path}/basic/well/delete", submitData,function(data) {
             if (data.code == 0) {
                 layer.msg("操作成功", {
                     icon: 1,
