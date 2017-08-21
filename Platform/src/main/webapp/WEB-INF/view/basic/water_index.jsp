@@ -100,22 +100,22 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
-                { label: '单位名称', name: 'name', width: 75, sortable:false},
-                { label: '单位编号', name: 'inner_code', width: 45, sortable:false},
-                { label: '取水用途', name: 'water_use_type', width: 100, sortable:false},
-                { label: '年用水指标', name: 'water_index', width: 100,sortable:false},
-                { label: '一月', name: 'january', width: 45, sortable:false},
-                { label: '二月', name: 'february', width: 45, sortable:false},
-                { label: '三月', name: 'march', width: 40, sortable:false},
-                { label: '四月', name: 'april', width: 50, sortable:false},
-                { label: '五月', name: 'may', width: 45, sortable:false},
-                { label: '六月', name: 'june', width: 45, sortable:false},
-                { label: '七月', name: 'july', width: 45, sortable:false},
-                { label: '八月', name: 'august', width: 45, sortable:false},
-                { label: '九月', name: 'september', width: 45, sortable:false},
-                { label: '十月', name: 'october', width: 80, sortable:false},
-                { label: '十一月', name: 'november', width: 100, sortable:true},
-                { label: '十一月', name: 'december', width: 100, sortable:true}
+                { label: '单位名称', name: 'name', width: 120, sortable:false},
+                { label: '单位编号', name: 'inner_code', width: 120, sortable:false},
+                { label: '取水用途', name: 'water_use_type', width: 120, sortable:false},
+                { label: '年用水指标', name: 'water_index', width: 120,sortable:false},
+                { label: '一月', name: 'january', width: 55, sortable:false},
+                { label: '二月', name: 'february', width: 55, sortable:false},
+                { label: '三月', name: 'march', width: 55, sortable:false},
+                { label: '四月', name: 'april', width: 55, sortable:false},
+                { label: '五月', name: 'may', width: 55, sortable:false},
+                { label: '六月', name: 'june', width: 55, sortable:false},
+                { label: '七月', name: 'july', width: 55, sortable:false},
+                { label: '八月', name: 'august', width: 55, sortable:false},
+                { label: '九月', name: 'september', width: 55, sortable:false},
+                { label: '十月', name: 'october', width: 55, sortable:false},
+                { label: '十一月', name: 'november', width: 55, sortable:true},
+                { label: '十一月', name: 'december', width: 55, sortable:true}
             ],
             viewrecords: true,
             height: 280,
@@ -151,7 +151,7 @@
             parent.layer.open({
                 title:'添加',
                 type: 2,
-                area: ['770px', '430px'],
+                area: ['770px', '630px'],
                 fix: false, //不固定
                 maxmin: true,
                 content: '${context_path}/basic/waterindex/add'
@@ -174,9 +174,9 @@
                 });
             }else {
                 parent.layer.open({
-                    title:'修改单位信息',
+                    title:'修改单位用水指标信息',
                     type: 2,
-                    area: ['770px', '430px'],
+                    area: ['770px', '630px'],
                     fix: false, //不固定
                     maxmin: true,
                     content: '${context_path}/basic/waterindex/add?id='+rid

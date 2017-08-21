@@ -91,7 +91,7 @@
         });
 
         $("#grid-table").jqGrid({
-            url:'${context_path}/basic/company/getListData',
+            url:'${context_path}/statis/daily/getListData',
             mtype: "GET",
             datatype: "json",
             colModel: [
@@ -141,42 +141,6 @@
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });
-        $("#btn-add").click(function(){//添加页面
-            parent.layer.open({
-                title:'添加新单位',
-                type: 2,
-                area: ['770px', '430px'],
-                fix: false, //不固定
-                maxmin: true,
-                content: '${context_path}/basic/company/add'
-            });
-        });
-        $("#btn-deleteData").click(function(){
-            deleteData();
-        });
-        $("#btn-edit").click(function(){//添加页面
-            var rid = getOneSelectedRows();
-            if(rid == -1){
-                layer.msg("请选择一个记录", {
-                    icon: 2,
-                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                });
-            }else if(rid == -2 ){
-                layer.msg("只能选择一个记录", {
-                    icon: 2,
-                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
-                });
-            }else {
-                parent.layer.open({
-                    title:'修改单位信息',
-                    type: 2,
-                    area: ['770px', '430px'],
-                    fix: false, //不固定
-                    maxmin: true,
-                    content: '${context_path}/basic/company/add?id='+rid
-                });
-            }
-        });
     });
     //replace icons with FontAwesome icons like above
     function updatePagerIcons(table) {
@@ -223,24 +187,6 @@
                 return "-2";
             }
         }
-    }
-
-    function deleteData(){
-        var submitData = {
-            "ids" : getSelectedRows()
-        };
-        $.post("${context_path}/basic/company/delete", submitData,function(data) {
-            if (data.code == 0) {
-                layer.msg("操作成功", {
-                    icon: 1,
-                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
-                },function(){
-                    reloadGrid();
-                });
-            }  else{
-                layer.alert("操作失败");
-            }
-        },"json");
     }
 
     function reloadGrid(){

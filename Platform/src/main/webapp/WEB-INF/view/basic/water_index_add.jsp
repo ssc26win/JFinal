@@ -176,13 +176,13 @@
       errorClass: 'help-block',
       focusInvalid: false,
       rules: {
-        name:{
+          innerCode:{
           required: true
         }
       },
       messages: {
-        name:{
-          required: "请输入用户名"
+          innerCode:{
+          required: "请输入单位编号"
         }
       },
       highlight: function (e) {

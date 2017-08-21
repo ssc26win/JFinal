@@ -9,7 +9,6 @@ import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.WaterIndex;
-import com.shangsc.platform.model.WaterMeter;
 import com.shangsc.platform.util.CodeNumUtil;
 
 import java.math.BigDecimal;
@@ -44,7 +43,7 @@ public class WaterIndexController extends BaseController {
     public void add() {
         Integer id = this.getParaToInt("id");
         if(id!=null){
-            this.setAttr("item", WaterMeter.me.findById(id));
+            this.setAttr("item", WaterIndex.me.findById(id));
         }
         this.setAttr("id", id);
         render("water_index_add.jsp");
