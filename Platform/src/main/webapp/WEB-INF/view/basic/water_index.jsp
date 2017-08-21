@@ -118,7 +118,7 @@
                 { label: '十一月', name: 'december', width: 55, sortable:true}
             ],
             viewrecords: true,
-            height: 280,
+            height: 560,
             rowNum: 10,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
@@ -149,7 +149,7 @@
         });
         $("#btn-add").click(function(){//添加页面
             parent.layer.open({
-                title:'添加',
+                title:'添加单位用水指标',
                 type: 2,
                 area: ['770px', '630px'],
                 fix: false, //不固定

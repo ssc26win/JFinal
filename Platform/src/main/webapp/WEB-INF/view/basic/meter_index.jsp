@@ -111,7 +111,7 @@
                 { label: '注册日期', name: 'regist_date', width: 100, sortable:false}
             ],
             viewrecords: true,
-            height: 600,
+            height: 560,
             rowNum: 10,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
@@ -144,7 +144,7 @@
             parent.layer.open({
                 title:'添加新水表',
                 type: 2,
-                area: ['770px', '430px'],
+                area: ['770px', '600px'],
                 fix: false, //不固定
                 maxmin: true,
                 content: '${context_path}/basic/meter/add'
@@ -169,7 +169,7 @@
                 parent.layer.open({
                     title:'修改水表信息',
                     type: 2,
-                    area: ['770px', '430px'],
+                    area: ['770px', '600px'],
                     fix: false, //不固定
                     maxmin: true,
                     content: '${context_path}/basic/meter/add?id='+rid

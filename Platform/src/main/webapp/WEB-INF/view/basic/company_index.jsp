@@ -150,7 +150,7 @@
             parent.layer.open({
                 title:'添加新单位',
                 type: 2,
-                area: ['770px', '430px'],
+                area: ['770px', '730px'],
                 fix: false, //不固定
                 maxmin: true,
                 content: '${context_path}/basic/company/add'
@@ -175,7 +175,7 @@
                 parent.layer.open({
                     title:'修改单位信息',
                     type: 2,
-                    area: ['770px', '430px'],
+                    area: ['770px', '730px'],
                     fix: false, //不固定
                     maxmin: true,
                     content: '${context_path}/basic/company/add?id='+rid
