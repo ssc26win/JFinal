@@ -19,12 +19,8 @@ import com.jfinal.config.Routes;
 import com.shangsc.platform.controller.ImageController;
 import com.shangsc.platform.controller.IndexController;
 import com.shangsc.platform.controller.app.AppVersionController;
-import com.shangsc.platform.controller.basic.AdController;
-import com.shangsc.platform.controller.basic.CompanyController;
-import com.shangsc.platform.controller.basic.MeterController;
-import com.shangsc.platform.controller.basic.WellController;
-import com.shangsc.platform.controller.statis.ActualController;
-import com.shangsc.platform.controller.statis.StatisController;
+import com.shangsc.platform.controller.basic.*;
+import com.shangsc.platform.controller.statis.*;
 import com.shangsc.platform.controller.sys.*;
 
 /**
@@ -48,16 +44,16 @@ public class AdminRoutes extends Routes{
         add("/basic/company", CompanyController.class, "/WEB-INF/view/basic");
         add("/basic/meter", MeterController.class, "/WEB-INF/view/basic");
         add("/basic/well", WellController.class, "/WEB-INF/view/basic");
-        add("/basic/waterindex", CompanyController.class, "/WEB-INF/view/basic");
+        add("/basic/waterindex", WaterIndexController.class, "/WEB-INF/view/basic");
 
 		add("/basic/ad", AdController.class, "/WEB-INF/view/basic");
 
 		add("/statis/actual", ActualController.class, "/WEB-INF/view/statis");
 
-        add("/statis/readnum", StatisController.class, "/WEB-INF/view/statis");
-        add("/statis/daily", StatisController.class, "/WEB-INF/view/statis");
-        add("/statis/month", StatisController.class, "/WEB-INF/view/statis");
-        add("/statis/year", StatisController.class, "/WEB-INF/view/statis");
+        add("/statis/readnum", ReadnumStatisController.class, "/WEB-INF/view/statis");
+        add("/statis/daily", DailyStatisController.class, "/WEB-INF/view/statis");
+        add("/statis/month", MonthStatisController.class, "/WEB-INF/view/statis");
+        add("/statis/year", YearStatisController.class, "/WEB-INF/view/statis");
 	}
 
 }

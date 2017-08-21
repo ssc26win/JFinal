@@ -100,7 +100,7 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
-                { label: '单位名称', name: 'name', width: 75, sortable:false},
+                { label: '单位名称', name: 'name', width: 100, sortable:false},
                 { label: '单位编号', name: 'inner_code', width: 45, sortable:false},
                 { label: '所属乡镇或街道', name: 'street', width: 100, sortable:false},
                 { label: '单位地址', name: 'address', width: 100,sortable:false},
@@ -114,10 +114,10 @@
                 { label: '一级表数量', name: 'first_watermeter_count', width: 45, sortable:false},
                 { label: '远传表数量', name: 'remotemeter_count', width: 45, sortable:false},
                 { label: '节约用水型单位类型', name: 'unit_type', width: 80, sortable:false},
-                { label: '创建时间', name: 'create_time', width: 100, sortable:true}
+                { label: '创建时间', name: 'create_time', width: 80, sortable:true}
             ],
             viewrecords: true,
-            height: 600,
+            height: 560,
             rowNum: 10,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色

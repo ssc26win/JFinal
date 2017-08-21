@@ -6,9 +6,11 @@ import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Ad;
+import com.shangsc.platform.model.SysUser;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -48,12 +50,13 @@ public class AdController extends BaseController {
 
     @RequiresPermissions(value={"/basic/ad"})
     public void save(){
+        SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
         Long id = this.getParaToLong("id");
         String title = this.getPara("title");
         String content = this.getPara("content");
         String imgUrl = this.getPara("imgUrl");
         Integer status = this.getParaToInt("status");
-        InvokeResult result = Ad.dao.save(id, title, content, imgUrl, status);
+        InvokeResult result = Ad.dao.save(id, title, content, imgUrl, status, sysUser.getName());
         this.renderJson(result);
     }
 

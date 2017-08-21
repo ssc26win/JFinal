@@ -127,7 +127,7 @@
         var $btn = $("#submit-btn");
         if($btn.hasClass("disabled")) return;
         var postData=$("#validation-form").serializeJson();
-        $.post("${context_path}/basic/well/save" ,postData,
+        $.post("${context_path}/basic/ad/save" ,postData,
                 function(data){
                   if(data.code==0){
                     parent.reloadGrid(); //重新载入
