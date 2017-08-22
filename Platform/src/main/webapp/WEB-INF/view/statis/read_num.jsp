@@ -31,20 +31,20 @@
                         <div class="widget-body">
                             <div class="widget-main">
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-8">
+                                    <div class="col-xs-12 col-sm-5">
                                         <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <i class="ace-icon fa fa-check"></i>
-                                                </span>
-                                            <input type="text" id="name" name="name" class="form-control search-query" placeholder="请输入关键字" />
+                                            日期时间:
+                                            <input type="text" id="startTime" name="startTime" class="form_datetime"/>~<input type="text" id="endTime" name="endTime" class="form_datetime"/>
+                                            <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
+                                            <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="btn_search" class="btn btn-purple btn-sm">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                                         搜索
                                                     </button>
-                                                     <button type="button" id="exportData" class="btn btn-success btn-sm" style="margin-left:10px;">
-                                                         导出
-                                                     </button>
+                                                    <button type="button" id="exportData" class="btn btn-success btn-sm" style="margin-left:10px;">
+                                                        导出
+                                                    </button>
                                                 </span>
                                         </div>
                                     </div>
@@ -95,21 +95,15 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
-                { label: '单位名称', name: 'name', width: 75, sortable:false},
-                { label: '单位编号', name: 'inner_code', width: 45, sortable:false},
-                { label: '所属乡镇或街道', name: 'street', width: 100, sortable:false},
-                { label: '单位地址', name: 'address', width: 100,sortable:false},
-                { label: '用户类型', name: 'customer_type', width: 45, sortable:false},
-                { label: '取水用途', name: 'waterUse_type', width: 45, sortable:false},
-                { label: '联系人', name: 'contact', width: 40, sortable:false},
-                { label: '联系电话', name: 'phone', width: 50, sortable:false},
-                { label: '邮政编码', name: 'postal_code', width: 45, sortable:false},
-                { label: '管水部门', name: 'department', width: 45, sortable:false},
-                { label: '水井数量', name: 'well_count', width: 45, sortable:false},
-                { label: '一级表数量', name: 'first_watermeter_count', width: 45, sortable:false},
-                { label: '远传表数量', name: 'remotemeter_count', width: 45, sortable:false},
-                { label: '节约用水型单位类型', name: 'unit_type', width: 80, sortable:false},
-                { label: '创建时间', name: 'create_time', width: 100, sortable:true}
+                { label: '单位名称', name: 'name', width: 120, sortable:false},
+                { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
+                { label: '路别', name: 'line_num', width: 100, sortable:false},
+                { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
+                { label: '水源类型', name: 'waters_type', width: 45, sortable:false},
+                { label: '水表属性', name: 'alarm', width: 45, sortable:false},
+                { label: '查询时间', name: 'write_time', width: 100, sortable:true},
+                { label: '水表读数', name: 'read_num', width: 80, sortable:false},
+                { label: '单位地址', name: 'address', width: 100,sortable:false}
             ],
             viewrecords: true,
             height: 560,
@@ -193,6 +187,123 @@
         $("#grid-table").trigger("reloadGrid"); //重新载入
     }
 </script>
-
+<script type="text/javascript">
+    $(function () {
+        $(".form_datetime").datetimepicker({
+            format: 'YYYY-MM-DD hh:mm:ss',
+            locale: moment.locale('zh-cn', {
+                months: '一月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月'.split('_'),
+                monthsShort: '1月_2月_3月_4月_5月_6月_7月_8月_9月_10月_11月_12月'.split('_'),
+                weekdays: '星期日_星期一_星期二_星期三_星期四_星期五_星期六'.split('_'),
+                weekdaysShort: '周日_周一_周二_周三_周四_周五_周六'.split('_'),
+                weekdaysMin: '日_一_二_三_四_五_六'.split('_'),
+                longDateFormat: {
+                    LT: 'Ah点mm分',
+                    LTS: 'Ah点m分s秒',
+                    L: 'YYYY-MM-DD',
+                    LL: 'YYYY年MMMD日',
+                    LLL: 'YYYY年MMMD日Ah点mm分',
+                    LLLL: 'YYYY年MMMD日ddddAh点mm分',
+                    l: 'YYYY-MM-DD',
+                    ll: 'YYYY年MMMD日',
+                    lll: 'YYYY年MMMD日Ah点mm分',
+                    llll: 'YYYY年MMMD日ddddAh点mm分'
+                },
+                meridiemParse: /凌晨|早上|上午|中午|下午|晚上/,
+                meridiemHour: function (h, meridiem) {
+                    let hour = h;
+                    if (hour === 12) {
+                        hour = 0;
+                    }
+                    if (meridiem === '凌晨' || meridiem === '早上' ||
+                            meridiem === '上午') {
+                        return hour;
+                    } else if (meridiem === '下午' || meridiem === '晚上') {
+                        return hour + 12;
+                    } else {
+                        // '中午'
+                        return hour >= 11 ? hour : hour + 12;
+                    }
+                },
+                meridiem: function (hour, minute, isLower) {
+                    const hm = hour * 100 + minute;
+                    if (hm < 600) {
+                        return '凌晨';
+                    } else if (hm < 900) {
+                        return '早上';
+                    } else if (hm < 1130) {
+                        return '上午';
+                    } else if (hm < 1230) {
+                        return '中午';
+                    } else if (hm < 1800) {
+                        return '下午';
+                    } else {
+                        return '晚上';
+                    }
+                },
+                calendar: {
+                    sameDay: function () {
+                        return this.minutes() === 0 ? '[今天]Ah[点整]' : '[今天]LT';
+                    },
+                    nextDay: function () {
+                        return this.minutes() === 0 ? '[明天]Ah[点整]' : '[明天]LT';
+                    },
+                    lastDay: function () {
+                        return this.minutes() === 0 ? '[昨天]Ah[点整]' : '[昨天]LT';
+                    },
+                    nextWeek: function () {
+                        let startOfWeek, prefix;
+                        startOfWeek = moment().startOf('week');
+                        prefix = this.diff(startOfWeek, 'days') >= 7 ? '[下]' : '[本]';
+                        return this.minutes() === 0 ? prefix + 'dddAh点整' : prefix + 'dddAh点mm';
+                    },
+                    lastWeek: function () {
+                        let startOfWeek, prefix;
+                        startOfWeek = moment().startOf('week');
+                        prefix = this.unix() < startOfWeek.unix() ? '[上]' : '[本]';
+                        return this.minutes() === 0 ? prefix + 'dddAh点整' : prefix + 'dddAh点mm';
+                    },
+                    sameElse: 'LL'
+                },
+                ordinalParse: /\d{1,2}(日|月|周)/,
+                ordinal: function (number, period) {
+                    switch (period) {
+                        case 'd':
+                        case 'D':
+                        case 'DDD':
+                            return number + '日';
+                        case 'M':
+                            return number + '月';
+                        case 'w':
+                        case 'W':
+                            return number + '周';
+                        default:
+                            return number;
+                    }
+                },
+                relativeTime: {
+                    future: '%s内',
+                    past: '%s前',
+                    s: '几秒',
+                    m: '1 分钟',
+                    mm: '%d 分钟',
+                    h: '1 小时',
+                    hh: '%d 小时',
+                    d: '1 天',
+                    dd: '%d 天',
+                    M: '1 个月',
+                    MM: '%d 个月',
+                    y: '1 年',
+                    yy: '%d 年'
+                },
+                week: {
+                    // GB/T 7408-1994《数据元和交换格式·信息交换·日期和时间表示法》与ISO 8601:1988等效
+                    dow: 1, // Monday is the first day of the week.
+                    doy: 4  // The week that contains Jan 4th is the first week of the year.
+                }
+            })
+        });
+    });
+</script>
 </body>
 </html>

@@ -57,7 +57,7 @@ public class VerifyCodeUtils{
 	 * @param outputFile
 	 * @param verifySize
 	 * @return
-	 * @throws IOException
+	 * @throws java.io.IOException
 	 */
 	public static String outputVerifyImage(int w, int h, File outputFile, int verifySize) throws IOException{
 		String verifyCode = generateVerifyCode(verifySize);
@@ -72,7 +72,7 @@ public class VerifyCodeUtils{
 	 * @param os
 	 * @param verifySize
 	 * @return
-	 * @throws IOException
+	 * @throws java.io.IOException
 	 */
 	public static String outputVerifyImage(int w, int h, OutputStream os, int verifySize) throws IOException{
 		String verifyCode = generateVerifyCode(verifySize);
@@ -86,7 +86,7 @@ public class VerifyCodeUtils{
 	 * @param h
 	 * @param outputFile
 	 * @param code
-	 * @throws IOException
+	 * @throws java.io.IOException
 	 */
 	public static void outputImage(int w, int h, File outputFile, String code) throws IOException{
 		if(outputFile == null){
@@ -112,7 +112,7 @@ public class VerifyCodeUtils{
 	 * @param h
 	 * @param os
 	 * @param code
-	 * @throws IOException
+	 * @throws java.io.IOException
 	 */
 	public static void outputImage(int w, int h, OutputStream os, String code) throws IOException{
 		int verifySize = code.length();

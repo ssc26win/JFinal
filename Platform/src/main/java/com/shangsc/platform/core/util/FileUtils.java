@@ -324,7 +324,7 @@ public class FileUtils
      * @since  0.1
      */
     public static File[] listAll(File file,
-            javax.swing.filechooser.FileFilter filter)
+            FileFilter filter)
     {
         ArrayList<File> list = new ArrayList<File>();
         File[] files;
@@ -342,7 +342,7 @@ public class FileUtils
      * @param file 目录
      */
     private static void list(ArrayList<File> list, File file,
-            javax.swing.filechooser.FileFilter filter)
+            FileFilter filter)
     {
         if (filter.accept(file))
         {
@@ -364,7 +364,7 @@ public class FileUtils
      * 返回文件的URL地址。
      * @param file 文件
      * @return 文件对应的的URL地址
-     * @throws MalformedURLException
+     * @throws java.net.MalformedURLException
      * @since  0.4
      * @deprecated 在实现的时候没有注意到File类本身带一个toURL方法将文件路径转换为URL。
      *             请使用File.toURL方法。
@@ -836,7 +836,7 @@ public class FileUtils
      * 写文件到本地 
      * @param in 
      * @param fileName 
-     * @throws IOException 
+     * @throws java.io.IOException
      */  
     public static void copyFile(InputStream in,String fileName,String basePath) throws IOException{
     	FileUtils.mkdir(basePath  

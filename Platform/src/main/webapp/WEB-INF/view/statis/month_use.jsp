@@ -31,20 +31,20 @@
                         <div class="widget-body">
                             <div class="widget-main">
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-8">
+                                    <div class="col-xs-12 col-sm-5">
                                         <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <i class="ace-icon fa fa-check"></i>
-                                                </span>
-                                            <input type="text" id="name" name="name" class="form-control search-query" placeholder="请输入关键字" />
+                                            日期时间:
+                                            <input type="text" id="startTime" name="startTime" class="form_datetime"/>~<input type="text" id="endTime" name="endTime" class="form_datetime"/>
+                                            <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
+                                            <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="btn_search" class="btn btn-purple btn-sm">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                                         搜索
                                                     </button>
-                                                     <button type="button" id="exportData" class="btn btn-success btn-sm" style="margin-left:10px;">
-                                                         导出
-                                                     </button>
+                                                    <button type="button" id="exportData" class="btn btn-success btn-sm" style="margin-left:10px;">
+                                                        导出
+                                                    </button>
                                                 </span>
                                         </div>
                                     </div>
@@ -95,21 +95,16 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
-                { label: '单位名称', name: 'name', width: 75, sortable:false},
-                { label: '单位编号', name: 'inner_code', width: 45, sortable:false},
-                { label: '所属乡镇或街道', name: 'street', width: 100, sortable:false},
-                { label: '单位地址', name: 'address', width: 100,sortable:false},
-                { label: '用户类型', name: 'customer_type', width: 45, sortable:false},
-                { label: '取水用途', name: 'waterUse_type', width: 45, sortable:false},
-                { label: '联系人', name: 'contact', width: 40, sortable:false},
-                { label: '联系电话', name: 'phone', width: 50, sortable:false},
-                { label: '邮政编码', name: 'postal_code', width: 45, sortable:false},
-                { label: '管水部门', name: 'department', width: 45, sortable:false},
-                { label: '水井数量', name: 'well_count', width: 45, sortable:false},
-                { label: '一级表数量', name: 'first_watermeter_count', width: 45, sortable:false},
-                { label: '远传表数量', name: 'remotemeter_count', width: 45, sortable:false},
-                { label: '节约用水型单位类型', name: 'unit_type', width: 80, sortable:false},
-                { label: '创建时间', name: 'create_time', width: 100, sortable:true}
+                { label: '单位名称', name: 'name', width: 120, sortable:false},
+                { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
+                { label: '路别', name: 'line_num', width: 100, sortable:false},
+                { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
+                { label: '水源类型', name: 'waters_type', width: 45, sortable:false},
+                { label: '水表属性', name: 'alarm', width: 45, sortable:false},
+                { label: '查询月份', name: 'find_month', width: 100, sortable:true},
+                { label: '日用水量', name: 'month_num', width: 80, sortable:false},
+                { label: '计费周期', name: 'billing_cycle', width: 80, sortable:false},
+                { label: '单位地址', name: 'address', width: 100,sortable:false}
             ],
             viewrecords: true,
             height: 560,

@@ -52,7 +52,7 @@ public class DateUtils {
      * @param smdate 较小的时间 
      * @param bdate  较大的时间 
      * @return 相差天数 
-     * @throws ParseException  
+     * @throws java.text.ParseException
      */    
     public static int daysBetween(Date smdate,Date bdate) throws ParseException    
     {    
@@ -74,7 +74,7 @@ public class DateUtils {
      * @param smdate yyyy-MM-dd
      * @param bdate yyyy-MM-dd
      * @return
-     * @throws ParseException
+     * @throws java.text.ParseException
      */
     public static int daysBetween(String smdate,String bdate) throws ParseException    
     {    
@@ -112,7 +112,7 @@ public class DateUtils {
 	 */
 	public static String getNowTime() {
 		GregorianCalendar gcNow = new GregorianCalendar();
-		java.util.Date dNow = gcNow.getTime();
+		Date dNow = gcNow.getTime();
 		DateFormat df = DateFormat.getTimeInstance(DateFormat.MEDIUM,
 				Locale.SIMPLIFIED_CHINESE);
 		return df.format(dNow);   
@@ -165,7 +165,7 @@ public class DateUtils {
 	 */
 	public static String getNowDate() {
 		GregorianCalendar gcNow = new GregorianCalendar();
-		java.util.Date dNow = gcNow.getTime();
+		Date dNow = gcNow.getTime();
 		DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM,
 				Locale.SIMPLIFIED_CHINESE);
 		return df.format(dNow);
@@ -181,7 +181,7 @@ public class DateUtils {
 	 */
 	public static String getNowDateTime() {
 		GregorianCalendar gcNow = new GregorianCalendar();
-		java.util.Date dNow = gcNow.getTime();
+		Date dNow = gcNow.getTime();
 		DateFormat df = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
 				DateFormat.MEDIUM, Locale.SIMPLIFIED_CHINESE);
 		return df.format(dNow);
@@ -325,7 +325,7 @@ public class DateUtils {
 	 *            long
 	 * @return String yyyy-MM-dd HH:mm:ss 格式
 	 */
-	public static String formatDate(java.util.Date date) {
+	public static String formatDate(Date date) {
 		if (date == null)
 			return "";
 		else
@@ -339,7 +339,7 @@ public class DateUtils {
 	 *            long
 	 * @return String 2005-6-17 格式
 	 */
-	public static String formatSDate(java.util.Date date) {
+	public static String formatSDate(Date date) {
 		if (date == null)
 			return "";
 		else {
@@ -387,7 +387,7 @@ public class DateUtils {
 	 * @return String 2005-5-12格式的日期字串
 	 */
 	public static String dateAdd(String interval, int number,
-			java.util.Date date) {
+			Date date) {
 		String strTmp = "";
 		GregorianCalendar gc = new GregorianCalendar();
 		gc.setTime(date);
@@ -427,7 +427,7 @@ public class DateUtils {
 	 *            java.util.Date
 	 * @return int 间隔数
 	 */
-	public static int dateDiff(java.util.Date a, java.util.Date b) {
+	public static int dateDiff(Date a, Date b) {
 		int tempDifference = 0;
 		int difference = 0;
 		Calendar earlier = Calendar.getInstance();

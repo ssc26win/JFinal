@@ -53,8 +53,6 @@
 		<script src="${res_url}ace-1.3.3/assets/js/jquery.maskedinput.js"></script>
 		<script src="${res_url}ace-1.3.3/assets/js/bootstrap-tag.js"></script>
 
-	
-		<script src="${res_url}ace-1.3.3/assets/js/date-time/bootstrap-datepicker.js"></script>
 		<script src="${res_url}ace-1.3.3/assets/js/jqGrid/jquery.jqGrid.src.js"></script>
 		<script src="${res_url}ace-1.3.3/assets/js/jqGrid/i18n/grid.locale-en.js"></script>
 		

@@ -63,7 +63,7 @@ public class SysUser extends BaseSysUser<SysUser>
 	 * @param username
 	 * @param pwd
 	 * @return
-	 * @throws UnsupportedEncodingException 
+	 * @throws java.io.UnsupportedEncodingException
 	 */
 	public InvokeResult login(String username, String pwd,HttpServletResponse response,HttpSession session,String url) {
 		Set<Condition> conditions=new HashSet<Condition>();
