@@ -1,7 +1,11 @@
 package com.shangsc.platform.model;
 
+import com.jfinal.plugin.activerecord.IBean;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
+import com.shangsc.platform.core.model.BaseModel;
+import org.apache.log4j.Logger;
+
+import java.util.Date;
 
 /**
  * @Author ssc
@@ -9,16 +13,47 @@ import com.jfinal.plugin.activerecord.Record;
  * @Version 1.0.0
  * @Desc
  */
-public class DataStatis {
-    private static final Company company = new Company();
-    private static final ActualData actualData = new ActualData();
+public class DataStatis extends BaseModel implements IBean {
 
-    private static Page<Record> getReadnumStatis(int page, int rows, String keywords, String orderBy) {
+    private Logger logger = Logger.getLogger(getClass());
 
+    public Page<?> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+        logger.info("orderbyStr : " + orderbyStr);
+        String select="select * from";
+        StringBuffer sqlExceptSelect=new StringBuffer("from company c");
+        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+    public void exportReadNumData(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
 
-        Page<Record> recordPage = new Page<Record>();
-        String select = "";
-        return null;
     }
 
+    public Page<?> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+        logger.info("orderbyStr : " + orderbyStr);
+        String select="select * from";
+        StringBuffer sqlExceptSelect=new StringBuffer("from company c");
+        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+    public void exportDailyData(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+
+    }
+
+    public Page<?> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+        logger.info("orderbyStr : " + orderbyStr);
+        String select="select * from";
+        StringBuffer sqlExceptSelect=new StringBuffer("from company c");
+        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+    public void exportMonthData(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+
+    }
+
+    public Page<?> getYearStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+        logger.info("orderbyStr : " + orderbyStr);
+        String select="select * from";
+        StringBuffer sqlExceptSelect=new StringBuffer("from company c");
+        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+    public void exportYearData(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+
+    }
 }

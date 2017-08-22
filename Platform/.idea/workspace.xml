@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3b34f371-a844-450d-ac85-bd2f1e2aa2e2" name="Default" comment="" />
+    <list default="true" id="3b34f371-a844-450d-ac85-bd2f1e2aa2e2" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/DailyStatisController.java" afterPath="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/DailyStatisController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/DataStatis.java" afterPath="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/DataStatis.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/MonthStatisController.java" afterPath="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/MonthStatisController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/ReadnumStatisController.java" afterPath="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/ReadnumStatisController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/YearStatisController.java" afterPath="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/YearStatisController.java" />
+    </list>
     <ignored path="jcbase.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -26,101 +32,108 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DictController.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/sys/DictController.java">
+      <file leaf-file-name="ReadnumStatisController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/ReadnumStatisController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7772194" vertical-offset="2348" max-vertical-offset="3287">
-              <caret line="148" column="0" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="833">
+              <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="50" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="YearStatisController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/YearStatisController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="833">
+              <caret line="33" column="49" selection-start-line="33" selection-start-column="49" selection-end-line="33" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MonthStatisController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/MonthStatisController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="833">
+              <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="50" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DailyStatisController.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/DailyStatisController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
+              <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="51" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DataStatis.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/DataStatis.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.92046785" vertical-offset="46" max-vertical-offset="1105">
+              <caret line="49" column="19" selection-start-line="49" selection-start-column="19" selection-end-line="49" selection-end-column="19" />
               <folding>
-                <element signature="n#!!doc" expanded="true" />
                 <element signature="imports" expanded="true" />
-                <element signature="e#1448#1449#0" expanded="true" />
-                <element signature="e#1479#1480#0" expanded="true" />
-                <element signature="e#3195#3206#0" expanded="true" />
-                <element signature="e#3684#3695#0" expanded="true" />
-                <element signature="e#4580#4609#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DictData.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/DictData.java">
+      <file leaf-file-name="Company.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/Company.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="311" max-vertical-offset="952">
-              <caret line="53" column="24" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="1116" max-vertical-offset="1700">
+              <caret line="99" column="5" selection-start-line="99" selection-start-column="5" selection-end-line="99" selection-end-column="5" />
               <folding>
-                <element signature="e#2261#2277#0" expanded="true" />
+                <element signature="e#390#417#0" expanded="true" />
+                <element signature="e#4138#4154#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CompanyController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/basic/CompanyController.java">
+      <file leaf-file-name="SysUser.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/SysUser.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="1207">
-              <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2306" max-vertical-offset="2890">
+              <caret line="188" column="0" selection-start-line="188" selection-start-column="0" selection-end-line="193" selection-end-column="5" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="company_add.jsp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/view/basic/company_add.jsp">
+      <file leaf-file-name="BaseModel.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/core/model/BaseModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-37.153847" vertical-offset="3505" max-vertical-offset="4675">
-              <caret line="263" column="25" selection-start-line="263" selection-start-column="25" selection-end-line="263" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5168">
+              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="59" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DictType.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/DictType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
+              <caret line="27" column="38" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UserController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/sys/UserController.java">
+      <file leaf-file-name="BaseDictType.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/base/BaseDictType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="765" max-vertical-offset="1428">
-              <caret line="61" column="50" selection-start-line="61" selection-start-column="50" selection-end-line="61" selection-end-column="50" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ResController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/sys/ResController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="1292">
-              <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LogController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/sys/LogController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="629">
-              <caret line="37" column="13" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="RoleController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/sys/RoleController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="1377">
-              <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ImageController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/ImageController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
-              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
+              <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -151,14 +164,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/base/BaseSysRes.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/base/BaseSysRole.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/base/BaseSysRoleRes.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/base/BaseSysUser.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/base/BaseSysUserRole.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/base/BaseWaterIndex.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/base/BaseWell.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/Company.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/basic/well_add.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/basic/meter_add.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/base/BaseWaterMeter.java" />
@@ -166,10 +176,6 @@
         <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/Ad.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/StatisController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/conf/AdminRoutes.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/ReadnumStatisController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/YearStatisController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/MonthStatisController.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/DailyStatisController.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/sys/res_index.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/sys/role_index.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/sys/user_index.jsp" />
@@ -195,13 +201,20 @@
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/home.jsp" />
         <option value="$PROJECT_DIR$/db/2017-08-22.sql" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/statis/year_use.jsp" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/statis/read_num.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/statis/month_use.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/statis/daily_use.jsp" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/DictData.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/basic/company_add.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/sys/DictController.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/statis/read_num.jsp" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/common/basejs.jsp" />
+        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/Company.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/DataStatis.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/DailyStatisController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/MonthStatisController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/ReadnumStatisController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/YearStatisController.java" />
       </list>
     </option>
   </component>
@@ -611,6 +624,36 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="platform" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Platform" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="platform" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="controller" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -646,6 +689,40 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="sys" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="platform" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Platform" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="platform" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="controller" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="statis" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1267,15 +1344,15 @@
       <workItem from="1503078219723" duration="955000" />
       <workItem from="1503217293090" duration="28130000" />
       <workItem from="1503323524823" duration="14829000" />
-      <workItem from="1503412043288" duration="5963000" />
+      <workItem from="1503412043288" duration="8016000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="73820000" />
+    <option name="totallyTimeSpent" value="75873000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="1" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1290,7 +1367,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30211818" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30211818" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26421404" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1299,15 +1376,15 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32998884" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277592" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23294243" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28731343" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.40691194" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.072463766" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1415,14 +1492,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/view/statis/read_num.jsp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.9230769" vertical-offset="459" max-vertical-offset="5355">
-          <caret line="33" column="67" selection-start-line="33" selection-start-column="67" selection-end-line="33" selection-end-column="67" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/view/statis/month_use.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-1.9615384" vertical-offset="510" max-vertical-offset="3383">
@@ -1493,14 +1562,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/basic/CompanyController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="1207">
-          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/sys/UserController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="1428">
@@ -1557,16 +1618,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/DictData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="311" max-vertical-offset="952">
-          <caret line="53" column="24" selection-start-line="53" selection-start-column="24" selection-end-line="53" selection-end-column="24" />
-          <folding>
-            <element signature="e#2261#2277#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/view/basic/company_add.jsp">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-37.153847" vertical-offset="3505" max-vertical-offset="4675">
@@ -1585,7 +1636,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/sys/DictController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7772194" vertical-offset="2348" max-vertical-offset="3287">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2348" max-vertical-offset="3287">
           <caret line="148" column="0" selection-start-line="148" selection-start-column="0" selection-end-line="148" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
@@ -1595,6 +1646,145 @@
             <element signature="e#3195#3206#0" expanded="true" />
             <element signature="e#3684#3695#0" expanded="true" />
             <element signature="e#4580#4609#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/view/statis/read_num.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-17.538462" vertical-offset="2740" max-vertical-offset="3349">
+          <caret line="188" column="9" selection-start-line="188" selection-start-column="9" selection-end-line="188" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/view/common/footer.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="597">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/view/common/basejs.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-40.423077" vertical-offset="1227" max-vertical-offset="3638">
+          <caret line="134" column="20" selection-start-line="134" selection-start-column="20" selection-end-line="134" selection-end-column="20" />
+          <folding>
+            <marker date="1503418184707" expanded="true" signature="-1:-1" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/basic/CompanyController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="1207">
+          <caret line="53" column="8" selection-start-line="53" selection-start-column="8" selection-end-line="53" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/DictData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="952">
+          <caret line="32" column="29" selection-start-line="32" selection-start-column="22" selection-end-line="32" selection-end-column="29" />
+          <folding>
+            <element signature="e#2261#2277#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/DictType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
+          <caret line="27" column="38" selection-start-line="27" selection-start-column="38" selection-end-line="27" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/base/BaseDictType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="561">
+          <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/SysUser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2306" max-vertical-offset="2890">
+          <caret line="188" column="0" selection-start-line="188" selection-start-column="0" selection-end-line="193" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.m2/repository/com/jfinal/jfinal/3.0/jfinal-3.0.jar!/com/jfinal/plugin/activerecord/Model.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.64" vertical-offset="3376" max-vertical-offset="11322">
+          <caret line="265" column="95" selection-start-line="265" selection-start-column="80" selection-end-line="265" selection-end-column="95" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/Company.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1116" max-vertical-offset="1700">
+          <caret line="99" column="5" selection-start-line="99" selection-start-column="5" selection-end-line="99" selection-end-column="5" />
+          <folding>
+            <element signature="e#390#417#0" expanded="true" />
+            <element signature="e#4138#4154#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/core/model/BaseModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5168">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="59" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/DailyStatisController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="850">
+          <caret line="40" column="0" selection-start-line="40" selection-start-column="0" selection-end-line="51" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/MonthStatisController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="833">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="50" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/ReadnumStatisController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="833">
+          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="50" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/statis/YearStatisController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="833">
+          <caret line="33" column="49" selection-start-line="33" selection-start-column="49" selection-end-line="33" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/shangsc/platform/model/DataStatis.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.92046785" vertical-offset="46" max-vertical-offset="1105">
+          <caret line="49" column="19" selection-start-line="49" selection-start-column="19" selection-end-line="49" selection-end-column="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

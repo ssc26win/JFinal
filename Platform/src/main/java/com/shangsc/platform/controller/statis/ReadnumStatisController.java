@@ -4,6 +4,10 @@ import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.JqGridModelUtils;
+import com.shangsc.platform.model.DataStatis;
+
+import java.io.File;
+import java.util.Date;
 
 /**
  * @Author ssc
@@ -13,6 +17,8 @@ import com.shangsc.platform.core.util.JqGridModelUtils;
  */
 public class ReadnumStatisController extends BaseController {
 
+    private DataStatis dataStatis = new DataStatis();
+
     @RequiresPermissions(value={"/statis/readnum"})
     public void index() {
         render("read_num.jsp");
@@ -20,8 +26,27 @@ public class ReadnumStatisController extends BaseController {
 
     @RequiresPermissions(value={"/statis/readnum"})
     public void getListData() {
-        String keyword = this.getPara("name");
-        Page<?> pageInfo = new Page<Object>();
+        String name = this.getPara("name");
+        String innerCode = this.getPara("innerCode");
+        Date startTime = this.getParaToDate("startTime");
+        Date endTime = this.getParaToDate("endTime");
+
+        Page<?> pageInfo = dataStatis.getReadnumStatis(getPage(), getRows(), getOrderbyStr(),
+                startTime, endTime, name, innerCode);
+
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+    }
+
+    @RequiresPermissions(value={"/statis/readnum"})
+    public void exportData() {
+        String name = this.getPara("name");
+        String innerCode = this.getPara("innerCode");
+        Date startTime = this.getParaToDate("startTime");
+        Date endTime = this.getParaToDate("endTime");
+
+        dataStatis.exportDailyData(getPage(), getRows(), getOrderbyStr(),
+                startTime, endTime, name, innerCode);
+        File file = new File("");
+        this.renderFile(file);
     }
 }

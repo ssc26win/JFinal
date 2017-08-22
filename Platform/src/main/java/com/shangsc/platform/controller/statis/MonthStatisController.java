@@ -4,6 +4,10 @@ import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.JqGridModelUtils;
+import com.shangsc.platform.model.DataStatis;
+
+import java.io.File;
+import java.util.Date;
 
 /**
  * @Author ssc
@@ -13,6 +17,8 @@ import com.shangsc.platform.core.util.JqGridModelUtils;
  */
 public class MonthStatisController extends BaseController {
 
+    private DataStatis dataStatis = new DataStatis();
+
     @RequiresPermissions(value = {"/statis/month"})
     public void index() {
         render("month_use.jsp");
@@ -20,9 +26,27 @@ public class MonthStatisController extends BaseController {
 
     @RequiresPermissions(value={"/statis/month"})
     public void getListData() {
-        String keyword = this.getPara("name");
-        //Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
-        Page<?> pageInfo = new Page<Object>();
+        String name = this.getPara("name");
+        String innerCode = this.getPara("innerCode");
+        Date startTime = this.getParaToDate("startTime");
+        Date endTime = this.getParaToDate("endTime");
+
+        Page<?> pageInfo = dataStatis.getMonthStatis(getPage(), getRows(), getOrderbyStr(),
+                startTime, endTime, name, innerCode);
+
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+    }
+
+    @RequiresPermissions(value={"/statis/month"})
+    public void exportData() {
+        String name = this.getPara("name");
+        String innerCode = this.getPara("innerCode");
+        Date startTime = this.getParaToDate("startTime");
+        Date endTime = this.getParaToDate("endTime");
+
+        dataStatis.exportDailyData(getPage(), getRows(), getOrderbyStr(),
+                startTime, endTime, name, innerCode);
+        File file = new File("");
+        this.renderFile(file);
     }
 }
