@@ -182,6 +182,10 @@
                 });
             }
         });
+
+        $("#btn-exportData").click(function () {
+           window.location.href="${context_path}/basic/company/export"
+        })
     });
     //replace icons with FontAwesome icons like above
     function updatePagerIcons(table) {
