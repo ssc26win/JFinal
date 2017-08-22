@@ -130,9 +130,12 @@
         $("#btn_search").click(function(){
             //此处可以添加对查询数据的合法验证
             var name = $("#name").val();
+            var innerCode = $("#innerCode").val();
+            var startTime = $("#startTime").val();
+            var endTime = $("#endTime").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',
-                postData:{'name':name}, //发送数据
+                postData:{'name':name,'innerCode':innerCode,'startTime':startTime,'endTime':endTime}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });
