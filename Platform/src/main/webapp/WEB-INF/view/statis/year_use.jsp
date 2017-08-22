@@ -31,7 +31,7 @@
                         <div class="widget-body">
                             <div class="widget-main">
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-5">
+                                    <div class="col-xs-12 col-sm-10">
                                         <div class="input-group">
                                             日期时间:
                                             <input type="text" id="startTime" name="startTime" class="form_datetime"/>~<input type="text" id="endTime" name="endTime" class="form_datetime"/>

@@ -15,9 +15,7 @@
  */
 package com.shangsc.platform.controller.sys;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
@@ -27,7 +25,12 @@ import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.DictType;
-import com.jfinal.plugin.activerecord.Page;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class DictController extends BaseController {
 	
@@ -112,6 +115,50 @@ public class DictController extends BaseController {
 		Page<DictData> pageInfo=DictData.dao.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
 		this.renderJson(JqGridModelUtils.toJqGridView(pageInfo)); 
 	}
+
+    private static final String UserType = "UserType";
+    private static final String WaterUseType = "WaterUseType";
+    private static final String UnitType = "UnitType";
+    private static final String WatersType = "WatersType";
+    private static final String ChargeType = "ChargeType";
+
+
+
+    @RequiresPermissions(value={"/dict"})
+    public void getByType() {
+        Integer typeId = this.getParaToInt("typeId");
+        String typeName = this.getPara("typeName");
+
+        Map<String, Map<String, Object>> allData = new HashMap<String, Map<String, Object>>();
+
+        if ((typeId == null || typeId == 0) && StringUtils.isEmpty(typeName)) {
+
+            Map<String, Object> resultUserType = DictData.dao.getDictMap(0, UserType);
+
+            allData.put(UserType, resultUserType);
+
+            Map<String, Object> resultWaterUseType = DictData.dao.getDictMap(0, WaterUseType);
+
+            allData.put(WaterUseType, resultWaterUseType);
+
+            Map<String, Object> resultUnitType = DictData.dao.getDictMap(0, UnitType);
+
+            allData.put(UnitType, resultUnitType);
+
+            Map<String, Object> resultWatersType = DictData.dao.getDictMap(0, WatersType);
+
+            allData.put(WatersType, resultWatersType);
+
+            Map<String, Object> resultChargeType = DictData.dao.getDictMap(0, ChargeType);
+
+            allData.put(ChargeType, resultChargeType);
+
+        } else {
+            Map<String, Object> resultType = DictData.dao.getDictMap(typeId, typeName);
+            allData.put(typeName, resultType);
+        }
+        this.renderJson(allData);
+    }
 }
 
 

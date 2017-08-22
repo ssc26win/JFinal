@@ -82,7 +82,12 @@
 			<version>4.8</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.2</version>
+        </dependency>
+    </dependencies>
 	<build>
 		<finalName>platform</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>

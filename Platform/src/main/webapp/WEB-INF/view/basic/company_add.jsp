@@ -249,6 +249,20 @@
         parent.layer.close(index); //再执行关闭
     }
 
+    function getDictMapData(){
+        var submitData = {
+        };
+        $.post("${context_path}/dict/getByType", submitData, function(data) {
+            if (data.UserType != "") {
+                layer.alert(data.UserType );
+            }  else{
+                layer.alert("操作失败");
+            }
+        },"json");
+    }
+    $(function(){
+        getDictMapData();
+    })
 </script>
 </body>
 

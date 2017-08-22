@@ -21,6 +21,7 @@
           <element id="library" level="project" name="Maven: commons-codec:commons-codec:1.6" />
           <element id="library" level="project" name="Maven: net.sf.ehcache:ehcache-core:2.6.6" />
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.1" />
+          <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">
