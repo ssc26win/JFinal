@@ -4,7 +4,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.JqGridModelUtils;
-import com.shangsc.platform.model.DataStatis;
+import com.shangsc.platform.model.MonthNum;
 
 import java.io.File;
 import java.util.Date;
@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public class MonthStatisController extends BaseController {
 
-    private DataStatis dataStatis = new DataStatis();
+    private MonthNum dataStatis = new MonthNum();
 
     @RequiresPermissions(value = {"/statis/month"})
     public void index() {
@@ -44,7 +44,7 @@ public class MonthStatisController extends BaseController {
         Date startTime = this.getParaToDate("startTime");
         Date endTime = this.getParaToDate("endTime");
 
-        dataStatis.exportDailyData(getPage(), getRows(), getOrderbyStr(),
+        dataStatis.exportMonthData(getPage(), getRows(), getOrderbyStr(),
                 startTime, endTime, name, innerCode);
         File file = new File("");
         this.renderFile(file);

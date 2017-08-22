@@ -4,7 +4,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.JqGridModelUtils;
-import com.shangsc.platform.model.DataStatis;
+import com.shangsc.platform.model.DailyNum;
 
 import java.io.File;
 import java.util.Date;
@@ -17,7 +17,7 @@ import java.util.Date;
  */
 public class DailyStatisController extends BaseController {
 
-    private DataStatis dataStatis = new DataStatis();
+    private DailyNum dataStatis = new DailyNum();
 
     @RequiresPermissions(value = {"/statis/daily"})
     public void index() {
