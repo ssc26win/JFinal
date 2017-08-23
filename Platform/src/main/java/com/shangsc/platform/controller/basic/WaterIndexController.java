@@ -8,9 +8,11 @@ import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.export.WaterIndexExportService;
 import com.shangsc.platform.model.WaterIndex;
 import com.shangsc.platform.util.CodeNumUtil;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -80,5 +82,19 @@ public class WaterIndexController extends BaseController {
         Long id = this.getParaToLong("id");
         InvokeResult result = WaterIndex.me.deleteData(id);
         this.renderJson(result);
+    }
+
+    @RequiresPermissions(value = {"/basic/waterindex"})
+    public void export() {
+
+        String keyword = this.getPara("name");
+        Set<Condition> conditions = new HashSet<Condition>();
+        if (CommonUtils.isNotEmpty(keyword)) {
+            conditions.add(new Condition("name", Operators.LIKE, keyword));
+        }
+        Page<WaterIndex> pageInfo = WaterIndex.me.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
+        WaterIndexExportService service = new WaterIndexExportService();
+        String path = service.export(pageInfo);
+        renderFile(new File(path));
     }
 }

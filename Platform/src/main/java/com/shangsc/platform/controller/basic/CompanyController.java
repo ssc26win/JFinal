@@ -8,8 +8,10 @@ import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.export.CompanyExportService;
 import com.shangsc.platform.model.Company;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -74,5 +76,20 @@ public class CompanyController extends BaseController {
         Long id = this.getParaToLong("id");
         InvokeResult result = Company.me.deleteData(id);
         this.renderJson(result);
+    }
+
+    @RequiresPermissions(value = {"/basic/company"})
+    public void export() {
+        CompanyExportService service = new CompanyExportService();
+        String keyword = this.getPara("name");
+        Set<Condition> conditions = new HashSet<Condition>();
+        if (CommonUtils.isNotEmpty(keyword)) {
+            conditions.add(new Condition("name", Operators.LIKE, keyword));
+        }
+        Page<Company> pageInfo = Company.me.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
+
+
+        String path = service.export(pageInfo);
+        renderFile(new File(path));
     }
 }
