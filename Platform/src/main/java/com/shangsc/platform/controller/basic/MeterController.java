@@ -1,6 +1,7 @@
 package com.shangsc.platform.controller.basic;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.controller.export.WaterMeterExportService;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
@@ -10,6 +11,7 @@ import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.WaterMeter;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -69,5 +71,21 @@ public class MeterController extends BaseController {
         Long id = this.getParaToLong("id");
         InvokeResult result = WaterMeter.me.deleteData(id);
         this.renderJson(result);
+    }
+
+    @RequiresPermissions(value={"/basic/meter"})
+    public void export(){
+        String keyword=this.getPara("name");
+        Set<Condition> conditions=new HashSet<Condition>();
+        if(CommonUtils.isNotEmpty(keyword)){
+            conditions.add(new Condition("name", Operators.LIKE, keyword));
+        }
+        Page<WaterMeter> pageInfo = WaterMeter.me.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
+
+        WaterMeterExportService service = new WaterMeterExportService();
+        String path =  service.export(pageInfo);
+
+        renderFile(new File(path));
+
     }
 }
