@@ -15,8 +15,10 @@
  */
 package com.shangsc.platform.core.util;
 
-import com.shangsc.platform.core.model.JqGridModel;
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.core.model.JqGridModel;
+
+import java.util.List;
 
 /**
  * jdGrid分页Model转换工具
@@ -31,4 +33,13 @@ public final class JqGridModelUtils {
 		jqGridView.setTotal(pageInfo.getTotalPage());
 		return jqGridView;
 	}
+
+    public static JqGridModel toJqGridView(Page pageInfo, List<?> changeList){
+        JqGridModel jqGridView=new JqGridModel();
+        jqGridView.setPage(pageInfo.getPageNumber());
+        jqGridView.setRecords(pageInfo.getTotalRow());
+        jqGridView.setRows(changeList);
+        jqGridView.setTotal(pageInfo.getTotalPage());
+        return jqGridView;
+    }
 }

@@ -13,6 +13,7 @@ import com.shangsc.platform.model.Company;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,8 +36,17 @@ public class CompanyController extends BaseController {
         if(CommonUtils.isNotEmpty(keyword)){
             conditions.add(new Condition("name", Operators.LIKE, keyword));
         }
-        Page<Company> pageInfo = Company.me.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+        Page<Company> pageInfo = Company.me.getPage(getPage(), this.getRows(), conditions,this.getOrderby());
+        List<Company> companies = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(companies)) {
+            for (int i = 0; i < companies.size(); i++) {
+                Company co = companies.get(i);
+                co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('" + co.getName() + "', '"
+                        + co.getAddress() + "', '0'" + ")\">" + co.getAddress() + "</a>");
+                companies.set(i, co);
+            }
+        }
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
     }
 
     @RequiresPermissions(value={"/basic/company"})
