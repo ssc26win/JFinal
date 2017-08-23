@@ -103,5 +103,6 @@ public class WellController extends BaseController {
         InvokeResult result = Well.me.deleteData(id);
         this.renderJson(result);
     }
+
 }
 
