@@ -58,7 +58,7 @@ public class DictData extends BaseDictData<DictData> {
 
     public Map<String, Object> getDictMap(Integer typeId, String typeName){
         if ((!(typeId != null && typeId > 0)) && StringUtils.isNotEmpty(typeName)) {
-            DictType dictType = DictType.dao.findFirst("select * from dict_type where name=" + typeName);
+            DictType dictType = DictType.dao.findFirst("select * from dict_type where name='" + typeName + "'");
             typeId = dictType.getId();
         }
         List<DictData> list = this.find("select value,name from dict_data where dict_type_id=" + typeId);

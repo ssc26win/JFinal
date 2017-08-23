@@ -250,11 +250,11 @@
     }
 
     function getDictMapData(){
-        var submitData = {
-        };
+        var submitData = {};
         $.post("${context_path}/dict/getByType", submitData, function(data) {
+            layer.alert(JSON.stringify(data.UserType));
             if (data.UserType != "") {
-                layer.alert(data.UserType );
+                layer.alert(JSON.stringify(data));
             }  else{
                 layer.alert("操作失败");
             }
