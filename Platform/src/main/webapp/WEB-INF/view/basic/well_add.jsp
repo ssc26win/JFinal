@@ -27,67 +27,139 @@
                         <form class="form-horizontal" id="validation-form" method="post">
                             <input name="id" type="hidden" value="${id}"/>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text"  name="innerCode" ${id ne null?'readonly':'' } value="${item.innerCode}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-3 control-label" for="innerCode">单位编号:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="innerCode" value="${item.innerCode}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="wellNum">水井编号:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="wellNum" value="${item.wellNum}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lineNum">路别</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text" name="lineNum" value="${item.lineNum}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-3 control-label" for="township">乡:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="township" value="${item.township}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="name">水井名称:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="name" value="${item.name}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterNum">水表表号</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text"  name="meterNum" value="${item.meterNum}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-3 control-label" for="village">村:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="village" value="${item.village}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="address">水井地址:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="address" value="${item.address}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="watersType">水源类型</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text"  name="watersType" value="${item.watersType}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-3 control-label" for="startDate">成井时间（年）:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="startDate" value="${item.startDate}" class="form-control form_datetime">
+                                </div>
+                                <label class="col-sm-3 control-label" for="wellDepth">井深（米）:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="wellDepth" value="${item.wellDepth}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterUseType">取水用途</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text"  name="waterUseType" value="${item.waterUseType}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-3 control-label" for="groundDepth">地下水埋深（米）:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="groundDepth" value="${item.groundDepth}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="oneselfWell">是否为单位自备井:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="oneselfWell" value="${item.oneselfWell}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterAttr">水表属性</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text"  name="meterAttr" value="${item.meterAttr}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-3 control-label" for="innerDiameter">井口井管内径（毫米）:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="innerDiameter" value="${item.innerDiameter}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="material">井壁管材料:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="material" value="${item.material}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="chargeType">收费类型</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text"  name="chargeType" value="${item.chargeType}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-3 control-label" for="application">应用状况:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="application" value="${item.application}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="electromechanics">是否已配套机电设备:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="electromechanics" value="${item.electromechanics}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="billingCycle">计费周期</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text" name="billingCycle" value="${item.billingCycle}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-3 control-label" for="calculateWater">是否已安装水量计量设施:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="calculateWater" value="${item.calculateWater}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="pumpModel">水泵型号:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="pumpModel" value="${item.pumpModel}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="calculateType">水量计量设施类型:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="calculateType" value="${item.calculateType}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="aboveScale">规模以上地下水水源地水井:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="aboveScale" value="${item.aboveScale}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="geomorphicType">所在地貌类型区:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="geomorphicType" value="${item.geomorphicType}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="groundType">所取用地下水的类型:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="groundType" value="${item.groundType}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="nameCode">所在水资源三级区名称及编码:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="nameCode" value="${item.nameCode}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="watersType">水源类型:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="watersType" value="${item.watersType}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="useEfficiency">主要取水用途及效益:</label>
+                                <div class="col-sm-3">
+                                    <input type="text" id="useEfficiency" name="useEfficiency" value="${item.useEfficiency}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="method">取水量确定方法:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="method" value="${item.method}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="licence">是否已办理取水许可证:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="licence" value="${item.licence}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="licenceCode">取水许可证编号:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="licenceCode" value="${item.licenceCode}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="waterWithdrawals">年许可取水量（万立方米）:</label>
+                                <div class="col-sm-3">
+                                    <input type="text"  name="waterWithdrawals" value="${item.waterWithdrawals}" class="form-control">
                                 </div>
                             </div>
                             <div class="clearfix form-actions" align="center">

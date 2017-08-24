@@ -136,7 +136,7 @@
 				layer.open({
 					title:'添加数据项',
 				    type: 2,
-				    area: ['370px', '430px'],
+				    area: ['370px', '530px'],
 				    fix: false, //不固定
 				    maxmin: true,
 				    content: '${context_path}/dict/add_data?typeId=${typeId}'
@@ -158,7 +158,7 @@
 					layer.open({
 						title:'修改数据',
 					    type: 2,
-					    area: ['370px', '430px'],
+					    area: ['370px', '530px'],
 					    fix: false, //不固定
 					    maxmin: true,
 					    content: '${context_path}/dict/add_data?typeId=${typeId}&id='+rid

@@ -164,7 +164,7 @@
             parent.layer.open({
                 title:'添加水井',
                 type: 2,
-                area: ['770px', '830px'],
+                area: ['900px', '880px'],
                 fix: false, //不固定
                 maxmin: true,
                 content: '${context_path}/basic/well/add'
@@ -189,7 +189,7 @@
                 parent.layer.open({
                     title:'修改水表信息',
                     type: 2,
-                    area: ['770px', '830px'],
+                    area: ['900px', '880px'],
                     fix: false, //不固定
                     maxmin: true,
                     content: '${context_path}/basic/well/add?id='+rid

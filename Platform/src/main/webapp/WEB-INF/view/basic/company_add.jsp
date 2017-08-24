@@ -24,120 +24,76 @@
                     <div class="col-xs-12">
                         <!-- PAGE CONTENT BEGINS -->
                         <!-- PAGE CONTENT BEGINS -->
-                        <form class="form-horizontal" id="validation-form" method="post">
+                        <form class="form-horizontal" id="validation-form" method="post" style="margin-right: 10px;">
                             <input name="id" type="hidden" value="${id}"/>
-                            <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="name">单位名称</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text"  name="name" value="${item.name}" class="col-xs-12 col-sm-6">
-                                    </div>
+                            <div class="form-group" style="margin-top: 15px;">
+                                <label class="col-sm-2 control-label" for="name">单位名称:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="name" value="${item.name}" class="form-control">
+                                </div>
+                                <label class="col-sm-2 control-label" for="innerCode">单位编号:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="innerCode" value="${item.innerCode}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                            <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号</label>
-                            <div class="col-xs-12 col-sm-9">
-                                <div class="clearfix">
-                                    <input type="text"  name="innerCode" value="${item.innerCode}" class="col-xs-12 col-sm-6">
-                                    <%-- ${id ne null?'readonly':'' } --%>
+                                <label class="col-sm-2 control-label" for="address">单位地址:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="address" value="${item.address}" class="form-control">
                                 </div>
-                            </div>
-                        </div>
-                            <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="street">所属乡镇或街道</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text" name="street" value="${item.street}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-2 control-label" for="street">所属乡镇或街道:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="street" value="${item.street}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="address">单位地址</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text"  name="address" value="${item.address}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-2 control-label" for="customerType">用户类型:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="customerType" value="${item.customerType}" class="form-control">
+                                </div>
+                                <label class="col-sm-2 control-label" for="waterUseType">取水用途:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="waterUseType" value="${item.waterUseType}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="customerType">用户类型</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text"  name="customerType" value="${item.customerType}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-2 control-label" for="contact">联系人:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="contact" value="${item.contact}" class="form-control">
+                                </div>
+                                <label class="col-sm-2 control-label" for="phone">联系电话:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="phone" value="${item.phone}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterUseType">取水用途</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text"  name="waterUseType" value="${item.waterUseType}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-2 control-label" for="postalCode">邮政编码:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="postalCode" value="${item.postalCode}" class="form-control">
+                                </div>
+                                <label class="col-sm-2 control-label" for="department">管水部门:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="department" value="${item.department}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="contact">联系人</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text"  name="contact" value="${item.contact}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-2 control-label" for="wellCount">水井数量:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="wellCount" value="${item.wellCount}" class="form-control">
+                                </div>
+                                <label class="col-sm-2 control-label" for="firstWatermeterCount">一级表数量:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="firstWatermeterCount" value="${item.firstWatermeterCount}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="phone">联系电话</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text"  name="phone" value="${item.phone}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-2 control-label" for="remotemeterCount">远传表数量:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="remotemeterCount" value="${item.remotemeterCount}" class="form-control">
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="postalCode">邮政编码</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text" name="postalCode" value="${item.postalCode}" class="col-xs-12 col-sm-6">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="department">管水部门</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text" name="department" value="${item.department}" class="col-xs-12 col-sm-6">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="wellCount">水井数量</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text" name="wellCount" value="${item.wellCount}" class="col-xs-12 col-sm-6">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="firstWatermeterCount">一级表数量</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text" name="firstWatermeterCount" value="${item.firstWatermeterCount}" class="col-xs-12 col-sm-6">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="remotemeterCount">远传表数量</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text" name="remotemeterCount" value="${item.remotemeterCount}" class="col-xs-12 col-sm-6">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="unitType">节水型单位类型</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="text" name="unitType" value="${item.unitType}" class="col-xs-12 col-sm-6">
-                                    </div>
+                                <label class="col-sm-2 control-label" for="unitType">节水型单位类型:</label>
+                                <div class="col-sm-4">
+                                    <input type="text"  name="unitType" value="${item.unitType}" class="form-control">
                                 </div>
                             </div>
                             <div class="clearfix form-actions" align="center">

@@ -59,7 +59,7 @@
                                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="content">内容</label>
                                                     <div class="col-xs-12 col-sm-9">
                                                         <div class="clearfix">
-                                                            <input type="text" name="content" value="${item.content}" class="col-xs-12 col-sm-6">
+                                                            <textarea id="content" name="content" class="col-xs-12 col-sm-9" rows="4" cols="16">${item.content}</textarea>
                                                         </div>
                                                     </div>
                                                 </div>
