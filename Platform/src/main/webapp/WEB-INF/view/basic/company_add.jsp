@@ -30,7 +30,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="name">单位名称</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text"  name="name" ${id ne null?'readonly':'' } value="${item.name}" class="col-xs-12 col-sm-6">
+                                        <input type="text"  name="name" value="${item.name}" class="col-xs-12 col-sm-6">
                                     </div>
                                 </div>
                             </div>
@@ -38,7 +38,8 @@
                             <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号</label>
                             <div class="col-xs-12 col-sm-9">
                                 <div class="clearfix">
-                                    <input type="text"  name="innerCode" ${id ne null?'readonly':'' } value="${item.innerCode}" class="col-xs-12 col-sm-6">
+                                    <input type="text"  name="innerCode" value="${item.innerCode}" class="col-xs-12 col-sm-6">
+                                    <%-- ${id ne null?'readonly':'' } --%>
                                 </div>
                             </div>
                         </div>
