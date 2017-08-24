@@ -2,8 +2,8 @@
 <div class="navbar-header pull-left">
 					<a href="javascript:;" class="navbar-brand">
 						<small>
-							<i class="fa fa-leaf"></i>
-                            水表管理系统
+							<i class="fa fa-cloud"></i>
+							水务管理系统
 						</small>
 					</a>
 				</div>
