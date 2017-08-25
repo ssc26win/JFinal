@@ -133,7 +133,7 @@
                                 </div>
                                 <label class="col-sm-3 control-label" for="watersType">水源类型:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="watersType" name="watersType" value="${item.watersType}" class="form-control">
+                                    <select id="watersType" name="watersType" value="${item.watersType}" class="form-control"></select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -262,7 +262,26 @@
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index); //再执行关闭
     }
-
+    function getDictMapData(){
+        var submitData = {};
+        $.post("${context_path}/dict/getByType", submitData, function(data) {
+            var chargeType = data.ChargeType;
+            var watersType = data.WatersType;
+            var waterUseType = data.WaterUseType;
+            for(var i = 0;i<chargeType.length;i++) {
+                $("#chargeType").append("<option value='" + chargeType[i].value + "'>"+chargeType[i].name+"</option>");
+            }
+            for(var i = 0;i<watersType.length;i++) {
+                $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+            }
+            for(var i = 0;i<waterUseType.length;i++) {
+                $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
+            }
+        },"json");
+    }
+    $(function(){
+        getDictMapData();
+    })
 </script>
 </body>
 

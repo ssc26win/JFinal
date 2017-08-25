@@ -49,11 +49,13 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="customerType">用户类型:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" id="customerType" name="customerType" value="${item.customerType}" class="form-control">
+                                    <%--<input type="text" id="customerType" name="customerType" value="${item.customerType}" class="form-control">--%>
+                                    <select  id="customerType" name="customerType" value="${item.customerType}" class="form-control"> </select>
                                 </div>
                                 <label class="col-sm-2 control-label" for="waterUseType">取水用途:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="form-control">
+                                    <%--<input type="text" id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="form-control">--%>
+                                    <select  id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="form-control"> </select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -93,7 +95,8 @@
                                 </div>
                                 <label class="col-sm-2 control-label" for="unitType">节水型单位类型:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" id="unitType" name="unitType" value="${item.unitType}" class="form-control">
+                                    <%--<input type="text" id="unitType" name="unitType" value="${item.unitType}" class="form-control">--%>
+                                    <select  id="unitType" name="unitType" value="${item.unitType}" class="form-control"> </select>
                                 </div>
                             </div>
                             <div class="clearfix form-actions" align="center">
@@ -209,11 +212,17 @@
     function getDictMapData(){
         var submitData = {};
         $.post("${context_path}/dict/getByType", submitData, function(data) {
-            layer.alert(JSON.stringify(data.UserType));
-            if (data.UserType != "") {
-                layer.alert(JSON.stringify(data));
-            }  else{
-                layer.alert("操作失败");
+            var unitType = data.UnitType;
+            var customerType = data.UserType;
+            var waterUseType = data.WaterUseType;
+            for(var i = 0;i<unitType.length;i++) {
+                $("#unitType").append("<option value='" + unitType[i].value + "'>"+unitType[i].name+"</option>");
+            }
+            for(var i = 0;i<customerType.length;i++) {
+                $("#customerType").append("<option value='" + customerType[i].value + "'>"+customerType[i].name+"</option>");
+            }
+            for(var i = 0;i<waterUseType.length;i++) {
+                $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
             }
         },"json");
     }

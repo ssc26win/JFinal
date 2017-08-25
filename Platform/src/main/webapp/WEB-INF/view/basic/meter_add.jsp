@@ -54,7 +54,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="watersType">水源类型</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="watersType" name="watersType" value="${item.watersType}" class="col-xs-12 col-sm-6">
+                                        <select id="watersType" name="watersType" value="${item.watersType}" class="col-xs-12 col-sm-6"></select>
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterUseType">取水用途</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="col-xs-12 col-sm-6">
+                                        <select id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="col-xs-12 col-sm-6"></select>
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="chargeType">收费类型</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="chargeType" name="chargeType" value="${item.chargeType}" class="col-xs-12 col-sm-6">
+                                        <select id="chargeType" name="chargeType" value="${item.chargeType}" class="col-xs-12 col-sm-6" ></select>
                                     </div>
                                 </div>
                             </div>
@@ -191,6 +191,26 @@
         parent.layer.close(index); //再执行关闭
     }
 
+    function getDictMapData(){
+        var submitData = {};
+        $.post("${context_path}/dict/getByType", submitData, function(data) {
+            var chargeType = data.ChargeType;
+            var watersType = data.WatersType;
+            var waterUseType = data.WaterUseType;
+            for(var i = 0;i<chargeType.length;i++) {
+                $("#chargeType").append("<option value='" + chargeType[i].value + "'>"+chargeType[i].name+"</option>");
+            }
+            for(var i = 0;i<watersType.length;i++) {
+                $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+            }
+            for(var i = 0;i<waterUseType.length;i++) {
+                $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
+            }
+        },"json");
+    }
+    $(function(){
+        getDictMapData();
+    })
 </script>
 </body>
 

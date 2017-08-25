@@ -280,6 +280,7 @@
  window.jQuery || document.write("<script src='/res/ace-1.3.3/assets/js/jquery1x.js'>"+"<"+"/script>");
 </script>
 <![endif]-->
+		<script src="/res/js/layer/layer.js"></script>
 		<script type="text/javascript">
 			if('ontouchstart' in document.documentElement) document.write("<script src='/res/ace-1.3.3/assets/js/jquery.mobile.custom.js'>"+"<"+"/script>");
 		</script>
