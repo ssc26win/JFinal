@@ -47,7 +47,7 @@
                                         <div class="step-pane active" id="step1">
                                             <form class="form-horizontal" id="validation-form" method="post">
                                                 <div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="versionNo">标题:</label>
+                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="title">标题:</label>
 
                                                     <div class="col-xs-12 col-sm-9">
                                                         <div class="clearfix">

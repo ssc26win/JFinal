@@ -30,7 +30,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text"  name="innerCode" ${id ne null?'readonly':'' } value="${item.innerCode}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="innerCode" name="innerCode" ${id ne null?'readonly':'' } value="${item.innerCode}" class="col-xs-12 col-sm-6">
                                     </div>
                                 </div>
                             </div>
@@ -38,7 +38,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lineNum">路别</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" name="lineNum" value="${item.lineNum}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="lineNum" name="lineNum" value="${item.lineNum}" class="col-xs-12 col-sm-6">
                                     </div>
                                 </div>
                             </div>
@@ -46,7 +46,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterNum">水表表号</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text"  name="meterNum" value="${item.meterNum}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="meterNum" name="meterNum" value="${item.meterNum}" class="col-xs-12 col-sm-6">
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +54,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="watersType">水源类型</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text"  name="watersType" value="${item.watersType}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="watersType" name="watersType" value="${item.watersType}" class="col-xs-12 col-sm-6">
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +62,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterUseType">取水用途</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text"  name="waterUse" value="${item.waterUseType}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="col-xs-12 col-sm-6">
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterAttr">水表属性</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text"  name="meterAttr" value="${item.meterAttr}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="meterAttr"  name="meterAttr" value="${item.meterAttr}" class="col-xs-12 col-sm-6">
                                     </div>
                                 </div>
                             </div>
@@ -78,7 +78,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="chargeType">收费类型</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text"  name="chargeType" value="${item.chargeType}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="chargeType" name="chargeType" value="${item.chargeType}" class="col-xs-12 col-sm-6">
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="billingCycle">计费周期</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" name="billingCycle" value="${item.billingCycle}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="billingCycle" name="billingCycle" value="${item.billingCycle}" class="col-xs-12 col-sm-6">
                                     </div>
                                 </div>
                             </div>

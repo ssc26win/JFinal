@@ -30,7 +30,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号:</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text"  name="innerCode" value="${item.innerCode}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="innerCode" name="innerCode" value="${item.innerCode}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
@@ -38,7 +38,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterUseType">取水用途:</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" name="waterUseType" value="${item.waterUseType}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
@@ -46,68 +46,68 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterIndex">水表表号:</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text"  name="waterIndex" value="${item.waterIndex}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="waterIndex" name="waterIndex" value="${item.waterIndex}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-3 control-label" for="january">一月:</label>
                 <div class="col-sm-2">
-                  <input type="text"  name="january" value="${item.january}" class="form-control">
+                  <input type="text" id="january" name="january" value="${item.january}" class="form-control">
                 </div>
                 <label class="col-sm-2 control-label" for="february">二月:</label>
                 <div class="col-sm-2">
-                  <input type="text"  name="february" value="${item.february}" class="form-control">
+                  <input type="text" id="february" name="february" value="${item.february}" class="form-control">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-3 control-label" for="march">三月:</label>
                 <div class="col-sm-2">
-                  <input type="text"  name="march" value="${item.march}" class="form-control">
+                  <input type="text" id="march" name="march" value="${item.march}" class="form-control">
                 </div>
                 <label class="col-sm-2 control-label" for="april">四月:</label>
                 <div class="col-sm-2">
-                  <input type="text"  name="april" value="${item.april}" class="form-control">
+                  <input type="text" id="april" name="april" value="${item.april}" class="form-control">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-3 control-label" for="may">五月:</label>
                 <div class="col-sm-2">
-                  <input type="text"  name="may" value="${item.may}" class="form-control">
+                  <input type="text" id="may" name="may" value="${item.may}" class="form-control">
                 </div>
                 <label class="col-sm-2 control-label" for="june">六月:</label>
                 <div class="col-sm-2">
-                  <input type="text"  name="june" value="${item.june}" class="form-control">
+                  <input type="text" id="june" name="june" value="${item.june}" class="form-control">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-3 control-label" for="july">七月:</label>
                 <div class="col-sm-2">
-                  <input type="text"  name="july" value="${item.july}" class="form-control">
+                  <input type="text" id="july" name="july" value="${item.july}" class="form-control">
                 </div>
                 <label class="col-sm-2 control-label" for="august">八月:</label>
                 <div class="col-sm-2">
-                  <input type="text"  name="august" value="${item.august}" class="form-control">
+                  <input type="text" id="august" name="august" value="${item.august}" class="form-control">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-3 control-label" for="september">九月:</label>
                 <div class="col-sm-2">
-                  <input type="text"  name="september" value="${item.september}" class="form-control">
+                  <input type="text" id="september" name="september" value="${item.september}" class="form-control">
                 </div>
                 <label class="col-sm-2 control-label" for="october">十月:</label>
                 <div class="col-sm-2">
-                  <input type="text"  name="october" value="${item.october}" class="form-control">
+                  <input type="text" id="october" name="october" value="${item.october}" class="form-control">
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-3 control-label" for="november">十一月:</label>
                 <div class="col-sm-2">
-                  <input type="text"  name="november" value="${item.november}" class="form-control">
+                  <input type="text" id="november" name="november" value="${item.november}" class="form-control">
                 </div>
                 <label class="col-sm-2 control-label" for="december">十二月:</label>
                 <div class="col-sm-2">
-                  <input type="text"  name="december" value="${item.december}" class="form-control">
+                  <input type="text" id="december" name="december" value="${item.december}" class="form-control">
                 </div>
               </div>
               <div class="clearfix form-actions" align="center">

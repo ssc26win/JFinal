@@ -9,17 +9,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
 </head>
-
 <body class="no-skin">
 <div class="main-container" id="main-container">
   <script type="text/javascript">
     try{ace.settings.check('main-container' , 'fixed')}catch(e){}
   </script>
-
   <div class="main-container-inner">
     <div class="main-content" style="margin-left: 0px;">
       <div class="page-content">
-
         <div class="row">
           <div class="col-xs-12">
             <!-- PAGE CONTENT BEGINS -->
@@ -30,7 +27,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text"  name="innerCode" ${id ne null?'readonly':'' } value="${item.innerCode}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="innerCode" name="innerCode" ${id ne null?'readonly':'' } value="${item.innerCode}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
@@ -38,7 +35,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lineNum">路别</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" name="lineNum" value="${item.lineNum}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="lineNum" name="lineNum" value="${item.lineNum}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
@@ -46,7 +43,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterNum">水表表号</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text"  name="meterNum" value="${item.meterNum}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="meterNum" name="meterNum" value="${item.meterNum}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
@@ -54,7 +51,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="watersType">水源类型</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text"  name="watersType" value="${item.watersType}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="watersType" name="watersType" value="${item.watersType}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
@@ -62,7 +59,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="alarm">告警</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text"  name="alarm" value="${item.alarm}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="alarm" name="alarm" value="${item.alarm}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
@@ -70,7 +67,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="netWater">净用水量</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text"  name="netWater" value="${item.netWater}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="netWater" name="netWater" value="${item.netWater}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
@@ -78,7 +75,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="state">状态</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text"  name="state" value="${item.state}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="state" name="state" value="${item.state}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
@@ -86,7 +83,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="voltage">电池电压</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" name="voltage" value="${item.voltage}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="voltage" name="voltage" value="${item.voltage}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
