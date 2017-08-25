@@ -30,7 +30,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="innerCode" name="innerCode" ${id ne null?'readonly':'' } value="${item.innerCode}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="innerCode" name="innerCode" value="${item.innerCode}" class="col-xs-12 col-sm-6">
                                     </div>
                                 </div>
                             </div>

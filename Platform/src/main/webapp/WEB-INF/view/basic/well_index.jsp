@@ -102,6 +102,7 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
+                { label: '单位名称', name: 'companyName', width: 150, sortable:false},
                 { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
                 { label: '水井编号', name: 'well_num', width: 80, sortable:false},
                 { label: '水井名称', name: 'name', width: 80,sortable:false},
@@ -115,10 +116,10 @@
                 { label: '井口井管内径（毫米）', name: 'inner_diameter', width: 80, sortable:false},
                 { label: '井壁管材料', name: 'material', width: 100, sortable:false},
                 { label: '应用状况', name: 'application', width: 80, sortable:false},
-                { label: '是否已配套机电设备', name: 'electromechanics', width: 80, sortable:false},
-                { label: '是否已安装水量计量设施', name: 'calculate_water', width: 100, sortable:false},
+                /*{ label: '是否已配套机电设备', name: 'electromechanics', width: 80, sortable:false},
+                { label: '是否已安装水量计量设施', name: 'calculate_water', width: 100, sortable:false},*/
                 { label: '水泵型号', name: 'pump_model', width: 80, sortable:false},
-                { label: '水量计量设施类型', name: 'calculate_type', width: 100, sortable:false},
+              /*  { label: '水量计量设施类型', name: 'calculate_type', width: 100, sortable:false},
                 { label: '是否为规模以上地下水水源地的水井', name: 'above_scale', width: 100, sortable:false},
                 { label: '所在地貌类型区', name: 'geomorphic_type', width: 70, sortable:false},
                 { label: '所取用地下水的类型', name: 'ground_type', width: 100, sortable:false},
@@ -126,7 +127,7 @@
                 { label: '水源类型', name: 'waters_type', width: 60, sortable:false},
                 { label: '主要取水用途及效益', name: 'use_efficiency', width: 100, sortable:false},
                 { label: '取水量确定方法', name: 'method', width: 100, sortable:false},
-                { label: '是否已办理取水许可证', name: 'licence', width: 100, sortable:false},
+                { label: '是否已办理取水许可证', name: 'licence', width: 100, sortable:false},*/
                 { label: '取水许可证编号', name: 'licence_code', width: 80, sortable:false},
                 { label: '年许可取水量（万立方米）', name: 'water_withdrawals', width: 100, sortable:false}
             ],
