@@ -205,7 +205,7 @@ $(function(){
 			$("#btn_saveOrder").removeAttr("disabled");
 			layer.msg("保存成功", {
 			    icon: 1,
-			    time: 1000 //1秒关闭（如果不配置，默认是3秒）
+			    time: 500 //1秒关闭（如果不配置，默认是3秒）
 			});
 		},"json");
 	});

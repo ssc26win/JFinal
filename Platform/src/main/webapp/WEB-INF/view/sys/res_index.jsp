@@ -197,7 +197,7 @@
 				if (data.code ==0) {
 					layer.msg(data.result, {
         				icon: 1,
-        			    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+        			    time: 500 //2秒关闭（如果不配置，默认是3秒）
         			},function(){
 						 $("#grid-table").trigger("reloadGrid"); //重新载入
 					});

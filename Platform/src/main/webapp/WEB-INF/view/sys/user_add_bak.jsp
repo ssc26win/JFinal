@@ -83,7 +83,7 @@
         					window.parent.reloadGrid(); //重新载入
         					layer.msg('保存成功', {
         					    icon: 1,
-        					    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+        					    time: 500 //2秒关闭（如果不配置，默认是3秒）
         					},function(){
         						var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         						parent.layer.close(index); //再执行关闭 
@@ -92,7 +92,7 @@
         				}else {
         					layer.msg(data.msg, {
         					    icon: 2,
-        					    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+        					    time: 500 //2秒关闭（如果不配置，默认是3秒）
         					});
         				}
         		 		$("#btn_submit").removeClass("disabled");

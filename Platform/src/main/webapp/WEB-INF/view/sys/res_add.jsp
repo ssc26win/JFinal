@@ -225,7 +225,7 @@
 			        		if(data.code=='success'){
 			        			layer.msg('操作成功', {
 			        				icon: 1,
-			        			    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+			        			    time: 500 //2秒关闭（如果不配置，默认是3秒）
 			        			},function(){
 			        				parent.reloadGrid();
 			        				var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

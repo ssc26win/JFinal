@@ -221,14 +221,14 @@
                         window.parent.reloadGrid(); //重新载入
                         layer.msg("保存成功", {
                             icon: 1,
-                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            time: 500 //2秒关闭（如果不配置，默认是3秒）
                         },function(){
                            closeView();
                         });
                     }else{
                         layer.msg(data.msg, {
                             icon: 2,
-                            time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                            time: 500 //2秒关闭（如果不配置，默认是3秒）
                         },function(){
                         });
                     }
