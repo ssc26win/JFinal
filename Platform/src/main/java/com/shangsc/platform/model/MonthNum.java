@@ -16,10 +16,10 @@ public class MonthNum extends BaseMonthNum<MonthNum> {
 
     private Logger logger = Logger.getLogger(getClass());
 
-    public Page<?> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+    public Page<MonthNum> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
         logger.info("orderbyStr : " + orderbyStr);
-        String select="select * from";
-        StringBuffer sqlExceptSelect=new StringBuffer("from company c");
+        String select="select * ";
+        StringBuffer sqlExceptSelect=new StringBuffer(" company c ");
         return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
     public void exportMonthData(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {

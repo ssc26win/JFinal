@@ -17,8 +17,8 @@ public class ReadNum extends BaseReadnum<ReadNum> {
 
     public Page<ReadNum> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
         logger.info("orderbyStr : " + orderbyStr);
-        String select="select * from";
-        StringBuffer sqlExceptSelect=new StringBuffer("from company c");
+        String select="select * ";
+        StringBuffer sqlExceptSelect=new StringBuffer(" company c");
         return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
 

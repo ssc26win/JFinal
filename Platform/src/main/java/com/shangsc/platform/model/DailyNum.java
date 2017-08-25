@@ -16,10 +16,10 @@ public class DailyNum extends BaseDailyNum<DailyNum> {
 
     private Logger logger = Logger.getLogger(getClass());
 
-    public Page<?> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+    public Page<DailyNum> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
         logger.info("orderbyStr : " + orderbyStr);
-        String select="select * from";
-        StringBuffer sqlExceptSelect=new StringBuffer("from company c");
+        String select="select * ";
+        StringBuffer sqlExceptSelect = new StringBuffer("from company c");
         return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
     public void exportDailyData(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {

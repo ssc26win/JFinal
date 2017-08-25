@@ -38,7 +38,7 @@
                                                 <input type="text" id="startTime" name="startTime" class="form_datetime"/>~<input type="text" id="endTime" name="endTime" class="form_datetime"/>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
-                                                <input type="text" id="watersType" name="watersType" class="" placeholder="请输入水源类型" style="margin-left: 5px;"/>
+                                                <select id="watersType" name="watersType" style="margin-left: 5px;"><option>请选择水源类型</option></select>
                                                 <input type="text" id="meterAttr" name="meterAttr" class="" placeholder="请输入水表属性" style="margin-left: 5px;"/>
                                                 <input type="text" id="street" name="street" class="" placeholder="请输入所属乡镇" style="margin-left: 5px;"/>
                                                 <span class="input-group-btn">
@@ -96,7 +96,7 @@
         });
 
         $("#grid-table").jqGrid({
-            url:'${context_path}/statis/reasdnum/getListData',
+            url:'${context_path}/statis/readnum/getListData',
             mtype: "GET",
             datatype: "json",
             colModel: [
@@ -194,6 +194,19 @@
     function reloadGrid(){
         $("#grid-table").trigger("reloadGrid"); //重新载入
     }
+
+    function getDictMapData(){
+        var submitData = {};
+        $.post("${context_path}/dict/getByType", submitData, function(data) {
+            var watersType = data.WatersType;
+            for(var i = 0;i<watersType.length;i++) {
+                $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+            }
+        },"json");
+    }
+    $(function(){
+        getDictMapData();
+    })
 </script>
 </body>
 </html>
