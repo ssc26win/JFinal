@@ -31,11 +31,12 @@ public class MeterController extends BaseController {
     @RequiresPermissions(value={"/basic/meter"})
     public void getListData() {
         String keyword=this.getPara("name");
-        Set<Condition> conditions=new HashSet<Condition>();
-        if(CommonUtils.isNotEmpty(keyword)){
-            conditions.add(new Condition("name", Operators.LIKE, keyword));
-        }
-        Page<WaterMeter> pageInfo = WaterMeter.me.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
+        //Set<Condition> conditions=new HashSet<Condition>();
+        //if(CommonUtils.isNotEmpty(keyword)){
+        //    conditions.add(new Condition("name", Operators.LIKE, keyword));
+        //}
+        //Page<WaterMeter> pageInfo = WaterMeter.me.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
+        Page<WaterMeter> pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
     }
 

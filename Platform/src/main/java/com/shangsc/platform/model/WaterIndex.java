@@ -1,9 +1,11 @@
 package com.shangsc.platform.model;
 
+import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseWaterIndex;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -77,5 +79,20 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 	public InvokeResult deleteData(Long id) {
 		this.deleteById(id);
 		return InvokeResult.success();
+	}
+
+	public Page<WaterIndex> getWaterIndexPage(int page, int rows, String keyword, String orderbyStr) {
+		String select = "select twi.*,(select tc.name from t_company tc where tc.inner_code=twi.inner_code) as companyName";
+		StringBuffer sqlExceptSelect = new StringBuffer("from t_water_index twi");
+		sqlExceptSelect.append(" where 1=1 ");
+		if (StringUtils.isNotEmpty(keyword)) {
+			sqlExceptSelect.append(" and (name like %"+ keyword +" or inner_code=" + keyword + ")");
+		}
+		if (StringUtils.isNotEmpty(orderbyStr)) {
+		    System.out.println(orderbyStr);
+		    sqlExceptSelect.append(orderbyStr);
+		}
+		this.paginate(page, rows, select, sqlExceptSelect.toString());
+		return this.paginate(page, rows, select, sqlExceptSelect.toString());
 	}
 }

@@ -5,6 +5,7 @@ import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseWaterMeter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,8 +19,17 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
 	public static final WaterMeter me = new WaterMeter();
 
     public Page<WaterMeter> getWaterMeterPage(int page, int rows, String keyword, String orderbyStr) {
-        String select = "select * from ";
-        StringBuffer sqlExceptSelect = new StringBuffer("t_water_meter twm");
+        String select = "select twm.*,(select tc.name from t_company tc where tc.inner_code=twm.inner_code) as companyName ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm ");
+        sqlExceptSelect.append(" where 1=1 ");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (name like %"+ keyword +" or inner_code=" + keyword + " or meter_num=" + keyword + ") ");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            System.out.println(orderbyStr);
+            sqlExceptSelect.append(orderbyStr);
+        }
+        this.paginate(page, rows, select, sqlExceptSelect.toString());
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 

@@ -1,9 +1,11 @@
 package com.shangsc.platform.model;
 
+import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseWell;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -17,6 +19,20 @@ public class Well extends BaseWell<Well> {
 
 	public static final Well me = new Well();
 
+	public Page<Well> getWellPage(int page, int rows, String keyword, String orderbyStr) {
+		String select = "select tw.*,(select tc.name from t_company tc where tc.inner_code=tw.inner_code) as companyName ";
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_well tw ");
+		sqlExceptSelect.append(" where 1=1 ");
+		if (StringUtils.isNotEmpty(keyword)) {
+			sqlExceptSelect.append(" and (name like %"+ keyword +" or inner_code=" + keyword + " or well_num=" + keyword + ") ");
+		}
+		if (StringUtils.isNotEmpty(orderbyStr)) {
+			System.out.println(orderbyStr);
+			sqlExceptSelect.append(orderbyStr);
+		}
+		this.paginate(page, rows, select, sqlExceptSelect.toString());
+		return this.paginate(page, rows, select, sqlExceptSelect.toString());
+	}
 	/**
 	 * 水表编号是否已存在
 	 * @param wellNum
@@ -98,4 +114,6 @@ public class Well extends BaseWell<Well> {
 		this.deleteById(id);
 		return InvokeResult.success();
 	}
+
+
 }

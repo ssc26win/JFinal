@@ -32,7 +32,7 @@ public class WellController extends BaseController {
     public void getListData() {
         String keyword=this.getPara("name");
         Set<Condition> conditions=new HashSet<Condition>();
-        if(CommonUtils.isNotEmpty(keyword)){
+        if (CommonUtils.isNotEmpty(keyword)) {
             conditions.add(new Condition("name", Operators.LIKE, keyword));
         }
         Page<Well> pageInfo = Well.me.getPage(getPage(), this.getRows(),conditions,this.getOrderby());

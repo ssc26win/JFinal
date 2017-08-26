@@ -27,10 +27,7 @@ import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.DictType;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class DictController extends BaseController {
 	
@@ -129,32 +126,32 @@ public class DictController extends BaseController {
         Integer typeId = this.getParaToInt("typeId");
         String typeName = this.getPara("typeName");
 
-        Map<String, Map<String, Object>> allData = new HashMap<String, Map<String, Object>>();
+        Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String,Object>>>();
 
         if ((typeId == null || typeId == 0) && StringUtils.isEmpty(typeName)) {
 
-            Map<String, Object> resultUserType = DictData.dao.getDictMap(0, UserType);
+            List<Map<String, Object>> resultUserType = DictData.dao.getDictMap(0, UserType);
 
             allData.put(UserType, resultUserType);
 
-            Map<String, Object> resultWaterUseType = DictData.dao.getDictMap(0, WaterUseType);
+			List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMap(0, WaterUseType);
 
             allData.put(WaterUseType, resultWaterUseType);
 
-            Map<String, Object> resultUnitType = DictData.dao.getDictMap(0, UnitType);
+			List<Map<String, Object>> resultUnitType = DictData.dao.getDictMap(0, UnitType);
 
             allData.put(UnitType, resultUnitType);
 
-            Map<String, Object> resultWatersType = DictData.dao.getDictMap(0, WatersType);
+			List<Map<String, Object>> resultWatersType = DictData.dao.getDictMap(0, WatersType);
 
             allData.put(WatersType, resultWatersType);
 
-            Map<String, Object> resultChargeType = DictData.dao.getDictMap(0, ChargeType);
+			List<Map<String, Object>> resultChargeType = DictData.dao.getDictMap(0, ChargeType);
 
             allData.put(ChargeType, resultChargeType);
 
         } else {
-            Map<String, Object> resultType = DictData.dao.getDictMap(typeId, typeName);
+			List<Map<String, Object>> resultType = DictData.dao.getDictMap(typeId, typeName);
             allData.put(typeName, resultType);
         }
         this.renderJson(allData);

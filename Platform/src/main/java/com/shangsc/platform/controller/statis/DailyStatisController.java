@@ -37,7 +37,6 @@ public class DailyStatisController extends BaseController {
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
     }
 
-
     @RequiresPermissions(value={"/statis/daily"})
     public void exportData() {
         String name = this.getPara("name");

@@ -33,11 +33,12 @@ public class WaterIndexController extends BaseController {
     @RequiresPermissions(value={"/basic/waterindex"})
     public void getListData() {
         String keyword=this.getPara("name");
-        Set<Condition> conditions=new HashSet<Condition>();
-        if(CommonUtils.isNotEmpty(keyword)){
-            conditions.add(new Condition("name", Operators.LIKE, keyword));
-        }
-        Page<WaterIndex> pageInfo = WaterIndex.me.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
+        //Set<Condition> conditions=new HashSet<Condition>();
+        //if(CommonUtils.isNotEmpty(keyword)){
+        //    conditions.add(new Condition("name", Operators.LIKE, keyword));
+        //}
+        //Page<WaterIndex> pageInfo = WaterIndex.me.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
+        Page<WaterIndex> pageInfo = WaterIndex.me.getWaterIndexPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
     }
 
