@@ -106,9 +106,8 @@
                 { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
                 { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
-                { label: '查询日期', name: 'find_date', width: 100, sortable:true},
                 { label: '查询时间', name: 'find_time', width: 100, sortable:true},
-                { label: '用水量', name: 'month_num', width: 80, sortable:false},
+                { label: '用水量', name: 'net_water', width: 80, sortable:false},
                 { label: '单位地址', name: 'address', width: 100,sortable:false}
             ],
             viewrecords: true,

@@ -107,7 +107,7 @@
                 { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
                 { label: '查询月份', name: 'find_month', width: 100, sortable:true},
-                { label: '日用水量', name: 'month_num', width: 80, sortable:false},
+                { label: '日用水量', name: 'net_water', width: 80, sortable:false},
                 { label: '计费周期', name: 'billing_cycle', width: 80, sortable:false},
                 { label: '单位地址', name: 'address', width: 100,sortable:false}
             ],
