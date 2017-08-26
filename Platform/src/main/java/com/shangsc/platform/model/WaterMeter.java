@@ -26,7 +26,6 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
             sqlExceptSelect.append(" and (name like %"+ keyword +" or inner_code=" + keyword + " or meter_num=" + keyword + ") ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
-            System.out.println(orderbyStr);
             sqlExceptSelect.append(orderbyStr);
         }
         this.paginate(page, rows, select, sqlExceptSelect.toString());

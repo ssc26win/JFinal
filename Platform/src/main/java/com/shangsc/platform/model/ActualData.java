@@ -1,7 +1,9 @@
 package com.shangsc.platform.model;
 
+import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseActualData;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 
@@ -49,4 +51,17 @@ public class ActualData extends BaseActualData<ActualData> {
 		return InvokeResult.success();
 	}
 
+	public Page<ActualData> getActualDataPage(int page, int rows, String keyword, String orderbyStr) {
+		String select = "select tad.*,(select tc.name from t_company tc where tc.inner_code=tad.inner_code) as companyName ";
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad ");
+		sqlExceptSelect.append(" where 1=1 ");
+		if (StringUtils.isNotEmpty(keyword)) {
+			sqlExceptSelect.append(" and (tad.inner_code=" + keyword + " or tad.meter_num=" + keyword + ") ");
+		}
+		if (StringUtils.isNotEmpty(orderbyStr)) {
+			sqlExceptSelect.append(orderbyStr);
+		}
+		this.paginate(page, rows, select, sqlExceptSelect.toString());
+		return this.paginate(page, rows, select, sqlExceptSelect.toString());
+	}
 }

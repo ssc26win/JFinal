@@ -28,7 +28,6 @@ public class Well extends BaseWell<Well> {
 			sqlExceptSelect.append(" and (name like %"+ keyword +" or inner_code=" + keyword + " or well_num=" + keyword + ") ");
 		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
-			System.out.println(orderbyStr);
 			sqlExceptSelect.append(orderbyStr);
 		}
 		this.paginate(page, rows, select, sqlExceptSelect.toString());

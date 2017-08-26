@@ -34,12 +34,12 @@ public class MeterController extends BaseController {
     @RequiresPermissions(value={"/basic/meter"})
     public void getListData() {
         String keyword = this.getPara("name");
-        Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
-        Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
-        Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictData.ChargeType);
         Page<WaterMeter> pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<WaterMeter> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
+            Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictData.ChargeType);
             for (int i = 0; i < list.size(); i++) {
                 WaterMeter co = list.get(i);
                 co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));

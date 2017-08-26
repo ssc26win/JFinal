@@ -37,9 +37,9 @@ public class WaterIndexController extends BaseController {
     public void getListData() {
         String keyword=this.getPara("name");
         Page<WaterIndex> pageInfo = WaterIndex.me.getWaterIndexPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
-        Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
         List<WaterIndex> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
             for (int i = 0; i < list.size(); i++) {
                 WaterIndex co = list.get(i);
                 co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));

@@ -40,10 +40,10 @@ public class CompanyController extends BaseController {
         }
         Page<Company> pageInfo = Company.me.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
         List<Company> companies = pageInfo.getList();
-        Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictData.UserType);
-        Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
-        Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictData.UnitType);
         if (CommonUtils.isNotEmpty(companies)) {
+            Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictData.UserType);
+            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
+            Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictData.UnitType);
             for (int i = 0; i < companies.size(); i++) {
                 Company co = companies.get(i);
                 co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));

@@ -9,10 +9,13 @@ import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.ActualData;
+import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.util.CodeNumUtil;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -35,7 +38,16 @@ public class ActualController extends BaseController {
         if(CommonUtils.isNotEmpty(keyword)){
             conditions.add(new Condition("name", Operators.LIKE, keyword));
         }
-        Page<ActualData> pageInfo = ActualData.me.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
+        Page<ActualData> pageInfo = ActualData.me.getActualDataPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        List<ActualData> list = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+            for (int i = 0; i < list.size(); i++) {
+                ActualData co = list.get(i);
+                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                list.set(i, co);
+            }
+        }
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
     }
 

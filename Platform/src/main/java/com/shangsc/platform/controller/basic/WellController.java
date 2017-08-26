@@ -32,10 +32,10 @@ public class WellController extends BaseController {
     @RequiresPermissions(value={"/basic/well"})
     public void getListData() {
         String keyword = this.getPara("name");
-        Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
         Page<Well> pageInfo = Well.me.getWellPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Well> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 Well co = list.get(i);
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
