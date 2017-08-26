@@ -49,12 +49,12 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="customerType">用户类型:</label>
                                 <div class="col-sm-4">
-                                    <%--<input type="text" id="customerType" name="customerType" value="${item.customerType}" class="form-control">--%>
-                                    <select  id="customerType" name="customerType" value="${item.customerType}" class="form-control"> </select>
+                                    <input type="hidden" id="customerTypeInput" name="customerTypeInput" value="${item.customerType}">
+                                    <select  id="customerType" name="customerType" class="form-control"> </select>
                                 </div>
                                 <label class="col-sm-2 control-label" for="waterUseType">取水用途:</label>
                                 <div class="col-sm-4">
-                                    <%--<input type="text" id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="form-control">--%>
+                                    <input type="hidden" id="waterUseTypeInput" name="waterUseTypeInput" value="${item.waterUseType}">
                                     <select  id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="form-control"> </select>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                                 </div>
                                 <label class="col-sm-2 control-label" for="unitType">节水型单位类型:</label>
                                 <div class="col-sm-4">
-                                    <%--<input type="text" id="unitType" name="unitType" value="${item.unitType}" class="form-control">--%>
+                                    <input type="hidden" id="unitTypeInput" name="unitTypeInput" value="${item.unitType}">
                                     <select  id="unitType" name="unitType" value="${item.unitType}" class="form-control"> </select>
                                 </div>
                             </div>
@@ -224,6 +224,10 @@
             for(var i = 0;i<waterUseType.length;i++) {
                 $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
             }
+            $("#unitType").val($("#unitTypeInput").val());
+            $("#customerType").val($("#customerTypeInput").val());
+            $("#waterUseType").val($("#waterUseTypeInput").val());
+
         },"json");
     }
     $(function(){

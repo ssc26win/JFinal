@@ -65,6 +65,16 @@ public abstract class BaseCompany<M extends BaseCompany<M>> extends BaseModel<M>
 		return get("water_use_type");
 	}
 
+	public String waterUseTypeName;
+
+	public String getWaterUseTypeName() {
+		return waterUseTypeName;
+	}
+
+	public void setWaterUseTypeName(String waterUseTypeName) {
+		this.waterUseTypeName = waterUseTypeName;
+	}
+
 	public void setContact(String contact) {
 		set("contact", contact);
 	}
@@ -127,6 +137,16 @@ public abstract class BaseCompany<M extends BaseCompany<M>> extends BaseModel<M>
 
 	public Integer getUnitType() {
 		return get("unit_type");
+	}
+
+	public String unitTypeName;
+
+	public String getUnitTypeName() {
+		return unitTypeName;
+	}
+
+	public void setUnitTypeName(String unitTypeName) {
+		this.unitTypeName = unitTypeName;
 	}
 
 	public void setCreateTime(java.util.Date createTime) {

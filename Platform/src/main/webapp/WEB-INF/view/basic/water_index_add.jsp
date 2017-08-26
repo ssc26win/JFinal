@@ -38,7 +38,8 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterUseType">取水用途:</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <select id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="col-xs-12 col-sm-6"></select>
+                    <select id="waterUseType" name="waterUseType" class="col-xs-12 col-sm-6"></select>
+                    <input type="hidden" id="waterUseTypeInput" name="waterUseTypeInput" value="${item.waterUseType}">
                   </div>
                 </div>
               </div>
@@ -217,6 +218,7 @@
       for(var i = 0;i<waterUseType.length;i++) {
         $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
       }
+      $("#waterUseType").val($("#waterUseTypeInput").val());
     },"json");
   }
   $(function(){

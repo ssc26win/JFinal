@@ -54,7 +54,8 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="watersType">水源类型</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <select id="watersType" name="watersType" value="${item.watersType}" class="col-xs-12 col-sm-6"></select>
+                                        <input type="hidden" id="watersTypeInput" name="watersTypeInput" value="${item.watersType}" />
+                                        <select id="watersType" name="watersType" class="col-xs-12 col-sm-6"></select>
                                     </div>
                                 </div>
                             </div>
@@ -62,6 +63,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterUseType">取水用途</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
+                                        <input type="hidden" id="waterUseTypeInput" name="waterUseTypeInput" value="${item.waterUseType}"/>
                                         <select id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="col-xs-12 col-sm-6"></select>
                                     </div>
                                 </div>
@@ -78,6 +80,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="chargeType">收费类型</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
+                                        <input type="hidden" id="chargeTypeInput" name="chargeTypeInput" value="${item.chargeType}" />
                                         <select id="chargeType" name="chargeType" value="${item.chargeType}" class="col-xs-12 col-sm-6" ></select>
                                     </div>
                                 </div>
@@ -198,13 +201,25 @@
             var watersType = data.WatersType;
             var waterUseType = data.WaterUseType;
             for(var i = 0;i<chargeType.length;i++) {
-                $("#chargeType").append("<option value='" + chargeType[i].value + "'>"+chargeType[i].name+"</option>");
+                if ($("#chargeTypeInput").val() == chargeType[i].value) {
+                    $("#chargeType").append("<option selected value='" + chargeType[i].value + "'>"+chargeType[i].name+"</option>");
+                } else {
+                    $("#chargeType").append("<option value='" + chargeType[i].value + "'>"+chargeType[i].name+"</option>");
+                }
             }
             for(var i = 0;i<watersType.length;i++) {
-                $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+                if ($("#watersTypeInput").val() == watersType[i].value) {
+                    $("#watersType").append("<option selected value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+                } else {
+                    $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+                }
             }
             for(var i = 0;i<waterUseType.length;i++) {
-                $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
+                if ($("#waterUseTypeInput").val() == waterUseType[i].value) {
+                    $("#waterUseType").append("<option selected value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
+                } else {
+                    $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
+                }
             }
         },"json");
     }

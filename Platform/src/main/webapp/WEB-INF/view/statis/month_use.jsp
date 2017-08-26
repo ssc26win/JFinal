@@ -38,7 +38,7 @@
                                                 <input type="text" id="startTime" name="startTime" class="form_datetime"/>~<input type="text" id="endTime" name="endTime" class="form_datetime"/>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
-                                                <select id="watersType" name="watersType" style="margin-left: 5px;"><option>请选择水源类型</option></select>
+                                                <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px;height: 34px;"><option>请选择水源类型</option></select>
                                                 <input type="text" id="meterAttr" name="meterAttr" class="" placeholder="请输入水表属性" style="margin-left: 5px;"/>
                                                 <input type="text" id="street" name="street" class="" placeholder="请输入所属乡镇" style="margin-left: 5px;"/>
                                                 <span class="input-group-btn">

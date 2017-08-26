@@ -85,8 +85,8 @@ public class Company extends BaseCompany<Company> {
         if (CommonUtils.isNotEmpty(keyword)) {
             conditions.add(new Condition("name", Operators.LIKE, keyword));
         }
-        String select="select * from";
-        StringBuffer sqlExceptSelect = new StringBuffer("t_company");
+        String select="select c.* from";
+        StringBuffer sqlExceptSelect = new StringBuffer("t_company c");
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 

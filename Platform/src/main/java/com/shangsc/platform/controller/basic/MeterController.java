@@ -9,10 +9,13 @@ import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.WaterMeterExportService;
+import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.WaterMeter;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -30,13 +33,21 @@ public class MeterController extends BaseController {
 
     @RequiresPermissions(value={"/basic/meter"})
     public void getListData() {
-        String keyword=this.getPara("name");
-        //Set<Condition> conditions=new HashSet<Condition>();
-        //if(CommonUtils.isNotEmpty(keyword)){
-        //    conditions.add(new Condition("name", Operators.LIKE, keyword));
-        //}
-        //Page<WaterMeter> pageInfo = WaterMeter.me.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
+        String keyword = this.getPara("name");
+        Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+        Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
+        Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictData.ChargeType);
         Page<WaterMeter> pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        List<WaterMeter> list = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(list)) {
+            for (int i = 0; i < list.size(); i++) {
+                WaterMeter co = list.get(i);
+                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
+                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                co.put("chargeTypeName", String.valueOf(mapChargeType.get(String.valueOf(co.getChargeType()))));
+                list.set(i, co);
+            }
+        }
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
     }
 

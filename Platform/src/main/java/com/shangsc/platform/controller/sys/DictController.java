@@ -113,14 +113,6 @@ public class DictController extends BaseController {
 		this.renderJson(JqGridModelUtils.toJqGridView(pageInfo)); 
 	}
 
-    private static final String UserType = "UserType";
-    private static final String WaterUseType = "WaterUseType";
-    private static final String UnitType = "UnitType";
-    private static final String WatersType = "WatersType";
-    private static final String ChargeType = "ChargeType";
-
-
-
     @RequiresPermissions(value={"/dict"})
     public void getByType() {
         Integer typeId = this.getParaToInt("typeId");
@@ -130,28 +122,28 @@ public class DictController extends BaseController {
 
         if ((typeId == null || typeId == 0) && StringUtils.isEmpty(typeName)) {
 
-            List<Map<String, Object>> resultUserType = DictData.dao.getDictMap(0, UserType);
+            List<Map<String, Object>> resultUserType = DictData.dao.getDictMapList(0, DictData.UserType);
 
-            allData.put(UserType, resultUserType);
+            allData.put(DictData.UserType, resultUserType);
 
-			List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMap(0, WaterUseType);
+			List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMapList(0, DictData.WaterUseType);
 
-            allData.put(WaterUseType, resultWaterUseType);
+            allData.put(DictData.WaterUseType, resultWaterUseType);
 
-			List<Map<String, Object>> resultUnitType = DictData.dao.getDictMap(0, UnitType);
+			List<Map<String, Object>> resultUnitType = DictData.dao.getDictMapList(0, DictData.UnitType);
 
-            allData.put(UnitType, resultUnitType);
+            allData.put(DictData.UnitType, resultUnitType);
 
-			List<Map<String, Object>> resultWatersType = DictData.dao.getDictMap(0, WatersType);
+			List<Map<String, Object>> resultWatersType = DictData.dao.getDictMapList(0, DictData.WatersType);
 
-            allData.put(WatersType, resultWatersType);
+            allData.put(DictData.WatersType, resultWatersType);
 
-			List<Map<String, Object>> resultChargeType = DictData.dao.getDictMap(0, ChargeType);
+			List<Map<String, Object>> resultChargeType = DictData.dao.getDictMapList(0, DictData.ChargeType);
 
-            allData.put(ChargeType, resultChargeType);
+            allData.put(DictData.ChargeType, resultChargeType);
 
         } else {
-			List<Map<String, Object>> resultType = DictData.dao.getDictMap(typeId, typeName);
+			List<Map<String, Object>> resultType = DictData.dao.getDictMapList(typeId, typeName);
             allData.put(typeName, resultType);
         }
         this.renderJson(allData);

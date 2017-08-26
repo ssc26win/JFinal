@@ -10,10 +10,12 @@ import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.CompanyExportService;
 import com.shangsc.platform.model.Company;
+import com.shangsc.platform.model.DictData;
 
 import java.io.File;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -36,11 +38,17 @@ public class CompanyController extends BaseController {
         if(CommonUtils.isNotEmpty(keyword)){
             conditions.add(new Condition("name", Operators.LIKE, keyword));
         }
-        Page<Company> pageInfo = Company.me.getPage(getPage(), this.getRows(), conditions,this.getOrderby());
+        Page<Company> pageInfo = Company.me.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
         List<Company> companies = pageInfo.getList();
+        Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictData.UserType);
+        Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
+        Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictData.UnitType);
         if (CommonUtils.isNotEmpty(companies)) {
             for (int i = 0; i < companies.size(); i++) {
                 Company co = companies.get(i);
+                co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
+                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
+                co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
                 co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('" + co.getName() + "', '"
                         + co.getAddress() + "', '0'" + ")\">" + co.getAddress() + "</a>");
                 companies.set(i, co);
@@ -97,8 +105,6 @@ public class CompanyController extends BaseController {
             conditions.add(new Condition("name", Operators.LIKE, keyword));
         }
         Page<Company> pageInfo = Company.me.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
-
-
         String path = service.export(pageInfo);
         renderFile(new File(path));
     }

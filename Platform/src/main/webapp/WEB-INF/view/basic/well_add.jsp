@@ -71,9 +71,10 @@
                                 <div class="col-sm-3">
                                     <input type="text" id="groundDepth" name="groundDepth" value="${item.groundDepth}" class="form-control">
                                 </div>
-                                <label class="col-sm-3 control-label" for="oneselfWell">是否为单位自备井:</label>
+                                <label class="col-sm-3 control-label" for="oneselfWell_0">是否为单位自备井:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="oneselfWell" name="oneselfWell" value="${item.oneselfWell}" class="form-control">
+                                    <input type="radio" name="oneselfWell" id="oneselfWell_0" value="0" ${item.oneselfWell eq 0?'checked':'' }/>否
+                                    <input type="radio" name="oneselfWell" id="oneselfWell_1" value="1" ${item.oneselfWell eq 1?'checked':'' }/>是
                                 </div>
                             </div>
                             <div class="form-group">
@@ -91,15 +92,17 @@
                                 <div class="col-sm-3">
                                     <input type="text" id="application" name="application" value="${item.application}" class="form-control">
                                 </div>
-                                <label class="col-sm-3 control-label" for="electromechanics">是否已配套机电设备:</label>
+                                <label class="col-sm-3 control-label" for="electromechanics_0">是否已配套机电设备:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="electromechanics" name="electromechanics" value="${item.electromechanics}" class="form-control">
+                                    <input type="radio" name="electromechanics" id="electromechanics_0" value="0" ${item.electromechanics eq 0?'checked':'' }/>否
+                                    <input type="radio" name="electromechanics" id="electromechanics_1" value="1" ${item.electromechanics eq 1?'checked':'' }/>是
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="calculateWater">是否已安装水量计量设施:</label>
+                                <label class="col-sm-3 control-label" for="calculateWater_0">是否已安装水量计量设施:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="calculateWater" name="calculateWater" value="${item.calculateWater}" class="form-control">
+                                    <input type="radio" name="calculateWater" id="calculateWater_0" value="0" ${item.calculateWater eq 0?'checked':'' }/>否
+                                    <input type="radio" name="calculateWater" id="calculateWater_1" value="1" ${item.calculateWater eq 1?'checked':'' }/>是
                                 </div>
                                 <label class="col-sm-3 control-label" for="pumpModel">水泵型号:</label>
                                 <div class="col-sm-3">
@@ -111,9 +114,10 @@
                                 <div class="col-sm-3">
                                     <input type="text" id="calculateType" name="calculateType" value="${item.calculateType}" class="form-control">
                                 </div>
-                                <label class="col-sm-3 control-label" for="aboveScale">规模以上地下水水源地水井:</label>
+                                <label class="col-sm-3 control-label" for="aboveScale_0">规模以上地下水源地水井:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="aboveScale" name="aboveScale" value="${item.aboveScale}" class="form-control">
+                                    <input type="radio" name="aboveScale" id="aboveScale_0" value="0" ${item.aboveScale eq 0?'checked':'' }/>否
+                                    <input type="radio" name="aboveScale" id="aboveScale_1" value="1" ${item.aboveScale eq 1?'checked':'' }/>是
                                 </div>
                             </div>
                             <div class="form-group">
@@ -121,7 +125,7 @@
                                 <div class="col-sm-3">
                                     <input type="text" id="geomorphicType" name="geomorphicType" value="${item.geomorphicType}" class="form-control">
                                 </div>
-                                <label class="col-sm-3 control-label" for="groundType">所取用地下水的类型:</label>
+                                <label class="col-sm-3 control-label" for="groundType">所取地下水类型:</label>
                                 <div class="col-sm-3">
                                     <input type="text" id="groundType" name="groundType" value="${item.groundType}" class="form-control">
                                 </div>
@@ -133,6 +137,7 @@
                                 </div>
                                 <label class="col-sm-3 control-label" for="watersType">水源类型:</label>
                                 <div class="col-sm-3">
+                                    <input type="hidden" id="watersTypeInput" name="watersTypeInput" value="${item.watersTypeInput}" >
                                     <select id="watersType" name="watersType" value="${item.watersType}" class="form-control"></select>
                                 </div>
                             </div>
@@ -147,9 +152,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="licence">是否已办理取水许可证:</label>
+                                <label class="col-sm-3 control-label" for="licence_0">是否已办理取水许可证:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="licence" name="licence" value="${item.licence}" class="form-control">
+                                        <input type="radio" name="licence" id="licence_0" value="0" ${item.licence eq 0?'checked':'' }/>否
+                                        <input type="radio" name="licence" id="licence_1" value="1" ${item.licence eq 1?'checked':'' }/>是
                                 </div>
                                 <label class="col-sm-3 control-label" for="licenceCode">取水许可证编号:</label>
                                 <div class="col-sm-3">
@@ -265,17 +271,13 @@
     function getDictMapData(){
         var submitData = {};
         $.post("${context_path}/dict/getByType", submitData, function(data) {
-            var chargeType = data.ChargeType;
             var watersType = data.WatersType;
-            var waterUseType = data.WaterUseType;
-            for(var i = 0;i<chargeType.length;i++) {
-                $("#chargeType").append("<option value='" + chargeType[i].value + "'>"+chargeType[i].name+"</option>");
-            }
             for(var i = 0;i<watersType.length;i++) {
-                $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
-            }
-            for(var i = 0;i<waterUseType.length;i++) {
-                $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
+                if ($("#watersTypeInput").val() == watersType[i].value) {
+                    $("#watersType").append("<option selected value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+                } else {
+                    $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+                }
             }
         },"json");
     }

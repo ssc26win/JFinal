@@ -8,6 +8,7 @@ import com.shangsc.platform.model.base.BaseWell;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,17 +47,17 @@ public class Well extends BaseWell<Well> {
 	}
 
 	public InvokeResult save(Long id, Long companyId, String innerCode,	String name, String wellNum, String township,
-							 String village, String address, BigDecimal wellDepth, BigDecimal groundDepth,	Integer oneselfWell,
+							 String village, String address, BigDecimal wellDepth, BigDecimal groundDepth, Date startDate, Integer oneselfWell,
 							 BigDecimal innerDiameter, String material,	String application,	Integer electromechanics, Integer calculateWater,
-							 String pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType,Integer groundType,
-							 String nameCode, Integer watersType, String useEfficiency,String method, Integer licence,
+							 String pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType, Integer groundType,
+							 String nameCode, Integer watersType, String useEfficiency, String method, Integer licence,
 							 String licenceCode, BigDecimal waterWithdrawals) {
 		if (null != id && id > 0l) {
 			Well well = this.findById(id);
 			if (well == null) {
 				return InvokeResult.failure("更新失败, 该水井不存在");
 			}
-			well = setProp(well, companyId, innerCode, name, wellNum, township, village, address, wellDepth, groundDepth, oneselfWell,
+			well = setProp(well, companyId, innerCode, name, wellNum, township, village, address, wellDepth, groundDepth, startDate, oneselfWell,
 					innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
 					groundType,	nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
 			well.update();
@@ -65,7 +66,7 @@ public class Well extends BaseWell<Well> {
 				return InvokeResult.failure("水井编号已存在");
 			} else {
 				Well well = new Well();
-				well = setProp(well, companyId, innerCode, name, wellNum, township, village, address, wellDepth, groundDepth, oneselfWell,
+				well = setProp(well, companyId, innerCode, name, wellNum, township, village, address, wellDepth, groundDepth, startDate, oneselfWell,
 						innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
 						groundType,	nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
 				well.save();
@@ -75,7 +76,7 @@ public class Well extends BaseWell<Well> {
 	}
 
 	private Well setProp(Well well, Long companyId, String innerCode, String name, String wellNum, String township,
-			String village, String address, BigDecimal wellDepth, BigDecimal groundDepth, Integer oneselfWell,
+			String village, String address, BigDecimal wellDepth, BigDecimal groundDepth, Date startDate, Integer oneselfWell,
 			BigDecimal innerDiameter, String material,	String application,	Integer electromechanics, Integer calculateWater,
 			String pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType,Integer groundType,
 			String nameCode, Integer watersType, String useEfficiency, String method, Integer licence,
@@ -88,6 +89,7 @@ public class Well extends BaseWell<Well> {
 		well.setVillage(village);
 		well.setAddress(address);
 		well.setWellDepth(wellDepth);
+		well.setStartDate(startDate);
 		well.setGroundDepth(groundDepth);
 		well.setOneselfWell(oneselfWell);
 		well.setInnerDiameter(innerDiameter);

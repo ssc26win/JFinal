@@ -28,7 +28,13 @@ import java.util.*;
  */
 @SuppressWarnings("serial")
 public class DictData extends BaseDictData<DictData> {
+
 	public static final DictData dao = new DictData();
+	public static final String UserType = "UserType";
+	public static final String WaterUseType = "WaterUseType";
+	public static final String UnitType = "UnitType";
+	public static final String WatersType = "WatersType";
+	public static final String ChargeType = "ChargeType";
 
 	public InvokeResult saveDictData(Integer id, String name, String remark,
 			Integer seq, String value, Integer typeId) {
@@ -53,7 +59,22 @@ public class DictData extends BaseDictData<DictData> {
 		return InvokeResult.success();
 	}
 
-    public List<Map<String, Object>> getDictMap(Integer typeId, String typeName){
+	public Map<String, Object> getDictMap(Integer typeId, String typeName){
+		if ((!(typeId != null && typeId > 0)) && StringUtils.isNotEmpty(typeName)) {
+			DictType dictType = DictType.dao.findFirst("select * from dict_type where name='" + typeName + "'");
+			typeId = dictType.getId();
+		}
+		List<DictData> list = this.find("select value,name from dict_data where dict_type_id=" + typeId);
+		Map<String, Object> allMap = new HashMap<String, Object>();
+		if (CollectionUtils.isNotEmpty(list)) {
+			for (DictData dictData:list) {
+				allMap.put(dictData.getValue(), dictData.getName());
+			}
+		}
+		return allMap;
+	}
+
+    public List<Map<String, Object>> getDictMapList(Integer typeId, String typeName){
         if ((!(typeId != null && typeId > 0)) && StringUtils.isNotEmpty(typeName)) {
             DictType dictType = DictType.dao.findFirst("select * from dict_type where name='" + typeName + "'");
             typeId = dictType.getId();

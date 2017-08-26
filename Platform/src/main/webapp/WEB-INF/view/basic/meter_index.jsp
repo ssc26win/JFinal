@@ -106,10 +106,10 @@
                 { label: '单位名称', name: 'companyName', width: 150, sortable:false},
                 { label: '路别', name: 'line_num', width: 100, sortable:false},
                 { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
-                { label: '水源类型', name: 'waters_type', width: 45, sortable:false},
-                { label: '取水用途', name: 'water_use_type', width: 150, sortable:false},
+                { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
+                { label: '取水用途', name: 'waterUseTypeName', width: 150, sortable:false},
                 { label: '水表属性', name: 'meter_attr', width: 40, sortable:false},
-                { label: '收费类型', name: 'charge_type', width: 50, sortable:false},
+                { label: '收费类型', name: 'chargeTypeName', width: 50, sortable:false},
                 { label: '计费周期', name: 'billing_cycle', width: 45, sortable:false},
                 { label: '注册日期', name: 'regist_date', width: 100, sortable:false}
             ],

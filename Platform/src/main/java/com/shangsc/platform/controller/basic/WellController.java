@@ -1,19 +1,20 @@
 package com.shangsc.platform.controller.basic;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
-import com.shangsc.platform.core.model.Condition;
-import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.Well;
 import com.shangsc.platform.util.CodeNumUtil;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author ssc
@@ -30,19 +31,29 @@ public class WellController extends BaseController {
 
     @RequiresPermissions(value={"/basic/well"})
     public void getListData() {
-        String keyword=this.getPara("name");
-        Set<Condition> conditions=new HashSet<Condition>();
-        if (CommonUtils.isNotEmpty(keyword)) {
-            conditions.add(new Condition("name", Operators.LIKE, keyword));
+        String keyword = this.getPara("name");
+        Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+        Page<Well> pageInfo = Well.me.getWellPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        List<Well> list = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(list)) {
+            for (int i = 0; i < list.size(); i++) {
+                Well co = list.get(i);
+                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                co.put("aboveScaleName",  YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAboveScale())));
+                co.put("oneselfWellName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getOneselfWell())));
+                co.put("electromechanicsName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getElectromechanics())));
+                co.put("calculateWaterName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getCalculateType())));
+                co.put("licenceName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getLicence())));
+                list.set(i, co);
+            }
         }
-        Page<Well> pageInfo = Well.me.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
     }
 
     @RequiresPermissions(value={"/basic/well"})
     public void add() {
         Integer id = this.getParaToInt("id");
-        if(id!=null){
+        if (id!=null) {
             this.setAttr("item", Well.me.findById(id));
         }
         this.setAttr("id", id);
@@ -63,7 +74,7 @@ public class WellController extends BaseController {
         BigDecimal wellDepth = CodeNumUtil.getBigDecimal(this.getPara("wellDepth"), 2);
         BigDecimal groundDepth = CodeNumUtil.getBigDecimal(this.getPara("groundDepth"), 2);
 
-        //start_date
+        Date startDate = this.getParaToDate("startDate");
 
         Integer oneselfWell = this.getParaToInt("oneselfWell");
         BigDecimal innerDiameter = CodeNumUtil.getBigDecimal(this.getPara("innerDiameter"), 2);
@@ -91,7 +102,7 @@ public class WellController extends BaseController {
 
         BigDecimal waterWithdrawals = CodeNumUtil.getBigDecimal(this.getPara("waterWithdrawals"), 2);
 
-        InvokeResult result = Well.me.save(id, companyId, innerCode, name, wellNum, township, village, address, wellDepth, groundDepth, oneselfWell,
+        InvokeResult result = Well.me.save(id, companyId, innerCode, name, wellNum, township, village, address, wellDepth, groundDepth, startDate,oneselfWell,
                 innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
                 groundType,	nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
         this.renderJson(result);

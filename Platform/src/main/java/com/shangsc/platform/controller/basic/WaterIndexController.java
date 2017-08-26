@@ -9,12 +9,15 @@ import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.WaterIndexExportService;
+import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.WaterIndex;
 import com.shangsc.platform.util.CodeNumUtil;
 
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,12 +36,16 @@ public class WaterIndexController extends BaseController {
     @RequiresPermissions(value={"/basic/waterindex"})
     public void getListData() {
         String keyword=this.getPara("name");
-        //Set<Condition> conditions=new HashSet<Condition>();
-        //if(CommonUtils.isNotEmpty(keyword)){
-        //    conditions.add(new Condition("name", Operators.LIKE, keyword));
-        //}
-        //Page<WaterIndex> pageInfo = WaterIndex.me.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
         Page<WaterIndex> pageInfo = WaterIndex.me.getWaterIndexPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
+        List<WaterIndex> list = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(list)) {
+            for (int i = 0; i < list.size(); i++) {
+                WaterIndex co = list.get(i);
+                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
+                list.set(i, co);
+            }
+        }
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
     }
 
