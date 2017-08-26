@@ -19,8 +19,8 @@
         }
 
         #mapbox #map {
-            width: 600px;
-            height: 400px;
+            width: 800px;
+            height: 500px;
             float: left;
         }
 
@@ -68,19 +68,33 @@
         </script>
         <div class="main-content" id="page-wrapper">
         <%--<h2 onmousedown="drag(this.parentNode,event)">百度地图<a href="javascript:" onclick="document.getElementById('map').style.display='none'" class="close">×</a></h2>--%>
-        <div class="row col-xs-12">
-            <form class="form-horizontal" id="validation-form" method="POST">
-                <div class="form-group">
-                    <input type="text" id="searchtext"  class="form-control col-xs-8" value="">
-                    <div class="col-xs-4">
-                        <button type="button" id="btn_search" class="btn btn-purple btn-sm" id="searchbt" onclick="serachlocal()">
-                            <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
-                            搜索
-                        </button>
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+
+
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6">
+                                    <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="ace-icon fa fa-check"></i>
+                                            </span>
+                                        <input type="text" id="searchtext" name="searchtext" class="form-control search-query" placeholder="请输入关键字" />
+                                            <span class="input-group-btn">
+                                                <button type="button" id="searchbt" class="btn btn-purple btn-sm">
+                                                    <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+                                                    搜索
+                                                </button>
+                                            </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
         <div id="mapbox" class="row">
             <div id="map" style="cursor: crosshair;" class="col-sm-9" style="height:auto!important;" ></div>
             <div id="results" class="col-sm-3"></div>
