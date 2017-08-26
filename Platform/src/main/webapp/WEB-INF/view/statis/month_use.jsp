@@ -35,7 +35,7 @@
                                         <form id="exportForm" action="${context_path}/statis/month/export" method="post">
                                             <div class="input-group">
                                                 日期时间:
-                                                <input type="text" id="startTime" name="startTime" class="form_datetime"/>~<input type="text" id="endTime" name="endTime" class="form_datetime"/>
+                                                <input type="text" id="startTime" name="startTime" class="form_date"/>~<input type="text" id="endTime" name="endTime" class="form_date"/>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px;height: 34px;"><option>请选择水源类型</option></select>
@@ -100,11 +100,11 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
-                { label: '单位名称', name: 'name', width: 120, sortable:false},
+                { label: '单位名称', name: 'companyName', width: 120, sortable:false},
                 { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
                 { label: '路别', name: 'line_num', width: 100, sortable:false},
                 { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
-                { label: '水源类型', name: 'waters_type', width: 45, sortable:false},
+                { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
                 { label: '查询月份', name: 'find_month', width: 100, sortable:true},
                 { label: '日用水量', name: 'month_num', width: 80, sortable:false},

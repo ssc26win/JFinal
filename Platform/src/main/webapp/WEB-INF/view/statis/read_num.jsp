@@ -100,11 +100,11 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
-                { label: '单位名称', name: 'name', width: 120, sortable:false},
+                { label: '单位名称', name: 'companyName', width: 120, sortable:false},
                 { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
                 { label: '路别', name: 'line_num', width: 100, sortable:false},
                 { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
-                { label: '水源类型', name: 'waters_type', width: 45, sortable:false},
+                { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
                 { label: '查询时间', name: 'write_time', width: 100, sortable:true},
                 { label: '水表读数', name: 'read_num', width: 80, sortable:false},

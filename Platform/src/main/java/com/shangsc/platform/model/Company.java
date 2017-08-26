@@ -106,7 +106,7 @@ public class Company extends BaseCompany<Company> {
     }
 
     public Page<Company> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
-        String select=" select c.* ";
+        String select=" select c.*, (select meter_num,line_num from t_water_meter twm where twm.inner_code=c.inner_code) ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
         return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }

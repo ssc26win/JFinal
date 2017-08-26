@@ -83,4 +83,5 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         this.deleteById(id);
         return InvokeResult.success();
     }
+
 }

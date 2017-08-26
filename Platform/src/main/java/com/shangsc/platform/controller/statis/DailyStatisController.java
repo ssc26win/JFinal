@@ -3,11 +3,15 @@ package com.shangsc.platform.controller.statis;
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
+import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
-import com.shangsc.platform.model.Company;
+import com.shangsc.platform.model.ActualData;
+import com.shangsc.platform.model.DictData;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author ssc
@@ -28,11 +32,18 @@ public class DailyStatisController extends BaseController {
         String innerCode = this.getPara("innerCode");
         Date startTime = this.getParaToDate("startTime");
         Date endTime = this.getParaToDate("endTime");
-
-        Page<Company> pageInfo = Company.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
+        Page<ActualData> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
                 startTime, endTime, name, innerCode);
-
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+        List<ActualData> list = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+            for (int i = 0; i < list.size(); i++) {
+                ActualData co = list.get(i);
+                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                list.set(i, co);
+            }
+        }
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
     @RequiresPermissions(value={"/statis/daily"})

@@ -48,7 +48,7 @@ public class ActualController extends BaseController {
                 list.set(i, co);
             }
         }
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
     /**
