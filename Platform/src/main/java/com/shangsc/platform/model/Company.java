@@ -98,4 +98,28 @@ public class Company extends BaseCompany<Company> {
         }
         return map;
     }
+
+    public Page<Company> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+        String select=" select * ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
+        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+
+    public Page<Company> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+        String select=" select c.* ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
+        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+
+    public Page<Company> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+        String select=" select * ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
+        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+
+    public Page<Company> getYearStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+        String select=" select * ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
+        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
 }

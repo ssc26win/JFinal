@@ -48,4 +48,5 @@ public class ActualData extends BaseActualData<ActualData> {
 		this.deleteById(id);
 		return InvokeResult.success();
 	}
+
 }

@@ -4,7 +4,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.JqGridModelUtils;
-import com.shangsc.platform.model.ReadNum;
+import com.shangsc.platform.model.Company;
 
 import java.io.File;
 import java.util.Date;
@@ -16,8 +16,6 @@ import java.util.Date;
  * @Desc
  */
 public class ReadnumStatisController extends BaseController {
-
-    private ReadNum dataStatis = new ReadNum();
 
     @RequiresPermissions(value={"/statis/readnum"})
     public void index() {
@@ -31,7 +29,7 @@ public class ReadnumStatisController extends BaseController {
         Date startTime = this.getParaToDate("startTime");
         Date endTime = this.getParaToDate("endTime");
 
-        Page<?> pageInfo = dataStatis.getReadnumStatis(getPage(), getRows(), getOrderbyStr(),
+        Page<Company> pageInfo = Company.me.getReadnumStatis(getPage(), getRows(), getOrderbyStr(),
                 startTime, endTime, name, innerCode);
 
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
@@ -44,8 +42,8 @@ public class ReadnumStatisController extends BaseController {
         Date startTime = this.getParaToDate("startTime");
         Date endTime = this.getParaToDate("endTime");
 
-        dataStatis.exportReadNumData(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode);
+        //dataStatis.exportReadNumData(getPage(), getRows(), getOrderbyStr(),
+        //        startTime, endTime, name, innerCode);
         File file = new File("");
         this.renderFile(file);
     }

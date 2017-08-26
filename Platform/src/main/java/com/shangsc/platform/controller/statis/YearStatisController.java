@@ -4,7 +4,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.JqGridModelUtils;
-import com.shangsc.platform.model.YearNum;
+import com.shangsc.platform.model.Company;
 
 import java.io.File;
 import java.util.Date;
@@ -16,8 +16,6 @@ import java.util.Date;
  * @Desc
  */
 public class YearStatisController extends BaseController {
-
-    private YearNum dataStatis = new YearNum();
 
     @RequiresPermissions(value = {"/statis/year"})
     public void index() {
@@ -31,7 +29,7 @@ public class YearStatisController extends BaseController {
         Date startTime = this.getParaToDate("startTime");
         Date endTime = this.getParaToDate("endTime");
 
-        Page<?> pageInfo = dataStatis.getYearStatis(getPage(), getRows(), getOrderbyStr(),
+        Page<Company> pageInfo = Company.me.getYearStatis(getPage(), getRows(), getOrderbyStr(),
                 startTime, endTime, name, innerCode);
 
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
@@ -44,8 +42,8 @@ public class YearStatisController extends BaseController {
         Date startTime = this.getParaToDate("startTime");
         Date endTime = this.getParaToDate("endTime");
 
-        dataStatis.exportYearData(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode);
+        //dataStatis.exportYearData(getPage(), getRows(), getOrderbyStr(),
+        //        startTime, endTime, name, innerCode);
         File file = new File("");
         this.renderFile(file);
     }

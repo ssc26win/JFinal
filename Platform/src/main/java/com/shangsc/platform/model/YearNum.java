@@ -16,9 +16,9 @@ public class YearNum extends BaseYearNum<YearNum> {
 
     private Logger logger = Logger.getLogger(getClass());
 
-    public Page<?> getYearStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
+    public Page<YearNum> getYearStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
         logger.info("orderbyStr : " + orderbyStr);
-        String select="select * from";
+        String select="select * ";
         StringBuffer sqlExceptSelect=new StringBuffer("from company c");
         return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
