@@ -16,6 +16,7 @@
 package com.shangsc.platform.conf;
 
 import com.jfinal.config.Routes;
+import com.shangsc.platform.controller.ChartController;
 import com.shangsc.platform.controller.ImageController;
 import com.shangsc.platform.controller.IndexController;
 import com.shangsc.platform.controller.app.AppVersionController;
@@ -56,7 +57,7 @@ public class AdminRoutes extends Routes{
         add("/statis/daily", DailyStatisController.class, "/WEB-INF/view/statis");
         add("/statis/month", MonthStatisController.class, "/WEB-INF/view/statis");
         add("/statis/year", YearStatisController.class, "/WEB-INF/view/statis");
-
+		add("/chart", ChartController.class, "/WEB-INF/view");
 	}
 
 }

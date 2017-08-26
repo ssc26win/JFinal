@@ -1,5 +1,6 @@
 package com.shangsc.platform.model;
 
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
@@ -8,6 +9,8 @@ import com.shangsc.platform.model.base.BaseWaterMeter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -84,4 +87,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return InvokeResult.success();
     }
 
+
+    public  WaterMeter findByInnerCode(String innerCode){
+        String sql = "SELECT * FROM t_Water_Meter WHERE inner_code= ?";
+        return this.findFirst(sql,innerCode);
+    }
 }
