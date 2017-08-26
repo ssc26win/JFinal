@@ -97,17 +97,6 @@ public class UserController extends BaseController {
 		this.renderJson(result);
 	}
 
-	@RequiresPermissions(value={"/sys/user"})
-	public void regist(){
-		String username=this.getPara("name");
-		String password=this.getPara("password");
-		String phone=this.getPara("phone");
-		String email=this.getPara("email");
-		String des=this.getPara("des");
-		InvokeResult result=SysUser.me.save( 0, username, password, des,phone, email);
-
-		this.renderJson(result);
-	}
 }
 
 

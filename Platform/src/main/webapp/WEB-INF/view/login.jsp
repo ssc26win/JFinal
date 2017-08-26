@@ -114,7 +114,7 @@
 											<div>
 												<a href="#" data-target="#forgot-box" class="forgot-password-link">
 													<i class="ace-icon fa fa-arrow-left"></i>
-													忘记密码？
+													<%--忘记密码？--%>
 												</a>
 											</div>
 
@@ -180,32 +180,39 @@
 											<div class="space-6"></div>
 											<p> 请添写您的信息: </p>
 
-											<form>
+											<form action="sys/">
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control" placeholder="请输入邮箱" />
+															<input type="email" id="remail" name="remail" class="form-control" placeholder="请输入邮箱" />
 															<i class="ace-icon fa fa-envelope"></i>
 														</span>
 													</label>
 
+                                                    <label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" id="rphone" name="rphone" class="form-control" placeholder="请输入手机号" />
+															<i class="ace-icon fa fa-phone"></i>
+														</span>
+                                                    </label>
+
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="请输入用户名" />
+															<input type="text" id="rusername" name="rusername" class="form-control" placeholder="请输入用户名" />
 															<i class="ace-icon fa fa-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="请输入密码" />
+															<input type="password" id="rpassword" name="rpassword" class="form-control" placeholder="请输入密码" />
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="请输入确认密码" />
+															<input type="password" id="r2password" name="r2password"  class="form-control" placeholder="请输入确认密码" />
 															<i class="ace-icon fa fa-retweet"></i>
 														</span>
 													</label>
@@ -226,7 +233,7 @@
 															<span class="bigger-110">重置</span>
 														</button>
 
-														<button type="button" class="width-65 pull-right btn btn-sm btn-success">
+														<button type="button" id="regist-btn" class="width-65 pull-right btn btn-sm btn-success">
 															<span class="bigger-110">注册</span>
 
 															<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
@@ -292,7 +299,7 @@
 					var theEvent = window.event || e; 
 					var code = theEvent.keyCode || theEvent.which; 
 					if (code == 13) { 
-					$('#login-btn').click();
+					    $('#login-btn').click();
 					} 
 				}
 				$('#img').click(function(){
@@ -340,6 +347,66 @@
 							}, "json");
 				      return false;
 				    });
+                $('#regist-btn').click(function(event) {
+                    event.stopPropagation();
+                    var $btn = $(this);
+                    if ($btn.hasClass("disabled")) {
+                        return false;
+                    }
+                    var $rphone = $('#rphone');
+                    var $remail = $('#remail');
+                    var $rusername = $('#rusername');
+                    var $rpassword = $('#rpassword');
+                    var $r2password = $('#r2password');
+                    if (!$rphone.val()) {
+                        layer.alert('请输入手机号！');
+                        $rphone.focus();
+                        return false;
+                    }
+                    if (!$remail.val()) {
+                        layer.alert('请输入邮箱！');
+                        $remail.focus();
+                        return false;
+                    }
+                    if (!$rusername.val()) {
+                        layer.alert('请输入用户名！');
+                        $rusername.focus();
+                        return false;
+                    }
+                    if (!$rpassword.val()) {
+                        layer.alert('请输入密码！');
+                        $rpassword.focus();
+                        return false;
+                    }
+                    if (!$r2password.val()) {
+                        layer.alert('请输入确认密码！');
+                        $r2password.focus();
+                        return false;
+                    }
+                    if ($rpassword.val() != $r2password.val()) {
+                        layer.alert('密码与确认密码不一致！');
+                        $r2password.focus();
+                        return false;
+                    }
+                    var submitData = {
+                        phone:$rphone.val(),
+                        email:$remail.val(),
+                        username : $rusername.val(),
+                        password : $rpassword.val()
+                    };
+                    $btn.addClass("disabled");
+                    $.post("${context_path}/regist", submitData, function(data) {
+                        $btn.removeClass("disabled");
+                        if (data.code == 0) {
+                            layer.alert("恭喜您，注册成功，请登录！", function(){
+                                window.top.location.href = "${context_path}/";
+                            });
+                        } else {
+                            layer.alert(data.msg);
+                        }
+                    }, "json");
+                    return false;
+                });
 			});
 			jQuery(function($) {
 				$(document).on('click', '.toolbar a[data-target]', function(e) {
@@ -372,6 +439,7 @@
 				});
 
 			});
+
 		</script>
 	</body>
 </html>

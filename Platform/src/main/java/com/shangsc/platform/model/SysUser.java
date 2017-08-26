@@ -29,7 +29,6 @@ import com.shangsc.platform.model.base.BaseSysUser;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 /**
@@ -192,4 +191,24 @@ public class SysUser extends BaseSysUser<SysUser>
 		StringBuffer sqlExceptSelect=new StringBuffer("from sys_user su");
 		return this.paginate(page, rows, select, sqlExceptSelect.toString());
 	}
+
+    public InvokeResult regist(String username,String password,String phone,String email){
+        if(this.hasExist(username)){
+            return InvokeResult.failure("用户名已存在");
+        }else{
+            if(StrKit.isBlank(password))password="123456";
+            SysUser sysUser=new SysUser();
+            sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date())
+                    .set("phone", phone).set("email", email).save();
+            List<String> sqlList=Lists.newArrayList();
+            for(String roleId : "56".split(",")){
+                if(CommonUtils.isNotEmpty(roleId)){
+                    sqlList.add("insert into sys_user_role (user_id,role_id) values ("+sysUser.getId()+","+Integer.valueOf(roleId)+")");
+                }
+            }
+            Db.batch(sqlList, 5);
+            CacheClearUtils.clearUserMenuCache();
+        }
+        return InvokeResult.success();
+    }
 }

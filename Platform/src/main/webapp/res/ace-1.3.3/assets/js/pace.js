@@ -6,10 +6,10 @@
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   defaultOptions = {
-    catchupTime: 500,
+    catchuptime: 1000,
     initialRate: .03,
-    minTime: 500,
-    ghostTime: 500,
+    mintime: 1000,
+    ghosttime: 1000,
     maxProgressPerFrame: 10,
     easeFactor: 1.25,
     startOnPageLoad: true,

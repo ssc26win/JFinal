@@ -120,6 +120,20 @@ public class IndexController extends Controller {
 			e.printStackTrace();
 		}
 	}
+
+    @Clear(AuthorityInterceptor.class)
+    public void regist(){
+        IWebUtils.removeCurrentSysUser(getRequest(), getResponse());
+        String username=this.getPara("username");
+        String password=this.getPara("password");
+        String phone=this.getPara("phone");
+        String email=this.getPara("email");
+        InvokeResult result=SysUser.me.regist(username, password, phone, email);
+        SysUser sysUser=SysUser.me.getByName(username);
+        IWebUtils.setCurrentLoginSysUser(this.getResponse(),this.getSession(),sysUser,0);
+        this.renderJson(result);
+    }
+
 }
 
 

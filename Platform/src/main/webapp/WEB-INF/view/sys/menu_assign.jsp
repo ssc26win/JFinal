@@ -198,15 +198,19 @@ $(function(){
 		
 		var submitData={
 				"menuIds":selectIds,
-				"roleId":"${roleId}",
+				"roleId":"${roleId}"
 		}
 		$.post("${context_path}/sys/role/saveMenuAssign" , submitData , 
 			function(data){
 			$("#btn_saveOrder").removeAttr("disabled");
 			layer.msg("保存成功", {
 			    icon: 1,
-			    time: 500 //1秒关闭（如果不配置，默认是3秒）
-			});
+			    time: 1000 //1秒关闭（如果不配置，默认是3秒）
+			},function(){
+                parent.reloadGrid();
+                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                parent.layer.close(index); //再执行关闭
+            });
 		},"json");
 	});
 	resize();

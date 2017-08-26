@@ -130,12 +130,12 @@
 				if(rid == -1){
 					layer.msg("请选择一项", {
 					    icon: 2,
-					    time: 500 //2秒关闭（如果不配置，默认是3秒）
+					    time: 1000 //2秒关闭（如果不配置，默认是3秒）
 					});
 				}else if(rid == -2 ){
 					layer.msg("只能选择一项", {
 					    icon: 2,
-					    time: 500 //2秒关闭（如果不配置，默认是3秒）
+					    time: 1000 //2秒关闭（如果不配置，默认是3秒）
 					});
 				}else {
 					parent.layer.open({
@@ -209,7 +209,7 @@
 			if(rid == -1){
 				layer.msg("请选择一个应用", {
 				    icon: 2,
-				    time: 500 //2秒关闭（如果不配置，默认是3秒）
+				    time: 1000 //2秒关闭（如果不配置，默认是3秒）
 				});
 				return;
 			}
@@ -222,7 +222,7 @@
 				if (data.code == 0) {
 					layer.msg("操作成功", {
 					    icon: 1,
-					    time: 500 //1秒关闭（如果不配置，默认是3秒）
+					    time: 1000 //1秒关闭（如果不配置，默认是3秒）
 					},function(){
 						//$("#grid-table").trigger("reloadGrid"); //重新载入
 						reloadGrid();
