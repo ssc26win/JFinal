@@ -8,6 +8,7 @@ import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseWaterMeter;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
             } else {
                 WaterMeter meter = new WaterMeter();
                 meter = setProp(meter, companyId, innerCode, lineNum, meterNum, watersType, waterUseType, meterAttr, chargeType, billingCycle);
+                meter.setRegistDate(new Date());
                 meter.save();
             }
         }

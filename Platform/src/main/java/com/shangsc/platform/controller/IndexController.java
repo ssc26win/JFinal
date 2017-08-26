@@ -67,10 +67,10 @@ public class IndexController extends Controller {
 			this.renderJson(InvokeResult.failure("用户不存在"));
 			return;
 		}
-		//if(SysLoginRecord.dao.hasOverLoginErrTimes(sysUser.getId())){
-		//	this.renderJson(InvokeResult.failure("今天连续输入密码错误次数超过5次"));
-		//	return;
-		//}
+		if(SysLoginRecord.dao.hasOverLoginErrTimes(sysUser.getId())){
+			this.renderJson(InvokeResult.failure("今天连续输入密码错误次数超过5次"));
+			return;
+		}
 		if(!sysUser.getPwd().equals(MyDigestUtils.shaDigestForPasswrod(this.getPara("password")))){
 			SysLoginRecord.dao.saveSysLoginRecord(sysUser.getId(),0);
 			this.renderJson(InvokeResult.failure("用户密码输入有误"));
@@ -99,7 +99,6 @@ public class IndexController extends Controller {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 	}
 	public void savePwdUpdate(){
 		String oldPwd=MyDigestUtils.shaDigestForPasswrod(getPara("oldPwd"));
