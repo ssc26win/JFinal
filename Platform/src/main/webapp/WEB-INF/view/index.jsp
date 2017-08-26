@@ -231,7 +231,7 @@
 				layer.open({
 					title:'修改密码',
 				    type: 2,
-				    area: ['770px', '500px'],
+				    area: ['770px', '400px'],
 				    fix: false, //不固定
 				    maxmin: true,
 				    content: '${context_path}/pwdSetting'

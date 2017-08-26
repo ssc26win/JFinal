@@ -1,22 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ include file="/WEB-INF/taglib.jsp"%>
-
 <!DOCTYPE html>
 <html lang="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>单位地址导航</title>
+    <meta name="description" content="overview &amp; stats" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <!-- bootstrap & fontawesome -->
+    <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=e3ZohdqyB0RL98hFOiC29xqh"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <style>
         #mapbox {
-            width: 850px;
-            height: 420px;
-            position: absolute;
-            background-color: #CCC;
-            border: 1px solid #9CF;
-            font-size: 12px;
-            left: 200px;
-            top: 50px;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
         }
 
         #mapbox #map {
@@ -31,47 +30,66 @@
             float: right;
         }
 
-        .mapheader {
-            height: 25px;
-            width: 250px;
-            float: right;
-            overflow: hidden;
-        }
+        /*.mapheader {*/
+            /*height: 25px;*/
+            /*width: 250px;*/
+            /*float: right;*/
+            /*overflow: hidden;*/
+        /*}*/
 
-        #mapbox h2 {
-            margin: 1px;
-            padding-left: 10px;
-            height: 20px;
-            line-height: 20px;
-            font-size: 12px;
-            color: #0066CC;
-            font-weight: 100;
-            background: #9CF;
-            cursor: move
-        }
+        /*#mapbox h2 {*/
+            /*margin: 1px;*/
+            /*padding-left: 10px;*/
+            /*height: 20px;*/
+            /*line-height: 20px;*/
+            /*font-size: 12px;*/
+            /*color: #0066CC;*/
+            /*font-weight: 100;*/
+            /*background: #9CF;*/
+            /*cursor: move*/
+        /*}*/
 
-        #mapbox .close {
-            display: block;
-            position: absolute;
-            right: 10px;
-            top: 0px;
-            line-height: 22px;
-            text-decoration: none;
-            color: #0000
-        }
+        /*#mapbox .close {*/
+            /*display: block;*/
+            /*position: absolute;*/
+            /*right: 10px;*/
+            /*top: 0px;*/
+            /*line-height: 22px;*/
+            /*text-decoration: none;*/
+            /*color: #0000;*/
+        /*}*/
     </style>
 </head>
-<body>
-<div id="mapbox">
-    <h2 onmousedown="drag(this.parentNode,event)">百度地图<a href="javascript:" onclick="document.getElementById('map').style.display='none'" class="close">×</a></h2>
-    <div class="mapheader"><input type="text" id="searchtext"/><input type="button" value="搜索" id="searchbt" onclick="serachlocal()"/>
+<body class="no-skin">
+    <!-- /section:basics/navbar.layout -->
+    <div class="main-container" id="main-container">
+        <script type="text/javascript">
+            try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        </script>
+        <div class="main-content" id="page-wrapper">
+        <%--<h2 onmousedown="drag(this.parentNode,event)">百度地图<a href="javascript:" onclick="document.getElementById('map').style.display='none'" class="close">×</a></h2>--%>
+        <div class="row col-xs-12">
+            <form class="form-horizontal" id="validation-form" method="POST">
+                <div class="form-group">
+                    <input type="text" id="searchtext"  class="form-control col-xs-8" value="">
+                    <div class="col-xs-4">
+                        <button type="button" id="btn_search" class="btn btn-purple btn-sm" id="searchbt" onclick="serachlocal()">
+                            <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+                            搜索
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="mapbox" class="row">
+            <div id="map" style="cursor: crosshair;" class="col-sm-9" style="height:auto!important;" ></div>
+            <div id="results" class="col-sm-3"></div>
+            <div id="mapx"></div>
+            <div id="mapy"></div>
+            <div id="level"></div>
+        </div>
+        </div>
     </div>
-    <div id="map" style="cursor: crosshair;"></div>
-    <div id="results"></div>
-    <div id="mapx"></div>
-    <div id="mapy"></div>
-    <div id="level"></div>
-</div>
 <script type="text/javascript">
 
     //显示一个对象的所有属性
@@ -173,7 +191,6 @@
 
         }
     });
-
 
     map.addEventListener("dragend", function () {   //拖拽事件
         var center = map.getCenter();
