@@ -56,19 +56,10 @@
                 type: 'pie',
                 name: '水表数量',
                 data: [
-<<<<<<< .mine
                     {name:'远传水表数量', y:total,url:'${context_path}/basic/meter'},
                     {name:'异常表数量', y:warnTotal,url:'${context_path}/basic/meter/exption'},
-=======
-                    {name:'远传水表数量', y:total,url:''},
-                    {name:'异常表数量', y:warnTotal,url:''},
->>>>>>> .theirs
 
-<<<<<<< .mine
                 {name:'预警单位数量', y:exptionTotal,url:'${context_path}/basic/meter/warn'},
-=======
-                {name:'预警单位数量', y:exptionTotal,url:''},
->>>>>>> .theirs
                 ]
             }];
 
@@ -167,13 +158,7 @@
 
 
 
-<<<<<<< .mine
         $.get("${context_path}/chart/getMonth", function (data) {
-
-=======
-
-
->>>>>>> .theirs
 
             var title = {
                 text: ''

@@ -98,16 +98,7 @@
                 }, 0);
             }
         });
-<<<<<<< .mine
-        var url = '${context_path}/statis/daily/getListData';
-        var startTime = '${startTime}';
-        var endTime = '${endTime}';
-        if((startTime!=undefined&&startTime!=null&&startTime!='') && (endTime!=undefined&&endTime!=null&&endTime!='')){
-            var startTime = $("#startTime").val(startTime);
-            var endTime = $("#endTime").val(endTime);
-            url= '${context_path}/statis/daily/getListData?startTime=${startTime}&endTime=${endTime}';
-        }
-=======
+
         var url = '${context_path}/statis/daily/getListData';
         var startTime = '${startTime}';
         var endTime = '${endTime}';
@@ -116,7 +107,6 @@
             var endTime = $("#endTime").val(endTime);
             url= '${context_path}/statis/daily/getListData?startTime=${startTime}&endTime=${endTime}';
         }
->>>>>>> .theirs
         $("#grid-table").jqGrid({
             url:url,
             mtype: "GET",
