@@ -53,7 +53,7 @@
                     ['远传水表数量',   total],
                     ['异常表数量',      warnTotal],
 
-                    ['预警表数量',    exptionTotal],
+                    ['预警单位数量',    exptionTotal],
                 ]
             }];
 
