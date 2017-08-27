@@ -35,7 +35,7 @@
                                         <form id="exportForm" action="${context_path}/statis/daily/export" method="post">
                                             <div class="input-group">
                                                 日期时间:
-                                                <input type="text" id="startTime" name="startTime" class="form_datetime"/>~<input type="text" id="endTime" name="endTime" class="form_datetime"/>
+                                                <input type="text" id="startTime" name="startTime" value="" class="form_date"/>~<input type="text" id="endTime" name="endTime" value="" class="form_date"/>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option>请选择水源类型</option></select>
@@ -119,7 +119,7 @@
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
                 { label: '查询日期', name: 'find_date', width: 100, sortable:true},
                 { label: '日用水量', name: 'daily_num', width: 80, sortable:false},
-                { label: '单位地址', name: 'address', width: 100,sortable:false}
+                { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
             ],
             viewrecords: true,
             height: 560,

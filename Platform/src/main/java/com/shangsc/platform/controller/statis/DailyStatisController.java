@@ -7,7 +7,6 @@ import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
-import com.shangsc.platform.model.WaterMeter;
 
 import java.io.File;
 import java.util.Date;
@@ -35,8 +34,14 @@ public class DailyStatisController extends BaseController {
     public void getListData() {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
-        Date startTime = this.getParaToDate("startTime");
-        Date endTime = this.getParaToDate("endTime");
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            this.getParaToDate("startTime");
+            this.getParaToDate("endTime");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Page<ActualData> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
                 startTime, endTime, name, innerCode);
         List<ActualData> list = pageInfo.getList();
@@ -45,6 +50,9 @@ public class DailyStatisController extends BaseController {
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer;text-decoration: none;'" +
+                        " onclick=\"openMap('" + co.get("companyName").toString() + "', '"
+                        + co.get("address").toString() + "', '0'" + ")\">" + co.get("address").toString() + "</a>");
                 list.set(i, co);
             }
         }

@@ -10,8 +10,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>Highcharts 教程 | 菜鸟教程(runoob.com)</title>
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="${res_url}js/charts/jquery.min.js"></script>
+    <script src="${res_url}js/charts/highcharts.js"></script>
 </head>
 <body>
 <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
