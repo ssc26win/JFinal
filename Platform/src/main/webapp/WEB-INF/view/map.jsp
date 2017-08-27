@@ -7,7 +7,7 @@
     <meta name="description" content="overview &amp; stats" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <!-- bootstrap & fontawesome -->
-    <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
+    <%--<jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />--%>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=e3ZohdqyB0RL98hFOiC29xqh"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <style>
@@ -177,10 +177,13 @@
         //alert("地图缩放至：" + this.getZoom() + "级");
     });
 
+    var company = '${company}'
+    var address = '${address}'
+    var waterUseNum = '${waterUseNum}'
     /*自定义搜索2*/
-    function serachlocal() {
+    function serachlocal(company,address,waterUseNum) {
         var markerArray = new Array();
-        var typeArray = new Array('', '－公交站', '', '－地铁站');
+        var typeArray = new Array(company, address, '', '');
         var local = new BMap.LocalSearch(map, {
             renderOptions: {
                 map: map,
@@ -200,7 +203,7 @@
 
                         content = "<h3>" + curPoi.title + typeArray[curPoi.type] + "</h3>";
                         content += "<div>地址:" + curPoi.address + "</div>";
-                        content += "<div>水量信息:" + curPoi.address + "</div>";
+                        content += "<div>水量信息:" + waterUseNum + "</div>";
                         content += '<form action="around.php" method="post"><input type="hidden" name="lng" value="' + curPoi.point.lng + '"><input type="hidden" name="lat" value="' + curPoi.point.lat + '"><input type="submit" value="查看附近幼儿园"></form>';
 
                         curMarker.addEventListener('click', function (event) {

@@ -142,6 +142,14 @@ public class ChartController extends Controller {
         this.renderJson(obj);
     }
 
+    @RequiresPermissions(value={"/chart"})
+    public void map() {
+
+        this.setAttr("company",getPara("company"));
+        this.setAttr("address",getPara("address"));
+        this.setAttr("waterUseNum",getPara("waterUseNum"));
+        render("map.jsp");
+    }
 
     private void comp(BigDecimal monthActTotal, BigDecimal moth) {
         if (null == moth) {

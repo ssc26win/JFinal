@@ -10,8 +10,4 @@ import com.shangsc.platform.core.auth.anno.RequiresPermissions;
  */
 public class MapController extends Controller {
 
-    @RequiresPermissions(value={"/map"})
-    public void index() {
-        render("map.jsp");
-    }
 }

@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-
 		<!--[if !IE]> -->
 		<script type="text/javascript">
 			window.jQuery || document.write("<script src='${res_url}ace-1.3.3/assets/js/jquery.js'>"+"<"+"/script>");
@@ -97,7 +96,7 @@
                     area: ['70%', '75%'],
                     fix: false, //不固定
                     maxmin: true,
-                    content: '${context_path}/map?company='+company+'&address='+address+'&waterUseNum='+waterUseNum
+                    content: '${context_path}/chart/map?company='+company+'&address='+address+'&waterUseNum='+waterUseNum
                 });
             }
             $(function () {
