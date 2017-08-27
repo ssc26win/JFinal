@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>Highcharts 教程 | 菜鸟教程(runoob.com)</title>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -16,13 +16,14 @@
 <body>
 <div id="container1" style="width: 550px; height: 400px; margin: 0 auto"></div>
 <div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
+<div id="containe2" style="width: 550px; height: 400px; margin: 0 auto"></div>
 <script language="JavaScript">
 
-    $(document).ready(function() {
-        var total,warnTotal,exptionTotal;
-        $.get("${context_path}/chart",function (data) {
-            total=data.total;
-            warnTotal=data.warnTotal;
+    $(document).ready(function () {
+        var total, warnTotal, exptionTotal;
+        $.get("${context_path}/chart", function (data) {
+            total = data.total;
+            warnTotal = data.warnTotal;
             exptionTotal = data.exptionTotal;
 
             var chart1 = {
@@ -40,20 +41,25 @@
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
+                    events:{
+                        click:function (e) {
+                            location.href=e.point.url
+                        }
+                    },
                     dataLabels: {
                         enabled: false
                     },
                     showInLegend: true
                 }
             };
-            var series1= [{
+            var series1 = [{
                 type: 'pie',
                 name: '水表数量',
                 data: [
-                    ['远传水表数量',   total],
-                    ['异常表数量',      warnTotal],
+                    {name:'远传水表数量', y:total,url:'${context_path}/basic/meter'},
+                    {name:'异常表数量', y:warnTotal,url:'${context_path}/basic/meter/exption'},
 
-                    ['预警单位数量',    exptionTotal],
+                {name:'预警单位数量', y:exptionTotal,url:'${context_path}/basic/meter/warn'},
                 ]
             }];
 
@@ -67,9 +73,7 @@
         })
 
 
-
-        $.get("${context_path}/chart/getDilay",function (data) {
-
+        $.get("${context_path}/chart/getDilay", function (data) {
 
 
             var title = {
@@ -78,6 +82,8 @@
             var subtitle = {
                 text: '日用水量'
             };
+
+
             var xAxis = {
                 categories: data.day
             };
@@ -103,12 +109,38 @@
                 borderWidth: 0
             };
 
-            var series =  [
+            var series = [
                 {
                     name: '日用水量',
                     data: data.sumWater
                 }
             ];
+
+            var plotOptions={
+
+                spline: {
+                    shadow: true,
+                        animation: true,
+                        lineWidth: 1
+                },
+                series: {
+                    color: '#00b16a',
+                        lineWidth:4,
+                        cursor: 'pointer',
+                        events: {
+                        click: function(event) {
+
+                         /*   alert(event.point.category); // X轴值
+                            alert(this.data[event.point.x].y); // Y轴值*/
+                            var time=event.point.category
+
+                            window.location.href="${context_path}/statis/daily?time="+time;
+
+
+                        }
+                    }
+                }
+            };
 
             var json = {};
 
@@ -119,13 +151,95 @@
             json.tooltip = tooltip;
             json.legend = legend;
             json.series = series;
-
+            json.plotOptions = plotOptions;
             $('#container').highcharts(json);
 
         });
 
 
 
+        $.get("${context_path}/chart/getMonth", function (data) {
+
+
+            var title = {
+                text: ''
+            };
+            var subtitle = {
+                text: '月用水量'
+            };
+
+
+            var xAxis = {
+                categories: data.month
+            };
+            var yAxis = {
+                title: {
+                    text: '水量单位'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 10,
+                    color: '#808080'
+                }]
+            };
+
+            var tooltip = {
+                valueSuffix: ''
+            }
+
+            var legend = {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            };
+
+            var series = [
+                {
+                    name: '月用水量',
+                    data: data.sumWater
+                }
+            ];
+
+            var plotOptions={
+
+                spline: {
+                    shadow: true,
+                    animation: true,
+                    lineWidth: 1
+                },
+                series: {
+                    color: '#00b16a',
+                    lineWidth:4,
+                    cursor: 'pointer',
+                    events: {
+                        click: function(event) {
+
+                            /*   alert(event.point.category); // X轴值
+                             alert(this.data[event.point.x].y); // Y轴值*/
+                            var time=event.point.category
+
+                            window.location.href="${context_path}/statis/month?time="+time;
+
+
+                        }
+                    }
+                }
+            };
+
+            var json = {};
+
+            json.title = title;
+            json.subtitle = subtitle;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.tooltip = tooltip;
+            json.legend = legend;
+            json.series = series;
+            json.plotOptions = plotOptions;
+            $('#containe2').highcharts(json);
+
+        });
 
     });
 </script>

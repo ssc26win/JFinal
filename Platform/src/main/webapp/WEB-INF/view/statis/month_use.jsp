@@ -95,8 +95,16 @@
             }
         });
 
+        var url = '${context_path}/statis/month/getListData';
+        var startTime = '${startTime}';
+        var endTime = '${endTime}';
+        if((startTime!=undefined&&startTime!=null&&startTime!='') && (endTime!=undefined&&endTime!=null&&endTime!='')){
+            var startTime = $("#startTime").val(startTime);
+            var endTime = $("#endTime").val(endTime);
+            url= '${context_path}/statis/month/getListData?startTime=${startTime}&endTime=${endTime}';
+        }
         $("#grid-table").jqGrid({
-            url:'${context_path}/statis/month/getListData',
+            url:url,
             mtype: "GET",
             datatype: "json",
             colModel: [
@@ -137,6 +145,7 @@
             var name = $("#name").val();
             var innerCode = $("#innerCode").val();
             var startTime = $("#startTime").val();
+            alert(startTime)
             var endTime = $("#endTime").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',

@@ -7,6 +7,7 @@ import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.Date;
@@ -23,6 +24,13 @@ public class MonthStatisController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/month"})
     public void index() {
+
+        String time = this.getPara("time");
+
+        if (StringUtils.isNotBlank(time)) {
+            this.setAttr("startTime", time + "-01");
+            this.setAttr("endTime", time + "-31");
+        }
         render("month_use.jsp");
     }
 

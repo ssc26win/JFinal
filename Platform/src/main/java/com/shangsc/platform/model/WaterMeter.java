@@ -2,6 +2,7 @@ package com.shangsc.platform.model;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.view.InvokeResult;
@@ -94,4 +95,38 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         String sql = "SELECT * FROM t_Water_Meter WHERE inner_code= ?";
         return this.findFirst(sql,innerCode);
     }
+
+    public Page<WaterMeter> getExceptionWaterMeterPage(int page, int rows, String keyword, String orderbyStr) {
+        String select = "select twm.* ,(select tc.name from t_company tc where tc.inner_code=twm.inner_code) as companyName ";
+        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT t.* FROM t_Water_Meter t WHERE t.meter_num NOT in  (select t.meter_num from t_actual_data t where to_days(t.write_time) = to_days(now()) GROUP BY t.meter_num)) twm ");
+        sqlExceptSelect.append("where 1= 1");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (name like %"+ keyword +" or inner_code=" + keyword + " or meter_num=" + keyword + ") ");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        this.paginate(page, rows, select, sqlExceptSelect.toString());
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
+
+
+    public Page<WaterMeter> getWarnWaterMeterPage(int page, int rows, String keyword, String orderbyStr) {
+        String select = "select twm.*,(select tc.name from t_company tc where tc.inner_code=twm.inner_code) as companyName ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm ");
+        sqlExceptSelect.append(" where 1=1 ");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and inner_code in (" + keyword + ")  ");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        this.paginate(page, rows, select, sqlExceptSelect.toString());
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
+
+
+
+
+
 }

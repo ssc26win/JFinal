@@ -7,6 +7,8 @@ import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.model.WaterMeter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.Date;
@@ -23,6 +25,11 @@ public class DailyStatisController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/daily"})
     public void index() {
+        String time = this.getPara("time");
+        if (StringUtils.isNotBlank(time)) {
+            this.setAttr("startTime", time + " 00:00:00");
+            this.setAttr("endTime", time + " 23:59:59");
+        }
         render("daily_use.jsp");
     }
 

@@ -3,6 +3,7 @@ package com.shangsc.platform.model;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseActualData;
 import org.apache.commons.lang3.StringUtils;
@@ -118,10 +119,10 @@ public class ActualData extends BaseActualData<ActualData> {
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc ");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code");
 		if (startTime != null) {
-			sqlExceptSelect.append(" and twm.write_time >= '" + startTime + "'");
+			sqlExceptSelect.append(" and twm.write_time >= '" + DateUtils.formatDate(startTime) + "'");
 		}
 		if (endTime != null) {
-			sqlExceptSelect.append(" and twm.write_time <= '" + endTime + "'");
+			sqlExceptSelect.append(" and twm.write_time <= '" +  DateUtils.formatDate(endTime) + "'");
 		}
 		if (StringUtils.isNotEmpty(name)) {
 			sqlExceptSelect.append(" and companyName like '%" +name+"'");
@@ -140,10 +141,10 @@ public class ActualData extends BaseActualData<ActualData> {
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc ");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code");
 		if (startTime != null) {
-			sqlExceptSelect.append(" and twm.write_time >= '" + startTime + "'");
+			sqlExceptSelect.append(" and twm.write_time >= '" +  DateUtils.formatDate(startTime) + "'");
 		}
 		if (endTime != null) {
-			sqlExceptSelect.append(" and twm.write_time <= '" + endTime + "'");
+			sqlExceptSelect.append(" and twm.write_time <= '" +  DateUtils.formatDate(endTime) + "'");
 		}
 		if (StringUtils.isNotEmpty(name)) {
 			sqlExceptSelect.append(" and companyName like '%" +name+"'");
@@ -189,7 +190,13 @@ public class ActualData extends BaseActualData<ActualData> {
 
 
 	public List<Record> getDailyActualData( ) {
-		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%d') as DAY,t.* from t_actual_data t GROUP BY  date_format(t.write_time, '%d')";
+		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t GROUP BY  date_format(t.write_time, '%Y-%m-%d')";
+
+		return Db.find(sql);
+	}
+
+	public List<Record> getMonthActualData( ) {
+		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t GROUP BY  date_format(t.write_time, '%Y-%m')";
 
 		return Db.find(sql);
 	}

@@ -41,10 +41,3 @@
 		<script src="${res_url}ace-1.3.3/assets/js/html5shiv.js"></script>
 		<script src="${res_url}ace-1.3.3/assets/js/respond.js"></script>
 		<![endif]-->
-
-<script type="text/javascript" src="${res_url}echarts/js/jquery.min.js"></script>
-<%--<script type="text/javascript" src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>--%>
-<script type="text/javascript" src="${res_url}echarts/js/excanvas.js"></script>
-<script type="text/javascript" src="${res_url}echarts/js/jquery.easy-pie-chart.js"></script>
-<link rel="stylesheet" type="text/css" href="${res_url}echarts/css/style.css" media="screen">
-<link rel="stylesheet" type="text/css" href="${res_url}echarts/css/jquery.easy-pie-chart.css" media="screen">

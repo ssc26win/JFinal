@@ -124,6 +124,24 @@ public class ChartController extends Controller {
         this.renderJson(obj);
     }
 
+    @RequiresPermissions(value = {"/chart"})
+    public void getMonth() {
+        List<Record> records = ActualData.me.getMonthActualData();
+        JSONObject obj = new JSONObject();
+        JSONArray sumWater = new JSONArray();
+        List<String> month = new ArrayList<String>();
+
+        for (Record record : records) {
+            sumWater.add(record.get("sumWater"));
+            month.add( record.get("month").toString());
+        }
+
+        obj.put("sumWater", sumWater);
+        obj.put("month", month);
+
+        this.renderJson(obj);
+    }
+
 
     private void comp(BigDecimal monthActTotal, BigDecimal moth) {
         if (null == moth) {
