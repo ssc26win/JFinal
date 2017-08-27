@@ -25,11 +25,14 @@ public class DailyStatisController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/daily"})
     public void index() {
+
         String time = this.getPara("time");
         if (StringUtils.isNotBlank(time)) {
             this.setAttr("startTime", time + " 00:00:00");
             this.setAttr("endTime", time + " 23:59:59");
         }
+
+
 
         render("daily_use.jsp");
     }
