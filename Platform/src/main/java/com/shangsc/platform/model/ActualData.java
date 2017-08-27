@@ -169,11 +169,11 @@ public class ActualData extends BaseActualData<ActualData> {
 
 
 
-	public List<Record> getMonthActualDataPage(String meter_num ) {
+	public List<Record> getMonthActualDataPage(String inner_code ) {
 		String select = "select sum(t.net_water) as total ,date_format(t.write_time, '%m') as time ,t.* from t_actual_data t ";
 		StringBuffer sqlExceptSelect = new StringBuffer();
 		sqlExceptSelect.append(select);
-		sqlExceptSelect.append(" where t. meter_num= "+meter_num);
+		sqlExceptSelect.append(" where t. inner_code= "+inner_code);
 		sqlExceptSelect.append(" group by date_format(write_time, '%m')");
 
 		return Db.find(sqlExceptSelect.toString());
@@ -181,8 +181,8 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	//select * from `ht_invoice_information` where YEAR(create_date)=YEAR(NOW());
 	//net_water
-	public Record getYearActual(String meter_num) {
-		String select = "select sum(net_water) as yearTotal from t_actual_data where YEAR(write_time)=YEAR(NOW()) and meter_num="+meter_num;
+	public Record getYearActual(String inner_code) {
+		String select = "select sum(net_water) as yearTotal from t_actual_data where YEAR(write_time)=YEAR(NOW()) and inner_code="+inner_code;
 		return Db.find(select).get(0);
 	}
 

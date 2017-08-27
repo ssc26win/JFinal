@@ -8,7 +8,6 @@ import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.WaterIndex;
 import com.shangsc.platform.model.WaterMeter;
-import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -49,11 +48,11 @@ public class ChartController extends Controller {
             WaterMeter waterMeter = WaterMeter.me.findByInnerCode(index.getInnerCode());
 
             if (null != waterMeter) {
-                Record records1 = ActualData.me.getYearActual(waterMeter.getMeterNum());
+                Record records1 = ActualData.me.getYearActual(index.getInnerCode());
                 if (null != records1) {
                     comp((BigDecimal) records1.get("yearTotal"), (BigDecimal) index.getWaterIndex());
 
-                    List<Record> records = ActualData.me.getMonthActualDataPage(waterMeter.getMeterNum());
+                    List<Record> records = ActualData.me.getMonthActualDataPage(index.getInnerCode());
                     for (int i = 0; i < records.size(); i++) {
                         Record record = records.get(i);
                         BigDecimal monthActTotal = new BigDecimal(record.get("total").toString());
@@ -112,7 +111,7 @@ public class ChartController extends Controller {
         List<Record> records = ActualData.me.getDailyActualData();
         JSONObject obj = new JSONObject();
         JSONArray sumWater = new JSONArray();
-        List<String> day = new ArrayList<>();
+        List<String> day = new ArrayList<String>();
 
         for (Record record : records) {
             sumWater.add(record.get("sumWater"));
