@@ -189,7 +189,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
 
 	public List<Record> getDailyActualData( ) {
-		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%d') as DAY,t.* from t_actual_data t GROUP BY  date_format(t.write_time, '%d')";
+		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t GROUP BY  date_format(t.write_time, '%Y-%m-%d')";
 
 		return Db.find(sql);
 	}

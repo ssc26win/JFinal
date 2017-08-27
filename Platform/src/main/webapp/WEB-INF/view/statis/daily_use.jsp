@@ -79,6 +79,10 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+
+
+
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
         //resize to fit page size
@@ -94,9 +98,16 @@
                 }, 0);
             }
         });
-
+        var url = '${context_path}/statis/daily/getListData';
+        var startTime = '${startTime}';
+        var endTime = '${endTime}';
+        if((startTime!=undefined&&startTime!=null) && (endTime!=undefined&&endTime!=null)){
+            var startTime = $("#startTime").val(startTime);
+            var endTime = $("#endTime").val(endTime);
+            url= '${context_path}/statis/daily/getListData?startTime=${startTime}&endTime=${endTime}';
+        }
         $("#grid-table").jqGrid({
-            url:'${context_path}/statis/daily/getListData',
+            url:url,
             mtype: "GET",
             datatype: "json",
             colModel: [
