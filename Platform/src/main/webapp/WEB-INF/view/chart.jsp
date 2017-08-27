@@ -10,8 +10,8 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Highcharts 教程 | 菜鸟教程(runoob.com)</title>
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="${res_url}js/charts/jquery.min.js"></script>
+    <script src="${res_url}js/charts/highcharts.js"></script>
 </head>
 <body>
 <div id="container1" style="width: 550px; height: 400px; margin: 0 auto"></div>
@@ -56,10 +56,19 @@
                 type: 'pie',
                 name: '水表数量',
                 data: [
+<<<<<<< .mine
                     {name:'远传水表数量', y:total,url:'${context_path}/basic/meter'},
                     {name:'异常表数量', y:warnTotal,url:'${context_path}/basic/meter/exption'},
+=======
+                    {name:'远传水表数量', y:total,url:''},
+                    {name:'异常表数量', y:warnTotal,url:''},
+>>>>>>> .theirs
 
+<<<<<<< .mine
                 {name:'预警单位数量', y:exptionTotal,url:'${context_path}/basic/meter/warn'},
+=======
+                {name:'预警单位数量', y:exptionTotal,url:''},
+>>>>>>> .theirs
                 ]
             }];
 
@@ -158,8 +167,13 @@
 
 
 
+<<<<<<< .mine
         $.get("${context_path}/chart/getMonth", function (data) {
 
+=======
+
+
+>>>>>>> .theirs
 
             var title = {
                 text: ''

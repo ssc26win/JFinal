@@ -108,7 +108,7 @@
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
                 { label: '查询时间', name: 'find_time', width: 100, sortable:true},
                 { label: '用水量', name: 'net_water', width: 80, sortable:false},
-                { label: '单位地址', name: 'address', width: 100,sortable:false}
+                { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
             ],
             viewrecords: true,
             height: 560,
