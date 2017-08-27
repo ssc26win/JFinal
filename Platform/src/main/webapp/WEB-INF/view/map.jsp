@@ -19,45 +19,16 @@
         }
 
         #mapbox #map {
-            width: 800px;
-            height: 500px;
-            float: left;
+            height:0px;
+            padding-bottom:49%
         }
 
         #mapbox #results {
-            width: 250px;
-            margin-top: 10px;
+            height:0px;
+            padding-bottom:49%
             float: right;
         }
 
-        /*.mapheader {*/
-            /*height: 25px;*/
-            /*width: 250px;*/
-            /*float: right;*/
-            /*overflow: hidden;*/
-        /*}*/
-
-        /*#mapbox h2 {*/
-            /*margin: 1px;*/
-            /*padding-left: 10px;*/
-            /*height: 20px;*/
-            /*line-height: 20px;*/
-            /*font-size: 12px;*/
-            /*color: #0066CC;*/
-            /*font-weight: 100;*/
-            /*background: #9CF;*/
-            /*cursor: move*/
-        /*}*/
-
-        /*#mapbox .close {*/
-            /*display: block;*/
-            /*position: absolute;*/
-            /*right: 10px;*/
-            /*top: 0px;*/
-            /*line-height: 22px;*/
-            /*text-decoration: none;*/
-            /*color: #0000;*/
-        /*}*/
     </style>
 </head>
 <body class="no-skin">
@@ -68,39 +39,27 @@
         </script>
         <div class="main-content" id="page-wrapper">
         <%--<h2 onmousedown="drag(this.parentNode,event)">百度地图<a href="javascript:" onclick="document.getElementById('map').style.display='none'" class="close">×</a></h2>--%>
-        <div class="row">
-            <div class="col-xs-12">
-                <!-- PAGE CONTENT BEGINS -->
-
-
-                    <div class="widget-body">
-                        <div class="widget-main">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-6">
-                                    <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <i class="ace-icon fa fa-check"></i>
-                                            </span>
-                                        <input type="text" id="searchtext" name="searchtext" class="form-control search-query" placeholder="请输入关键字" />
-                                            <span class="input-group-btn">
-                                                <button type="button" id="searchbt" class="btn btn-purple btn-sm">
-                                                    <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
-                                                    搜索
-                                                </button>
-                                            </span>
-                                    </div>
-                                </div>
-                            </div>
+        <div id="mapbox" class="row">
+            <div id="map" style="cursor: crosshair;" class="col-sm-9"></div>
+            <div class="col-sm-3">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="input-group">
+                            <input type="text" id="searchtext" name="searchtext" class="form-control search-query" placeholder="请输入关键字" />
+                            <span class="input-group-btn">
+                                <button type="button" id="searchbt" class="btn btn-purple btn-sm">
+                                    <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+                                    搜索
+                                </button>
+                            </span>
                         </div>
+                        <div id="results" style="margin-top: 5px;"></div>
+                        <div id="mapx" style="margin-top: 5px;"></div>
+                        <div id="mapy" style="margin-top: 5px;"></div>
+                        <div id="level" style="margin-top: 5px;"></div>
                     </div>
                 </div>
             </div>
-        <div id="mapbox" class="row">
-            <div id="map" style="cursor: crosshair;" class="col-sm-9" style="height:auto!important;" ></div>
-            <div id="results" class="col-sm-3"></div>
-            <div id="mapx"></div>
-            <div id="mapy"></div>
-            <div id="level"></div>
         </div>
         </div>
     </div>

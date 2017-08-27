@@ -94,7 +94,7 @@
                 layer.open({
                     title:company + '水量信息',
                     type: 2,
-                    area: ['70%', '70%'],
+                    area: ['70%', '75%'],
                     fix: false, //不固定
                     maxmin: true,
                     content: '${context_path}/map?company='+company+'&address='+address+'&waterUseNum='+waterUseNum
