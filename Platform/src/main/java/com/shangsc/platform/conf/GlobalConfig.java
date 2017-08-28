@@ -41,6 +41,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class GlobalConfig extends JFinalConfig {
 
+	public static final int EXPORT_SUM = 65535; //excel office 2003 支持最大行数
+
 	/**
 	 * 配置常量
 	 */

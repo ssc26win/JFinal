@@ -2,6 +2,7 @@ package com.shangsc.platform.controller.basic;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
@@ -216,10 +217,22 @@ public class MeterController extends BaseController {
         if (CommonUtils.isNotEmpty(keyword)) {
             conditions.add(new Condition("name", Operators.LIKE, keyword));
         }
-        Page<WaterMeter> pageInfo = WaterMeter.me.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
-
+        Page<WaterMeter> pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        List<WaterMeter> list = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
+            Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictData.ChargeType);
+            for (int i = 0; i < list.size(); i++) {
+                WaterMeter co = list.get(i);
+                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
+                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                co.put("chargeTypeName", String.valueOf(mapChargeType.get(String.valueOf(co.getChargeType()))));
+                list.set(i, co);
+            }
+        }
         WaterMeterExportService service = new WaterMeterExportService();
-        String path = service.export(pageInfo);
+        String path = service.export(list);
 
         renderFile(new File(path));
 

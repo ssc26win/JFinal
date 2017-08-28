@@ -34,8 +34,8 @@
                                     <div class="col-xs-12 col-sm-10">
                                         <form id="exportForm" action="${context_path}/statis/year/export" method="post">
                                             <div class="input-group">
-                                                日期时间:
-                                                <input type="text" id="startTime" name="startTime"/>~<input type="text" id="endTime" name="endTime"/>
+                                                日期时间（年）:
+                                                <input type="text" id="year" name="year"/>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option>请选择水源类型</option></select>

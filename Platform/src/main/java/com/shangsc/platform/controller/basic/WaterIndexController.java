@@ -1,10 +1,9 @@
 package com.shangsc.platform.controller.basic;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
-import com.shangsc.platform.core.model.Condition;
-import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
@@ -15,10 +14,8 @@ import com.shangsc.platform.util.CodeNumUtil;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @Author ssc
@@ -95,14 +92,19 @@ public class WaterIndexController extends BaseController {
     @RequiresPermissions(value = {"/basic/waterindex"})
     public void export() {
 
-        String keyword = this.getPara("name");
-        Set<Condition> conditions = new HashSet<Condition>();
-        if (CommonUtils.isNotEmpty(keyword)) {
-            conditions.add(new Condition("name", Operators.LIKE, keyword));
+        String keyword=this.getPara("name");
+        Page<WaterIndex> pageInfo = WaterIndex.me.getWaterIndexPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        List<WaterIndex> list = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
+            for (int i = 0; i < list.size(); i++) {
+                WaterIndex co = list.get(i);
+                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
+                list.set(i, co);
+            }
         }
-        Page<WaterIndex> pageInfo = WaterIndex.me.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
         WaterIndexExportService service = new WaterIndexExportService();
-        String path = service.export(pageInfo);
+        String path = service.export(list);
         renderFile(new File(path));
     }
 }

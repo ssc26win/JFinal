@@ -1,6 +1,5 @@
 package com.shangsc.platform.export;
 
-import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.model.WaterMeter;
 
 import java.util.ArrayList;
@@ -18,12 +17,12 @@ public class WaterMeterExportService extends ExportBaseService {
     private static final String FILE_NAME = "水表信息导出";
 
 
-    public String export(Page<WaterMeter> page) {
+    public String export(List<WaterMeter> waterMeters) {
 
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[] {
-                "单位id",
                 "单位编号",
+                "单位名称",
                 "路别",
                 "水表表号",
                 "水源类型",
@@ -46,23 +45,23 @@ public class WaterMeterExportService extends ExportBaseService {
          `billing_cycle` varchar(50) DEFAULT NULL COMMENT '计费周期',
          `regist_date` datetime DEFAULT NULL COMMENT '注册日期',
          */
-        List<WaterMeter> waterMeters = page.getList();
         logger.info("水表信息导出条数为:{}", waterMeters.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (WaterMeter waterMeter : waterMeters) {
             Object[] obj = new Object[] {
-                    waterMeter.getCompanyId(),
                     waterMeter.getInnerCode(),
+                    waterMeter.get("companyName"),
                     waterMeter.getLineNum(),
                     waterMeter.getMeterNum(),
-                    waterMeter.getWatersType(),
-                    waterMeter.getWaterUseType(),
+                    waterMeter.get("watersTypeName"),
+                    waterMeter.get("waterUseTypeName"),
                     waterMeter.getMeterAttr(),
-                    waterMeter.getChargeType(),
+                    waterMeter.get("chargeTypeName"),
                     waterMeter.getBillingCycle(),
                     waterMeter.getRegistDate()
 
             };
+            objects.add(obj);
         }
         return super.export(FILE_NAME, listHeader, objects);
     }

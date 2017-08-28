@@ -4,7 +4,9 @@ import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
+import com.shangsc.platform.export.MonthExportService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
 import org.apache.commons.lang3.StringUtils;
@@ -67,12 +69,27 @@ public class MonthStatisController extends BaseController {
     public void exportData() {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
-        Date startTime = this.getParaToDate("startTime");
-        Date endTime = this.getParaToDate("endTime");
-
-        //dataStatis.exportMonthData(getPage(), getRows(), getOrderbyStr(),
-        //        startTime, endTime, name, innerCode);
-        File file = new File("");
-        this.renderFile(file);
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            this.getParaToDate("startTime");
+            this.getParaToDate("endTime");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Page<ActualData> pageInfo = ActualData.me.getMonthStatis(getPage(), getRows(), getOrderbyStr(),
+                startTime, endTime, name, innerCode);
+        List<ActualData> list = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+            for (int i = 0; i < list.size(); i++) {
+                ActualData co = list.get(i);
+                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                list.set(i, co);
+            }
+        }
+        MonthExportService service = new MonthExportService();
+        String path = service.export(list, DateUtils.getThisMonth());
+        renderFile(new File(path));
     }
 }

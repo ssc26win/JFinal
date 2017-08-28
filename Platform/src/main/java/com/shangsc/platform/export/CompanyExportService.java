@@ -1,6 +1,5 @@
 package com.shangsc.platform.export;
 
-import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.model.Company;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class CompanyExportService extends ExportBaseService {
     private static final String FILE_NAME = "用水单位信息导出";
 
 
-    public String export(Page<Company> page) {
+    public String export(List<Company> companies) {
         super.logger.info("导出用水单位信息开始");
         /**
          *  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
@@ -58,7 +57,6 @@ public class CompanyExportService extends ExportBaseService {
                 "创建时间"
         }));
 
-        List<Company> companies = page.getList();
         logger.info("导出用水单位信息导出条数为:{}", companies.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (Company company : companies) {
@@ -67,8 +65,8 @@ public class CompanyExportService extends ExportBaseService {
                     company.getName(),
                     company.getStreet(),
                     company.getAddress(),
-                    company.getCustomerType(),
-                    company.getWaterUseType(),
+                    company.get("customerTypeName"),
+                    company.get("waterUseTypeName"),
                     company.getContact(),
                     company.getPhone(),
                     company.getPostalCode(),
@@ -76,7 +74,7 @@ public class CompanyExportService extends ExportBaseService {
                     company.getWellCount(),
                     company.getFirstWatermeterCount(),
                     company.getRemotemeterCount(),
-                    company.getUnitType(),
+                    company.get("unitTypeName"),
                     company.getCreateTime()
 
             };

@@ -1,6 +1,7 @@
 package com.shangsc.platform.controller.basic;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
@@ -100,12 +101,25 @@ public class CompanyController extends BaseController {
     public void export() {
         CompanyExportService service = new CompanyExportService();
         String keyword = this.getPara("name");
-        Set<Condition> conditions = new HashSet<Condition>();
-        if (CommonUtils.isNotEmpty(keyword)) {
+        Set<Condition> conditions=new HashSet<Condition>();
+        if(CommonUtils.isNotEmpty(keyword)){
             conditions.add(new Condition("name", Operators.LIKE, keyword));
         }
-        Page<Company> pageInfo = Company.me.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
-        String path = service.export(pageInfo);
+        Page<Company> pageInfo = Company.me.getPage(getPage(), GlobalConfig.EXPORT_SUM, conditions, this.getOrderby());
+        List<Company> companies = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(companies)) {
+            Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictData.UserType);
+            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
+            Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictData.UnitType);
+            for (int i = 0; i < companies.size(); i++) {
+                Company co = companies.get(i);
+                co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
+                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
+                co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
+                companies.set(i, co);
+            }
+        }
+        String path = service.export(companies);
         renderFile(new File(path));
     }
 }

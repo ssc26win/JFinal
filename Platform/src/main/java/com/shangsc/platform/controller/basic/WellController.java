@@ -2,15 +2,18 @@ package com.shangsc.platform.controller.basic;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.code.YesOrNo;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.export.WellExportService;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.Well;
 import com.shangsc.platform.util.CodeNumUtil;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -115,5 +118,27 @@ public class WellController extends BaseController {
         this.renderJson(result);
     }
 
+    @RequiresPermissions(value = {"/basic/well"})
+    public void export() {
+        String keyword = this.getPara("name");
+        Page<Well> pageInfo = Well.me.getWellPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        List<Well> list = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+            for (int i = 0; i < list.size(); i++) {
+                Well co = list.get(i);
+                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                co.put("aboveScaleName",  YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAboveScale())));
+                co.put("oneselfWellName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getOneselfWell())));
+                co.put("electromechanicsName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getElectromechanics())));
+                co.put("calculateWaterName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getCalculateType())));
+                co.put("licenceName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getLicence())));
+                list.set(i, co);
+            }
+        }
+        WellExportService service = new WellExportService();
+        String path = service.export(list);
+        renderFile(new File(path));
+    }
 }
 

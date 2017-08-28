@@ -5,6 +5,7 @@ import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
+import com.shangsc.platform.export.ReadNumExportService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
 
@@ -59,12 +60,28 @@ public class ReadnumStatisController extends BaseController {
     public void exportData() {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
-        Date startTime = this.getParaToDate("startTime");
-        Date endTime = this.getParaToDate("endTime");
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            this.getParaToDate("startTime");
+            this.getParaToDate("endTime");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Page<ActualData> pageInfo = ActualData.me.getReadnumStatis(getPage(), getRows(), getOrderbyStr(),
+                startTime, endTime, name, innerCode);
+        List<ActualData> list = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+            for (int i = 0; i < list.size(); i++) {
+                ActualData co = list.get(i);
+                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                list.set(i, co);
+            }
+        }
 
-        //dataStatis.exportReadNumData(getPage(), getRows(), getOrderbyStr(),
-        //        startTime, endTime, name, innerCode);
-        File file = new File("");
-        this.renderFile(file);
+        ReadNumExportService service = new ReadNumExportService();
+        String path = service.export(list);
+        renderFile(new File(path));
     }
 }
