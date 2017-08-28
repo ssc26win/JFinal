@@ -70,8 +70,8 @@ public class AdController extends BaseController {
 
     @RequiresPermissions(value={"/basic/ad"})
     public void delete(){
-        Long id = this.getParaToLong("id");
-        InvokeResult result = Ad.dao.deleteData(id);
+        String ids = this.getPara("ids");
+        InvokeResult result = Ad.dao.deleteData(ids);
         this.renderJson(result);
     }
 

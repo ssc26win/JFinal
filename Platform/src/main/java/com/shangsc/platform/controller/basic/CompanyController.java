@@ -91,8 +91,8 @@ public class CompanyController extends BaseController {
 
     @RequiresPermissions(value={"/basic/company"})
     public void delete(){
-        Long id = this.getParaToLong("id");
-        InvokeResult result = Company.me.deleteData(id);
+        String ids = this.getPara("ids");
+        InvokeResult result = Company.me.deleteData(ids);
         this.renderJson(result);
     }
 

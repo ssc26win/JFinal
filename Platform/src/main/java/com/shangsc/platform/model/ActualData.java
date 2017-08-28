@@ -3,6 +3,7 @@ package com.shangsc.platform.model;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseActualData;
@@ -51,8 +52,11 @@ public class ActualData extends BaseActualData<ActualData> {
 		return actualData;
 	}
 
-	public InvokeResult deleteData(Long id) {
-		this.deleteById(id);
+	public InvokeResult deleteData(String idStrs) {
+		List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
+		for (int i = 0; i < ids.size(); i++) {
+			this.deleteById(ids.get(i));
+		}
 		return InvokeResult.success();
 	}
 

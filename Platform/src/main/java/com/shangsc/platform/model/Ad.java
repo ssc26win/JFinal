@@ -2,6 +2,7 @@ package com.shangsc.platform.model;
 
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
+import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseAd;
 
@@ -40,8 +41,11 @@ public class Ad extends BaseAd<Ad> {
 		return ad;
 	}
 
-	public InvokeResult deleteData(Long id) {
-		this.deleteById(id);
+	public InvokeResult deleteData(String idStrs) {
+		List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
+		for (int i = 0; i < ids.size(); i++) {
+			this.deleteById(ids.get(i));
+		}
 		return InvokeResult.success();
 	}
 

@@ -30,8 +30,11 @@ public class Company extends BaseCompany<Company> {
         return num>0?true:false;
     }
 
-    public InvokeResult deleteData(Long id) {
-        this.deleteById(id);
+    public InvokeResult deleteData(String idStrs) {
+        List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
+        for (int i = 0; i < ids.size(); i++) {
+            this.deleteById(ids.get(i));
+        }
         return InvokeResult.success();
     }
 

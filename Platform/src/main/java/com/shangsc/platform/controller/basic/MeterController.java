@@ -10,11 +10,7 @@ import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.WaterMeterExportService;
-import com.shangsc.platform.model.ActualData;
-import com.shangsc.platform.model.DictData;
-import com.shangsc.platform.model.WaterIndex;
-import com.shangsc.platform.model.WaterMeter;
-import org.apache.commons.lang3.StringUtils;
+import com.shangsc.platform.model.*;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -208,8 +204,8 @@ public class MeterController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/meter"})
     public void delete() {
-        Long id = this.getParaToLong("id");
-        InvokeResult result = WaterMeter.me.deleteData(id);
+        String ids = this.getPara("ids");
+        InvokeResult result = WaterMeter.me.deleteData(ids);
         this.renderJson(result);
     }
 

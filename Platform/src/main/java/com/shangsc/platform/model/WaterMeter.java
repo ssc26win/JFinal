@@ -1,10 +1,9 @@
 package com.shangsc.platform.model;
 
-import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
+import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseWaterMeter;
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -85,8 +83,11 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return meter;
     }
 
-    public InvokeResult deleteData(Long id) {
-        this.deleteById(id);
+    public InvokeResult deleteData(String idStrs) {
+        List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
+        for (int i = 0; i < ids.size(); i++) {
+            this.deleteById(ids.get(i));
+        }
         return InvokeResult.success();
     }
 

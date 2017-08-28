@@ -15,32 +15,20 @@
  */
 package com.shangsc.platform.core.util;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.LineNumberReader;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Properties;
-import java.util.Random;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.UUID;
+import com.shangsc.platform.core.model.Condition;
 
 import javax.imageio.ImageIO;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-
-import com.shangsc.platform.core.model.Condition;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.math.BigDecimal;
+import java.util.*;
 
 @SuppressWarnings("unchecked")
 public class CommonUtils {
@@ -202,7 +190,7 @@ public class CommonUtils {
 	/**
 	 * 得到Integer类型集合 如果遇到不能转换为Integer类型的字符串跳过 
 	 * 返回能转换为Integer类型的Integer类型集合
-	 * @param str 用,号隔开
+	 * @param strs 用,号隔开
 	 * @return
 	 */
 	public static List<Integer> getIntegerListByStrs(String strs) {
@@ -220,13 +208,30 @@ public class CommonUtils {
 		}
 		return list;
 	}
+
+	public static List<Long> getLongListByStrs(String strs) {
+		String[] strings=strs.split(",");
+		List<Long> list = new ArrayList<Long>();
+		if (strings != null) {
+			for (String s : strings) {
+				try {
+					if (isNotEmpty(s)) {
+						list.add(Long.valueOf(s));
+					}
+				} catch (NumberFormatException e) {
+				}
+			}
+		}
+		return list;
+	}
+
 	public static void main(String[] args) {
 		System.out.println(getIntegerListByStrs("2"));
 	}
 	/**
 	 * 把首字母变成大写
 	 * 
-	 * @param str要转换的字符串
+	 * @param str 要转换的字符串
 	 * @return
 	 */
 	public static String toUpcaseFist(String str) {
@@ -291,7 +296,7 @@ public class CommonUtils {
 	/**
 	 * 动态图像转换成静态图片
 	 * 
-	 * @param file图片文件
+	 * @param  file 图片文件
 	 */
 	public static void convertImageToStatic(File file) {
 		if (file != null) {

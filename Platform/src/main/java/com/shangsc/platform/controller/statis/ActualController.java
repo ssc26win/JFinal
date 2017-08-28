@@ -11,6 +11,7 @@ import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.model.Well;
 import com.shangsc.platform.util.CodeNumUtil;
 
 import java.math.BigDecimal;
@@ -85,8 +86,8 @@ public class ActualController extends BaseController {
 
     @RequiresPermissions(value={"/basic/actual"})
     public void delete(){
-        Long id = this.getParaToLong("id");
-        InvokeResult result = ActualData.me.deleteData(id);
+        String ids = this.getPara("ids");
+        InvokeResult result = ActualData.me.deleteData(ids);
         this.renderJson(result);
     }
 }

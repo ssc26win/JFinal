@@ -240,7 +240,7 @@
         var submitData = {
             "ids" : getSelectedRows()
         };
-        $.post("${context_path}/basic/company/delete", submitData,function(data) {
+        $.post("${context_path}/basic/company/delete", submitData, function(data) {
             if (data.code == 0) {
                 layer.msg("操作成功", {
                     icon: 1,

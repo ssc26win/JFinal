@@ -110,8 +110,8 @@ public class WellController extends BaseController {
 
     @RequiresPermissions(value={"/basic/well"})
     public void delete(){
-        Long id = this.getParaToLong("id");
-        InvokeResult result = Well.me.deleteData(id);
+        String ids = this.getPara("ids");
+        InvokeResult result = Well.me.deleteData(ids);
         this.renderJson(result);
     }
 

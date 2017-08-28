@@ -87,8 +87,8 @@ public class WaterIndexController extends BaseController {
 
     @RequiresPermissions(value={"/basic/waterindex"})
     public void delete(){
-        Long id = this.getParaToLong("id");
-        InvokeResult result = WaterIndex.me.deleteData(id);
+        String ids = this.getPara("ids");
+        InvokeResult result = WaterIndex.me.deleteData(ids);
         this.renderJson(result);
     }
 
