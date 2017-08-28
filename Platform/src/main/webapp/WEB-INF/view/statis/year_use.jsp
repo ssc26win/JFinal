@@ -31,7 +31,7 @@
                         <div class="widget-body">
                             <div class="widget-main">
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-10">
+                                    <div class="col-xs-12">
                                         <form id="exportForm" action="${context_path}/statis/year/export" method="post">
                                             <div class="input-group">
                                                 日期时间（年）:
