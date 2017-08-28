@@ -142,7 +142,7 @@
     });
     $("#btn-add").click(function(){//添加页面
       parent.layer.open({
-        title:'添加新单位',
+        title:'添加新记录',
         type: 2,
         area: ['770px', '580px'],
         fix: false, //不固定
@@ -167,7 +167,7 @@
         });
       }else {
         parent.layer.open({
-          title:'修改单位信息',
+          title:'修改记录信息',
           type: 2,
           area: ['770px', '580px'],
           fix: false, //不固定

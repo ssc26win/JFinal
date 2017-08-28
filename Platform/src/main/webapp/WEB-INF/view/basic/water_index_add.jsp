@@ -44,7 +44,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterIndex">水表表号:</label>
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterIndex">年用水指标:</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
                     <input type="text" id="waterIndex" name="waterIndex" value="${item.waterIndex}" class="col-xs-12 col-sm-6">

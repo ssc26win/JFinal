@@ -51,15 +51,17 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="watersType">水源类型</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" id="watersType" name="watersType" value="${item.watersType}" class="col-xs-12 col-sm-6">
+                    <input type="hidden" id="watersTypeInput" name="watersTypeInput" value="${item.watersType}" />
+                    <select id="watersType" name="watersType" class="col-xs-12 col-sm-6"></select>
                   </div>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="alarm">告警</label>
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="alarm_0">告警</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" id="alarm" name="alarm" value="${item.alarm}" class="col-xs-12 col-sm-6">
+                    <input type="radio" name="alarm" id="alarm_0" value="0" ${item.alarm eq 0?'checked':'' }/>否
+                    <input type="radio" name="alarm" id="alarm_1" value="1" ${item.alarm eq 1?'checked':'' }/>是
                   </div>
                 </div>
               </div>
@@ -154,7 +156,7 @@
         var $btn = $("#submit-btn");
         if($btn.hasClass("disabled")) return;
         var postData=$("#validation-form").serializeJson();
-        $.post("${context_path}/basic/actual/save" ,postData,
+        $.post("${context_path}/statis/actual/save" ,postData,
                 function(data){
                   if(data.code==0){
                     parent.reloadGrid(); //重新载入
@@ -186,6 +188,22 @@
     parent.layer.close(index); //再执行关闭
   }
 
+  function getDictMapData(){
+    var submitData = {};
+    $.post("${context_path}/dict/getByType", submitData, function(data) {
+      var watersType = data.WatersType;
+      for(var i = 0;i<watersType.length;i++) {
+        if ($("#watersTypeInput").val() == watersType[i].value) {
+          $("#watersType").append("<option selected value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+        } else {
+          $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+        }
+      }
+    },"json");
+  }
+  $(function(){
+    getDictMapData();
+  })
 </script>
 </body>
 

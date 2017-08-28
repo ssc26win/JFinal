@@ -1,6 +1,7 @@
 package com.shangsc.platform.controller.statis;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
@@ -45,6 +46,7 @@ public class ActualController extends BaseController {
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                co.put("alarm", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAlarm())));
                 list.set(i, co);
             }
         }
