@@ -240,18 +240,20 @@
         var submitData = {
             "ids" : getSelectedRows()
         };
-        $.post("${context_path}/basic/company/delete", submitData, function(data) {
-            if (data.code == 0) {
-                layer.msg("操作成功", {
-                    icon: 1,
-                    time: 1000 //1秒关闭（如果不配置，默认是3秒）
-                },function(){
-                    reloadGrid();
-                });
-            }  else{
-                layer.alert("操作失败");
-            }
-        },"json");
+        layer.alert("确认删除记录？",function(){
+            $.post("${context_path}/basic/company/delete", submitData, function(data) {
+                if (data.code == 0) {
+                    layer.msg("操作成功", {
+                        icon: 1,
+                        time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                    },function(){
+                        reloadGrid();
+                    });
+                }  else{
+                    layer.alert("操作失败");
+                }
+            },"json");
+        });
     }
 
     function reloadGrid(){
