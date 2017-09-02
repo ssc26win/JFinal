@@ -113,14 +113,14 @@
 										<div class="toolbar clearfix">
 											<div>
 												<a href="#" data-target="#forgot-box" class="forgot-password-link">
-													<i class="ace-icon fa fa-arrow-left"></i>
-													<%--忘记密码？--%>
+													<%--<i class="ace-icon fa fa-arrow-left"></i>
+													忘记密码？--%>
 												</a>
 											</div>
 
 											<div>
 												<a href="#" data-target="#signup-box" class="user-signup-link">
-													注册
+													免费注册
 													<i class="ace-icon fa fa-arrow-right"></i>
 												</a>
 											</div>

@@ -144,7 +144,6 @@ public class ChartController extends Controller {
 
     @RequiresPermissions(value={"/chart"})
     public void map() {
-
         this.setAttr("company",getPara("company"));
         this.setAttr("address",getPara("address"));
         this.setAttr("waterUseNum",getPara("waterUseNum"));

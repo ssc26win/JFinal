@@ -47,8 +47,6 @@ public class AdminRoutes extends Routes{
         add("/basic/well", WellController.class, "/WEB-INF/view/basic");
         add("/basic/waterindex", WaterIndexController.class, "/WEB-INF/view/basic");
 
-        add("/baidumap", MapController.class, "/WEB-INF/view");
-
 		add("/basic/ad", AdController.class, "/WEB-INF/view/basic");
 
 		add("/statis/actual", ActualController.class, "/WEB-INF/view/statis");

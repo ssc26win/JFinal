@@ -7,7 +7,7 @@
     <meta name="description" content="overview &amp; stats" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <!-- bootstrap & fontawesome -->
-    <%--<jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />--%>
+    <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=e3ZohdqyB0RL98hFOiC29xqh"></script>
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <style>
@@ -20,12 +20,12 @@
 
         #mapbox #map {
             height:0px;
-            padding-bottom:49%
+            padding-bottom:50%;
         }
 
         #mapbox #results {
             height:0px;
-            padding-bottom:49%
+            padding-bottom:50%;
             float: right;
         }
 
@@ -45,18 +45,25 @@
                 <div class="widget-body">
                     <div class="widget-main">
                         <div class="input-group">
-                            <input type="text" id="searchtext" name="searchtext" class="form-control search-query" placeholder="请输入关键字" />
+                            <input type="text" id="searchtext" name="searchtext" class="form-control search-query" placeholder="请输入关键字" value="${address}"/>
                             <span class="input-group-btn">
-                                <button type="button" id="searchbt" class="btn btn-purple btn-sm">
+                                <button type="button" id="searchbt" class="btn btn-purple btn-sm" onclick="searchlocal($('#searchtext').val(),'',0)">
                                     <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                     搜索
                                 </button>
                             </span>
                         </div>
-                        <div id="results" style="margin-top: 5px;"></div>
-                        <div id="mapx" style="margin-top: 5px;"></div>
+                        <%--<div id="mapx" style="margin-top: 5px;"></div>
                         <div id="mapy" style="margin-top: 5px;"></div>
-                        <div id="level" style="margin-top: 5px;"></div>
+                        <div id="level" style="margin-top: 5px;"></div>--%>
+                        <div class="input-group">
+                            <div id="results" style="margin-top: 5px; font-size: 12px;padding: 0;"></div>
+                        </div>
+                        <%--<div class="input-group">--%>
+                            <%--<div id="mapx" style="margin-top: 5px;"></div>--%>
+                            <%--<div id="mapy" style="margin-top: 5px;"></div>--%>
+                            <%--<div id="level" style="margin-top: 5px;"></div>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
             </div>
@@ -64,6 +71,12 @@
         </div>
     </div>
 <script type="text/javascript">
+    var company = '${company}';
+    var address = '${address}';
+    var waterUseNum = '${waterUseNum}';
+    $(function(){
+        searchlocal(company,address,waterUseNum);
+    });
 
     //显示一个对象的所有属性
     function showAtrributes(event) {
@@ -119,7 +132,6 @@
 
     //点击地图选址
     map.addEventListener("click", function (e) {   //点击事件
-//alert(e.point.lng + ", " + e.point.lat);
         if (!e.overlay) {
             document.getElementById("mapx").innerHTML = "鼠标当前x位置:" + e.point.lng;
             document.getElementById("mapy").innerHTML = "鼠标当前y位置:" + e.point.lat;
@@ -134,12 +146,7 @@
                     //alert(targetUrl);
                 },
                 success: function (data, status) {
-                    //alert(status);
                     if (status == 'success' && data.status == 0) {
-
-                        //alert(JSON.stringify(data));
-                        //location.href=a.attr("href");
-
                         var myIcon = new BMap.Icon("http://api.map.baidu.com/img/markers.png", new BMap.Size(23, 25), {
                             offset: new BMap.Size(10, 25), // 指定定位位置
                             imageOffset: new BMap.Size(0, 0 - 10 * 25) // 设置图片偏移
@@ -147,8 +154,7 @@
                         var marker = new BMap.Marker(e.point, {icon: myIcon});
                         map.removeOverlay(preMarker);
                         map.addOverlay(marker);
-                        content = "<div>地址1111:" + data.result.formatted_address + "</div>";
-                        content += '<form action="around.php" method="post"><input type="hidden" name="lng" value="' + data.result.location.lng + '"><input type="hidden" name="lat" value="' + data.result.location.lat + '"><input type="submit" value="查看附近幼儿园"></form>';
+                        content = "<div>单位地址：" + data.result.formatted_address + "</div>";
                         var info = new BMap.InfoWindow(content);
                         marker.openInfoWindow(info);
                         preMarker = marker;
@@ -170,18 +176,14 @@
         document.getElementById("mapx").innerHTML = "拖拽后中心x位置:" + center.lng;
         document.getElementById("mapy").innerHTML = "拖拽后中心y位置:" + center.lat;
         document.getElementById("level").innerHTML = "缩放等级:" + this.getZoom();
-        //alert("地图中心点变更为：" + center.lng + ", " + center.lat);
     });
 
     map.addEventListener("zoomend", function () {   //缩放事件
-        //alert("地图缩放至：" + this.getZoom() + "级");
     });
 
-    var company = '${company}'
-    var address = '${address}'
-    var waterUseNum = '${waterUseNum}'
+
     /*自定义搜索2*/
-    function serachlocal(company,address,waterUseNum) {
+    function searchlocal(company,address,waterUseNum) {
         var markerArray = new Array();
         var typeArray = new Array(company, address, '', '');
         var local = new BMap.LocalSearch(map, {
@@ -201,18 +203,20 @@
                         var curMarker = pois[i].marker;
                         markerArray[i] = curMarker;
 
-                        content = "<h3>" + curPoi.title + typeArray[curPoi.type] + "</h3>";
-                        content += "<div>地址:" + curPoi.address + "</div>";
-                        content += "<div>水量信息:" + waterUseNum + "</div>";
-                        content += '<form action="around.php" method="post"><input type="hidden" name="lng" value="' + curPoi.point.lng + '"><input type="hidden" name="lat" value="' + curPoi.point.lat + '"><input type="submit" value="查看附近幼儿园"></form>';
+                        content = "<h4>" + curPoi.title + " " + typeArray[curPoi.type] + "</h4>";
+                        content += "<div>单位地址：" + curPoi.address + "</div>";
+                        
+                        content += "<div>用水量信息：" + waterUseNum + "（立方米）</div>";
+                        
+                        //content += '<form action="around.php" method="post"><input type="hidden" name="lng" value="' + curPoi.point.lng + '"><input type="hidden" name="lat" value="' + curPoi.point.lat + '"><input type="submit" value="查看附近幼儿园"></form>';
 
                         curMarker.addEventListener('click', function (event) {
                             //showAtrributes(event);
                             var info = new BMap.InfoWindow(content);
                             curMarker.openInfoWindow(info);
                             var position = curMarker.getPosition();
-                            document.getElementById("mapx").innerHTML = "拖拽后中心x位置:" + position.lng;
-                            document.getElementById("mapy").innerHTML = "拖拽后中心y位置:" + position.lat;
+                            //document.getElementById("mapx").innerHTML = "拖拽后中心x位置:" + position.lng;
+                            //document.getElementById("mapy").innerHTML = "拖拽后中心y位置:" + position.lat;
                             //document.getElementById("level").innerHTML="缩放等级:"+this.getZoom();
 
                         });
@@ -230,8 +234,8 @@
                         var bYposition = 2 - i * 20;
                         html += '<li id="poi' + i + '" index="' + i + '" style="margin: 2px 0px; padding: 0px 5px 0px 3px; cursor: pointer; overflow: hidden; line-height: 17px;">';
                         html += '<span style="background:url(http://api.map.baidu.com/bmap/red_labels.gif) 0 ' + bYposition + 'px no-repeat;padding-left:10px;margin-right:3px"></span>'
-                        html += '<span style="color:#00c;text-decoration:underline"><b>' + poi.title + '</b>' + typeArray[poi.type] + '</span>';
-                        html += '<span style="color:#666;">-' + poi.address + '</span>'
+                        html += '<span style="color:#00c;text-decoration:underline"><b>' + poi.title + '</b> ' + typeArray[poi.type] + '</span>';
+                        html += '<br/><span style="color:#666;">' + poi.address + '</span>'
                         html += '</li>';
                     }
                     html += "</ol>";
@@ -241,17 +245,14 @@
                         (function () {
                             var index = i + 1;
                             var poi = results.getPoi(i);
-                            content = "<h3>" + poi.title + typeArray[poi.type] + "</h3>";
-                            content += "<div>地址1223:" + poi.address + "</div>";
-                            content += '<form action="around.php" method="post"><input type="hidden" name="lng" value="' + poi.point.lng + '"><input type="hidden" name="lat" value="' + poi.point.lat + '"><input type="submit" value="查看附近幼儿园"></form>';
+                            content = "<h4>" + poi.title + typeArray[poi.type] + "</h4>";
+                            content += "<div>单位地址：" + poi.address + "</div>";
                             var info = new BMap.InfoWindow(content)
                             $("#poi" + i).click(function () {
                                 markerArray[$(this).attr('index')].openInfoWindow(info);
                             });
                         })();
-
                     }
-
                 }
             },
         });

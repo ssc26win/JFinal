@@ -47,7 +47,7 @@ public class CompanyController extends BaseController {
                 co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
                 co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
                 co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('" + co.getName() + "', '"
-                        + co.getAddress() + "', '0'" + ")\">" + co.getAddress() + "</a>");
+                        + co.getAddress() + "', '" + co.get("waterUseNum") + "'" + ")\">" + co.getAddress() + "</a>");
                 companies.set(i, co);
             }
         }
@@ -102,6 +102,7 @@ public class CompanyController extends BaseController {
             conditions.add(new Condition("name", Operators.LIKE, keyword));
         }
         Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+                Company.me.getPage(getPage(), GlobalConfig.EXPORT_SUM, conditions, this.getOrderby());
         List<Company> companies = pageInfo.getList();
         if (CommonUtils.isNotEmpty(companies)) {
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictData.UserType);
