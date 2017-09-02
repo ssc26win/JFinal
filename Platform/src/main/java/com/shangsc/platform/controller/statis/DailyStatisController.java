@@ -32,8 +32,6 @@ public class DailyStatisController extends BaseController {
             this.setAttr("endTime", time + " 23:59:59");
         }
 
-
-
         render("daily_use.jsp");
     }
 
@@ -41,6 +39,7 @@ public class DailyStatisController extends BaseController {
     public void getListData() {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
+        String street = this.getPara("street");
         Date startTime = null;
         Date endTime = null;
         try {
@@ -50,7 +49,7 @@ public class DailyStatisController extends BaseController {
             e.printStackTrace();
         }
         Page<ActualData> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode);
+                startTime, endTime, name, innerCode, street);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
@@ -58,7 +57,7 @@ public class DailyStatisController extends BaseController {
                 ActualData co = list.get(i);
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
                 co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer;text-decoration: none;'" +
-                        " onclick=\"openMap('" + co.get("companyName").toString() + "', '"
+                        " onclick=\"openMap('" + co.get("name").toString() + "', '"
                         + co.get("address").toString() + "', '0'" + ")\">" + co.get("address").toString() + "</a>");
                 list.set(i, co);
             }
@@ -70,6 +69,7 @@ public class DailyStatisController extends BaseController {
     public void exportData() {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
+        String street = this.getPara("street");
         Date startTime = null;
         Date endTime = null;
         try {
@@ -79,7 +79,7 @@ public class DailyStatisController extends BaseController {
             e.printStackTrace();
         }
         Page<ActualData> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode);
+                startTime, endTime, name, innerCode, street);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);

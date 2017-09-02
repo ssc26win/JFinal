@@ -65,7 +65,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad ");
 		sqlExceptSelect.append(" where 1=1 ");
 		if (StringUtils.isNotEmpty(keyword)) {
-			sqlExceptSelect.append(" and (tad.inner_code=" + keyword + " or tad.meter_num=" + keyword + ") ");
+			sqlExceptSelect.append(" and (tad.inner_code='" + keyword + "' or tad.meter_num='" + keyword + "' or companyName like '%" + keyword + "%') ");
 		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
@@ -74,8 +74,9 @@ public class ActualData extends BaseActualData<ActualData> {
 		return this.paginate(page, rows, select, sqlExceptSelect.toString());
 	}
 
-	public Page<ActualData> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String name, String innerCode) {
-		String select=" select twm.*,tc.name as companyName,tc.address ";
+	public Page<ActualData> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
+											 String name, String innerCode, String street) {
+		String select=" select twm.*,tc.name,tc.address,tc.street ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc ");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code");
 		if (startTime != null) {
@@ -85,10 +86,13 @@ public class ActualData extends BaseActualData<ActualData> {
 			sqlExceptSelect.append(" and twm.write_time <= '" + endTime + "'");
 		}
 		if (StringUtils.isNotEmpty(name)) {
-			sqlExceptSelect.append(" and companyName like '%" +name+"'");
+			sqlExceptSelect.append(" and tc.name like '%" +name+"%'");
+		}
+		if (StringUtils.isNotEmpty(street)) {
+			sqlExceptSelect.append(" and tc.street like '%" + street + "%'");
 		}
 		if (StringUtils.isNotEmpty(name)) {
-			sqlExceptSelect.append(" and inner_code ='" +innerCode+"'");
+			sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
 		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
@@ -96,8 +100,9 @@ public class ActualData extends BaseActualData<ActualData> {
 		return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
 	}
 
-	public Page<ActualData> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String name, String innerCode) {
-		String select=" select twm.*,tc.name as companyName,tc.address ";
+	public Page<ActualData> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
+										   String name, String innerCode, String street) {
+		String select=" select twm.*,tc.name,tc.address ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc ");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code");
 		if (startTime != null) {
@@ -107,10 +112,13 @@ public class ActualData extends BaseActualData<ActualData> {
 			sqlExceptSelect.append(" and twm.write_time <= '" + endTime + "'");
 		}
 		if (StringUtils.isNotEmpty(name)) {
-			sqlExceptSelect.append(" and companyName like '%" +name+"'");
+			sqlExceptSelect.append(" and tc.name like '%" +name+"%'");
 		}
-		if (StringUtils.isNotEmpty(name)) {
-			sqlExceptSelect.append(" and inner_code ='" +innerCode+"'");
+		if (StringUtils.isNotEmpty(street)) {
+			sqlExceptSelect.append(" and tc.street like '%" + street + "%'");
+		}
+		if (StringUtils.isNotEmpty(innerCode)) {
+			sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
 		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
@@ -118,8 +126,9 @@ public class ActualData extends BaseActualData<ActualData> {
 		return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
 	}
 
-	public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String name, String innerCode) {
-		String select=" select twm.*,tc.name as companyName,tc.address ";
+	public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
+										   String name, String innerCode, String street) {
+		String select=" select twm.*,tc.name,tc.address ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc ");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code");
 		if (startTime != null) {
@@ -129,10 +138,13 @@ public class ActualData extends BaseActualData<ActualData> {
 			sqlExceptSelect.append(" and twm.write_time <= '" +  DateUtils.formatDate(endTime) + "'");
 		}
 		if (StringUtils.isNotEmpty(name)) {
-			sqlExceptSelect.append(" and companyName like '%" +name+"'");
+			sqlExceptSelect.append(" and tc.name like '%" +name+"%'");
 		}
-		if (StringUtils.isNotEmpty(name)) {
-			sqlExceptSelect.append(" and inner_code ='" +innerCode+"'");
+		if (StringUtils.isNotEmpty(street)) {
+			sqlExceptSelect.append(" and tc.street like '%" + street + "%'");
+		}
+		if (StringUtils.isNotEmpty(innerCode)) {
+			sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
 		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
@@ -140,21 +152,25 @@ public class ActualData extends BaseActualData<ActualData> {
 		return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
 	}
 
-	public Page<ActualData> getYearStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String name, String innerCode) {
-		String select=" select twm.*,tc.name as companyName,tc.address ";
+	public Page<ActualData> getYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year,
+										  String name, String innerCode, String street) {
+		String select=" select twm.*,tc.name,tc.address ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc ");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code");
-		if (startTime != null) {
-			sqlExceptSelect.append(" and twm.write_time >= '" +  DateUtils.formatDate(startTime) + "'");
-		}
-		if (endTime != null) {
-			sqlExceptSelect.append(" and twm.write_time <= '" +  DateUtils.formatDate(endTime) + "'");
-		}
-		if (StringUtils.isNotEmpty(name)) {
-			sqlExceptSelect.append(" and companyName like '%" +name+"'");
+		if (year != null && year > 0) {
+			String yearStart = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year) + "-01-01 00:00:00"));
+			String yearEnd = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year) + "-12-31 23:59:59"));
+			sqlExceptSelect.append(" and twm.write_time >= '" +  yearStart + "'");
+			sqlExceptSelect.append(" and twm.write_time >= '" +  yearEnd + "'");
 		}
 		if (StringUtils.isNotEmpty(name)) {
-			sqlExceptSelect.append(" and inner_code ='" +innerCode+"'");
+			sqlExceptSelect.append(" and tc.name like '%" +name+"%'");
+		}
+		if (StringUtils.isNotEmpty(street)) {
+			sqlExceptSelect.append(" and tc.street like '%" + street + "%'");
+		}
+		if (StringUtils.isNotEmpty(innerCode)) {
+			sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
 		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
@@ -171,8 +187,6 @@ public class ActualData extends BaseActualData<ActualData> {
 
 		return Db.find(sqlExceptSelect.toString());
 	}
-
-
 
 	public List<Record> getMonthActualDataPage(String inner_code ) {
 		String select = "select sum(t.net_water) as total ,date_format(t.write_time, '%m') as time ,t.* from t_actual_data t ";

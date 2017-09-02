@@ -91,7 +91,7 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 		StringBuffer sqlExceptSelect = new StringBuffer("from t_water_index twi");
 		sqlExceptSelect.append(" where 1=1 ");
 		if (StringUtils.isNotEmpty(keyword)) {
-			sqlExceptSelect.append(" and (name like %"+ keyword +" or inner_code=" + keyword + ")");
+			sqlExceptSelect.append(" and (twi.inner_code='" + keyword + "') ");
 		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 		    sqlExceptSelect.append(orderbyStr);

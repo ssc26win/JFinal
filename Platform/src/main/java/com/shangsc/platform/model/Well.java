@@ -27,7 +27,7 @@ public class Well extends BaseWell<Well> {
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_well tw ");
 		sqlExceptSelect.append(" where 1=1 ");
 		if (StringUtils.isNotEmpty(keyword)) {
-			sqlExceptSelect.append(" and (name like %"+ keyword +" or inner_code=" + keyword + " or well_num=" + keyword + ") ");
+			sqlExceptSelect.append(" and (tw.name like '%"+ keyword +"%' or tw.inner_code='" + keyword + "' or well_num='" + keyword + "') ");
 		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);

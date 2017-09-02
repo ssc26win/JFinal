@@ -112,9 +112,9 @@
                 { label: '成井时间（年）', name: 'start_date', width: 70, sortable:false},
                 { label: '井深（米）', name: 'well_depth', width: 45, sortable:false},
                 { label: '地下水埋深（米）', name: 'ground_depth', width: 80, sortable:false},
-                { label: '是否为单位自备井', name: 'oneselfWellName', width: 80, sortable:false},
+                /*{ label: '是否为单位自备井', name: 'oneselfWellName', width: 80, sortable:false},*/
                 { label: '井口井管内径（毫米）', name: 'inner_diameter', width: 80, sortable:false},
-                { label: '井壁管材料', name: 'material', width: 60, sortable:false},
+                /*{ label: '井壁管材料', name: 'material', width: 60, sortable:false},*/
                 { label: '应用状况', name: 'application', width: 60, sortable:false},
                 { label: '水源类型', name: 'watersTypeName', width: 60, sortable:false},
                 /*{ label: '是否已配套机电设备', name: 'electromechanicsName', width: 80, sortable:false},
@@ -125,9 +125,9 @@
                 { label: '所在地貌类型区', name: 'geomorphic_type', width: 70, sortable:false},
                 { label: '所取用地下水的类型', name: 'ground_type', width: 100, sortable:false},
                 { label: '所在水资源三级区名称及编码', name: 'name_code', width: 100, sortable:false},
-                { label: '主要取水用途及效益', name: 'use_efficiency', width: 100, sortable:false},
+                { label: '主要取水用途及效益', name: 'use_efficiency', width: 100, sortable:false},*/
                 { label: '取水量确定方法', name: 'method', width: 100, sortable:false},
-                { label: '是否已办理取水许可证', name: 'licenceName', width: 100, sortable:false},*/
+                /*{ label: '是否已办理取水许可证', name: 'licenceName', width: 100, sortable:false},*/
                 { label: '取水许可证编号', name: 'licence_code', width: 80, sortable:false},
                 { label: '年许可取水量（万立方米）', name: 'water_withdrawals', width: 100, sortable:false}
             ],

@@ -6,6 +6,7 @@ import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseCompany;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -84,12 +85,15 @@ public class Company extends BaseCompany<Company> {
     }
 
     public Page<Company> getCompanyPage(int page, int rows, String keyword, String orderbyStr) {
-        Set<Condition> conditions = new HashSet<Condition>();
-        if (CommonUtils.isNotEmpty(keyword)) {
-            conditions.add(new Condition("name", Operators.LIKE, keyword));
+        String select="select c.* ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
+        sqlExceptSelect.append(" where 1=1 ");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (c.name like '%" + keyword + "%' or c.inner_code='" + keyword + "' or contact='" + keyword + "') ");
         }
-        String select="select c.* from";
-        StringBuffer sqlExceptSelect = new StringBuffer("t_company c");
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 

@@ -4,21 +4,16 @@ import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
-import com.shangsc.platform.core.model.Condition;
-import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
-import com.shangsc.platform.model.Well;
 import com.shangsc.platform.util.CodeNumUtil;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @Author ssc
@@ -36,10 +31,6 @@ public class ActualController extends BaseController {
     @RequiresPermissions(value={"/statis/actual"})
     public void getListData() {
         String keyword=this.getPara("name");
-        Set<Condition> conditions=new HashSet<Condition>();
-        if(CommonUtils.isNotEmpty(keyword)){
-            conditions.add(new Condition("name", Operators.LIKE, keyword));
-        }
         Page<ActualData> pageInfo = ActualData.me.getActualDataPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {

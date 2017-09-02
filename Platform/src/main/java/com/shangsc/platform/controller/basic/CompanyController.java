@@ -35,11 +35,7 @@ public class CompanyController extends BaseController {
     @RequiresPermissions(value={"/basic/company"})
     public void getListData() {
         String keyword=this.getPara("name");
-        Set<Condition> conditions=new HashSet<Condition>();
-        if(CommonUtils.isNotEmpty(keyword)){
-            conditions.add(new Condition("name", Operators.LIKE, keyword));
-        }
-        Page<Company> pageInfo = Company.me.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
+        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
         if (CommonUtils.isNotEmpty(companies)) {
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictData.UserType);
@@ -105,7 +101,7 @@ public class CompanyController extends BaseController {
         if(CommonUtils.isNotEmpty(keyword)){
             conditions.add(new Condition("name", Operators.LIKE, keyword));
         }
-        Page<Company> pageInfo = Company.me.getPage(getPage(), GlobalConfig.EXPORT_SUM, conditions, this.getOrderby());
+        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
         if (CommonUtils.isNotEmpty(companies)) {
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictData.UserType);

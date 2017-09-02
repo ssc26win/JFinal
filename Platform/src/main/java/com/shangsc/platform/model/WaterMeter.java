@@ -26,7 +26,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm ");
         sqlExceptSelect.append(" where 1=1 ");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (name like %"+ keyword +" or inner_code=" + keyword + " or meter_num=" + keyword + ") ");
+            sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword + "') ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);

@@ -11,7 +11,6 @@ import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,16 +32,17 @@ public class YearStatisController extends BaseController {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         Integer year = this.getParaToInt("year");
-        Date startTime = null;
-        Date endTime = null;
-        try {
-            this.getParaToDate("startTime");
-            this.getParaToDate("endTime");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String street = this.getPara("street");
+        //Date startTime = null;
+        //Date endTime = null;
+        //try {
+        //    this.getParaToDate("startTime");
+        //    this.getParaToDate("endTime");
+        //} catch (Exception e) {
+        //    e.printStackTrace();
+        //}
         Page<ActualData> pageInfo = ActualData.me.getYearStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode);
+                year, name, innerCode, street);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
@@ -50,7 +50,7 @@ public class YearStatisController extends BaseController {
                 ActualData co = list.get(i);
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
                 co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer;text-decoration: none;'" +
-                        " onclick=\"openMap('" + co.get("companyName").toString() + "', '"
+                        " onclick=\"openMap('" + co.get("name").toString() + "', '"
                         + co.get("address").toString() + "', '0'" + ")\">" + co.get("address").toString() + "</a>");
                 list.set(i, co);
             }
@@ -62,16 +62,10 @@ public class YearStatisController extends BaseController {
     public void exportData() {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
-        Date startTime = null;
-        Date endTime = null;
-        try {
-            this.getParaToDate("startTime");
-            this.getParaToDate("endTime");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Integer year = this.getParaToInt("year");
+        String street = this.getPara("street");
         Page<ActualData> pageInfo = ActualData.me.getYearStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode);
+                year, name, innerCode, street);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
