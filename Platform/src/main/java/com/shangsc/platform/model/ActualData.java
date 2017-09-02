@@ -48,6 +48,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		actualData.setAlarm(alarm);
 		actualData.setNetWater(netWater);
 		actualData.setState(state);
+		actualData.setWriteTime(new Date());
 		actualData.setVoltage(voltage);
 		return actualData;
 	}
