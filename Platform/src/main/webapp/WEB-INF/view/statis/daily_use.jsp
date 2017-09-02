@@ -119,7 +119,7 @@
                 { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
                 { label: '查询日期', name: 'find_date', width: 100, sortable:true},
-                { label: '日用水量', name: 'daily_num', width: 80, sortable:false},
+                { label: '日用水量', name: 'net_water', width: 80, sortable:false},
                 { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
             ],
             viewrecords: true,

@@ -128,7 +128,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 										   String name, String innerCode, String street) {
-		String select=" select twm.*,tc.name,tc.address ";
+		String select=" select twm.*,tc.name,tc.address,sum(net_water) as netWaterNum";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc ");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code");
 		if (startTime != null) {
@@ -146,6 +146,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		if (StringUtils.isNotEmpty(innerCode)) {
 			sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
 		}
+		sqlExceptSelect.append(" group by twm.inner_code ");
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
 		}
@@ -154,7 +155,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year,
 										  String name, String innerCode, String street) {
-		String select=" select twm.*,tc.name,tc.address ";
+		String select=" select twm.*,tc.name,tc.address,sum(net_water) as netWaterNum ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc ");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code");
 		if (year != null && year > 0) {
@@ -172,6 +173,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		if (StringUtils.isNotEmpty(innerCode)) {
 			sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
 		}
+		sqlExceptSelect.append(" group by twm.inner_code ");
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
 		}

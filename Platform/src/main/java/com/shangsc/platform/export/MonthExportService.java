@@ -54,7 +54,7 @@ public class MonthExportService extends ExportBaseService {
                     actualData.get("meter_attr"),
                     month,
                     actualData.getWriteTime(),
-                    actualData.getNetWater(),
+                    actualData.get("netWaterNum"),
                     actualData.get(""),
                     actualData.get("address")
             };

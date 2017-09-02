@@ -51,7 +51,7 @@ public class YearExportService extends ExportBaseService {
                     actualData.get("watersTypeName"),
                     actualData.get("meter_attr"),
                     year + "年",
-                    actualData.getNetWater(),
+                    actualData.get(""),
                     actualData.get("address")
             };
             objects.add(obj);

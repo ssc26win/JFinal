@@ -58,7 +58,7 @@ public class DailyStatisController extends BaseController {
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
                 co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer;text-decoration: none;'" +
                         " onclick=\"openMap('" + co.get("name").toString() + "', '"
-                        + co.get("address").toString() + "', '0'" + ")\">" + co.get("address").toString() + "</a>");
+                        + co.get("address").toString() + "', '" + co.getNetWater() + "'" + ")\">" + co.get("address").toString() + "</a>");
                 list.set(i, co);
             }
         }
