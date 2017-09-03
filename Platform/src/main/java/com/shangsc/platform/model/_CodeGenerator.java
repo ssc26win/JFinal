@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 public class _CodeGenerator {
 	
 	public static DataSource getDataSource() {
-		PropKit.use("config.txt");
+		PropKit.use("config.properties");
 		C3p0Plugin c3p0Plugin = GlobalConfig.createC3p0Plugin();
 		c3p0Plugin.start();
 		return c3p0Plugin.getDataSource();

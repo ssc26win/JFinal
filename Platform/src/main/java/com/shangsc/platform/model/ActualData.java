@@ -83,9 +83,9 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 											 String name, String innerCode, String street, Integer watersType) {
-		String select=" select twm.*,tc.name,tc.address,tc.street ";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc ");
-		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code");
+		String select=" select twm.*,tc.name,tc.address,tc.street,tm.meter_attr ";
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
+		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
 		if (startTime != null) {
 			sqlExceptSelect.append(" and twm.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "'");
 		}
@@ -113,6 +113,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		if (watersType != null) {
 			sqlExceptSelect.append(" and twm.waters_type=" + watersType);
 		}
+		sqlExceptSelect.append(" group by twm.write_time ");
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
 		}

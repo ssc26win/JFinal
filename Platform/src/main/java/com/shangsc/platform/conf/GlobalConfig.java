@@ -48,7 +48,7 @@ public class GlobalConfig extends JFinalConfig {
 	 */
 	public void configConstant(Constants me) {
 		// 加载少量必要配置，随后可用PropKit.get(...)获取值
-		PropKit.use("config.txt");
+		PropKit.use("config.properties");
 		me.setDevMode(PropKit.getBoolean("devMode", false));
 		me.setViewType(ViewType.JSP);
 		me.setError404View("/page/404.jsp");
