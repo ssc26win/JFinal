@@ -6,11 +6,13 @@ import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseWaterIndex;
+import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -104,5 +106,26 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 		}
 		this.paginate(page, rows, select, sqlExceptSelect.toString());
 		return this.paginate(page, rows, select, sqlExceptSelect.toString());
+	}
+
+	public void importData(List<Map<Integer, String>> maps) {
+		for (int i = 0; i < maps.size(); i++) {
+			WaterIndex index = new WaterIndex();
+			String innerCode = maps.get(1).toString();
+			String waterUseType = maps.get(2).toString();
+			BigDecimal waterIndex = CodeNumUtil.getBigDecimal(maps.get(3).toString(), 2);
+			BigDecimal january = CodeNumUtil.getBigDecimal(maps.get(4).toString(), 2);
+			BigDecimal february = CodeNumUtil.getBigDecimal(maps.get(5).toString(), 2);
+			BigDecimal march = CodeNumUtil.getBigDecimal(maps.get(6).toString(), 2);
+			BigDecimal april = CodeNumUtil.getBigDecimal(maps.get(7).toString(), 2);
+			BigDecimal may = CodeNumUtil.getBigDecimal(maps.get(8).toString(), 2);
+			BigDecimal june = CodeNumUtil.getBigDecimal(maps.get(9).toString(), 2);
+			BigDecimal july = CodeNumUtil.getBigDecimal(maps.get(10).toString(), 2);
+			BigDecimal august = CodeNumUtil.getBigDecimal(maps.get(11).toString(), 2);
+			BigDecimal september = CodeNumUtil.getBigDecimal(maps.get(12).toString(), 2);
+			BigDecimal october = CodeNumUtil.getBigDecimal(maps.get(13).toString(), 2);
+			BigDecimal november = CodeNumUtil.getBigDecimal(maps.get(14).toString(), 2);
+			BigDecimal december = CodeNumUtil.getBigDecimal(maps.get(15).toString(), 2);
+		}
 	}
 }

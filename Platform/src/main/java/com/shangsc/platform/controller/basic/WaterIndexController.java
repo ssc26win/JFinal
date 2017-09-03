@@ -1,10 +1,15 @@
 package com.shangsc.platform.controller.basic;
 
+import com.google.common.collect.Maps;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.upload.UploadFile;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.DateUtils;
+import com.shangsc.platform.core.util.FileUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.WaterIndexExportService;
@@ -14,6 +19,7 @@ import com.shangsc.platform.util.CodeNumUtil;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +60,11 @@ public class WaterIndexController extends BaseController {
         }
         this.setAttr("id", id);
         render("water_index_add.jsp");
+    }
+
+    @RequiresPermissions(value={"/basic/waterindex"})
+    public void importPage() {
+        render("water_index_import.jsp");
     }
 
     @RequiresPermissions(value={"/basic/waterindex"})
@@ -107,7 +118,6 @@ public class WaterIndexController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/waterindex"})
     public void export() {
-
         String keyword=this.getPara("name");
         Page<WaterIndex> pageInfo = WaterIndex.me.getWaterIndexPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
         List<WaterIndex> list = pageInfo.getList();
@@ -122,5 +132,31 @@ public class WaterIndexController extends BaseController {
         WaterIndexExportService service = new WaterIndexExportService();
         String path = service.export(list);
         renderFile(new File(path));
+    }
+
+    @RequiresPermissions(value = {"/basic/waterindex"})
+    public void importData() {
+        String dataStr= DateUtils.format(new Date(), "yyyyMMddHHmm");
+        List<UploadFile> flist = this.getFiles("/temp", 1024*1024*50);
+        Map<String,Object> data= Maps.newHashMap();
+        if(flist.size()>0){
+            UploadFile uf=flist.get(0);
+            String status_url= PropKit.get("uploadWaterIndexPath");
+            String fileUrl=dataStr+"/"+uf.getFileName();
+            String newFile=PropKit.get("uploadPath")+fileUrl;
+            FileUtils.mkdir(newFile, false);
+            FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);
+            WaterIndexExportService service = new WaterIndexExportService();
+            try {
+                List<Map<Integer, String>> maps = service.importExcel(newFile);
+                WaterIndex.me.importData(maps);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            uf.getFile().delete();
+            data.put("staticUrl",status_url);
+            data.put("fileUrl",fileUrl);
+            renderJson(data);
+        }
     }
 }

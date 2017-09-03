@@ -59,7 +59,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="startDate">成井时间（年）:</label>
                                 <div class="col-sm-3">
-                                    <input type="number" id="startDate" name="startDate" value="${item.startDate}" class="form-control form_datetime">
+                                    <input type="text" id="startDate" name="startDate" value="${item.startDate}" class="form-control form_datetime">
                                 </div>
                                 <label class="col-sm-3 control-label" for="wellDepth">井深（米）:</label>
                                 <div class="col-sm-3">

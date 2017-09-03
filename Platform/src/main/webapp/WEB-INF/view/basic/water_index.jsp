@@ -160,6 +160,16 @@
                 content: '${context_path}/basic/waterindex/add'
             });
         });
+        $("#btn-importData").click(function(){//添加页面
+            parent.layer.open({
+                title:'导入用水指标',
+                type: 2,
+                area: ['770px', '300px'],
+                fix: false, //不固定
+                maxmin: true,
+                content: '${context_path}/basic/waterindex/importPage'
+            });
+        });
         $("#btn-deleteData").click(function(){
             deleteData();
         });
