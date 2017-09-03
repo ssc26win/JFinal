@@ -12,7 +12,7 @@ import java.util.List;
  * @Desc 用途：
  */
 public class YearExportService extends ExportBaseService {
-    private static final String FILE_NAME = "月用水量信息导出";
+    private static final String FILE_NAME = "年用水量信息导出";
 
     /*
      { label: '单位名称', name: 'companyName', width: 120, sortable:false},
@@ -36,28 +36,28 @@ public class YearExportService extends ExportBaseService {
                 "水源类型",
                 "水表属性",
                 "查询时间",
-                "用水量",
+                "年用水量",
                 "单位地址"
         }));
 
-        logger.info("导出月用水量信息导出条数为:{}", list.size());
+        logger.info("导出年用水量信息导出条数为:{}", list.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
             Object[] obj = new Object[]{
-                    actualData.get("companyName"),
+                    actualData.get("name"),
                     actualData.getInnerCode(),
                     actualData.getLineNum(),
                     actualData.getMeterNum(),
                     actualData.get("watersTypeName"),
                     actualData.get("meter_attr"),
-                    year + "年",
-                    actualData.get(""),
+                    actualData.get("yearStr"),
+                    actualData.get("netWaterNum"),
                     actualData.get("address")
             };
             objects.add(obj);
         }
 
-        super.logger.info("导出月用水量信息结束");
+        super.logger.info("导出年用水量信息结束");
         return super.export(FILE_NAME, listHeader, objects);
     }
 }

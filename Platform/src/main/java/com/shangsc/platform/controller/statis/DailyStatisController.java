@@ -8,6 +8,7 @@ import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.DailyExportService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -40,12 +41,22 @@ public class DailyStatisController extends BaseController {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String street = this.getPara("street");
-        Integer watersType = this.getParaToInt("watersType", 0);
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
         Date startTime = null;
         Date endTime = null;
         try {
             startTime = this.getParaToDate("startTime");
             endTime = this.getParaToDate("endTime");
+            if (startTime == null && endTime == null) {
+                Date today = new Date(ToolDateTime.format(new Date(), "yyyy-MM-dd"));
+                startTime = today;
+                today.setDate(startTime.getDay() + 1);
+                endTime = today;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,6 +71,7 @@ public class DailyStatisController extends BaseController {
                 co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer;text-decoration: none;'" +
                         " onclick=\"openMap('" + co.get("name").toString() + "', '"
                         + co.get("address").toString() + "', '" + co.getNetWater() + "'" + ")\">" + co.get("address").toString() + "</a>");
+                co.put("searchDay", ToolDateTime.format(new Date(), "yyyy-MM-dd"));
                 list.set(i, co);
             }
         }
@@ -71,12 +83,22 @@ public class DailyStatisController extends BaseController {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String street = this.getPara("street");
-        Integer watersType = this.getParaToInt("watersType", 0);
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
         Date startTime = null;
         Date endTime = null;
         try {
-            this.getParaToDate("startTime");
-            this.getParaToDate("endTime");
+            startTime = this.getParaToDate("startTime");
+            endTime = this.getParaToDate("endTime");
+            if (startTime == null && endTime == null) {
+                Date today = new Date(ToolDateTime.format(new Date(), "yyyy-MM-dd"));
+                startTime = today;
+                today.setDate(startTime.getDay() + 1);
+                endTime = today;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

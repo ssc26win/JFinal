@@ -26,7 +26,7 @@ public class MonthExportService extends ExportBaseService {
     { label: '计费周期', name: 'billing_cycle', width: 80, sortable:false},
     { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
      */
-    public String export(List<ActualData> list,int month) {
+    public String export(List<ActualData> list, int month) {
         super.logger.info("导出月用水量信息开始");
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[]{
@@ -46,16 +46,15 @@ public class MonthExportService extends ExportBaseService {
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
             Object[] obj = new Object[]{
-                    actualData.get("companyName"),
+                    actualData.get("name"),
                     actualData.getInnerCode(),
                     actualData.getLineNum(),
                     actualData.getMeterNum(),
                     actualData.get("watersTypeName"),
                     actualData.get("meter_attr"),
-                    month,
-                    actualData.getWriteTime(),
+                    month + " 月",
                     actualData.get("netWaterNum"),
-                    actualData.get(""),
+                    actualData.get("billing_cycle"),
                     actualData.get("address")
             };
             objects.add(obj);

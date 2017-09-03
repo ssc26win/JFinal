@@ -240,7 +240,7 @@
         var submitData = {
             "ids" : getSelectedRows()
         };
-        layer.alert("确认删除记录？",function(){
+        layer.confirm("确认删除记录？",function(){
             $.post("${context_path}/basic/company/delete", submitData, function(data) {
                 if (data.code == 0) {
                     layer.msg("操作成功", {

@@ -32,13 +32,13 @@
                             <div class="widget-main">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <form id="exportForm" action="${context_path}/statis/year/export" method="post">
+                                        <form id="exportForm" action="${context_path}/statis/year/exportData" method="post">
                                             <div class="input-group">
                                                 日期时间（年）:
                                                 <input type="number" id="year" name="year"/>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
-                                                <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option>请选择水源类型</option></select>
+                                                <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option value="">请选择水源类型</option></select>
                                                 <input type="text" id="meterAttr" name="meterAttr" class="" placeholder="请输入水表属性" style="margin-left: 5px;"/>
                                                 <input type="text" id="street" name="street" class="" placeholder="请输入所属乡镇" style="margin-left: 5px;"/>
                                                 <span class="input-group-btn">
@@ -106,7 +106,7 @@
                 { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
                 { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
-                { label: '查询时间', name: 'find_time', width: 100, sortable:true},
+                { label: '查询时间', name: 'yearStr', width: 100, sortable:true},
                 { label: '用水量（立方米）', name: 'net_water', width: 100, sortable:false},
                 { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
             ],
@@ -145,6 +145,9 @@
                 postData:{'name':name,'innerCode':innerCode,'year':year,'street':street,'watersType':watersType}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
+        });
+        $("#btn-exportData").click(function(){
+            $("#exportForm").submit();
         });
     });
     //replace icons with FontAwesome icons like above

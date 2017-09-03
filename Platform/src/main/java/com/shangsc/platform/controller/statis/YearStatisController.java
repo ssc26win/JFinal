@@ -9,8 +9,11 @@ import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.YearExportService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.util.ToolDateTime;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,9 +34,17 @@ public class YearStatisController extends BaseController {
     public void getListData() {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
-        Integer year = this.getParaToInt("year");
+        Integer year = null;
+        if (StringUtils.isNotEmpty(this.getPara("year"))) {
+            String yearStr = StringUtils.trim(this.getPara("year"));
+            year = Integer.parseInt(yearStr);
+        }
         String street = this.getPara("street");
-        Integer watersType = this.getParaToInt("watersType", 0);
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
         Page<ActualData> pageInfo = ActualData.me.getYearStatis(getPage(), getRows(), getOrderbyStr(),
                 year, name, innerCode, street, watersType);
         List<ActualData> list = pageInfo.getList();
@@ -44,6 +55,11 @@ public class YearStatisController extends BaseController {
                 String netWaterNum = "0";
                 if (co.get("netWaterNum") != null) {
                     netWaterNum = co.get("netWaterNum").toString();
+                }
+                if (year != null && year > 0) {
+                    co.put("yearStr", year + " 年");
+                } else {
+                    co.put("yearStr", ToolDateTime.format(new Date(), "yyyy") + " 年");
                 }
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
                 co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer;text-decoration: none;'" +
@@ -59,9 +75,17 @@ public class YearStatisController extends BaseController {
     public void exportData() {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
-        Integer year = this.getParaToInt("year");
+        Integer year = null;
+        if (StringUtils.isNotEmpty(this.getPara("year"))) {
+            String yearStr = StringUtils.trim(this.getPara("year"));
+            year = Integer.parseInt(yearStr);
+        }
         String street = this.getPara("street");
-        Integer watersType = this.getParaToInt("watersType", 0);
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
         Page<ActualData> pageInfo = ActualData.me.getYearStatis(getPage(), getRows(), getOrderbyStr(),
                 year, name, innerCode, street, watersType);
         List<ActualData> list = pageInfo.getList();
@@ -70,6 +94,11 @@ public class YearStatisController extends BaseController {
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                if (year != null && year > 0) {
+                    co.put("yearStr", year + " 年");
+                } else {
+                    co.put("yearStr", ToolDateTime.format(new Date(), "yyyy") + " 年");
+                }
                 list.set(i, co);
             }
         }

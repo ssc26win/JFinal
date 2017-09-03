@@ -33,7 +33,7 @@ public class ReadNumExportService extends ExportBaseService{
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
             Object[] obj = new Object[]{
-                    actualData.get("companyName"),
+                    actualData.get("name"),
                     actualData.getInnerCode(),
                     actualData.getLineNum(),
                     actualData.getMeterNum(),

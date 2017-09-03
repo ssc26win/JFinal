@@ -110,7 +110,7 @@ public class ActualData extends BaseActualData<ActualData> {
 				sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
 			}
 		}
-		if (watersType > 0) {
+		if (watersType != null) {
 			sqlExceptSelect.append(" and twm.waters_type=" + watersType);
 		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -121,9 +121,9 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 										   String name, String innerCode, String street, Integer watersType) {
-		String select=" select twm.*,tc.name,tc.address ";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc ");
-		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code");
+		String select=" select twm.*,sum(twm.net_water) as dailyNum,tc.name,tc.address,tm.meter_attr ";
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
+		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
 		if (startTime != null) {
 			sqlExceptSelect.append(" and twm.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "'");
 		}
@@ -148,9 +148,10 @@ public class ActualData extends BaseActualData<ActualData> {
 				sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
 			}
 		}
-		if (watersType > 0) {
+		if (watersType != null) {
 			sqlExceptSelect.append(" and twm.waters_type=" + watersType);
 		}
+		sqlExceptSelect.append(" group by twm.inner_code ");
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
 		}
@@ -159,9 +160,9 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 										   String name, String innerCode, String street, Integer watersType) {
-		String select=" select twm.*,tc.name,tc.address,sum(net_water) as netWaterNum";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc ");
-		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code");
+		String select=" select twm.*,tc.name,tc.address,sum(net_water) as netWaterNum,tm.billing_cycle,tm.meter_attr";
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
+		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
 		if (startTime != null) {
 			sqlExceptSelect.append(" and twm.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "'");
 		}
@@ -186,7 +187,7 @@ public class ActualData extends BaseActualData<ActualData> {
 				sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
 			}
 		}
-		if (watersType > 0) {
+		if (watersType != null) {
 			sqlExceptSelect.append(" and twm.waters_type=" + watersType);
 		}
 		sqlExceptSelect.append(" group by twm.inner_code ");
@@ -198,9 +199,9 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year,
 										  String name, String innerCode, String street, Integer watersType) {
-		String select=" select twm.*,tc.name,tc.address,sum(net_water) as netWaterNum ";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc ");
-		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code");
+		String select=" select twm.*,tc.name,tc.address,sum(net_water) as netWaterNum,tm.meter_attr";
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
+		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
 		if (year != null && year > 0) {
 			String yearStart = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year) + "-01-01 00:00:00"));
 			String yearEnd = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year) + "-12-31 23:59:59"));
@@ -225,7 +226,7 @@ public class ActualData extends BaseActualData<ActualData> {
 				sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
 			}
 		}
-		if (watersType > 0) {
+		if (watersType != null) {
 			sqlExceptSelect.append(" and twm.waters_type=" + watersType);
 		}
 		sqlExceptSelect.append(" group by twm.inner_code ");

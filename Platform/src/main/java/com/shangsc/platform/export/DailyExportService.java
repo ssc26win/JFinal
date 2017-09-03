@@ -43,14 +43,14 @@ public class DailyExportService extends ExportBaseService{
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
             Object[] obj = new Object[]{
-                    actualData.get("companyName"),
+                    actualData.get("name"),
                     actualData.getInnerCode(),
                     actualData.getLineNum(),
                     actualData.getMeterNum(),
                     actualData.get("watersTypeName"),
                     actualData.get("meter_attr"),
                     actualData.getWriteTime(),
-                    actualData.getNetWater(),
+                    actualData.get("dailyNum"),
                     actualData.get("address")
             };
             objects.add(obj);

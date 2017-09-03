@@ -8,6 +8,7 @@ import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.ReadNumExportService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.Date;
@@ -32,7 +33,11 @@ public class ReadnumStatisController extends BaseController {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String street = this.getPara("street");
-        Integer watersType = this.getParaToInt("watersType", 0);
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
         Date startTime = null;
         Date endTime = null;
         try {
@@ -63,7 +68,11 @@ public class ReadnumStatisController extends BaseController {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String street = this.getPara("street");
-        Integer watersType = this.getParaToInt("watersType", 0);
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
         Date startTime = null;
         Date endTime = null;
         try {

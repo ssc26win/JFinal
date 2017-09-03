@@ -4,11 +4,11 @@ import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
-import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.MonthExportService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -41,7 +41,11 @@ public class MonthStatisController extends BaseController {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String street = this.getPara("street");
-        Integer watersType = this.getParaToInt("watersType", 0);
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
         Date startTime = null;
         Date endTime = null;
         try {
@@ -65,6 +69,7 @@ public class MonthStatisController extends BaseController {
                 co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer; text-decoration:none;'" +
                         " onclick=\"openMap('" + co.get("name").toString() + "', '"
                         + co.get("address").toString() + "', '" + netWaterNum + "'" + ")\">" + co.get("address").toString() + "</a>");
+                co.put("searchMonth", ToolDateTime.format(new Date(), "yyyy-MM"));
                 list.set(i, co);
             }
         }
@@ -76,7 +81,11 @@ public class MonthStatisController extends BaseController {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String street = this.getPara("street");
-        Integer watersType = this.getParaToInt("watersType", 0);
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
         Date startTime = null;
         Date endTime = null;
         try {
@@ -97,7 +106,13 @@ public class MonthStatisController extends BaseController {
             }
         }
         MonthExportService service = new MonthExportService();
-        String path = service.export(list, DateUtils.getThisMonth());
+        int month = 0;
+        if (startTime == null) {
+            month = ToolDateTime.getDate().getMonth();
+        } else {
+            month = startTime.getMonth();
+        }
+        String path = service.export(list, month);
         renderFile(new File(path));
     }
 }
