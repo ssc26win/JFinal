@@ -59,17 +59,17 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="startDate">成井时间（年）:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="startDate" name="startDate" value="${item.startDate}" class="form-control form_datetime">
+                                    <input type="number" id="startDate" name="startDate" value="${item.startDate}" class="form-control form_datetime">
                                 </div>
                                 <label class="col-sm-3 control-label" for="wellDepth">井深（米）:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="wellDepth" name="wellDepth" value="${item.wellDepth}" class="form-control">
+                                    <input type="number" id="wellDepth" name="wellDepth" value="${item.wellDepth}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="groundDepth">地下水埋深（米）:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="groundDepth" name="groundDepth" value="${item.groundDepth}" class="form-control">
+                                    <input type="number" id="groundDepth" name="groundDepth" value="${item.groundDepth}" class="form-control">
                                 </div>
                                 <label class="col-sm-3 control-label" for="oneselfWell_0">是否为单位自备井:</label>
                                 <div class="col-sm-3">
@@ -80,7 +80,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="innerDiameter">井口井管内径（毫米）:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="innerDiameter" name="innerDiameter" value="${item.innerDiameter}" class="form-control">
+                                    <input type="number" id="innerDiameter" name="innerDiameter" value="${item.innerDiameter}" class="form-control">
                                 </div>
                                 <label class="col-sm-3 control-label" for="material">井壁管材料:</label>
                                 <div class="col-sm-3">
@@ -165,7 +165,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="waterWithdrawals">年许可取水量（万立方米）:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="waterWithdrawals" name="waterWithdrawals" value="${item.waterWithdrawals}" class="form-control">
+                                    <input type="number" id="waterWithdrawals" name="waterWithdrawals" value="${item.waterWithdrawals}" class="form-control">
                                 </div>
                             </div>
                             <div class="clearfix form-actions" align="center">

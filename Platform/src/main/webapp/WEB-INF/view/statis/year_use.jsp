@@ -107,7 +107,7 @@
                 { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
                 { label: '查询时间', name: 'find_time', width: 100, sortable:true},
-                { label: '用水量', name: 'net_water', width: 80, sortable:false},
+                { label: '用水量（立方米）', name: 'net_water', width: 100, sortable:false},
                 { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
             ],
             viewrecords: true,
@@ -139,9 +139,10 @@
 //            var endTime = $("#endTime").val();
             var street = $("#street").val();
             var year = $("#year").val();
+            var watersType = $("#watersType").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',
-                postData:{'name':name,'innerCode':innerCode,'year':year,'street':street},  //发送数据
+                postData:{'name':name,'innerCode':innerCode,'year':year,'street':street,'watersType':watersType}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });

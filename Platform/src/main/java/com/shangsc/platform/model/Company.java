@@ -18,6 +18,19 @@ public class Company extends BaseCompany<Company> {
 	public static final Company me = new Company();
     private static final long serialVersionUID = -1982696969221258167L;
 
+
+    /**
+     * 公司编号是否已存在
+     * @param inner_code
+     * @return
+     */
+    public boolean hasExistCompany(String inner_code){
+        Set<Condition> conditions = new HashSet<Condition>();
+        conditions.add(new Condition("inner_code", Operators.EQ, inner_code));
+        long num = Company.me.getCount(conditions);
+        return num>0?true:false;
+    }
+
     /**
      * 单位名是否已存在
      * @param name
@@ -89,7 +102,8 @@ public class Company extends BaseCompany<Company> {
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
         sqlExceptSelect.append(" where 1=1 ");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (c.name like '%" + keyword + "%' or c.inner_code='" + keyword + "' or contact='" + keyword + "') ");
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+                    + "' or contact='" + StringUtils.trim(keyword) + "') ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);

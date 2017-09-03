@@ -35,6 +35,9 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 	public InvokeResult save(Long id, Long companyId, String innerCode, String waterUseType, BigDecimal waterIndex, BigDecimal january,
 							 BigDecimal february, BigDecimal march, BigDecimal april, BigDecimal may, BigDecimal june, BigDecimal july,
 							 BigDecimal august, BigDecimal september, BigDecimal october, BigDecimal november, BigDecimal december) {
+		if (!Company.me.hasExistCompany(innerCode)) {
+			return InvokeResult.failure("公司编号不存在");
+		}
 		if (null != id && id > 0l) {
 			WaterIndex index = this.findById(id);
 			if (index == null) {
@@ -87,11 +90,14 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 	}
 
 	public Page<WaterIndex> getWaterIndexPage(int page, int rows, String keyword, String orderbyStr) {
-		String select = "select twi.*,(select tc.name from t_company tc where tc.inner_code=twi.inner_code) as companyName";
-		StringBuffer sqlExceptSelect = new StringBuffer("from t_water_index twi");
-		sqlExceptSelect.append(" where 1=1 ");
+		String select = "select twi.*,tc.name as companyName";
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_index twi, t_company tc");
+		sqlExceptSelect.append(" where 1=1 and twi.inner_code=tc.inner_code ");
 		if (StringUtils.isNotEmpty(keyword)) {
-			sqlExceptSelect.append(" and (twi.inner_code='" + keyword + "') ");
+			keyword = StringUtils.trim(keyword);
+			if (StringUtils.isNotEmpty(keyword)) {
+				sqlExceptSelect.append(" and (twi.inner_code='" + keyword + "' or tc.name like '%" + keyword + "%') ");
+			}
 		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 		    sqlExceptSelect.append(orderbyStr);

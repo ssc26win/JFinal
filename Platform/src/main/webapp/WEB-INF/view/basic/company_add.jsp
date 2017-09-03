@@ -81,17 +81,17 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="wellCount">水井数量:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" id="wellCount" name="wellCount" value="${item.wellCount}" class="form-control">
+                                    <input type="number" id="wellCount" name="wellCount" value="${item.wellCount}" class="form-control">
                                 </div>
                                 <label class="col-sm-2 control-label" for="firstWatermeterCount">一级表数量:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" id="firstWatermeterCount" name="firstWatermeterCount" value="${item.firstWatermeterCount}" class="form-control">
+                                    <input type="number" id="firstWatermeterCount" name="firstWatermeterCount" value="${item.firstWatermeterCount}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="remotemeterCount">远传表数量:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" id="remotemeterCount" name="remotemeterCount" value="${item.remotemeterCount}" class="form-control">
+                                    <input type="number" id="remotemeterCount" name="remotemeterCount" value="${item.remotemeterCount}" class="form-control">
                                 </div>
                                 <label class="col-sm-2 control-label" for="unitType">节水型单位类型:</label>
                                 <div class="col-sm-4">

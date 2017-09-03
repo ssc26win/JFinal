@@ -33,16 +33,9 @@ public class YearStatisController extends BaseController {
         String innerCode = this.getPara("innerCode");
         Integer year = this.getParaToInt("year");
         String street = this.getPara("street");
-        //Date startTime = null;
-        //Date endTime = null;
-        //try {
-        //    this.getParaToDate("startTime");
-        //    this.getParaToDate("endTime");
-        //} catch (Exception e) {
-        //    e.printStackTrace();
-        //}
+        Integer watersType = this.getParaToInt("watersType", 0);
         Page<ActualData> pageInfo = ActualData.me.getYearStatis(getPage(), getRows(), getOrderbyStr(),
-                year, name, innerCode, street);
+                year, name, innerCode, street, watersType);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
@@ -68,8 +61,9 @@ public class YearStatisController extends BaseController {
         String innerCode = this.getPara("innerCode");
         Integer year = this.getParaToInt("year");
         String street = this.getPara("street");
+        Integer watersType = this.getParaToInt("watersType", 0);
         Page<ActualData> pageInfo = ActualData.me.getYearStatis(getPage(), getRows(), getOrderbyStr(),
-                year, name, innerCode, street);
+                year, name, innerCode, street, watersType);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);

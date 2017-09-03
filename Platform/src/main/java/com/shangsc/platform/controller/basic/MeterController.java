@@ -12,6 +12,7 @@ import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.WaterMeterExportService;
 import com.shangsc.platform.model.*;
+import com.shangsc.platform.util.ToolDateTime;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -198,8 +199,14 @@ public class MeterController extends BaseController {
         String meterAttr = this.getPara("meterAttr");
         Integer chargeType = this.getParaToInt("chargeType");
         String billingCycle = this.getPara("billingCycle");
+        Date registDate = null;
+        try {
+            registDate = ToolDateTime.parse(this.getPara("registDate"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         InvokeResult result = WaterMeter.me.save(id, companyId, innerCode, lineNum, meterNum,
-                watersType, waterUseType, meterAttr, chargeType, billingCycle);
+                watersType, waterUseType, meterAttr, chargeType, billingCycle, registDate);
         this.renderJson(result);
     }
 

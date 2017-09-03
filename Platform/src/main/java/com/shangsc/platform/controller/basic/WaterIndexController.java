@@ -76,7 +76,23 @@ public class WaterIndexController extends BaseController {
         BigDecimal october = CodeNumUtil.getBigDecimal(this.getPara("october"), 2);
         BigDecimal november = CodeNumUtil.getBigDecimal(this.getPara("november"), 2);
         BigDecimal december = CodeNumUtil.getBigDecimal(this.getPara("december"), 2);
-
+        BigDecimal totalIndex = new BigDecimal(0.00);
+        totalIndex = totalIndex.add(january);
+        totalIndex = totalIndex.add(february);
+        totalIndex = totalIndex.add(march);
+        totalIndex = totalIndex.add(april);
+        totalIndex = totalIndex.add(may);
+        totalIndex = totalIndex.add(june);
+        totalIndex = totalIndex.add(july);
+        totalIndex = totalIndex.add(august);
+        totalIndex = totalIndex.add(september);
+        totalIndex = totalIndex.add(october);
+        totalIndex = totalIndex.add(november);
+        totalIndex = totalIndex.add(december);
+        if (waterIndex.compareTo(totalIndex) != 0) {
+            this.renderJson(InvokeResult.failure("年用水指标不等于各月指标之和"));
+            return;
+        }
         InvokeResult result = WaterIndex.me.save(id, companyId, innerCode, waterUseType, waterIndex,
                 january, february, march, april, may, june, july, august, september, october, november, december);
         this.renderJson(result);

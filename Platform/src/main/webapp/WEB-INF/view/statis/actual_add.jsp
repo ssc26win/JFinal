@@ -69,7 +69,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="netWater">净用水量</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" id="netWater" name="netWater" value="${item.netWater}" class="col-xs-12 col-sm-6">
+                    <input type="number" id="netWater" name="netWater" value="${item.netWater}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
@@ -82,10 +82,18 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="voltage">电池电压</label>
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="voltage">电池电压（伏特v）</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" id="voltage" name="voltage" value="${item.voltage}" class="col-xs-12 col-sm-6">
+                    <input type="number" id="voltage" name="voltage" value="${item.voltage}" class="col-xs-12 col-sm-6">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="writeTime">抄表时间</label>
+                <div class="col-xs-12 col-sm-9">
+                  <div class="clearfix">
+                    <input type="text" id="writeTime" name="writeTime" value="${item.writeTime}" class="col-xs-12 col-sm-6 form_datetime">
                   </div>
                 </div>
               </div>

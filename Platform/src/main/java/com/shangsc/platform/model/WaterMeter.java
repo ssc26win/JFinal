@@ -6,6 +6,7 @@ import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseWaterMeter;
+import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
@@ -22,11 +23,14 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
 	public static final WaterMeter me = new WaterMeter();
 
     public Page<WaterMeter> getWaterMeterPage(int page, int rows, String keyword, String orderbyStr) {
-        String select = "select twm.*,(select tc.name from t_company tc where tc.inner_code=twm.inner_code) as companyName ";
-        StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm ");
-        sqlExceptSelect.append(" where 1=1 ");
+        String select = "select twm.*,tc.name as companyName";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm, t_company tc");
+        sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code ");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword + "') ");
+            keyword = StringUtils.trim(keyword);
+            if (StringUtils.isNotEmpty(keyword)) {
+                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword + "' or tc.name like '%" + keyword + "%') ");
+            }
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
@@ -47,21 +51,25 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return num>0?true:false;
     }
 
+
     public InvokeResult save(Long id, Long companyId, String innerCode, String lineNum, String meterNum,
-                            Integer watersType, Integer waterUseType, String meterAttr, Integer chargeType, String billingCycle) {
+                            Integer watersType, Integer waterUseType, String meterAttr, Integer chargeType, String billingCycle, Date registDate) {
+        if (!Company.me.hasExistCompany(innerCode)) {
+            return InvokeResult.failure("公司编号不存在");
+        }
         if (null != id && id > 0l) {
             WaterMeter meter = this.findById(id);
             if (meter == null) {
                 return InvokeResult.failure("更新失败, 该水表不存在");
             }
-            meter = setProp(meter, companyId, innerCode, lineNum, meterNum, watersType, waterUseType, meterAttr, chargeType, billingCycle);
+            meter = setProp(meter, companyId, innerCode, lineNum, meterNum, watersType, waterUseType, meterAttr, chargeType, billingCycle, registDate);
             meter.update();
         } else {
             if (this.hasExist(meterNum)) {
                 return InvokeResult.failure("水表编号已存在");
             } else {
                 WaterMeter meter = new WaterMeter();
-                meter = setProp(meter, companyId, innerCode, lineNum, meterNum, watersType, waterUseType, meterAttr, chargeType, billingCycle);
+                meter = setProp(meter, companyId, innerCode, lineNum, meterNum, watersType, waterUseType, meterAttr, chargeType, billingCycle, registDate);
                 meter.setRegistDate(new Date());
                 meter.save();
             }
@@ -70,7 +78,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
     }
 
     private WaterMeter setProp(WaterMeter meter, Long companyId, String innerCode, String lineNum, String meterNum,
-                            Integer watersType, Integer waterUseType, String meterAttr, Integer chargeType, String billingCycle) {
+                            Integer watersType, Integer waterUseType, String meterAttr, Integer chargeType, String billingCycle, Date registDate) {
         meter.setCompanyId(companyId);
         meter.setInnerCode(innerCode);
         meter.setLineNum(lineNum);
@@ -80,6 +88,11 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         meter.setMeterAttr(meterAttr);
         meter.setChargeType(chargeType);
         meter.setBillingCycle(billingCycle);
+        if (registDate == null) {
+            meter.setRegistDate(ToolDateTime.getDate());
+        } else {
+            me.setRegistDate(registDate);
+        }
         return meter;
     }
 

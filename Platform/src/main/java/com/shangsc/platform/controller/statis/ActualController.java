@@ -10,8 +10,10 @@ import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.util.CodeNumUtil;
+import com.shangsc.platform.util.ToolDateTime;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -70,8 +72,14 @@ public class ActualController extends BaseController {
         BigDecimal netWater = CodeNumUtil.getBigDecimal(this.getPara("netWater"), 2);
         Integer state = this.getParaToInt("state");
         String voltage = this.getPara("voltage");
+        Date writeTime = null;
+        try {
+            writeTime = ToolDateTime.parse(this.getPara("writeTime"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         InvokeResult result = ActualData.me.save(id, companyId, innerCode, lineNum, meterNum,
-                watersType, alarm, netWater, state, voltage);
+                watersType, alarm, netWater, state, voltage, writeTime);
         this.renderJson(result);
     }
 

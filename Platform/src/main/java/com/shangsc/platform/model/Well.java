@@ -23,11 +23,15 @@ public class Well extends BaseWell<Well> {
 	public static final Well me = new Well();
 
 	public Page<Well> getWellPage(int page, int rows, String keyword, String orderbyStr) {
-		String select = "select tw.*,(select tc.name from t_company tc where tc.inner_code=tw.inner_code) as companyName ";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_well tw ");
-		sqlExceptSelect.append(" where 1=1 ");
+		String select = "select tw.*,tc.name as companyName";
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_well tw, t_company tc");
+		sqlExceptSelect.append(" where 1=1 and tw.inner_code=tc.inner_code ");
 		if (StringUtils.isNotEmpty(keyword)) {
-			sqlExceptSelect.append(" and (tw.name like '%"+ keyword +"%' or tw.inner_code='" + keyword + "' or well_num='" + keyword + "') ");
+			keyword = StringUtils.trim(keyword);
+			if (StringUtils.isNotEmpty(keyword)) {
+				sqlExceptSelect.append(" and (tw.name like '%" + keyword + "%' " +" or tc.name like '%" + keyword + "%'"
+						+ " or tw.inner_code='" + keyword + "' or tw.well_num='" + keyword + "') ");
+			}
 		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
@@ -53,6 +57,9 @@ public class Well extends BaseWell<Well> {
 							 String pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType, Integer groundType,
 							 String nameCode, Integer watersType, String useEfficiency, String method, Integer licence,
 							 String licenceCode, BigDecimal waterWithdrawals) {
+		if (!Company.me.hasExistCompany(innerCode)) {
+			return InvokeResult.failure("公司编号不存在");
+		}
 		if (null != id && id > 0l) {
 			Well well = this.findById(id);
 			if (well == null) {
