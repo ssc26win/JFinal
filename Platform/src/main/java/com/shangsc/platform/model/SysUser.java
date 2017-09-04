@@ -130,9 +130,41 @@ public class SysUser extends BaseSysUser<SysUser>
 		long num=this.getCount(conditions);
 		return num>0?true:false;
 	}
+	/**
+	 * 手机号是否已存在
+	 * @param phone
+	 * @return
+	 */
+	public boolean hasExistPhone(String phone){
+		Set<Condition> conditions=new HashSet<Condition>();
+		conditions.add(new Condition("phone",Operators.EQ,phone));
+		long num=this.getCount(conditions);
+		return num>0?true:false;
+	}
+	/**
+	 * 邮箱是否已存在
+	 * @param email
+	 * @return
+	 */
+	public boolean hasExistEmail(String email){
+		Set<Condition> conditions=new HashSet<Condition>();
+		conditions.add(new Condition("email",Operators.EQ, email));
+		long num=this.getCount(conditions);
+		return num>0?true:false;
+	}
 	public SysUser getByName(String name){
 		Set<Condition> conditions=new HashSet<Condition>();
 		conditions.add(new Condition("name",Operators.EQ,name));
+		return this.get(conditions);
+	}
+	public SysUser getByPhone(String phone){
+		Set<Condition> conditions=new HashSet<Condition>();
+		conditions.add(new Condition("phone",Operators.EQ,phone));
+		return this.get(conditions);
+	}
+	public SysUser getByEmail(String email){
+		Set<Condition> conditions=new HashSet<Condition>();
+		conditions.add(new Condition("email",Operators.EQ,email));
 		return this.get(conditions);
 	}
 	public InvokeResult save(Integer id,String username,String password,String des,String phone,String email){
@@ -142,11 +174,17 @@ public class SysUser extends BaseSysUser<SysUser>
 		}else {
 			if(this.hasExist(username)){
 				return InvokeResult.failure("用户名已存在");
-			}else {
-				if(StrKit.isBlank(password))password="123456";
-				SysUser sysUser=new SysUser();
-				sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date()).set("des", des).set("phone", phone).set("email", email).save();
 			}
+			if(this.hasExistPhone(phone)){
+				return InvokeResult.failure("手机号已存在");
+			}
+			if(this.hasExistEmail(email)){
+				return InvokeResult.failure("邮箱已存在");
+			}
+			if(StrKit.isBlank(password))password="123456";
+			SysUser sysUser=new SysUser();
+			sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date()).set("des", des).set("phone", phone).set("email", email).save();
+
 		}
 		return InvokeResult.success();
 	}

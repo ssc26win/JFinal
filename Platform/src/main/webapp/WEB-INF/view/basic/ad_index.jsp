@@ -221,6 +221,14 @@
   }
 
   function deleteData(){
+    var rid = getOneSelectedRows();
+    if(rid == -1) {
+      layer.msg("请选择一个记录", {
+        icon: 2,
+        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+      });
+      return;
+    }
     var submitData = {
       "ids" : getSelectedRows()
     };

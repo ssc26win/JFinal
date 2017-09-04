@@ -15,6 +15,8 @@
  */
 package com.shangsc.platform.controller;
 
+import com.jfinal.kit.PropKit;
+import com.jfinal.log.Log;
 import com.shangsc.platform.core.util.MyDigestUtils;
 
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
@@ -27,6 +29,10 @@ import com.shangsc.platform.model.SysUser;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.StrKit;
+import com.shangsc.platform.util.ToolMail;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 首页、登陆、登出
@@ -35,6 +41,8 @@ import com.jfinal.kit.StrKit;
 @Clear(SysLogInterceptor.class)
 @RequiresPermissions(value={"/"})
 public class IndexController extends Controller {
+
+	private static final Log log = Log.getLog(IndexController.class);
 	
 	public void index() {
 		render("index.jsp");
@@ -63,6 +71,12 @@ public class IndexController extends Controller {
 			return;
 		}
 		SysUser sysUser=SysUser.me.getByName(this.getPara("username"));
+		if (sysUser == null) {
+			sysUser = SysUser.me.getByEmail(this.getPara("username"));
+			if (sysUser == null) {
+				sysUser = SysUser.me.getByPhone(this.getPara("username"));
+			}
+		}
 		if(sysUser==null){
 			this.renderJson(InvokeResult.failure("用户不存在"));
 			return;
@@ -133,6 +147,60 @@ public class IndexController extends Controller {
         IWebUtils.setCurrentLoginSysUser(this.getResponse(),this.getSession(),sysUser,0);
         this.renderJson(result);
     }
+
+	@Clear(AuthorityInterceptor.class)
+	public void resetPwdSendEmail(){
+		IWebUtils.removeCurrentSysUser(getRequest(), getResponse());
+		String email=this.getPara("email");
+		String host = PropKit.get("config.mail.host");		// 发送邮件的服务器的IP
+		String port = PropKit.get("config.mail.port");	// 发送邮件的服务器的端口
+
+		boolean validate = true;	// 是否需要身份验证
+
+		String from = PropKit.get("config.mail.from");		// 邮件发送者的地址
+		String userName = PropKit.get("config.mail.userName");	// 登陆邮件发送服务器的用户名
+		String password = PropKit.get("config.mail.password");	// 登陆邮件发送服务器的密码
+
+		List<String> to = new ArrayList<String>();			// 邮件接收者的地址
+		to.add(email);
+
+		String subject = "通州水务管理系统-找回密码";		// 邮件标题
+		StringBuilder content = new StringBuilder("<h2>请点击链接重置密码</h2>");// 邮件的文本内容
+		content.append("<br/>");
+		content.append("<a href='");
+		content.append("config.host.url");
+		content.append("/login");
+		content.append("?email=" + email);
+		content.append("&time="+ System.currentTimeMillis());
+		content.append("' target='_blank' >重置密码(30分钟内有效)</a>");
+
+		String[] attachFileNames = new String[]{""};	// 邮件附件的文件名
+
+		ToolMail.sendHtmlMail(host, port, validate, userName, password, from, to, subject, content.toString(), attachFileNames);
+
+		if(log.isErrorEnabled()) {
+			log.error("发送邮件参数sendType错误");
+		}
+
+		this.renderJson(InvokeResult.success());
+	}
+
+	@Clear(AuthorityInterceptor.class)
+	public void savePwdForget(){
+		String email=this.getPara("email");
+		String newPwd=MyDigestUtils.shaDigestForPasswrod(getPara("password"));
+		try {
+			SysUser sysUser = SysUser.me.getByEmail(email);
+			if(sysUser==null){
+				this.renderJson(InvokeResult.failure("邮箱不存在"));
+				return;
+			}
+			InvokeResult result=SysUser.me.savePwdUpdate(sysUser.getInt("id"), newPwd);
+			this.renderJson(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }
 

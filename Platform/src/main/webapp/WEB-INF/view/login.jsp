@@ -113,8 +113,8 @@
 										<div class="toolbar clearfix">
 											<div>
 												<a href="#" data-target="#forgot-box" class="forgot-password-link">
-													<%--<i class="ace-icon fa fa-arrow-left"></i>
-													忘记密码？--%>
+													<i class="ace-icon fa fa-arrow-left"></i>
+													忘记密码？
 												</a>
 											</div>
 
@@ -128,6 +128,64 @@
 									</div><!-- /.widget-body -->
 								</div><!-- /.login-box -->
 
+								<div id="forgot-reset " class="forgot-box widget-box no-border">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header red lighter bigger">
+												<i class="ace-icon fa fa-key"></i>
+												重置密码
+											</h4>
+
+											<div class="space-6"></div>
+											<p>
+												请填写新密码
+											</p>
+											<form>
+												<input type="hidden" id="resetEmail" name="resetEmail" value="${email}"/>
+												<input type="hidden" id="resettime" name="resettime" value="${time}"/>
+												<fieldset>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="password" id="reSetpassword" name="reSetpassword" class="form-control" placeholder="请输入密码" />
+															<i class="ace-icon fa fa-lock"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="password" id="reSetpassword2" name="reSetpassword2"  class="form-control" placeholder="请输入确认密码" />
+															<i class="ace-icon fa fa-retweet"></i>
+														</span>
+													</label>
+
+													<div class="clearfix">
+														<button type="button" class="width-35 pull-right btn btn-sm btn-danger" id="rePwdEmail-btn">
+															<i class="ace-icon fa fa-lightbulb-o"></i>
+															<span class="bigger-110">发送</span>
+														</button>
+													</div>
+												</fieldset>
+											</form>
+										</div><!-- /.widget-main -->
+
+
+										<div class="space-24"></div>
+
+										<div class="clearfix">
+											<button type="reset" class="width-30 pull-left btn btn-sm">
+												<i class="ace-icon fa fa-refresh"></i>
+												<span class="bigger-110">重置</span>
+											</button>
+
+											<button type="button" id="resetPwd-btn" class="width-65 pull-right btn btn-sm btn-success">
+												<span class="bigger-110">确定</span>
+
+												<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+											</button>
+										</div>
+									</div><!-- /.widget-body -->
+								</div><!-- /.forgot-box -->
+
 								<div id="forgot-box" class="forgot-box widget-box no-border">
 									<div class="widget-body">
 										<div class="widget-main">
@@ -140,18 +198,17 @@
 											<p>
 												请填写邮箱
 											</p>
-
 											<form>
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control" placeholder="请输入邮箱" />
+															<input type="email" id="sendrePwdEmail" name="sendrePwdEmail" class="form-control" placeholder="请输入邮箱" />
 															<i class="ace-icon fa fa-envelope"></i>
 														</span>
 													</label>
 
 													<div class="clearfix">
-														<button type="button" class="width-35 pull-right btn btn-sm btn-danger">
+														<button type="button" class="width-35 pull-right btn btn-sm btn-danger" id="sendrePwdEmail-btn">
 															<i class="ace-icon fa fa-lightbulb-o"></i>
 															<span class="bigger-110">发送</span>
 														</button>
@@ -168,6 +225,7 @@
 										</div>
 									</div><!-- /.widget-body -->
 								</div><!-- /.forgot-box -->
+
 
 								<div id="signup-box" class="signup-box widget-box no-border">
 									<div class="widget-body">
@@ -407,6 +465,75 @@
                     }, "json");
                     return false;
                 });
+				$('#sendrePwdEmail-btn').click(function(event) {
+					event.stopPropagation();
+					var $btn = $(this);
+					if ($btn.hasClass("disabled")) {
+						return false;
+					}
+					var $remail = $('#sendrePwdEmail');
+					if (!$remail.val()) {
+						layer.alert('请输入邮箱！');
+						$remail.focus();
+						return false;
+					}
+					var submitData = {
+						email:$remail.val(),
+					};
+					$btn.addClass("disabled");
+					$.post("${context_path}/resetPwdSendEmail", submitData, function(data) {
+						$btn.removeClass("disabled");
+						if (data.code == 0) {
+							layer.alert("发送邮件成功，请登录您的邮箱！", function(){
+								window.top.location.href = "${context_path}/";
+							});
+						} else {
+							layer.alert(data.msg);
+						}
+					}, "json");
+					return false;
+				});
+				$('#rePwdEmail-btn').click(function(event) {
+					event.stopPropagation();
+					var $btn = $(this);
+					if ($btn.hasClass("disabled")) {
+						return false;
+					}
+					var $remail = $('#resetEmail');
+					var $rpassword = $('#reSetpassword');
+					var $r2password = $('#reSetpassword2');
+					if (!$rpassword.val()) {
+						layer.alert('请输入密码！');
+						$rpassword.focus();
+						return false;
+					}
+					if (!$r2password.val()) {
+						layer.alert('请输入确认密码！');
+						$r2password.focus();
+						return false;
+					}
+					if ($rpassword.val() != $r2password.val()) {
+						layer.alert('密码与确认密码不一致！');
+						$r2password.focus();
+						return false;
+					}
+					var submitData = {
+						email:$remail.val(),
+						password : $rpassword.val()
+					};
+					$btn.addClass("disabled");
+					$.post("${context_path}/savePwdForget", submitData, function(data) {
+						$btn.removeClass("disabled");
+						if (data.code == 0) {
+							layer.alert("恭喜您，修改成功，请登录！", function(){
+								window.top.location.href = "${context_path}/";
+							});
+						} else {
+							layer.alert(data.msg);
+						}
+					}, "json");
+					return false;
+				});
 			});
 			jQuery(function($) {
 				$(document).on('click', '.toolbar a[data-target]', function(e) {
@@ -440,6 +567,12 @@
 
 			});
 
+			$(function() {
+				$("#forgot-reset").show();
+				if ($("#resetEmail").val() != "") {
+					$("#forgot-reset").show();
+				}
+			});
 		</script>
 	</body>
 </html>

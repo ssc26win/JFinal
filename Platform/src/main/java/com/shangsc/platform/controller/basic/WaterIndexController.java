@@ -135,7 +135,7 @@ public class WaterIndexController extends BaseController {
     }
 
     @RequiresPermissions(value = {"/basic/waterindex"})
-    public void importData() {
+    public void uploadImportData() {
         String dataStr= DateUtils.format(new Date(), "yyyyMMddHHmm");
         List<UploadFile> flist = this.getFiles("/temp", 1024*1024*50);
         Map<String,Object> data= Maps.newHashMap();
@@ -143,20 +143,26 @@ public class WaterIndexController extends BaseController {
             UploadFile uf=flist.get(0);
             String status_url= PropKit.get("uploadWaterIndexPath");
             String fileUrl=dataStr+"/"+uf.getFileName();
-            String newFile=PropKit.get("uploadPath")+fileUrl;
+            String newFile=status_url+fileUrl;
             FileUtils.mkdir(newFile, false);
             FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);
-            WaterIndexExportService service = new WaterIndexExportService();
-            try {
-                List<Map<Integer, String>> maps = service.importExcel(newFile);
-                WaterIndex.me.importData(maps);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            data.put("fileName", uf.getFileName());
+            data.put("fileUrl", newFile);
             uf.getFile().delete();
-            data.put("staticUrl",status_url);
-            data.put("fileUrl",fileUrl);
             renderJson(data);
         }
+    }
+
+    @RequiresPermissions(value = {"/basic/waterindex"})
+    public void importData() {
+        String newFilePath = this.getPara("importUrl");
+        WaterIndexExportService service = new WaterIndexExportService();
+        try {
+            List<Map<Integer, String>> maps = service.importExcel(newFilePath);
+            WaterIndex.me.importData(maps);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.renderJson(InvokeResult.success());
     }
 }

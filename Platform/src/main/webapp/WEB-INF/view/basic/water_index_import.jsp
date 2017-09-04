@@ -53,11 +53,11 @@
                               <div class="cover-area" style="border: 1px solid #e0e0e0;width: 80%;border-radius:5px;padding: 5px 0 0 5px;">
                                 <div class="cover-hd">
                                   <input id="file_upload" name="file_upload" type="file" />
-                                  <input id="imgUrl" class="cover-input" value="${item.imgUrl}" name="imgUrl" type="hidden" />
+                                  <input id="importUrl" class="cover-input" value="${item.importUrl}" name="importUrl" type="hidden" />
                                 </div>
                                 <p id="upload-tip" class="upload-tip"></p>
                                 <p id="apkArea" class="cover-bd" style="display: ${action eq 'add'?'none':''}">
-                                  <a class="vb cover-del" href="#" style="width: 600px;">${item.imgUrl}</a>
+                                  <a class="vb cover-del" href="#" style="width: 600px;">${item.importUrl}</a>
                                 </p>
                               </div>
                             </div>
@@ -71,9 +71,9 @@
                             </button>
 
                             &nbsp; &nbsp; &nbsp;
-                            <button class="btn" type="reset">
+                            <button class="btn" type="button" onclick="cancelBtn();">
                               <i class="ace-icon fa fa-undo bigger-110"></i>
-                              重置
+                              取消
                             </button>
                           </div>
                         </div>
@@ -97,7 +97,7 @@
     $('#file_upload').uploadify({
       //校验数据
       'swf' : '${res_url}uploadify/uploadify.swf', //指定上传控件的主体文件，默认‘uploader.swf’
-      'uploader' : '/basic/waterindex/importData', //指定服务器端上传处理文件，默认‘upload.php’
+      'uploader' : '/basic/waterindex/uploadImportData', //指定服务器端上传处理文件，默认‘upload.php’
       'auto' : true, //手动上传
       'buttonImage' : '${res_url}uploadify/uploadify-upload.png', //浏览按钮背景图片
       'width' :110,
@@ -110,8 +110,8 @@
       'successTimeout' : 30, //成功等待时间
       'onUploadSuccess' : function(file, data,response) {//每成功完成一次文件上传时触发一次
         data=eval("["+data+"]")[0];
-        $("#apkArea").show().find(".cover-del").html(data.fileUrl);
-        $("#url").val(data.fileUrl);
+        $("#apkArea").show().find(".cover-del").html(data.fileName);
+        $("#importUrl").val(data.fileUrl);
       },
       'onUploadError' : function(file, data, response) {//当上传返回错误时触发
         $('#f_pics').append("<div class=\"pics_con\">" + data + "</div>");
@@ -126,7 +126,6 @@
       focusInvalid: false,
       //title versionNo url natureNo  contents
       rules: {
-
       },
       messages: {
       },
@@ -159,13 +158,15 @@
         var $btn = $("#submit-btn");
 
         if($btn.hasClass("disabled")) return;
-
+        if ($("#importUrl").val()=="") {
+            layer.msg("请选择一个excel文件", {
+              icon: 2,
+              time: 1000 //2秒关闭（如果不配置，默认是3秒）
+            });
+            return;
+        }
         var submitData = {
-          id:"${item.id}",
-          title:$("#title").val(),
-          content: $("#content").val(),
-          imgUrl:$("#imgUrl").val(),
-          status:$("#status").val()
+          importUrl:$("#importUrl").val()
         };
         $btn.addClass("disabled");
         $.post('/basic/waterindex/importData', submitData,function(data) {
@@ -199,6 +200,9 @@
     parent.layer.close(index); //再执行关闭
   }
 
+  function cancelBtn(){
+    closeView();
+  }
 </script>
 </body>
 

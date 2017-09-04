@@ -3,9 +3,6 @@ package com.shangsc.platform.export;
 import com.shangsc.platform.util.ToolPoi;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -15,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -87,13 +83,13 @@ public abstract class ExportBaseService {
 
     public List<Map<Integer,String>> importExcel(String fileAbsPath) throws Exception {
         List<Map<Integer,String>> list = new ArrayList<Map<Integer,String>>();
-        HSSFWorkbook hwb = new HSSFWorkbook(new FileInputStream(new File(fileAbsPath)));
-        HSSFSheet sheet = hwb.getSheetAt(0); // 获取到第一个sheet中数据
-        for(int i = 0;i<sheet.getLastRowNum() + 1; i++) {// 第二行开始取值，第一行为标题行
-            HSSFRow row = sheet.getRow(i);// 获取到第i列的行数据(表格行)
+        Workbook  wb = WorkbookFactory.create(new File(fileAbsPath));
+        Sheet sheet = wb.getSheetAt(0); // 获取到第一个sheet中数据
+        for(int i = 1;i<sheet.getLastRowNum() + 1; i++) {// 第二行开始取值，第一行为标题行
+            Row row = sheet.getRow(i);// 获取到第i列的行数据(表格行)
             Map<Integer, String> map = new HashMap<Integer, String>();
             for(int j=0;j<row.getLastCellNum(); j++) {
-                HSSFCell cell = row.getCell(j);// 获取到第j行的数据(单元格)
+                Cell cell = row.getCell(j);// 获取到第j行的数据(单元格)
                 cell.setCellType(HSSFCell.CELL_TYPE_STRING);
                 map.put(j, cell.getStringCellValue());
             }

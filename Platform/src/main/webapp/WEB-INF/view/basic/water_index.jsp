@@ -164,7 +164,7 @@
             parent.layer.open({
                 title:'导入用水指标',
                 type: 2,
-                area: ['770px', '300px'],
+                area: ['770px', '400px'],
                 fix: false, //不固定
                 maxmin: true,
                 content: '${context_path}/basic/waterindex/importPage'
@@ -248,6 +248,14 @@
     }
 
     function deleteData(){
+        var rid = getOneSelectedRows();
+        if(rid == -1) {
+            layer.msg("请选择一个记录", {
+                icon: 2,
+                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+            });
+            return;
+        }
         var submitData = {
             "ids" : getSelectedRows()
         };
