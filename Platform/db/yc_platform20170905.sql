@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2017-08-22 01:57:45
+Date: 2017-09-05 02:34:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -99,7 +99,8 @@ CREATE TABLE `dict_type` (
   `name` varchar(32) NOT NULL,
   `remark` varchar(32) DEFAULT NULL,
   `update_time` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_name` (`name`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
@@ -134,11 +135,12 @@ CREATE TABLE `sys_log` (
   PRIMARY KEY (`id`),
   KEY `FK_sys_EVENT` (`uid`),
   CONSTRAINT `sys_log_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `sys_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=38024 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=43514 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_log
 -- ----------------------------
+
 -- ----------------------------
 -- Table structure for sys_login_record
 -- ----------------------------
@@ -150,7 +152,7 @@ CREATE TABLE `sys_login_record` (
   `login_err_times` int(11) NOT NULL COMMENT '1天内连续出错次数',
   `login_status` tinyint(4) NOT NULL COMMENT '1-成功  0-失败',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COMMENT='后台系统登陆记录';
+) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8 COMMENT='后台系统登陆记录';
 
 -- ----------------------------
 -- Records of sys_login_record
@@ -187,6 +189,72 @@ INSERT INTO `sys_login_record` VALUES ('44', '1', '2017-08-21 23:26:19', '0', '1
 INSERT INTO `sys_login_record` VALUES ('45', '1', '2017-08-21 23:43:39', '0', '1');
 INSERT INTO `sys_login_record` VALUES ('46', '1', '2017-08-22 00:24:27', '0', '1');
 INSERT INTO `sys_login_record` VALUES ('47', '1', '2017-08-22 01:55:43', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('48', '1', '2017-08-24 10:30:16', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('49', '1', '2017-08-24 11:38:07', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('50', '1', '2017-08-24 11:53:38', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('51', '1', '2017-08-24 13:26:14', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('52', '1', '2017-08-24 15:53:13', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('53', '1', '2017-08-25 09:59:37', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('54', '1', '2017-08-25 10:25:27', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('55', '1', '2017-08-25 11:00:54', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('56', '1', '2017-08-25 11:59:51', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('57', '1', '2017-08-25 12:31:54', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('58', '1', '2017-08-25 12:31:58', '2', '0');
+INSERT INTO `sys_login_record` VALUES ('59', '1', '2017-08-25 12:32:06', '3', '0');
+INSERT INTO `sys_login_record` VALUES ('60', '1', '2017-08-25 12:32:25', '4', '0');
+INSERT INTO `sys_login_record` VALUES ('61', '1', '2017-08-25 12:32:26', '5', '0');
+INSERT INTO `sys_login_record` VALUES ('62', '1', '2017-08-25 12:41:29', '6', '0');
+INSERT INTO `sys_login_record` VALUES ('63', '1', '2017-08-25 12:41:35', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('64', '32', '2017-08-27 00:25:25', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('65', '1', '2017-08-27 00:25:53', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('66', '34', '2017-08-27 00:26:55', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('67', '34', '2017-08-27 00:28:51', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('68', '1', '2017-08-27 01:10:01', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('69', '1', '2017-08-28 15:46:29', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('70', '1', '2017-09-02 11:26:06', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('71', '1', '2017-09-02 12:07:25', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('72', '1', '2017-09-02 12:50:41', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('73', '1', '2017-09-02 13:22:07', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('74', '1', '2017-09-02 13:32:50', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('75', '1', '2017-09-02 13:32:55', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('76', '1', '2017-09-02 14:13:51', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('77', '1', '2017-09-02 16:47:06', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('78', '1', '2017-09-02 17:02:32', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('79', '1', '2017-09-02 17:32:53', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('80', '1', '2017-09-02 18:35:46', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('81', '1', '2017-09-02 18:37:19', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('82', '1', '2017-09-02 18:37:24', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('83', '1', '2017-09-03 11:06:54', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('84', '1', '2017-09-03 11:23:50', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('85', '1', '2017-09-03 11:23:54', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('86', '1', '2017-09-03 12:02:18', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('87', '1', '2017-09-03 12:37:02', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('88', '1', '2017-09-03 13:27:20', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('89', '1', '2017-09-03 14:43:49', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('90', '1', '2017-09-03 17:07:23', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('91', '1', '2017-09-03 17:08:33', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('92', '1', '2017-09-03 17:09:49', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('93', '1', '2017-09-03 18:37:08', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('94', '1', '2017-09-03 18:49:35', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('95', '1', '2017-09-03 18:49:40', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('96', '1', '2017-09-03 19:12:29', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('97', '1', '2017-09-04 13:59:41', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('98', '1', '2017-09-04 14:17:57', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('99', '1', '2017-09-04 17:39:28', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('100', '36', '2017-09-04 18:57:49', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('101', '1', '2017-09-04 20:45:11', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('102', '36', '2017-09-04 22:37:21', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('103', '36', '2017-09-04 22:37:25', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('104', '36', '2017-09-04 22:42:23', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('105', '1', '2017-09-04 22:44:58', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('106', '1', '2017-09-04 22:50:32', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('107', '1', '2017-09-04 22:58:50', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('108', '1', '2017-09-04 22:59:51', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('109', '1', '2017-09-04 23:08:18', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('110', '1', '2017-09-04 23:54:52', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('111', '1', '2017-09-05 00:58:57', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('112', '1', '2017-09-05 02:11:17', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('113', '1', '2017-09-05 02:18:48', '0', '1');
 
 -- ----------------------------
 -- Table structure for sys_res
@@ -205,13 +273,13 @@ CREATE TABLE `sys_res` (
   `enabled` int(1) DEFAULT '1' COMMENT '是否启用 1：启用  0：禁用',
   `level` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=206 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=207 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_res
 -- ----------------------------
 INSERT INTO `sys_res` VALUES ('1', null, '系统管理', '系统管理', '', 'fa-cogs', '10', '1', null, '1', '0');
-INSERT INTO `sys_res` VALUES ('2', '1', '资源管理', null, '/sys/res', 'fa-list', '1', '1', null, '1', '1');
+INSERT INTO `sys_res` VALUES ('2', '1', '资源管理', null, '/sys/res', 'fa-list', '5', '1', null, '1', '1');
 INSERT INTO `sys_res` VALUES ('3', '1', '角色管理', null, '/sys/role', 'fa-list', '10', '1', null, '1', '1');
 INSERT INTO `sys_res` VALUES ('4', '1', '用户管理', null, '/sys/user', 'fa-list', '11', '1', null, '1', '1');
 INSERT INTO `sys_res` VALUES ('9', '4', '用户删除', null, '/sys/user/delete', 'fa-list', '1', '2', null, '1', '2');
@@ -227,20 +295,21 @@ INSERT INTO `sys_res` VALUES ('150', '1', '操作日志', null, '/sys/log', 'fa-
 INSERT INTO `sys_res` VALUES ('152', null, '控制台', '1234', '/', 'fa-tachometer', '1', '1', '2015-02-10 16:09:40', '1', '0');
 INSERT INTO `sys_res` VALUES ('181', '1', '数据字典', null, '/dict', 'fa-list', '12', '1', null, '1', '0');
 INSERT INTO `sys_res` VALUES ('182', '181', '数据字典列表', null, '/dict/list', 'fa-list', '1', '2', null, '1', '0');
-INSERT INTO `sys_res` VALUES ('192', null, 'APP管理', null, '', 'fa-android', '9', '1', null, '1', '0');
-INSERT INTO `sys_res` VALUES ('193', '192', 'App版本管理', null, '/app', '', '1', '1', null, '1', '0');
-INSERT INTO `sys_res` VALUES ('194', null, '基础信息', null, '', 'fa-pencil-square-o', '2', '1', null, '1', '1');
+INSERT INTO `sys_res` VALUES ('192', null, 'APP管理', null, '', 'fa-android', '9', '1', null, '0', '0');
+INSERT INTO `sys_res` VALUES ('193', '192', 'App版本管理', null, '/app', '', '1', '1', null, '0', '0');
+INSERT INTO `sys_res` VALUES ('194', null, '基础信息', null, '', 'fa-pencil-square-o', '4', '1', null, '1', '1');
 INSERT INTO `sys_res` VALUES ('195', '194', '单位信息', null, '/basic/company', 'fa-list', '1', '1', null, '1', '2');
 INSERT INTO `sys_res` VALUES ('196', '194', '水表信息', null, '/basic/meter', 'fa-list', '2', '1', null, '1', '0');
 INSERT INTO `sys_res` VALUES ('197', '194', '水井信息', null, '/basic/well', 'fa-list', '3', '1', null, '1', '0');
 INSERT INTO `sys_res` VALUES ('198', '194', '用水指标', null, '/basic/waterindex', 'fa-list', '4', '1', null, '1', '0');
-INSERT INTO `sys_res` VALUES ('199', null, '实时数据', null, '/statis/actual', 'fa-desktop', '1', '1', null, '1', '0');
-INSERT INTO `sys_res` VALUES ('200', null, '统计查询', null, '', 'fa-list-alt', '4', '1', null, '1', '0');
+INSERT INTO `sys_res` VALUES ('199', null, '实时数据', null, '/statis/actual', 'fa-desktop', '3', '1', null, '1', '0');
+INSERT INTO `sys_res` VALUES ('200', null, '统计查询', null, '', 'fa-list-alt', '5', '1', null, '1', '0');
 INSERT INTO `sys_res` VALUES ('201', '200', '读数查询', null, '/statis/readnum', 'fa-list', '2', '1', null, '1', '0');
 INSERT INTO `sys_res` VALUES ('202', '200', '日用水量', null, '/statis/daily', 'fa-list', '3', '1', null, '1', '0');
 INSERT INTO `sys_res` VALUES ('203', '200', '月用水量', null, '/statis/month', 'fa-list', '4', '1', null, '1', '0');
 INSERT INTO `sys_res` VALUES ('204', '200', '年用水量', null, '/statis/year', 'fa-list', '5', '1', null, '1', '0');
 INSERT INTO `sys_res` VALUES ('205', '1', '发布广告', null, '/basic/ad', 'fa-list', '6', '1', null, '1', '0');
+INSERT INTO `sys_res` VALUES ('206', null, '导航地图', null, '/chart/baiduMap', 'fa-map-marker', '2', '1', null, '1', '0');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -259,10 +328,10 @@ CREATE TABLE `sys_role` (
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('1', 'admin', '超级管理员', '1', '2015-05-05 14:24:26', '1');
-INSERT INTO `sys_role` VALUES ('56', '内容编辑', '内容编辑4', '1', null, '1');
-INSERT INTO `sys_role` VALUES ('57', '客服人员', '客服人员', '1', null, '1');
-INSERT INTO `sys_role` VALUES ('60', 'dd', 'ss ', '1', null, '1');
+INSERT INTO `sys_role` VALUES ('1', '超级管理员', '超级管理员', '1', '2015-05-05 14:24:26', '1');
+INSERT INTO `sys_role` VALUES ('56', '管理员', '可增、改、删、查单位信息、水表信息、用水指信息等', '1', null, '1');
+INSERT INTO `sys_role` VALUES ('57', '操作员', '可读水表数据，查询用水量', '1', null, '1');
+INSERT INTO `sys_role` VALUES ('60', '普通用户', '普通用户', '1', null, '1');
 
 -- ----------------------------
 -- Table structure for sys_role_res
@@ -277,7 +346,7 @@ CREATE TABLE `sys_role_res` (
   KEY `FK_sys_ROLE_RES_ROLE_ID` (`role_id`),
   CONSTRAINT `sys_role_res_ibfk_1` FOREIGN KEY (`res_id`) REFERENCES `sys_res` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `sys_role_res_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4187 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=4231 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_role_res
@@ -301,13 +370,6 @@ INSERT INTO `sys_role_res` VALUES ('4156', '182', '1');
 INSERT INTO `sys_role_res` VALUES ('4157', '152', '1');
 INSERT INTO `sys_role_res` VALUES ('4162', '192', '1');
 INSERT INTO `sys_role_res` VALUES ('4163', '193', '1');
-INSERT INTO `sys_role_res` VALUES ('4168', '1', '56');
-INSERT INTO `sys_role_res` VALUES ('4169', '2', '56');
-INSERT INTO `sys_role_res` VALUES ('4170', '18', '56');
-INSERT INTO `sys_role_res` VALUES ('4171', '19', '56');
-INSERT INTO `sys_role_res` VALUES ('4172', '3', '56');
-INSERT INTO `sys_role_res` VALUES ('4173', '28', '56');
-INSERT INTO `sys_role_res` VALUES ('4174', '29', '56');
 INSERT INTO `sys_role_res` VALUES ('4175', '194', '1');
 INSERT INTO `sys_role_res` VALUES ('4176', '195', '1');
 INSERT INTO `sys_role_res` VALUES ('4177', '196', '1');
@@ -320,6 +382,26 @@ INSERT INTO `sys_role_res` VALUES ('4183', '202', '1');
 INSERT INTO `sys_role_res` VALUES ('4184', '203', '1');
 INSERT INTO `sys_role_res` VALUES ('4185', '204', '1');
 INSERT INTO `sys_role_res` VALUES ('4186', '205', '1');
+INSERT INTO `sys_role_res` VALUES ('4211', '152', '56');
+INSERT INTO `sys_role_res` VALUES ('4212', '194', '56');
+INSERT INTO `sys_role_res` VALUES ('4213', '195', '56');
+INSERT INTO `sys_role_res` VALUES ('4214', '196', '56');
+INSERT INTO `sys_role_res` VALUES ('4215', '197', '56');
+INSERT INTO `sys_role_res` VALUES ('4216', '198', '56');
+INSERT INTO `sys_role_res` VALUES ('4217', '199', '56');
+INSERT INTO `sys_role_res` VALUES ('4218', '200', '56');
+INSERT INTO `sys_role_res` VALUES ('4219', '201', '56');
+INSERT INTO `sys_role_res` VALUES ('4220', '202', '56');
+INSERT INTO `sys_role_res` VALUES ('4221', '203', '56');
+INSERT INTO `sys_role_res` VALUES ('4222', '204', '56');
+INSERT INTO `sys_role_res` VALUES ('4223', '152', '60');
+INSERT INTO `sys_role_res` VALUES ('4224', '199', '60');
+INSERT INTO `sys_role_res` VALUES ('4225', '200', '60');
+INSERT INTO `sys_role_res` VALUES ('4226', '201', '60');
+INSERT INTO `sys_role_res` VALUES ('4227', '202', '60');
+INSERT INTO `sys_role_res` VALUES ('4228', '203', '60');
+INSERT INTO `sys_role_res` VALUES ('4229', '204', '60');
+INSERT INTO `sys_role_res` VALUES ('4230', '206', '1');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -339,14 +421,16 @@ CREATE TABLE `sys_user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_index` (`name`),
   UNIQUE KEY `token_index` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', 'admin', '6fc3b9ada8c1e50b400cd6998ff7be76ea3ae312', '1289', '1', '/sys/static/i/9.jpg', 'admin@admin.com', '2015-07-15 18:00:27', '1234567', 'UzNk7MKbVABao0I275SAs9ShzyYtLQooG42fkoDcL9QtkuFP1Xm7QOtIMrbvxbLc');
-INSERT INTO `sys_user` VALUES ('32', 'eason', '5d46f91596dc2f24c1535148f778af0a25612289', 'sfsf', '1', '/images/guest.jpg', '569165857@qq.com', '2016-06-12 23:54:24', '13332892938', null);
-INSERT INTO `sys_user` VALUES ('34', 'test', '6fc3b9ada8c1e50b400cd6998ff7be76ea3ae312', 'dfsdfsdfddf ', '1', '/images/guest.jpg', '569165857@qq.com', '2016-07-02 22:24:50', '13332892938', 'hDEflmnlVituFC6hbfTzeze8RVSRseIfdgBAGkAU2RRh4c4kIrIYXTTuwEG2Caem');
+INSERT INTO `sys_user` VALUES ('1', 'admin', '6fc3b9ada8c1e50b400cd6998ff7be76ea3ae312', '1289', '1', '/sys/static/i/9.jpg', 'admin@admin.com', '2017-08-01 18:00:27', '1234567', 'UzNk7MKbVABao0I275SAs9ShzyYtLQooG42fkoDcL9QtkuFP1Xm7QOtIMrbvxbLc');
+INSERT INTO `sys_user` VALUES ('32', 'eason', '6fc3b9ada8c1e50b400cd6998ff7be76ea3ae312', '1288', '1', '/images/guest.jpg', '569165857@qq.com', '2017-08-10 23:54:24', '13332892938', null);
+INSERT INTO `sys_user` VALUES ('34', 'test', '6fc3b9ada8c1e50b400cd6998ff7be76ea3ae312', '1287', '1', '/images/guest.jpg', '569165857@qq.com', '2017-08-18 22:24:50', '13332892938', 'hDEflmnlVituFC6hbfTzeze8RVSRseIfdgBAGkAU2RRh4c4kIrIYXTTuwEG2Caem');
+INSERT INTO `sys_user` VALUES ('35', '123123', 'fe58cc7ab4ba9f207be0bf82efc8147e136f6b52', null, '1', '/images/guest.jpg', '23123', '2017-08-27 00:47:06', null, null);
+INSERT INTO `sys_user` VALUES ('36', '111111111', 'fe58cc7ab4ba9f207be0bf82efc8147e136f6b52', null, '1', '/images/guest.jpg', '1215665487@qq.com', '2017-08-27 01:04:25', '1111111', null);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -361,16 +445,16 @@ CREATE TABLE `sys_user_role` (
   KEY `FK_SYSTME_USER_ROLE_ROLE_ID` (`role_id`),
   CONSTRAINT `sys_user_role_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `sys_user_role_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `sys_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=337 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=344 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES ('315', '1', '1');
-INSERT INTO `sys_user_role` VALUES ('333', '32', '1');
-INSERT INTO `sys_user_role` VALUES ('334', '32', '56');
-INSERT INTO `sys_user_role` VALUES ('335', '32', '57');
-INSERT INTO `sys_user_role` VALUES ('336', '32', '60');
+INSERT INTO `sys_user_role` VALUES ('337', '1', '1');
+INSERT INTO `sys_user_role` VALUES ('339', '32', '56');
+INSERT INTO `sys_user_role` VALUES ('341', '34', '60');
+INSERT INTO `sys_user_role` VALUES ('342', '35', '56');
+INSERT INTO `sys_user_role` VALUES ('343', '36', '56');
 
 -- ----------------------------
 -- Table structure for t_actual_data
@@ -388,12 +472,19 @@ CREATE TABLE `t_actual_data` (
   `state` tinyint(4) DEFAULT NULL COMMENT '状态',
   `write_time` datetime DEFAULT NULL COMMENT '抄表时间',
   `voltage` varchar(50) DEFAULT NULL COMMENT '电池电压',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='实时数据';
+  PRIMARY KEY (`id`),
+  KEY `idx_inner_code` (`inner_code`) USING BTREE,
+  KEY `idx_meter_num` (`meter_num`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='实时数据';
 
 -- ----------------------------
 -- Records of t_actual_data
 -- ----------------------------
+INSERT INTO `t_actual_data` VALUES ('1', null, '001', '1001', '00101', '2', '0', '21.00', '1', '2017-08-02 12:00:00', '22');
+INSERT INTO `t_actual_data` VALUES ('2', null, '002', '111122', '00201', '2', '1', '12.00', '1', '2017-09-03 12:02:57', '22');
+INSERT INTO `t_actual_data` VALUES ('3', null, '003', '1234123', '00301', '1', '1', '22.00', '2', '2017-10-05 12:02:51', '2');
+INSERT INTO `t_actual_data` VALUES ('4', null, '001', '1001', '00101', '1', '0', '3.00', '1', '2017-09-01 12:11:50', '220');
+INSERT INTO `t_actual_data` VALUES ('5', null, '001', '1001', '00101', '1', '0', '2.00', '1', '2017-09-05 01:54:28', '222');
 
 -- ----------------------------
 -- Table structure for t_ad
@@ -436,14 +527,17 @@ CREATE TABLE `t_company` (
   `remotemeter_count` int(11) DEFAULT '0' COMMENT '远传表数量',
   `unit_type` tinyint(4) DEFAULT NULL COMMENT '节约用水型单位类型',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='单位表';
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_inner_code` (`inner_code`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='单位表';
 
 -- ----------------------------
 -- Records of t_company
 -- ----------------------------
-INSERT INTO `t_company` VALUES ('1', '001', '北京某某科技股份有限公司', '海淀区西二旗辉煌国际65号', '11', '111', '11', '11', '18622222222', '1', '1', '1', '1', '1', '1', '2017-08-20 21:07:16');
-INSERT INTO `t_company` VALUES ('2', '111111', '11111', '1', '1', '11', '1', '1', '1', '1', '11', '1', '111', '1', '1', '2017-08-22 00:06:18');
+INSERT INTO `t_company` VALUES ('1', '001', '北京某某科技股份有限公司', '海淀区西二旗辉煌国际65号', '海淀区西二旗辉煌国际55号', '1', '1', '张三', '186222229', '234234234', '海淀区水利局', '10', '12', '10', '1', '2017-08-27 00:23:44');
+INSERT INTO `t_company` VALUES ('2', '002', '北京某某科技公司', '丹棱街12号', '海淀区中关村丹棱街1号', '3', '2', '李四', '1862342343', '8239042', '海淀区水利局', '1', '2', '2', '2', '2017-09-03 11:07:37');
+INSERT INTO `t_company` VALUES ('3', '003', '北京途牛科技股份有限公司', '通州区后南仓', '通州区后南仓', '1', '1', '王五', '1823420340', '100340', '海淀区水利局', '2', '1', '2', '1', '2017-09-02 15:06:17');
+INSERT INTO `t_company` VALUES ('5', '004', '北京体彩科技有限公司', '黄平路', '北京市昌平区霍营', '2', '1', '赵六', '154345345', '534345', '昌平水利局', '2', '2', '1', '1', '2017-09-05 01:53:24');
 
 -- ----------------------------
 -- Table structure for t_water_index
@@ -467,13 +561,16 @@ CREATE TABLE `t_water_index` (
   `october` decimal(10,2) DEFAULT NULL COMMENT '十月',
   `november` decimal(10,2) DEFAULT NULL COMMENT '十一月',
   `december` decimal(10,2) DEFAULT NULL COMMENT '十二月',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='年用水指标';
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_inner_code` (`company_id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='年用水指标';
 
 -- ----------------------------
 -- Records of t_water_index
 -- ----------------------------
-INSERT INTO `t_water_index` VALUES ('1', null, '111', '1', '1.00', '1.00', '1.08', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00', '1.00');
+INSERT INTO `t_water_index` VALUES ('1', null, '001', '3', '200.00', '10.00', '20.00', '10.00', '20.00', '10.00', '20.00', '10.00', '20.00', '20.00', '20.00', '20.00', '20.00');
+INSERT INTO `t_water_index` VALUES ('2', null, '002', '1', '200.00', '20.00', '10.00', '20.00', '10.00', '20.00', '10.00', '20.00', '10.00', '20.00', '20.00', '20.00', '20.00');
+INSERT INTO `t_water_index` VALUES ('3', null, '003', '1', '200.00', '10.00', '10.00', '20.00', '20.00', '20.00', '10.00', '20.00', '10.00', '20.00', '20.00', '10.00', '30.00');
 
 -- ----------------------------
 -- Table structure for t_water_meter
@@ -491,13 +588,18 @@ CREATE TABLE `t_water_meter` (
   `charge_type` tinyint(4) DEFAULT NULL COMMENT '收费类型',
   `billing_cycle` varchar(50) DEFAULT NULL COMMENT '计费周期',
   `regist_date` datetime DEFAULT NULL COMMENT '注册日期',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='水表信息';
+  PRIMARY KEY (`id`),
+  KEY `idx_inner_code` (`inner_code`) USING BTREE,
+  KEY `idx_meter_num` (`meter_num`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='水表信息';
 
 -- ----------------------------
 -- Records of t_water_meter
 -- ----------------------------
-INSERT INTO `t_water_meter` VALUES ('1', null, '11', '1111111', '1', '1', null, '1', '1', '1', null);
+INSERT INTO `t_water_meter` VALUES ('1', null, '001', '昌平回龙观霞飞路', '00101', '2', '3', '公用表', '2', '1年', '2017-08-25 21:28:31');
+INSERT INTO `t_water_meter` VALUES ('2', null, '002', '育知路', '00201', '1', '1', '2', '1', '12个月', '2017-08-15 21:28:36');
+INSERT INTO `t_water_meter` VALUES ('4', null, '003', '黄平路', '00301', '1', '2', '123', '1', '12个月', '2017-09-03 11:28:15');
+INSERT INTO `t_water_meter` VALUES ('5', null, '001', '11', '00102', '1', '3', '11', '1', '11', '2017-09-03 12:39:27');
 
 -- ----------------------------
 -- Table structure for t_well
@@ -533,9 +635,12 @@ CREATE TABLE `t_well` (
   `licence` tinyint(2) DEFAULT NULL COMMENT '是否已办理取水许可证',
   `licence_code` varchar(50) DEFAULT NULL COMMENT '取水许可证编号',
   `water_withdrawals` decimal(10,2) DEFAULT NULL COMMENT '年许可取水量（万立方米）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='水井信息';
+  PRIMARY KEY (`id`),
+  KEY `idx_inner_code` (`inner_code`) USING BTREE,
+  KEY `idx_well_num` (`well_num`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='水井信息';
 
 -- ----------------------------
 -- Records of t_well
 -- ----------------------------
+INSERT INTO `t_well` VALUES ('1', '00101#', '1号#', null, '001', '回龙观', '朱辛庄', '1', '2017-08-26 00:00:00', '1.00', '1.00', '1', '1.00', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1.00');
