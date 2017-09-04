@@ -6,6 +6,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.model.ActualData;
+import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.WaterIndex;
 import com.shangsc.platform.model.WaterMeter;
 
@@ -27,7 +28,6 @@ public class ChartController extends Controller {
     @RequiresPermissions(value = {"/chart"})
     public void index() {
         JSONObject object = new JSONObject();
-
         // 水表总数量
         List<WaterMeter> waterMeters = WaterMeter.me.getAllList();
         int total = waterMeters.size();
@@ -39,9 +39,18 @@ public class ChartController extends Controller {
 
         object.put("exptionTotal", (total >= today) ? (total - today) : 0);
 
+        object.put("normalTotal", today);
 
-        // 用水量告警电表数量
+        this.renderJson(object.toJSONString());
+    }
+
+    @RequiresPermissions(value = {"/chart"})
+    public void company() {
+        JSONObject object = new JSONObject();
         //取得用水指标数据
+        int total = Company.me.totalCount();
+        object.put("total", total);//单位总数
+
         List<WaterIndex> waterIndices = WaterIndex.me.getAllList();
         for (WaterIndex index : waterIndices) {
             index.getWaterIndex();//年
@@ -97,12 +106,14 @@ public class ChartController extends Controller {
                     }
                 }
             }
-
         }
+        // 正常用水单位
+        int normalTotal = Company.me.hasActual();
+        object.put("normalTotal", normalTotal-count.get());
 
+        object.put("warnTotal", count); //预警总数
 
-        object.put("warnTotal", count);
-
+        object.put("otherTotal", total-normalTotal);
         this.renderJson(object.toJSONString());
     }
 
@@ -148,6 +159,11 @@ public class ChartController extends Controller {
         this.setAttr("address",getPara("address"));
         this.setAttr("waterUseNum",getPara("waterUseNum"));
         render("map.jsp");
+    }
+
+    @RequiresPermissions(value={"/chart"})
+    public void baiduMap() {
+        render("map_all.jsp");
     }
 
     private void comp(BigDecimal monthActTotal, BigDecimal moth) {

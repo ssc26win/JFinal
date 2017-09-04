@@ -130,4 +130,6 @@ public class GlobalConfig extends JFinalConfig {
 		new MailPlugin(PropKit.use("mail.properties").getProperties()).start();
 	}
 
+
+
 }

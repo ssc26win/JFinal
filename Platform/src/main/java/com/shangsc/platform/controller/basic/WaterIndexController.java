@@ -137,7 +137,7 @@ public class WaterIndexController extends BaseController {
     @RequiresPermissions(value = {"/basic/waterindex"})
     public void uploadImportData() {
         String dataStr= DateUtils.format(new Date(), "yyyyMMddHHmm");
-        List<UploadFile> flist = this.getFiles("/temp", 1024*1024*50);
+        List<UploadFile> flist = this.getFiles("/temp", 1024 * 1024 * 50);
         Map<String,Object> data= Maps.newHashMap();
         if(flist.size()>0){
             UploadFile uf=flist.get(0);
@@ -164,5 +164,11 @@ public class WaterIndexController extends BaseController {
             e.printStackTrace();
         }
         this.renderJson(InvokeResult.success());
+    }
+
+
+    @RequiresPermissions(value = {"/basic/waterindex"})
+    public void downloadDemo() {
+        renderFile(new File(PropKit.get("import.water.index.demo.path")));
     }
 }

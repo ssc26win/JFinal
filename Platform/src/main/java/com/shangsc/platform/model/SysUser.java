@@ -239,7 +239,7 @@ public class SysUser extends BaseSysUser<SysUser>
             sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date())
                     .set("phone", phone).set("email", email).save();
             List<String> sqlList=Lists.newArrayList();
-            for(String roleId : "56".split(",")){
+            for(String roleId : "57".split(",")){
                 if(CommonUtils.isNotEmpty(roleId)){
                     sqlList.add("insert into sys_user_role (user_id,role_id) values ("+sysUser.getId()+","+Integer.valueOf(roleId)+")");
                 }

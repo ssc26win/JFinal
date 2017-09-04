@@ -23,12 +23,6 @@
     padding-bottom:50%;
   }
 
-  #mapbox #results {
-    height:0px;
-    padding-bottom:50%;
-    float: right;
-  }
-
 </style>
 </head>
 <body class="no-skin">
@@ -40,31 +34,7 @@
   <div class="main-content" id="page-wrapper">
     <%--<h2 onmousedown="drag(this.parentNode,event)">百度地图<a href="javascript:" onclick="document.getElementById('map').style.display='none'" class="close">×</a></h2>--%>
     <div id="mapbox" class="row">
-      <div id="map" style="cursor: crosshair;" class="col-sm-9"></div>
-      <div class="col-sm-3">
-        <div class="widget-body">
-          <div class="widget-main">
-            <div class="input-group">
-              <input type="text" id="searchtext" name="searchtext" class="form-control search-query" placeholder="请输入关键字" value="${address}"/>
-                            <span class="input-group-btn">
-                                <button type="button" id="searchbt" class="btn btn-purple btn-sm" onclick="searchlocal($('#searchtext').val(),'',0)">
-                                  <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
-                                  搜索
-                                </button>
-                            </span>
-            </div>
-            <%--<div id="mapx" style="margin-top: 5px;"></div>
-            <div id="mapy" style="margin-top: 5px;"></div>
-            <div id="level" style="margin-top: 5px;"></div>--%>
-            <div class="input-group">
-              <div id="results" style="margin-top: 5px; font-size: 12px;padding: 0;"></div>
-            </div>
-            <%--<div class="input-group">--%>
-            <%--<div id="mapx" style="margin-top: 5px;"></div>--%>
-            <%--<div id="mapy" style="margin-top: 5px;"></div>--%>
-            <%--<div id="level" style="margin-top: 5px;"></div>--%>
-            <%--</div>--%>
-          </div>
+      <div id="map" style="cursor: crosshair;" class="col-sm-12"></div>
         </div>
       </div>
     </div>
@@ -173,9 +143,9 @@
 
   map.addEventListener("dragend", function () {   //拖拽事件
     var center = map.getCenter();
-    document.getElementById("mapx").innerHTML = "拖拽后中心x位置:" + center.lng;
-    document.getElementById("mapy").innerHTML = "拖拽后中心y位置:" + center.lat;
-    document.getElementById("level").innerHTML = "缩放等级:" + this.getZoom();
+//    document.getElementById("mapx").innerHTML = "拖拽后中心x位置:" + center.lng;
+//    document.getElementById("mapy").innerHTML = "拖拽后中心y位置:" + center.lat;
+//    document.getElementById("level").innerHTML = "缩放等级:" + this.getZoom();
   });
 
   map.addEventListener("zoomend", function () {   //缩放事件

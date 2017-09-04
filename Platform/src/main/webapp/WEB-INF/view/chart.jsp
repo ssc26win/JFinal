@@ -8,24 +8,50 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <meta charset="UTF-8"/>
-    <title>Highcharts 教程 | 菜鸟教程(runoob.com)</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
+    <title>水务状态图表</title>
+    <meta name="description" content="overview &amp; stats"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+    <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true"/>
     <script src="${res_url}js/charts/jquery.min.js"></script>
     <script src="${res_url}js/charts/highcharts.js"></script>
 </head>
-<body>
-<div id="container1" style="width: 550px; height: 400px; margin: 0 auto"></div>
-<div id="container" style="width: 550px; height: 400px; margin: 0 auto"></div>
-<div id="containe2" style="width: 550px; height: 400px; margin: 0 auto"></div>
+<body class="no-skin">
+<!-- /section:basics/navbar.layout -->
+<div class="main-container" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+    <div class="main-content" id="page-wrapper">
+        <div class="page-content" id="page-content">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div id="container1" style="width: 25%; height: 25%; margin: 0 auto"></div>
+                </div>
+                <div class="col-xs-6">
+                    <div id="container12" style="width: 25%; height: 25%; margin: 0 auto"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="container" style="width: 50%; height: 50%; margin: 0 auto"></div>
+                </div>
+                <div class="col-xs-12">
+                    <div id="containe2" style="width: 50%; height: 50%; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script language="JavaScript">
 
     $(document).ready(function () {
-        var total, warnTotal, exptionTotal;
+        var total, normalTotal, exptionTotal;
         $.get("${context_path}/chart", function (data) {
             total = data.total;
-            warnTotal = data.warnTotal;
+            normalTotal = data.normalTotal;
             exptionTotal = data.exptionTotal;
-
             var chart1 = {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -56,10 +82,9 @@
                 type: 'pie',
                 name: '水表数量',
                 data: [
-                    {name:'远传水表数量', y:total,url:'${context_path}/basic/meter'},
-                    {name:'异常表数量', y:warnTotal,url:'${context_path}/basic/meter/exption'},
-
-                {name:'预警单位数量', y:exptionTotal,url:'${context_path}/basic/meter/warn'},
+                    {name:'远传水表数量' + '(' + total + ')', y:total,url:'${context_path}/basic/meter'},
+                    {name:'正常表数量' + '(' + normalTotal + ')', y:normalTotal,url:'${context_path}/basic/meter/normal'},
+                    {name:'异常表数量' + '(' + exptionTotal + ')', y:exptionTotal,url:'${context_path}/basic/meter/warn'},
                 ]
             }];
 
@@ -72,6 +97,57 @@
             $('#container1').highcharts(json1);
         })
 
+        var total2, warnTotal2, normalTotal2, otherTotal;
+        $.get("${context_path}/chart/company", function (data) {
+            total2 = data.total;
+            warnTotal2 = data.warnTotal;
+            normalTotal2 = data.normalTotal;
+            otherTotal = data.otherTotal;
+            var chart1 = {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            };
+            var title1 = {
+                text: '单位数量'
+            };
+            var tooltip1 = {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
+            };
+            var plotOptions1 = {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    events:{
+                        click:function (e) {
+                            location.href=e.point.url
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            };
+            var series1 = [{
+                type: 'pie',
+                name: '单位数量',
+                data: [
+                    {name:'单位总数量' + '(' + total2 + ')', y:total2,url:'${context_path}/basic/company'},
+                    {name:'正常单位数量' + '(' + normalTotal2 + ')', y:normalTotal2,url:'${context_path}/basic/company'},
+                    {name:'预警单位数量' + '(' + warnTotal2 + ')', y:warnTotal2,url:'${context_path}/basic/company'},
+                    {name:'其他' + '(' + otherTotal + ')', y:otherTotal,url:'${context_path}/basic/company'},
+                ]
+            }];
+
+            var json1 = {};
+            json1.chart = chart1;
+            json1.title = title1;
+            json1.tooltip = tooltip1;
+            json1.series = series1;
+            json1.plotOptions = plotOptions1;
+            $('#container12').highcharts(json1);
+        })
 
         $.get("${context_path}/chart/getDilay", function (data) {
 

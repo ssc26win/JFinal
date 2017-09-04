@@ -47,7 +47,8 @@
                     <div class="step-pane active" id="step1">
                       <form class="form-horizontal" id="validation-form" method="post">
                         <div class="form-group">
-                          <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="file_upload">excel:</label>
+                          <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="file_upload">excel
+                              (<a href="${context_path}/basic/waterindex/downloadDemo" title="下载示例" style="color: #008800" >demo</a>):</label>
                           <div class="col-xs-12 col-sm-9">
                             <div class="clearfix">
                               <div class="cover-area" style="border: 1px solid #e0e0e0;width: 80%;border-radius:5px;padding: 5px 0 0 5px;">
@@ -91,9 +92,14 @@
 </div><!-- /.main-container -->
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
 <script type="text/javascript">
-
-  jQuery(function($) {
-
+    function downloadDemo() {
+        var sfForm = document.createElement("form");
+        document.body.appendChild(sfForm);
+        sfForm.method = "post";
+        sfForm.action = "${context_path}/basic/waterindex/downloadDemo";
+        sfForm.submit();
+    }
+    jQuery(function($) {
     $('#file_upload').uploadify({
       //校验数据
       'swf' : '${res_url}uploadify/uploadify.swf', //指定上传控件的主体文件，默认‘uploader.swf’

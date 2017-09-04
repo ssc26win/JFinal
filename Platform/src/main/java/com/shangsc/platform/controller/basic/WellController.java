@@ -12,6 +12,7 @@ import com.shangsc.platform.export.WellExportService;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.Well;
 import com.shangsc.platform.util.CodeNumUtil;
+import com.shangsc.platform.util.ToolDateTime;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -47,6 +48,7 @@ public class WellController extends BaseController {
                 co.put("electromechanicsName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getElectromechanics())));
                 co.put("calculateWaterName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getCalculateType())));
                 co.put("licenceName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getLicence())));
+                co.put("yearDate", ToolDateTime.format(co.getStartDate(), "yyyy-MM-dd"));
                 list.set(i, co);
             }
         }

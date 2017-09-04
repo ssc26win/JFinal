@@ -1,11 +1,14 @@
 package com.shangsc.platform.model;
 
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseCompany;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -120,27 +123,32 @@ public class Company extends BaseCompany<Company> {
         return map;
     }
 
-    public Page<Company> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
-        String select=" select * ";
-        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
-        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    public int hasActual() {
+        String sqlExceptSelect = " select count(c.inner_code) as normalNum from t_company c " +
+                "INNER JOIN (select DISTINCT inner_code from t_actual_data) ta on ta.inner_code=c.inner_code";
+        List<Record> lists = Db.find(sqlExceptSelect);
+        if (CollectionUtils.isNotEmpty(lists)) {
+            Object obj = lists.get(0).get("normalNum");
+            if (obj != null) {
+                return Integer.parseInt(obj.toString());
+            } else {
+                return 0;
+            }
+        }
+        return 0;
     }
 
-    public Page<Company> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
-        String select=" select c.*, (select meter_num,line_num from t_water_meter twm where twm.inner_code=c.inner_code) ";
-        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
-        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
-    }
-
-    public Page<Company> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
-        String select=" select * ";
-        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
-        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
-    }
-
-    public Page<Company> getYearStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime, String ... keywords) {
-        String select=" select * ";
-        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
-        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    public int totalCount() {
+        String sqlExceptSelect = " select count(*) as totalCompany from (select DISTINCT inner_code from t_company) c ";
+        List<Record> lists = Db.find(sqlExceptSelect);
+        if (CollectionUtils.isNotEmpty(lists)) {
+            Object obj = lists.get(0).get("totalCompany");
+            if (obj != null) {
+                return Integer.parseInt(obj.toString());
+            } else {
+                return 0;
+            }
+        }
+        return 0;
     }
 }

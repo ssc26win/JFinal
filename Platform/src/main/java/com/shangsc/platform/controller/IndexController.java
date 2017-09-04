@@ -78,7 +78,12 @@ public class IndexController extends Controller {
 			sysUser = SysUser.me.getByEmail(this.getPara("username"));
 			if (sysUser == null) {
 				sysUser = SysUser.me.getByPhone(this.getPara("username"));
-			}
+                if (sysUser != null) {
+                    sysUser.setName(sysUser.getPhone());
+                }
+			} else {
+                sysUser.setName(sysUser.getEmail());
+            }
 		}
 		if(sysUser==null){
 			this.renderJson(InvokeResult.failure("用户不存在"));
