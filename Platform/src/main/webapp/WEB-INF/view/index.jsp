@@ -49,20 +49,20 @@
 
 				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
 					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-						<button class="btn btn-success">
+						<button class="btn btn-success" onclick="setQuickLink('console');">
 							<i class="ace-icon fa fa-signal"></i>
 						</button>
 
-						<button class="btn btn-info">
+						<button class="btn btn-info"  onclick="setQuickLink('company');">
 							<i class="ace-icon fa fa-pencil"></i>
 						</button>
 
 						<!-- #section:basics/sidebar.layout.shortcuts -->
-						<button class="btn btn-warning">
+						<button class="btn btn-warning"  onclick="setQuickLink('users');">
 							<i class="ace-icon fa fa-users"></i>
 						</button>
 
-						<button class="btn btn-danger">
+						<button class="btn btn-danger"  onclick="setQuickLink('setting');">
 							<i class="ace-icon fa fa-cogs"></i>
 						</button>
 
@@ -125,7 +125,24 @@
 		<!-- basic scripts -->
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
 <script src="${res_url}js/contabs.min.js"></script>
-		<script type="text/javascript"> 
+		<script type="text/javascript">
+            function setQuickLink(target) {
+                if (target == 'console') {
+                    window.location.href="${context_path}/";
+                }
+                if (target == 'company') {
+                    window.location.href="${context_path}/#/basic/company";
+                    window.location.reload();
+                }
+                if (target == 'users') {
+                    window.location.href="${context_path}/#/sys/user";
+                    window.location.reload();
+                }
+                if (target == 'setting') {
+                    window.location.href="${context_path}/#/sys/res";
+                    window.location.reload();
+                }
+            }
 		var currentIframe;
 		$(function(){
 			menuEventInit();
