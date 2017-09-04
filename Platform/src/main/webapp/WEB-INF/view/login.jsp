@@ -128,7 +128,7 @@
 									</div><!-- /.widget-body -->
 								</div><!-- /.login-box -->
 
-								<div id="forgot-reset " class="forgot-box widget-box no-border">
+								<div id="forgot-reset" class="forgot-box widget-box no-border">
 									<div class="widget-body">
 										<div class="widget-main">
 											<h4 class="header red lighter bigger">
@@ -157,32 +157,23 @@
 															<i class="ace-icon fa fa-retweet"></i>
 														</span>
 													</label>
+													<div class="space-4"></div>
 
 													<div class="clearfix">
-														<button type="button" class="width-35 pull-right btn btn-sm btn-danger" id="rePwdEmail-btn">
-															<i class="ace-icon fa fa-lightbulb-o"></i>
-															<span class="bigger-110">发送</span>
+														<button type="reset" class="width-30 pull-left btn btn-sm">
+															<i class="ace-icon fa fa-refresh"></i>
+															<span class="bigger-110">重置</span>
+														</button>
+
+														<button type="button" id="rePwdEmail-btn" class="width-65 pull-right btn btn-sm btn-success">
+															<span class="bigger-110">确定</span>
+
+															<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
 														</button>
 													</div>
 												</fieldset>
 											</form>
 										</div><!-- /.widget-main -->
-
-
-										<div class="space-24"></div>
-
-										<div class="clearfix">
-											<button type="reset" class="width-30 pull-left btn btn-sm">
-												<i class="ace-icon fa fa-refresh"></i>
-												<span class="bigger-110">重置</span>
-											</button>
-
-											<button type="button" id="resetPwd-btn" class="width-65 pull-right btn btn-sm btn-success">
-												<span class="bigger-110">确定</span>
-
-												<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-											</button>
-										</div>
 									</div><!-- /.widget-body -->
 								</div><!-- /.forgot-box -->
 
@@ -466,6 +457,7 @@
                     return false;
                 });
 				$('#sendrePwdEmail-btn').click(function(event) {
+					var index = layer.load(0, {shade: false});
 					event.stopPropagation();
 					var $btn = $(this);
 					if ($btn.hasClass("disabled")) {
@@ -484,6 +476,7 @@
 					$.post("${context_path}/resetPwdSendEmail", submitData, function(data) {
 						$btn.removeClass("disabled");
 						if (data.code == 0) {
+							layer.close(index);
 							layer.alert("发送邮件成功，请登录您的邮箱！", function(){
 								window.top.location.href = "${context_path}/";
 							});
@@ -568,9 +561,9 @@
 			});
 
 			$(function() {
-				$("#forgot-reset").show();
 				if ($("#resetEmail").val() != "") {
-					$("#forgot-reset").show();
+					$("#login-box").removeClass("visible");
+					$("#forgot-reset").addClass("visible");
 				}
 			});
 		</script>

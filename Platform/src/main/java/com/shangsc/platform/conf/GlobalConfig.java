@@ -21,6 +21,7 @@ import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.auth.interceptor.SysLogInterceptor;
 import com.shangsc.platform.core.handler.ResourceHandler;
 import com.shangsc.platform.core.util.IWebUtils;
+import com.shangsc.platform.mail.MailPlugin;
 import com.shangsc.platform.model.SysUser;
 import com.shangsc.platform.model._MappingKit;
 import com.jfinal.config.*;
@@ -92,6 +93,9 @@ public class GlobalConfig extends JFinalConfig {
 		me.add(new EhCachePlugin());
 		// 所有配置在 MappingKit 中搞定
 		_MappingKit.mapping(arp);
+
+		//加载邮件配置
+		initMail();
 	}
 
 	/**
@@ -120,6 +124,10 @@ public class GlobalConfig extends JFinalConfig {
 		  });
 		me.add(dvh);
 		me.add(new ResourceHandler());
+	}
+
+	public void initMail() {
+		new MailPlugin(PropKit.use("mail.properties").getProperties()).start();
 	}
 
 }

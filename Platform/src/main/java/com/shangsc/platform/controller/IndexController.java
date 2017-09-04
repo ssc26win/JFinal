@@ -15,21 +15,21 @@
  */
 package com.shangsc.platform.controller;
 
+import com.jfinal.aop.Clear;
+import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
+import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
-import com.shangsc.platform.core.util.MyDigestUtils;
-
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.auth.interceptor.SysLogInterceptor;
 import com.shangsc.platform.core.util.IWebUtils;
+import com.shangsc.platform.core.util.MyDigestUtils;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.mail.MailKit;
 import com.shangsc.platform.model.SysLoginRecord;
 import com.shangsc.platform.model.SysUser;
-import com.jfinal.aop.Clear;
-import com.jfinal.core.Controller;
-import com.jfinal.kit.StrKit;
-import com.shangsc.platform.util.ToolMail;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +55,9 @@ public class IndexController extends Controller {
 	@Clear(AuthorityInterceptor.class)
 	public void login() {
 		this.setAttr("url", this.getPara("url"));
+		if (StringUtils.isNotEmpty(this.getPara("email"))) {
+			this.setAttr("email", this.getPara("email"));
+		}
 		render("login.jsp");
 	}
 	@Clear(AuthorityInterceptor.class)
@@ -152,41 +155,38 @@ public class IndexController extends Controller {
 	public void resetPwdSendEmail(){
 		IWebUtils.removeCurrentSysUser(getRequest(), getResponse());
 		String email=this.getPara("email");
-		String host = PropKit.get("config.mail.host");		// 发送邮件的服务器的IP
-		String port = PropKit.get("config.mail.port");	// 发送邮件的服务器的端口
-
-		boolean validate = true;	// 是否需要身份验证
-
-		String from = PropKit.get("config.mail.from");		// 邮件发送者的地址
-		String userName = PropKit.get("config.mail.userName");	// 登陆邮件发送服务器的用户名
-		String password = PropKit.get("config.mail.password");	// 登陆邮件发送服务器的密码
-
+		SysUser sysUser = SysUser.me.getByEmail(email);
+		if(sysUser==null){
+			this.renderJson(InvokeResult.failure("邮箱不存在"));
+			return;
+		}
 		List<String> to = new ArrayList<String>();			// 邮件接收者的地址
 		to.add(email);
-
 		String subject = "通州水务管理系统-找回密码";		// 邮件标题
-		StringBuilder content = new StringBuilder("<h2>请点击链接重置密码</h2>");// 邮件的文本内容
+		StringBuilder content = new StringBuilder("<h2>重置密码</h2>");// 邮件的文本内容
 		content.append("<br/>");
 		content.append("<a href='");
-		content.append("config.host.url");
+		content.append(PropKit.get("config.host.url"));
 		content.append("/login");
 		content.append("?email=" + email);
 		content.append("&time="+ System.currentTimeMillis());
-		content.append("' target='_blank' >重置密码(30分钟内有效)</a>");
+		content.append("' target='_blank' ><b>点击</b>重置密码(30分钟内有效)</a>");
+		this.setCookie("find_password_by_email", String.valueOf(System.currentTimeMillis()), 1000*60*30);
+		try {
+			MailKit.send(email, null, subject, content.toString());
+		} catch (Exception e) {
 
-		String[] attachFileNames = new String[]{""};	// 邮件附件的文件名
-
-		ToolMail.sendHtmlMail(host, port, validate, userName, password, from, to, subject, content.toString(), attachFileNames);
-
-		if(log.isErrorEnabled()) {
-			log.error("发送邮件参数sendType错误");
 		}
-
 		this.renderJson(InvokeResult.success());
 	}
 
 	@Clear(AuthorityInterceptor.class)
 	public void savePwdForget(){
+		String times = this.getCookie("find_password_by_email");
+		if (StringUtils.isEmpty(times)) {
+			this.renderJson(InvokeResult.failure("超出找回密码邮件时间"));
+			return;
+		}
 		String email=this.getPara("email");
 		String newPwd=MyDigestUtils.shaDigestForPasswrod(getPara("password"));
 		try {
@@ -201,7 +201,6 @@ public class IndexController extends Controller {
 			e.printStackTrace();
 		}
 	}
-
 }
 
 
