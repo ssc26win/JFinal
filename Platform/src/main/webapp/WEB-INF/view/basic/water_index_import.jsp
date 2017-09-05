@@ -48,7 +48,7 @@
                       <form class="form-horizontal" id="validation-form" method="post">
                         <div class="form-group">
                           <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="file_upload">excel
-                              (<a href="${context_path}/basic/waterindex/downloadDemo" title="下载示例" style="color: #008800" >demo</a>):</label>
+                              (<a href="#" onclick="downloadFile();" title="下载示例" style="color: #008800" >demo</a>):</label>
                           <div class="col-xs-12 col-sm-9">
                             <div class="clearfix">
                               <div class="cover-area" style="border: 1px solid #e0e0e0;width: 80%;border-radius:5px;padding: 5px 0 0 5px;">
@@ -92,12 +92,22 @@
 </div><!-- /.main-container -->
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
 <script type="text/javascript">
+  function downloadFile() {
+    try{
+      var elemIF = document.createElement("iframe");
+      elemIF.src = "${context_path}/basic/waterindex/downloadDemo";
+      elemIF.style.display = "none";
+      document.body.appendChild(elemIF);
+    }catch(e){
+
+    }
+  }
     function downloadDemo() {
-        var sfForm = document.createElement("form");
-        document.body.appendChild(sfForm);
-        sfForm.method = "post";
-        sfForm.action = "${context_path}/basic/waterindex/downloadDemo";
-        sfForm.submit();
+      var sfForm = document.createElement("form");
+      sfForm.method = "post";
+      sfForm.action = "${context_path}/basic/waterindex/downloadDemo";
+      document.body.appendChild(sfForm);
+      sfForm.submit();
     }
     jQuery(function($) {
     $('#file_upload').uploadify({

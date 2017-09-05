@@ -27,18 +27,18 @@
         <div class="page-content" id="page-content">
             <div class="row">
                 <div class="col-xs-6">
-                    <div id="container1" style="width: 25%; height: 25%; margin: 0 auto"></div>
+                    <div id="container1" style="width: 45%; height: 25%; margin: 0 auto"></div>
                 </div>
                 <div class="col-xs-6">
-                    <div id="container12" style="width: 25%; height: 25%; margin: 0 auto"></div>
+                    <div id="container12" style="width: 45%; height: 25%; margin: 0 auto"></div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row" style="margin-top: 20px;">
                 <div class="col-xs-12">
-                    <div id="container" style="width: 50%; height: 50%; margin: 0 auto"></div>
+                    <div id="container" style="width: 50%; height: 35%; margin: 0 auto"></div>
                 </div>
                 <div class="col-xs-12">
-                    <div id="containe2" style="width: 50%; height: 50%; margin: 0 auto"></div>
+                    <div id="containe2" style="width: 50%; height: 35%; margin: 0 auto"></div>
                 </div>
             </div>
         </div>

@@ -116,7 +116,7 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 	}
 
 	public void importData(List<Map<Integer, String>> maps) {
-		List<WaterIndex> lists = new ArrayList<>();
+		List<WaterIndex> lists = new ArrayList<WaterIndex>();
 		for (int i = 0; i < maps.size(); i++) {
 			WaterIndex index = new WaterIndex();
 			Map<Integer, String> map = maps.get(i);
