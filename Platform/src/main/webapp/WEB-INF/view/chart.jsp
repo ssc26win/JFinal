@@ -55,7 +55,7 @@
             var chart1 = {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
-                plotShadow: false
+                plotShadow: false,
             };
             var title1 = {
                 text: '水表数量'
@@ -82,11 +82,15 @@
                 type: 'pie',
                 name: '水表数量',
                 data: [
-                    {name:'远传水表数量' + '(' + total + ')', y:total,url:'${context_path}/basic/meter'},
+                    {name:'远传水表总数量' + '(' + total + ')', y:total,url:'${context_path}/basic/meter'},
                     {name:'正常表数量' + '(' + normalTotal + ')', y:normalTotal,url:'${context_path}/basic/meter/normal'},
-                    {name:'异常表数量' + '(' + exptionTotal + ')', y:exptionTotal,url:'${context_path}/basic/meter/warn'},
+                    {name:'异常表数量' + '(' + exptionTotal + ')', y:exptionTotal,url:'${context_path}/basic/meter/exption'},
                 ]
             }];
+
+            var credits = {
+                enabled:false // 禁用版权信息
+            }
 
             var json1 = {};
             json1.chart = chart1;
@@ -94,6 +98,7 @@
             json1.tooltip = tooltip1;
             json1.series = series1;
             json1.plotOptions = plotOptions1;
+            json1.credits=credits;
             $('#container1').highcharts(json1);
         })
 
@@ -134,11 +139,15 @@
                 name: '单位数量',
                 data: [
                     {name:'单位总数量' + '(' + total2 + ')', y:total2,url:'${context_path}/basic/company'},
-                    {name:'正常单位数量' + '(' + normalTotal2 + ')', y:normalTotal2,url:'${context_path}/basic/company'},
-                    {name:'预警单位数量' + '(' + warnTotal2 + ')', y:warnTotal2,url:'${context_path}/basic/company'},
-                    {name:'其他' + '(' + otherTotal + ')', y:otherTotal,url:'${context_path}/basic/company'},
+                    {name:'正常单位数量' + '(' + normalTotal2 + ')', y:normalTotal2,url:'${context_path}/basic/company/normal'},
+                    {name:'预警单位数量' + '(' + warnTotal2 + ')', y:warnTotal2,url:'${context_path}/basic/company/warn'},
+                    {name:'其他' + '(' + otherTotal + ')', y:otherTotal,url:'${context_path}/basic/company/other'},
                 ]
             }];
+
+            var credits = {
+                enabled:false // 禁用版权信息
+            }
 
             var json1 = {};
             json1.chart = chart1;
@@ -146,6 +155,7 @@
             json1.tooltip = tooltip1;
             json1.series = series1;
             json1.plotOptions = plotOptions1;
+            json1.credits=credits;
             $('#container12').highcharts(json1);
         })
 
@@ -165,7 +175,7 @@
             };
             var yAxis = {
                 title: {
-                    text: '水量单位'
+                    text: '水量单位（立方米）'
                 },
                 plotLines: [{
                     value: 0,
@@ -218,6 +228,10 @@
                 }
             };
 
+            var credits = {
+                enabled:false // 禁用版权信息
+            }
+
             var json = {};
 
             json.title = title;
@@ -228,11 +242,10 @@
             json.legend = legend;
             json.series = series;
             json.plotOptions = plotOptions;
+            json.credits=credits;
             $('#container').highcharts(json);
 
         });
-
-
 
         $.get("${context_path}/chart/getMonth", function (data) {
 
@@ -242,14 +255,12 @@
             var subtitle = {
                 text: '月用水量'
             };
-
-
             var xAxis = {
                 categories: data.month
             };
             var yAxis = {
                 title: {
-                    text: '水量单位'
+                    text: '水量单位（立方米）'
                 },
                 plotLines: [{
                     value: 0,
@@ -302,6 +313,10 @@
                 }
             };
 
+            var credits = {
+                enabled:false // 禁用版权信息
+            }
+
             var json = {};
 
             json.title = title;
@@ -312,11 +327,15 @@
             json.legend = legend;
             json.series = series;
             json.plotOptions = plotOptions;
+            json.credits = credits;
             $('#containe2').highcharts(json);
 
         });
 
     });
+    $(function(){
+        $(".highcharts-credits").css("display:none");
+    })
 </script>
 </body>
 </html>

@@ -11,6 +11,7 @@ import com.shangsc.platform.model.base.BaseCompany;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -20,7 +21,6 @@ import java.util.*;
 public class Company extends BaseCompany<Company> {
 	public static final Company me = new Company();
     private static final long serialVersionUID = -1982696969221258167L;
-
 
     /**
      * 公司编号是否已存在
@@ -150,5 +150,156 @@ public class Company extends BaseCompany<Company> {
             }
         }
         return 0;
+    }
+
+    public int warnCount() {
+        String innerCodes = getWarnInnerCodes();
+        String sqlExceptSelect = " select count(*) as warnCompany from t_company" +
+                " where inner_code in (" + innerCodes + ")";
+        List<Record> lists = Db.find(sqlExceptSelect);
+        if (CollectionUtils.isNotEmpty(lists)) {
+            Object obj = lists.get(0).get("warnCompany");
+            if (obj != null) {
+                return Integer.parseInt(obj.toString());
+            } else {
+                return 0;
+            }
+        }
+        return 0;
+    }
+
+    public Page<Company> getWarnCompanyPage(int page, int rows, String keyword, String orderbyStr) {
+        String innerCodes = getWarnInnerCodes();
+        String select="select c.*";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
+        sqlExceptSelect.append(" where 1=1 ");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+                    + "' or contact='" + StringUtils.trim(keyword) + "') ");
+        }
+        if (StringUtils.isNotEmpty(innerCodes)) {
+            sqlExceptSelect.append(" and c.inner_code in (" + innerCodes+ ")");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
+
+
+    public Page<Company> getNormalCompanyPage(int page, int rows, String keyword, String orderbyStr) {
+        String select="select c.*";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
+        sqlExceptSelect.append(" where 1=1 and c.inner_code in (select DISTINCT inner_code from t_actual_data tad )");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+                    + "' or contact='" + StringUtils.trim(keyword) + "') ");
+        }
+        String warnInnercode = getWarnInnerCodes();
+        if (StringUtils.isNotEmpty(warnInnercode)) {
+            sqlExceptSelect.append(" and c.inner_code not in (" + warnInnercode+ ")");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
+
+    public Page<Company> getOtherCompanyPage(int page, int rows, String keyword, String orderbyStr) {
+        String select="select c.*";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c");
+        sqlExceptSelect.append(" where 1=1 and c.inner_code not in (select DISTINCT inner_code from t_actual_data tad )");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+                    + "' or contact='" + StringUtils.trim(keyword) + "') ");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
+
+    private Set<String> warnInnerCodes = new HashSet<>();
+    // 预警閥值
+    private static final BigDecimal THRESHOLD = new BigDecimal("2");
+
+    public String getWarnInnerCodes() {
+        //用水量告警单位数量
+        //取得用水指标数据
+        List<WaterIndex> waterIndices = WaterIndex.me.getAllList();
+        for (WaterIndex index : waterIndices) {
+            index.getWaterIndex();//年
+            WaterMeter waterMeter = WaterMeter.me.findByInnerCode(index.getInnerCode());
+
+            if (null != waterMeter) {
+                Record records1 = ActualData.me.getYearActual(index.getInnerCode());
+                if (null != records1) {
+                    comp((BigDecimal) records1.get("yearTotal"), (BigDecimal) index.getWaterIndex(), index.getInnerCode());
+
+                    List<Record> records = ActualData.me.getMonthActualDataPage(index.getInnerCode());
+                    for (int i = 0; i < records.size(); i++) {
+                        Record record = records.get(i);
+                        BigDecimal monthActTotal = new BigDecimal(record.get("total").toString());
+                        switch ((record.get("time").toString())) {
+                            case "01":
+                                comp(monthActTotal, index.getJanuary(), index.getInnerCode());
+                                break;
+                            case "02":
+                                comp(monthActTotal, index.getFebruary(), index.getInnerCode());
+                                break;
+                            case "03":
+                                comp(monthActTotal, index.getMarch(), index.getInnerCode());
+                                break;
+                            case "04":
+                                comp(monthActTotal, index.getApril(), index.getInnerCode());
+                                break;
+                            case "05":
+                                comp(monthActTotal, index.getMay(), index.getInnerCode());
+                                break;
+                            case "06":
+                                comp(monthActTotal, index.getJune(), index.getInnerCode());
+                                break;
+                            case "07":
+                                comp(monthActTotal, index.getJuly(), index.getInnerCode());
+                                break;
+                            case "08":
+                                comp(monthActTotal, index.getAugust(), index.getInnerCode());
+                                break;
+                            case "09":
+                                comp(monthActTotal, index.getSeptember(), index.getInnerCode());
+                                break;
+                            case "10":
+                                comp(monthActTotal, index.getOctober(), index.getInnerCode());
+                                break;
+                            case "11":
+                                comp(monthActTotal, index.getNovember(), index.getInnerCode());
+                                break;
+                            case "12":
+                                comp(monthActTotal, index.getDecember(), index.getInnerCode());
+                                break;
+                        }
+                    }
+                }
+            }
+
+        }
+        String innerCodes = "";
+        StringBuilder sb= new StringBuilder();
+        for (String innerCode:warnInnerCodes) {
+            sb.append("'").append(innerCode).append("'").append(",");
+        }
+        if (StringUtils.isNotEmpty(sb.toString())) {
+            innerCodes = sb.toString().substring(0, sb.toString().length() - 1);
+        }
+        return innerCodes;
+    }
+
+    private void comp(BigDecimal monthActTotal, BigDecimal moth, String innerCode) {
+        if (null == moth) {
+            moth = new BigDecimal(0);
+        }
+        if (moth.add(this.THRESHOLD).compareTo(monthActTotal) < 0) {
+            warnInnerCodes.add(innerCode);
+        }
     }
 }

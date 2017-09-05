@@ -32,25 +32,57 @@ public class CompanyController extends BaseController {
         render("company_index.jsp");
     }
 
+    @RequiresPermissions(value = {"/basic/company"})
+    public void normal() {
+        this.setAttr("flag", "Normal");
+        render("company_index.jsp");
+    }
+
+    @RequiresPermissions(value = {"/basic/company"})
+    public void warn() {
+        this.setAttr("flag", "Warn");
+        render("company_index.jsp");
+    }
+
+    @RequiresPermissions(value = {"/basic/company"})
+    public void other() {
+        this.setAttr("flag", "Other");
+        render("company_index.jsp");
+    }
+
     @RequiresPermissions(value={"/basic/company"})
     public void getListData() {
         String keyword=this.getPara("name");
         Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
-        if (CommonUtils.isNotEmpty(companies)) {
-            Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictData.UserType);
-            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
-            Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictData.UnitType);
-            for (int i = 0; i < companies.size(); i++) {
-                Company co = companies.get(i);
-                co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
-                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
-                co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
-                co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('" + co.getName() + "', '"
-                        + co.getAddress() + "', '" + co.get("waterUseNum") + "'" + ")\">" + co.getAddress() + "</a>");
-                companies.set(i, co);
-            }
-        }
+        setVoProp(companies);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
+    }
+
+    @RequiresPermissions(value={"/basic/company"})
+    public void getNormalListData() {
+        String keyword=this.getPara("name");
+        Page<Company> pageInfo = Company.me.getNormalCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        List<Company> companies = pageInfo.getList();
+        setVoProp(companies);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
+    }
+
+    @RequiresPermissions(value={"/basic/company"})
+    public void getWarnListData() {
+        String keyword=this.getPara("name");
+        Page<Company> pageInfo = Company.me.getWarnCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        List<Company> companies = pageInfo.getList();
+        setVoProp(companies);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
+    }
+
+    @RequiresPermissions(value={"/basic/company"})
+    public void getOtherListData() {
+        String keyword=this.getPara("name");
+        Page<Company> pageInfo = Company.me.getOtherCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        List<Company> companies = pageInfo.getList();
+        setVoProp(companies);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
     }
 
@@ -104,6 +136,12 @@ public class CompanyController extends BaseController {
         Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
                 Company.me.getPage(getPage(), GlobalConfig.EXPORT_SUM, conditions, this.getOrderby());
         List<Company> companies = pageInfo.getList();
+        setVoProp(companies);
+        String path = service.export(companies);
+        renderFile(new File(path));
+    }
+
+    private void setVoProp(List<Company> companies){
         if (CommonUtils.isNotEmpty(companies)) {
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictData.UserType);
             Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
@@ -113,10 +151,11 @@ public class CompanyController extends BaseController {
                 co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
                 co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
                 co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
+                co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('" + co.getName() + "', '"
+                        + co.getAddress() + "', '" + co.get("waterUseNum") + "'" + ")\">" + co.getAddress() + "</a>");
                 companies.set(i, co);
             }
         }
-        String path = service.export(companies);
-        renderFile(new File(path));
     }
+
 }

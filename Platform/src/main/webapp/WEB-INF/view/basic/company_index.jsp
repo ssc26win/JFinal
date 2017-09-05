@@ -97,9 +97,13 @@
                 }, 0);
             }
         });
-
+        var flag = '${flag}';
+        var url = '${context_path}/basic/company/getListData';
+        if (flag != null && flag != undefined && flag != '') {
+            url = '${context_path}/basic/company/get'+flag+'ListData/';
+        }
         $("#grid-table").jqGrid({
-            url:'${context_path}/basic/company/getListData',
+            url:url,
             mtype: "GET",
             datatype: "json",
             colModel: [

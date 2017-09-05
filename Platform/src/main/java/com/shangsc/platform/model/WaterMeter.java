@@ -111,11 +111,14 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
     }
 
     public Page<WaterMeter> getExceptionWaterMeterPage(int page, int rows, String keyword, String orderbyStr) {
-        String select = "select twm.* ,(select tc.name from t_company tc where tc.inner_code=twm.inner_code) as companyName ";
-        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT t.* FROM t_Water_Meter t WHERE t.meter_num NOT in  (select t.meter_num from t_actual_data t where to_days(t.write_time) = to_days(now()) GROUP BY t.meter_num)) twm ");
-        sqlExceptSelect.append("where 1= 1");
+        String select = "select twm.*,tc.name as companyName";
+        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT t.* FROM t_Water_Meter t WHERE t.meter_num NOT in  (select t.meter_num from t_actual_data t where to_days(t.write_time) = to_days(now()) GROUP BY t.meter_num)) twm, t_company tc ");
+        sqlExceptSelect.append("where 1=1 and twm.inner_code=tc.inner_code");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (name like %"+ keyword +" or inner_code=" + keyword + " or meter_num=" + keyword + ") ");
+            keyword = StringUtils.trim(keyword);
+            if (StringUtils.isNotEmpty(keyword)) {
+                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword + "' or tc.name like '%" + keyword + "%') ");
+            }
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
@@ -125,12 +128,15 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
     }
 
 
-    public Page<WaterMeter> getWarnWaterMeterPage(int page, int rows, String keyword, String orderbyStr) {
-        String select = "select twm.*,(select tc.name from t_company tc where tc.inner_code=twm.inner_code) as companyName ";
-        StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm ");
-        sqlExceptSelect.append(" where 1=1 ");
+    public Page<WaterMeter> getNormalMeterPage(int page, int rows, String keyword, String orderbyStr) {
+        String select = "select twm.*,tc.name as companyName";
+        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT t.* FROM t_Water_Meter t WHERE t.meter_num in  (select t.meter_num from t_actual_data t where to_days(t.write_time) = to_days(now()) GROUP BY t.meter_num)) twm, t_company tc ");
+        sqlExceptSelect.append("where 1=1 and twm.inner_code=tc.inner_code");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and inner_code in (" + keyword + ")  ");
+            keyword = StringUtils.trim(keyword);
+            if (StringUtils.isNotEmpty(keyword)) {
+                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword + "' or tc.name like '%" + keyword + "%') ");
+            }
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
@@ -138,9 +144,5 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         this.paginate(page, rows, select, sqlExceptSelect.toString());
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
-
-
-
-
 
 }
