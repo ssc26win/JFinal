@@ -9,7 +9,7 @@
     <!-- bootstrap & fontawesome -->
     <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=e3ZohdqyB0RL98hFOiC29xqh"></script>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="${res_url}js/map/jquery-latest.js"></script>
     <style>
         #mapbox {
             width: 100%;

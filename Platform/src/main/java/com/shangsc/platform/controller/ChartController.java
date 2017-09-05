@@ -163,6 +163,17 @@ public class ChartController extends Controller {
 
     @RequiresPermissions(value={"/chart"})
     public void baiduMap() {
+        List<Record> records = Company.me.getCompanyAll();
+        JSONArray array = new JSONArray();
+        for (Record record:records) {
+            JSONObject object = new JSONObject();
+            object.put("innerCode", record.get("inner_code"));
+            object.put("company", record.get("name"));
+            object.put("waterUseNum", record.get("waterUseNum"));
+            object.put("address", record.get("address"));
+            array.add(object);
+        }
+        this.setAttr("companys", array.toJSONString());
         render("map_all.jsp");
     }
 

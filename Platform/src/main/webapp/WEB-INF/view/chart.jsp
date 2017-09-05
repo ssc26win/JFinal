@@ -331,10 +331,10 @@
         });
 
     });
-    $(function(){
-        var obj = $(".highcharts-plot-lines-0").firstChild;
-        $(obj).attr("stroke","");
-    })
+//    $(function(){
+//        var obj = $(".highcharts-plot-lines-0").firstChild;
+//        $(obj).attr("stroke","");
+//    })
 </script>
 </body>
 </html>

@@ -9,7 +9,7 @@
 <!-- bootstrap & fontawesome -->
 <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=e3ZohdqyB0RL98hFOiC29xqh"></script>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script src="${res_url}js/map/jquery-latest.js"></script>
 <style>
   #mapbox {
     width: 100%;
@@ -32,7 +32,6 @@
     try{ace.settings.check('main-container' , 'fixed')}catch(e){}
   </script>
   <div class="main-content" id="page-wrapper">
-    <%--<h2 onmousedown="drag(this.parentNode,event)">百度地图<a href="javascript:" onclick="document.getElementById('map').style.display='none'" class="close">×</a></h2>--%>
     <div id="mapbox" class="row">
       <div id="map" style="cursor: crosshair;" class="col-sm-12"></div>
         </div>
@@ -40,12 +39,22 @@
     </div>
   </div>
 </div>
+
 <script type="text/javascript">
-  var company = '${company}';
-  var address = '${address}';
-  var waterUseNum = '${waterUseNum}';
+  function getAdds(all) {
+    var array = new Array();
+    for (var i=0;i<all.length;i++) {
+      array[i] = all[i].address;
+    }
+    return array;
+  }
+  var companys = JSON.parse('${companys}');
+
+  var addresss = getAdds(companys);
+  //alert(addresss);
+
   $(function(){
-    searchlocal(company,address,waterUseNum);
+      searchlocal(company,address,waterUseNum);
   });
 
   //显示一个对象的所有属性
@@ -59,8 +68,8 @@
     alert(out);
   }
   var key = 'F4bfb7ec82f386cf8541158ad5801138';
-  var map = new BMap.Map("map"); // 创建地图实例
-  var point = new BMap.Point(116.404, 39.915); // 创建点坐标
+  var map = new BMap.Map("l-map"); // 创建地图实例
+  var point = new BMap.Point(116.65, 39.92); // 创建点坐标
   map.centerAndZoom(point, 15); // 初始化地图，设置中心点坐标和地图级别
 
   /*
@@ -78,13 +87,12 @@
   map.addControl(new BMap.ScaleControl());
   //map.addControl(new BMap.OverviewMapControl());
   //map.addControl(new BMap.MapTypeControl());
-  //map.setCurrentCity("台州");
+  map.setCurrentCity("北京市通州区");
   map.setDefaultCursor("crosshair");
 
   /*
    var marker = new BMap.Marker(point);        // 创建标注
    map.addOverlay(marker);
-
    var opts = {
    //width : 250,     // 信息窗口宽度
    //height: 100,     // 信息窗口高度
@@ -103,9 +111,6 @@
   //点击地图选址
   map.addEventListener("click", function (e) {   //点击事件
     if (!e.overlay) {
-      document.getElementById("mapx").innerHTML = "鼠标当前x位置:" + e.point.lng;
-      document.getElementById("mapy").innerHTML = "鼠标当前y位置:" + e.point.lat;
-      document.getElementById("level").innerHTML = "缩放等级:" + this.getZoom();
       var targetUrl = 'http://api.map.baidu.com/geocoder/v2/?ak=' + key + '&location=' + e.point.lat + ',' + e.point.lng + '&output=json&pois=0';
       $.ajax({
         url: targetUrl,
@@ -113,7 +118,6 @@
         async: false,
         dataType: 'jsonp',
         beforeSend: function () {
-          //alert(targetUrl);
         },
         success: function (data, status) {
           if (status == 'success' && data.status == 0) {
@@ -143,9 +147,6 @@
 
   map.addEventListener("dragend", function () {   //拖拽事件
     var center = map.getCenter();
-//    document.getElementById("mapx").innerHTML = "拖拽后中心x位置:" + center.lng;
-//    document.getElementById("mapy").innerHTML = "拖拽后中心y位置:" + center.lat;
-//    document.getElementById("level").innerHTML = "缩放等级:" + this.getZoom();
   });
 
   map.addEventListener("zoomend", function () {   //缩放事件
@@ -178,16 +179,11 @@
 
             content += "<div>用水量信息：" + waterUseNum + "（立方米）</div>";
 
-            //content += '<form action="around.php" method="post"><input type="hidden" name="lng" value="' + curPoi.point.lng + '"><input type="hidden" name="lat" value="' + curPoi.point.lat + '"><input type="submit" value="查看附近幼儿园"></form>';
-
             curMarker.addEventListener('click', function (event) {
               //showAtrributes(event);
               var info = new BMap.InfoWindow(content);
               curMarker.openInfoWindow(info);
               var position = curMarker.getPosition();
-              //document.getElementById("mapx").innerHTML = "拖拽后中心x位置:" + position.lng;
-              //document.getElementById("mapy").innerHTML = "拖拽后中心y位置:" + position.lat;
-              //document.getElementById("level").innerHTML="缩放等级:"+this.getZoom();
 
             });
           })();
@@ -227,36 +223,7 @@
       },
     });
 
-    local.search(document.getElementById("searchtext").value);
-  }
-</script>
-
-<script type="text/javascript">
-  function drag(obj, e) {
-    var e = e ? e : event;
-    var mouse_left = e.clientX - obj.offsetLeft;
-    var mouse_top = e.clientY - obj.offsetTop;
-    var docmousemove = document.onmousemove;
-    var docmouseup = document.onmouseup;
-    document.onselectstart = function (e) {
-      return false
-    }
-    document.onmouseup = function () {
-      document.onmousemove = docmousemove;
-      document.onmouseup = docmouseup;
-      document.onselectstart = function (e) {
-        return true
-      }
-    }
-    document.onmousemove = function (ev) {
-      var ev = ev ? ev : event;
-      if (ev.clientX - mouse_left > 0 && document.documentElement.clientWidth - (ev.clientX - mouse_left) - obj.offsetWidth + document.documentElement.scrollLeft > 0) {
-        obj.style.left = (ev.clientX - mouse_left) + "px";
-      }
-      if (ev.clientY - mouse_top > 0 && document.documentElement.clientHeight - (ev.clientY - mouse_top) - obj.offsetHeight + document.documentElement.scrollTop > 0) {
-        obj.style.top = (ev.clientY - mouse_top) + "px";
-      }
-    }
+    local.searchInBounds(addresss, map.getBounds());
   }
 </script>
 </body>

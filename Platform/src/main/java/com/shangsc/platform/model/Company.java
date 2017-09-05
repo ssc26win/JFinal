@@ -114,6 +114,11 @@ public class Company extends BaseCompany<Company> {
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 
+    public List<Record> getCompanyAll() {
+        String select="select c.*, (select count(net_water) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum from t_company c";
+        return Db.find(select);
+    }
+
     public Map<String, Object> getCompanyMap() {
         List<Company> allList = this.getAllList();
         Map<String , Object> map = new HashMap<String, Object>();
