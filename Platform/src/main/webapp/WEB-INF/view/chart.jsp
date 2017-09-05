@@ -179,8 +179,7 @@
                 },
                 plotLines: [{
                     value: 0,
-                    width: 10,
-                    color: '#808080'
+                    width: 10
                 }]
             };
 
@@ -264,8 +263,7 @@
                 },
                 plotLines: [{
                     value: 0,
-                    width: 10,
-                    color: '#808080'
+                    width: 10
                 }]
             };
 
@@ -334,7 +332,8 @@
 
     });
     $(function(){
-        $(".highcharts-credits").css("display:none");
+        var obj = $(".highcharts-plot-lines-0").firstChild;
+        $(obj).attr("stroke","");
     })
 </script>
 </body>
