@@ -9,144 +9,140 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseCompany<M extends BaseCompany<M>> extends BaseModel<M> implements IBean {
 
-	public void setId(Long id) {
+	public void setId(java.lang.Long id) {
 		set("id", id);
 	}
 
-	public Long getId() {
+	public java.lang.Long getId() {
 		return get("id");
 	}
 
-	public void setInnerCode(String innerCode) {
+	public void setInnerCode(java.lang.String innerCode) {
 		set("inner_code", innerCode);
 	}
 
-	public String getInnerCode() {
+	public java.lang.String getInnerCode() {
 		return get("inner_code");
 	}
 
-	public void setName(String name) {
+	public void setName(java.lang.String name) {
 		set("name", name);
 	}
 
-	public String getName() {
+	public java.lang.String getName() {
 		return get("name");
 	}
 
-	public void setStreet(String street) {
+	public void setStreet(java.lang.String street) {
 		set("street", street);
 	}
 
-	public String getStreet() {
+	public java.lang.String getStreet() {
 		return get("street");
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(java.lang.String address) {
 		set("address", address);
 	}
 
-	public String getAddress() {
+	public java.lang.String getAddress() {
 		return get("address");
 	}
 
-	public void setCustomerType(Integer customerType) {
+	public void setCustomerType(java.lang.Integer customerType) {
 		set("customer_type", customerType);
 	}
 
-	public Integer getCustomerType() {
+	public java.lang.Integer getCustomerType() {
 		return get("customer_type");
 	}
 
-	public void setWaterUseType(Integer waterUseType) {
+	public void setWaterUseType(java.lang.Integer waterUseType) {
 		set("water_use_type", waterUseType);
 	}
 
-	public Integer getWaterUseType() {
+	public java.lang.Integer getWaterUseType() {
 		return get("water_use_type");
 	}
 
-	public String waterUseTypeName;
-
-	public String getWaterUseTypeName() {
-		return waterUseTypeName;
-	}
-
-	public void setWaterUseTypeName(String waterUseTypeName) {
-		this.waterUseTypeName = waterUseTypeName;
-	}
-
-	public void setContact(String contact) {
+	public void setContact(java.lang.String contact) {
 		set("contact", contact);
 	}
 
-	public String getContact() {
+	public java.lang.String getContact() {
 		return get("contact");
 	}
 
-	public void setPhone(String phone) {
+	public void setPhone(java.lang.String phone) {
 		set("phone", phone);
 	}
 
-	public String getPhone() {
+	public java.lang.String getPhone() {
 		return get("phone");
 	}
 
-	public void setPostalCode(String postalCode) {
+	public void setPostalCode(java.lang.String postalCode) {
 		set("postal_code", postalCode);
 	}
 
-	public String getPostalCode() {
+	public java.lang.String getPostalCode() {
 		return get("postal_code");
 	}
 
-	public void setDepartment(String department) {
+	public void setDepartment(java.lang.String department) {
 		set("department", department);
 	}
 
-	public String getDepartment() {
+	public java.lang.String getDepartment() {
 		return get("department");
 	}
 
-	public void setWellCount(Integer wellCount) {
+	public void setWellCount(java.lang.Integer wellCount) {
 		set("well_count", wellCount);
 	}
 
-	public Integer getWellCount() {
+	public java.lang.Integer getWellCount() {
 		return get("well_count");
 	}
 
-	public void setFirstWatermeterCount(Integer firstWatermeterCount) {
+	public void setFirstWatermeterCount(java.lang.Integer firstWatermeterCount) {
 		set("first_watermeter_count", firstWatermeterCount);
 	}
 
-	public Integer getFirstWatermeterCount() {
+	public java.lang.Integer getFirstWatermeterCount() {
 		return get("first_watermeter_count");
 	}
 
-	public void setRemotemeterCount(Integer remotemeterCount) {
+	public void setRemotemeterCount(java.lang.Integer remotemeterCount) {
 		set("remotemeter_count", remotemeterCount);
 	}
 
-	public Integer getRemotemeterCount() {
+	public java.lang.Integer getRemotemeterCount() {
 		return get("remotemeter_count");
 	}
 
-	public void setUnitType(Integer unitType) {
+	public void setUnitType(java.lang.Integer unitType) {
 		set("unit_type", unitType);
 	}
 
-	public Integer getUnitType() {
+	public java.lang.Integer getUnitType() {
 		return get("unit_type");
 	}
 
-	public String unitTypeName;
-
-	public String getUnitTypeName() {
-		return unitTypeName;
+	public void setLongitude(java.math.BigDecimal longitude) {
+		set("longitude", longitude);
 	}
 
-	public void setUnitTypeName(String unitTypeName) {
-		this.unitTypeName = unitTypeName;
+	public java.math.BigDecimal getLongitude() {
+		return get("longitude");
+	}
+
+	public void setLatitude(java.math.BigDecimal latitude) {
+		set("latitude", latitude);
+	}
+
+	public java.math.BigDecimal getLatitude() {
+		return get("latitude");
 	}
 
 	public void setCreateTime(java.util.Date createTime) {

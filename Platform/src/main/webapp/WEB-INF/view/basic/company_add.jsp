@@ -99,6 +99,16 @@
                                     <select  id="unitType" name="unitType" value="${item.unitType}" class="form-control"> </select>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="longitude" title="点击获取"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">地图经度</a>:</label>
+                                <div class="col-sm-4">
+                                    <input type="number" id="longitude" step="0.000000" name="longitude" value="${item.longitude}" class="form-control">
+                                </div>
+                                <label class="col-sm-2 control-label" for="latitude" title="点击获取"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">地图纬度</a>:</label>
+                                <div class="col-sm-4">
+                                    <input type="number" id="latitude" step="0.000000" name="latitude" value="${item.latitude}" class="form-control">
+                                </div>
+                            </div>
                             <div class="clearfix form-actions" align="center">
                                 <div class="col-md-offset-3 col-md-9">
                                     <button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">
@@ -121,7 +131,6 @@
 </div><!-- /.main-container -->
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
 <script type="text/javascript">
-
     jQuery(function($) {
 
         var $validation = true;

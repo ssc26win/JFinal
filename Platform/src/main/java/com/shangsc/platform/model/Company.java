@@ -57,14 +57,14 @@ public class Company extends BaseCompany<Company> {
 
     public InvokeResult save(Long id, String name, String innerCode, String street, String address, Integer customerType, Integer waterUseType,
                              String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
-                             Integer remotemeterCount,Integer unitType) {
+                             Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude) {
         if (null != id && id > 0l) {
             Company company = this.findById(id);
             if (company == null) {
                 return InvokeResult.failure("更新失败单位, 该单位不存在");
             }
             company = setProp(company, name, innerCode, street, address, customerType, waterUseType,
-                    contact, phone, postalCode, department, wellCount, firstWatermeterCount, remotemeterCount, unitType);
+                    contact, phone, postalCode, department, wellCount, firstWatermeterCount, remotemeterCount, unitType, longitude, latitude);
             company.update();
         } else {
             if(this.hasExist(name, innerCode)){
@@ -72,7 +72,7 @@ public class Company extends BaseCompany<Company> {
             } else {
                 Company company = new Company();
                 company = setProp(company, name, innerCode, street, address, customerType, waterUseType,
-                        contact, phone, postalCode, department, wellCount, firstWatermeterCount, remotemeterCount, unitType);
+                        contact, phone, postalCode, department, wellCount, firstWatermeterCount, remotemeterCount, unitType, longitude, latitude);
                 company.save();
             }
         }
@@ -81,7 +81,7 @@ public class Company extends BaseCompany<Company> {
 
     private Company setProp(Company company, String name, String innerCode, String street, String address, Integer customerType,
                             Integer waterUseType, String contact, String phone, String postalCode, String department, Integer wellCount,
-                            Integer firstWatermeterCount, Integer remotemeterCount,Integer unitType) {
+                            Integer firstWatermeterCount, Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude) {
         company.setName(name);
         company.setInnerCode(innerCode);
         company.setStreet(street);
@@ -96,6 +96,8 @@ public class Company extends BaseCompany<Company> {
         company.setFirstWatermeterCount(firstWatermeterCount);
         company.setRemotemeterCount(remotemeterCount);
         company.setUnitType(unitType);
+        company.setLongitude(longitude);
+        company.setLatitude(latitude);
         company.setCreateTime(new Date());
         return company;
     }
@@ -114,8 +116,11 @@ public class Company extends BaseCompany<Company> {
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 
-    public List<Record> getCompanyAll() {
+    public List<Record> getCompanyAll(String innerCode) {
         String select="select c.*, (select count(net_water) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum from t_company c";
+        if (StringUtils.isNotEmpty(innerCode)) {
+            select = select + " where c.inner_code=" + innerCode;
+        }
         return Db.find(select);
     }
 

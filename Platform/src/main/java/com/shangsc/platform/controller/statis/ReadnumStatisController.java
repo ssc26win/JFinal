@@ -54,9 +54,8 @@ public class ReadnumStatisController extends BaseController {
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
-                co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer;text-decoration: none;'" +
-                        " onclick=\"openMap('" + co.get("name").toString() + "', '"
-                        + co.get("address").toString() + "', '" + co.getNetWater() + "'" + ")\">" + co.get("address").toString() + "</a>");
+                co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
+                        + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
                 list.set(i, co);
             }
         }

@@ -42,8 +42,7 @@ public class ActualPlugin implements IPlugin {
         try {
             ServerSocket server = new ServerSocket(port);
             while (true) {
-                // 获得客户端连接
-                // 阻塞式方法
+                // 获得客户端连接 // 阻塞式方法
                 System.out.println("准备阻塞...");
                 final Socket client = server.accept();
                 System.out.println("阻塞完成...");
@@ -103,8 +102,7 @@ public class ActualPlugin implements IPlugin {
                                   //}
                                 }
                             }
-                        }
-                        catch (Exception e) {
+                        } catch (Exception e) {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }

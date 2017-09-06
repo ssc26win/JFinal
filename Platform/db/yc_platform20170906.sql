@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : local
+Source Server         : local-mysql
 Source Server Version : 50528
 Source Host           : localhost:3306
 Source Database       : yc_platform
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2017-09-05 02:34:40
+Date: 2017-09-06 16:49:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -135,7 +135,7 @@ CREATE TABLE `sys_log` (
   PRIMARY KEY (`id`),
   KEY `FK_sys_EVENT` (`uid`),
   CONSTRAINT `sys_log_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `sys_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=43514 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=44769 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_log
@@ -152,7 +152,7 @@ CREATE TABLE `sys_login_record` (
   `login_err_times` int(11) NOT NULL COMMENT '1天内连续出错次数',
   `login_status` tinyint(4) NOT NULL COMMENT '1-成功  0-失败',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=utf8 COMMENT='后台系统登陆记录';
+) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8 COMMENT='后台系统登陆记录';
 
 -- ----------------------------
 -- Records of sys_login_record
@@ -255,6 +255,26 @@ INSERT INTO `sys_login_record` VALUES ('110', '1', '2017-09-04 23:54:52', '0', '
 INSERT INTO `sys_login_record` VALUES ('111', '1', '2017-09-05 00:58:57', '0', '1');
 INSERT INTO `sys_login_record` VALUES ('112', '1', '2017-09-05 02:11:17', '0', '1');
 INSERT INTO `sys_login_record` VALUES ('113', '1', '2017-09-05 02:18:48', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('114', '1', '2017-09-05 11:57:37', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('115', '1', '2017-09-05 11:57:44', '2', '0');
+INSERT INTO `sys_login_record` VALUES ('116', '1', '2017-09-05 11:57:51', '3', '0');
+INSERT INTO `sys_login_record` VALUES ('117', '1', '2017-09-05 11:57:57', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('118', '1', '2017-09-05 12:18:04', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('119', '1', '2017-09-05 15:06:58', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('120', '1', '2017-09-05 15:07:06', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('121', '1', '2017-09-05 16:15:45', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('122', '1', '2017-09-05 16:15:51', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('123', '1', '2017-09-05 17:41:50', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('124', '1', '2017-09-05 17:41:57', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('125', '1', '2017-09-05 18:44:09', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('126', '1', '2017-09-05 18:44:15', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('127', '1', '2017-09-06 10:49:54', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('128', '1', '2017-09-06 11:43:47', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('129', '1', '2017-09-06 14:20:30', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('130', '1', '2017-09-06 15:20:27', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('131', '1', '2017-09-06 16:14:46', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('132', '1', '2017-09-06 16:37:56', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('133', '1', '2017-09-06 16:38:02', '0', '1');
 
 -- ----------------------------
 -- Table structure for sys_res
@@ -426,7 +446,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', 'admin', '6fc3b9ada8c1e50b400cd6998ff7be76ea3ae312', '1289', '1', '/sys/static/i/9.jpg', 'admin@admin.com', '2017-08-01 18:00:27', '1234567', 'UzNk7MKbVABao0I275SAs9ShzyYtLQooG42fkoDcL9QtkuFP1Xm7QOtIMrbvxbLc');
+INSERT INTO `sys_user` VALUES ('1', 'admin', '69ed3f5b7210df52447c0675c67565eba0f5b3e7', '1289', '1', '/sys/static/i/9.jpg', 'admin@admin.com', '2017-08-01 18:00:27', '1234567', 'UzNk7MKbVABao0I275SAs9ShzyYtLQooG42fkoDcL9QtkuFP1Xm7QOtIMrbvxbLc');
 INSERT INTO `sys_user` VALUES ('32', 'eason', '6fc3b9ada8c1e50b400cd6998ff7be76ea3ae312', '1288', '1', '/images/guest.jpg', '569165857@qq.com', '2017-08-10 23:54:24', '13332892938', null);
 INSERT INTO `sys_user` VALUES ('34', 'test', '6fc3b9ada8c1e50b400cd6998ff7be76ea3ae312', '1287', '1', '/images/guest.jpg', '569165857@qq.com', '2017-08-18 22:24:50', '13332892938', 'hDEflmnlVituFC6hbfTzeze8RVSRseIfdgBAGkAU2RRh4c4kIrIYXTTuwEG2Caem');
 INSERT INTO `sys_user` VALUES ('35', '123123', 'fe58cc7ab4ba9f207be0bf82efc8147e136f6b52', null, '1', '/images/guest.jpg', '23123', '2017-08-27 00:47:06', null, null);
@@ -526,6 +546,8 @@ CREATE TABLE `t_company` (
   `first_watermeter_count` int(11) DEFAULT '0' COMMENT '一级表数量',
   `remotemeter_count` int(11) DEFAULT '0' COMMENT '远传表数量',
   `unit_type` tinyint(4) DEFAULT NULL COMMENT '节约用水型单位类型',
+  `longitude` decimal(20,6) DEFAULT NULL COMMENT '经度',
+  `latitude` decimal(20,6) DEFAULT NULL COMMENT '纬度',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_inner_code` (`inner_code`) USING BTREE
@@ -534,10 +556,10 @@ CREATE TABLE `t_company` (
 -- ----------------------------
 -- Records of t_company
 -- ----------------------------
-INSERT INTO `t_company` VALUES ('1', '001', '北京某某科技股份有限公司', '海淀区西二旗辉煌国际65号', '海淀区西二旗辉煌国际55号', '1', '1', '张三', '186222229', '234234234', '海淀区水利局', '10', '12', '10', '1', '2017-08-27 00:23:44');
-INSERT INTO `t_company` VALUES ('2', '002', '北京某某科技公司', '丹棱街12号', '海淀区中关村丹棱街1号', '3', '2', '李四', '1862342343', '8239042', '海淀区水利局', '1', '2', '2', '2', '2017-09-03 11:07:37');
-INSERT INTO `t_company` VALUES ('3', '003', '北京途牛科技股份有限公司', '通州区后南仓', '通州区后南仓', '1', '1', '王五', '1823420340', '100340', '海淀区水利局', '2', '1', '2', '1', '2017-09-02 15:06:17');
-INSERT INTO `t_company` VALUES ('5', '004', '北京体彩科技有限公司', '黄平路', '北京市昌平区霍营', '2', '1', '赵六', '154345345', '534345', '昌平水利局', '2', '2', '1', '1', '2017-09-05 01:53:24');
+INSERT INTO `t_company` VALUES ('1', '001', '北京某某科技股份有限公司', '海淀区西二旗辉煌国际65号', '海淀区西二旗辉煌国际55号', '1', '1', '张三', '186222229', '234234234', '海淀区水利局', '10', '12', '10', '1', '116.615335', '39.896172', '2017-09-06 12:00:06');
+INSERT INTO `t_company` VALUES ('2', '002', '北京某某科技公司', '丹棱街12号', '海淀区中关村丹棱街1号', '3', '2', '李四', '1862342343', '8239042', '海淀区水利局', '1', '2', '2', '2', '116.677893', '39.905817', '2017-09-06 11:57:39');
+INSERT INTO `t_company` VALUES ('3', '003', '北京途牛科技股份有限公司', '通州区后南仓', '通州区后南仓', '1', '1', '王五', '1823420340', '100340', '海淀区水利局', '2', '1', '2', '1', '116.627623', '39.901085', '2017-09-02 15:06:17');
+INSERT INTO `t_company` VALUES ('5', '004', '北京体彩科技有限公司', '黄平路', '北京市昌平区霍营', '2', '1', '赵六', '154345345', '534345', '昌平水利局', '2', '2', '1', '1', '116.633624', '39.910604', '2017-09-05 01:53:24');
 
 -- ----------------------------
 -- Table structure for t_water_index
@@ -563,7 +585,7 @@ CREATE TABLE `t_water_index` (
   `december` decimal(10,2) DEFAULT NULL COMMENT '十二月',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_inner_code` (`company_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='年用水指标';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='年用水指标';
 
 -- ----------------------------
 -- Records of t_water_index

@@ -12,8 +12,10 @@ import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.CompanyExportService;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.util.CodeNumUtil;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -113,8 +115,10 @@ public class CompanyController extends BaseController {
         Integer firstWatermeterCount = this.getParaToInt("firstWatermeterCount");
         Integer remotemeterCount = this.getParaToInt("remotemeterCount");
         Integer unitType = this.getParaToInt("unitType");
+        BigDecimal longitude = CodeNumUtil.getBigDecimal(this.getPara("longitude"), 6);
+        BigDecimal latitude = CodeNumUtil.getBigDecimal(this.getPara("latitude"), 6);
         InvokeResult result = Company.me.save(id, name, innerCode, street, address, customerType, waterUseType,
-                contact, phone, postalCode, department, wellCount, firstWatermeterCount, remotemeterCount, unitType);
+                contact, phone, postalCode, department, wellCount, firstWatermeterCount, remotemeterCount, unitType, longitude, latitude);
         this.renderJson(result);
     }
 
@@ -151,8 +155,8 @@ public class CompanyController extends BaseController {
                 co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
                 co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
                 co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
-                co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('" + co.getName() + "', '"
-                        + co.getAddress() + "', '" + co.get("waterUseNum") + "'" + ")\">" + co.getAddress() + "</a>");
+                co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
+                        + co.get("inner_code") + "')\">" + co.getAddress() + "</a>");
                 companies.set(i, co);
             }
         }

@@ -154,27 +154,22 @@ public class ChartController extends Controller {
     }
 
     @RequiresPermissions(value={"/chart"})
-    public void map() {
-        this.setAttr("company",getPara("company"));
-        this.setAttr("address",getPara("address"));
-        this.setAttr("waterUseNum",getPara("waterUseNum"));
-        render("map.jsp");
-    }
-
-    @RequiresPermissions(value={"/chart"})
     public void baiduMap() {
-        List<Record> records = Company.me.getCompanyAll();
+        String innerCode = this.getPara("innerCode");
         JSONArray array = new JSONArray();
+        List<Record> records = Company.me.getCompanyAll(innerCode);
         for (Record record:records) {
             JSONObject object = new JSONObject();
+            object.put("longitude", record.get("longitude"));
+            object.put("latitude", record.get("latitude"));
             object.put("innerCode", record.get("inner_code"));
-            object.put("company", record.get("name"));
+            object.put("name", record.get("name"));
             object.put("waterUseNum", record.get("waterUseNum"));
             object.put("address", record.get("address"));
             array.add(object);
         }
         this.setAttr("companys", array.toJSONString());
-        render("map_all.jsp");
+        render("map.jsp");
     }
 
     private void comp(BigDecimal monthActTotal, BigDecimal moth) {

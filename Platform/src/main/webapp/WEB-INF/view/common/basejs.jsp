@@ -89,15 +89,19 @@
 			}
 		</script>
         <script type="text/javascript">
-            function openMap(company, address, waterUseNum) {
-                layer.open({
-                    title:company + '水量信息',
-                    type: 2,
-                    area: ['70%', '75%'],
-                    fix: false, //不固定
-                    maxmin: true,
-                    content: '${context_path}/chart/map?company='+company+'&address='+address+'&waterUseNum='+waterUseNum
-                });
+            <%--function openMap(company, address, waterUseNum, innerCode, longitude, latitude) {--%>
+                <%--layer.open({--%>
+                    <%--title:company + '水量信息',--%>
+                    <%--type: 2,--%>
+                    <%--area: ['70%', '75%'],--%>
+                    <%--fix: false, //不固定--%>
+                    <%--maxmin: true,--%>
+                    <%--content: '${context_path}/chart/map?company='+company+'&address='+address+'&waterUseNum='+waterUseNum+'&innerCode=' +--%>
+                    <%--+innerCode+'&longitude'+longitude+'&latitude='+latitude--%>
+                <%--});--%>
+            <%--}--%>
+            function openMap(innerCode) {
+                window.location.href="${context_path}/chart/baiduMap?innerCode="+innerCode;
             }
             $(function () {
                 $(".form_datetime").datetimepicker({
