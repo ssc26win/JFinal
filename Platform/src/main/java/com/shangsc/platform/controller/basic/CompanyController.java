@@ -38,6 +38,7 @@ public class CompanyController extends BaseController {
     @RequiresPermissions(value = {"/basic/company"})
     public void position() {
         this.setAttr("address", this.getPara("address"));
+        this.setAttr("position", this.getPara("position"));
         render("company_map.jsp");
     }
 

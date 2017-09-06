@@ -29,9 +29,21 @@
 <script src="${res_url}js/charts/jquery.min.js"></script>
 <script src="${res_url}js/layer/layer.js"></script>
 <script type="text/javascript">
+    var longitude = 116.657140;
+    var latitude = 39.909982;
+    var position = '${position}';
+    if (position!='') {
+        longitude = parseFloat(position.split(",")[0]);
+        latitude = parseFloat(position.split(",")[1].toString());
+    }
     // 百度地图API功能
     var map = new BMap.Map("map");
-    map.centerAndZoom(new BMap.Point(116.657140, 39.909982), 15);
+    var point = new BMap.Point(longitude, latitude);
+    map.centerAndZoom(point, 15);
+    //创建标注对象并添加到地图
+    var marker = new BMap.Marker(point); //按照地图点坐标生成标记
+    map.addOverlay(marker);
+
     map.enableScrollWheelZoom(true);
     map.addEventListener("rightclick", function(e){
         rightclickPoint = e.point.lng +"," + e.point.lat;
@@ -45,10 +57,12 @@
         });
 
     });
-    var local = new BMap.LocalSearch(map, {
-        renderOptions:{map: map}
-    });
-    local.search('${address}');
+    if (position=='') {
+        var local = new BMap.LocalSearch(map, {
+            renderOptions:{map: map}
+        });
+        local.search('${address}');
+    }
     //北京市通州区后南仓12号
     function closeView(){
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

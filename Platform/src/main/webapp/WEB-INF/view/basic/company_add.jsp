@@ -144,13 +144,14 @@
             layer.alert("请填写单位地址！");
             return;
         }
+        var position = $("#position").val();
         parent.layer.open({
             title:'设置单位位置',
             type: 2,
             area: ['900px', '600px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${context_path}/basic/company/position?address='+address,
+            content: '${context_path}/basic/company/position?address='+address+'&position='+position,
             yes:function(layero,index) {
                 $(layero).find("input").each(function(i, v) {
 
