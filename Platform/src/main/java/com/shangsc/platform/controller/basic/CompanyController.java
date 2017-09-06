@@ -13,6 +13,7 @@ import com.shangsc.platform.export.CompanyExportService;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.util.CodeNumUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -32,6 +33,12 @@ public class CompanyController extends BaseController {
     @RequiresPermissions(value={"/basic/company"})
     public void index() {
         render("company_index.jsp");
+    }
+
+    @RequiresPermissions(value = {"/basic/company"})
+    public void position() {
+        this.setAttr("address", this.getPara("address"));
+        render("company_map.jsp");
     }
 
     @RequiresPermissions(value = {"/basic/company"})
@@ -92,7 +99,9 @@ public class CompanyController extends BaseController {
     public void add() {
         Integer id = this.getParaToInt("id");
         if(id!=null){
-            this.setAttr("item", Company.me.findById(id));
+            Company company = Company.me.findById(id);
+            this.setAttr("item", company);
+            this.setAttr("position",  company.getLongitude() + "," + company.getLatitude());
         }
         this.setAttr("id", id);
         render("company_add.jsp");
@@ -115,8 +124,13 @@ public class CompanyController extends BaseController {
         Integer firstWatermeterCount = this.getParaToInt("firstWatermeterCount");
         Integer remotemeterCount = this.getParaToInt("remotemeterCount");
         Integer unitType = this.getParaToInt("unitType");
-        BigDecimal longitude = CodeNumUtil.getBigDecimal(this.getPara("longitude"), 6);
-        BigDecimal latitude = CodeNumUtil.getBigDecimal(this.getPara("latitude"), 6);
+        String position = this.getPara("position");
+        BigDecimal longitude = null;
+        BigDecimal latitude = null;
+        if (StringUtils.isNotEmpty(position)) {
+            longitude = CodeNumUtil.getBigDecimal(position.split(",")[0], 6);
+            latitude = CodeNumUtil.getBigDecimal(position.split(",")[1], 6);
+        }
         InvokeResult result = Company.me.save(id, name, innerCode, street, address, customerType, waterUseType,
                 contact, phone, postalCode, department, wellCount, firstWatermeterCount, remotemeterCount, unitType, longitude, latitude);
         this.renderJson(result);

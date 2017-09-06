@@ -392,6 +392,7 @@
 									window.top.location.href = "${context_path}/";
 								} else {
 									layer.alert(data.msg);
+                                    $('#img').attr("src","${context_path}/image/getCode?tm="+Math.random());
 								}
 							}, "json");
 				      return false;
@@ -470,7 +471,7 @@
 						return false;
 					}
 					var submitData = {
-						email:$remail.val(),
+						email:$remail.val()
 					};
 					$btn.addClass("disabled");
 					$.post("${context_path}/resetPwdSendEmail", submitData, function(data) {

@@ -41,9 +41,9 @@
                                 <div class="col-sm-4">
                                     <input type="text" id="address" name="address" value="${item.address}" class="form-control">
                                 </div>
-                                <label class="col-sm-2 control-label" for="street">所属乡镇或街道:</label>
+                                <label class="col-sm-2 control-label" for="street"><a href="#" title="点击获取" style="text-decoration-line: none" onclick="getPosition();">位置</a>信息:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" id="street" name="street" value="${item.street}" class="form-control">
+                                    <input type="text" id="position" name="position" value="${position}" readonly class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -52,11 +52,15 @@
                                     <input type="hidden" id="customerTypeInput" name="customerTypeInput" value="${item.customerType}">
                                     <select  id="customerType" name="customerType" class="form-control"> </select>
                                 </div>
-                                <label class="col-sm-2 control-label" for="waterUseType">取水用途:</label>
+                                <label class="col-sm-2 control-label" for="street">所属乡镇或街道:</label>
                                 <div class="col-sm-4">
-                                    <input type="hidden" id="waterUseTypeInput" name="waterUseTypeInput" value="${item.waterUseType}">
-                                    <select  id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="form-control"> </select>
+                                    <input type="text" id="street" name="street" value="${item.street}" class="form-control">
                                 </div>
+                                <%--<label class="col-sm-2 control-label" for="waterUseType">取水用途:</label>--%>
+                                <%--<div class="col-sm-4">--%>
+                                    <%--<input type="hidden" id="waterUseTypeInput" name="waterUseTypeInput" value="${item.waterUseType}">--%>
+                                    <%--<select  id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="form-control"> </select>--%>
+                                <%--</div>--%>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="contact">联系人:</label>
@@ -99,16 +103,16 @@
                                     <select  id="unitType" name="unitType" value="${item.unitType}" class="form-control"> </select>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="longitude" title="点击获取"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">地图经度</a>:</label>
-                                <div class="col-sm-4">
-                                    <input type="number" id="longitude" step="0.000000" name="longitude" value="${item.longitude}" class="form-control">
-                                </div>
-                                <label class="col-sm-2 control-label" for="latitude" title="点击获取"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">地图纬度</a>:</label>
-                                <div class="col-sm-4">
-                                    <input type="number" id="latitude" step="0.000000" name="latitude" value="${item.latitude}" class="form-control">
-                                </div>
-                            </div>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-sm-2 control-label" for="longitude" title="点击获取"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">地图经度</a>:</label>--%>
+                                <%--<div class="col-sm-4">--%>
+                                    <%--<input type="number" id="longitude" step="0.000000" name="longitude" value="${item.longitude}" class="form-control">--%>
+                                <%--</div>--%>
+                                <%--<label class="col-sm-2 control-label" for="latitude" title="点击获取"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">地图纬度</a>:</label>--%>
+                                <%--<div class="col-sm-4">--%>
+                                    <%--<input type="number" id="latitude" step="0.000000" name="latitude" value="${item.latitude}" class="form-control">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                             <div class="clearfix form-actions" align="center">
                                 <div class="col-md-offset-3 col-md-9">
                                     <button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">
@@ -131,6 +135,38 @@
 </div><!-- /.main-container -->
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
 <script type="text/javascript">
+    function setPosition(obj){
+        alert(obj);
+    }
+    function getPosition() {
+        var address = $("#address").val();
+        if (address=="") {
+            layer.alert("请填写单位地址！");
+            return;
+        }
+        parent.layer.open({
+            title:'设置单位位置',
+            type: 2,
+            area: ['900px', '600px'],
+            fix: false, //不固定
+            maxmin: true,
+            content: '${context_path}/basic/company/position?address='+address,
+            yes:function(layero,index) {
+                $(layero).find("input").each(function(i, v) {
+
+                });
+
+            },
+            cancel: function(){
+                var name = "P_position";
+                var arr,reg = new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+                if(arr=document.cookie.match(reg)) {
+                    $("#position").val(unescape(arr[2]));
+                    document.cookie = name + "=" + unescape(arr[2]) + "; " + -1;
+                }
+            }
+        });
+    }
     jQuery(function($) {
 
         var $validation = true;

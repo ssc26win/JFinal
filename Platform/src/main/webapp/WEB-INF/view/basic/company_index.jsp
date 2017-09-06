@@ -111,7 +111,7 @@
                 { label: '单位编号', name: 'inner_code', width: 40, sortable:false},
                 { label: '所属乡镇或街道', name: 'street', width: 120, sortable:false},
                 { label: '用户类型', name: 'customerTypeName', width: 40, sortable:false},
-                { label: '取水用途', name: 'waterUseTypeName', width: 40, sortable:false},
+                /*{ label: '取水用途', name: 'waterUseTypeName', width: 40, sortable:false},*/
                 { label: '联系人', name: 'contact', width: 40, sortable:false},
                 { label: '联系电话', name: 'phone', width: 50, sortable:false},
                 { label: '邮政编码', name: 'postal_code', width: 50, sortable:false},

@@ -64,17 +64,20 @@
             var p0 = markerArr[i].longitude; //
             var p1 = markerArr[i].latitude; //按照原数组的point格式将地图点坐标的经纬度分别提出来
             point[i] = new window.BMap.Point(p0, p1); //循环生成新的地图点
+
+            //创建标注对象并添加到地图
+            //var myIcon = new BMap.Icon("${context_path}/${res_url}img/d6.png", new BMap.Size(23, 50), {offset: new BMap.Size(10, 25)});
             marker[i] = new window.BMap.Marker(point[i]); //按照地图点坐标生成标记
             map.addOverlay(marker[i]);
-            marker[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+            //marker[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
             //显示marker的title，marker多的话可以注释掉
-            var label = new window.BMap.Label("<span style='font-size:12px;'><b>"+markerArr[i].name+"</b></span>", {
+            var label = new window.BMap.Label("<span style='font-size:12px;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>", {
                 offset : new window.BMap.Size(20, -10)
             });
             marker[i].setLabel(label);
             // 创建信息窗口对象
-            info[i] = "<p style='font-size:15px;lineheight:1.8em;padding-left: 10px;'>"
-                    + "</br>用水量：" + markerArr[i].waterUseNum + "（立方米）</br>"
+            info[i] = "<p style='font-size:15px;line-height:1.8em;padding-left: 10px;'>"
+                    + "</br>单位名称：" + markerArr[i].name + "</br>"
                     + "</br>单位地址：" + markerArr[i].address + "</p>";
             //创建百度样式检索信息窗口对象
             searchInfoWindow[i] = new BMapLib.SearchInfoWindow(map,
