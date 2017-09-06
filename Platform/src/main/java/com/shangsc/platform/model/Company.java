@@ -117,7 +117,8 @@ public class Company extends BaseCompany<Company> {
     }
 
     public List<Record> getCompanyAll(String innerCode) {
-        String select="select c.*, (select count(net_water) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum from t_company c";
+        String select="select * from t_company c left join (select sum(net_water) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
+                " on c.inner_code=tad.innerCode";
         if (StringUtils.isNotEmpty(innerCode)) {
             select = select + " where c.inner_code=" + innerCode;
         }

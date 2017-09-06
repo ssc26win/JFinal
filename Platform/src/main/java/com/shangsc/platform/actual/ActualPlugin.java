@@ -69,7 +69,7 @@ public class ActualPlugin implements IPlugin {
                                       //String key="#"+split[0];
                                       //String content=split[1];
                                     // 关联文件
-                                    File file = new File("c:\\123.txt");
+                                    File file = new File("/usr/local/tomcat7/apache-tomcat-7.0.52/webapps/platform/upload_udp.log");
                                     if(!file.exists()){
                                         // 判断文件不存在就new新文件,写数据
                                         try {
