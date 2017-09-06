@@ -30,6 +30,7 @@
     var markerArr;
     markerArr = JSON.parse('${companys}');
     function map_init() {
+        //alert(JSON.stringify(markerArr));
         var map = new BMap.Map("map"); // 创建Map实例
         var point = new BMap.Point(116.657140, 39.909982); //地图中心点
         map.centerAndZoom(point, 15); // 初始化地图,设置中心点坐标和地图级别。
@@ -76,7 +77,7 @@
             });
             marker[i].setLabel(label);
             // 创建信息窗口对象
-            info[i] = "<p style='font-size:15px;line-height:1.8em;padding-left: 10px;'>"
+            info[i] = "<p style='font-size:12px;padding-left: 10px;'>"
                     + "</br>单位名称：" + markerArr[i].name + "</br>"
                     + "</br>单位地址：" + markerArr[i].address + "</p>";
             //创建百度样式检索信息窗口对象
