@@ -14,7 +14,7 @@
 			<a data-toggle="dropdown" href="#" class="dropdown-toggle">
 				<!--  img class="nav-user-photo" src="${res_url}ace-1.3.3/assets/avatars/user.jpg" alt="Jason's Photo" /-->
 				<span class="user-info">
-					<small>Welcome,</small>
+					<small>欢迎,</small>
 					${sessionScope.sysUser.name}
 				</span>
 

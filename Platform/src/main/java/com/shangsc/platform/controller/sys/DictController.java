@@ -15,8 +15,10 @@
  */
 package com.shangsc.platform.controller.sys;
 
+import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
+import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
@@ -113,7 +115,7 @@ public class DictController extends BaseController {
 		this.renderJson(JqGridModelUtils.toJqGridView(pageInfo)); 
 	}
 
-    @RequiresPermissions(value={"/dict"})
+    @Clear(AuthorityInterceptor.class)
     public void getByType() {
         Integer typeId = this.getParaToInt("typeId");
         String typeName = this.getPara("typeName");
