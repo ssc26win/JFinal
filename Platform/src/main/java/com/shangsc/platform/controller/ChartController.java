@@ -164,7 +164,11 @@ public class ChartController extends Controller {
             object.put("latitude", record.get("latitude"));
             object.put("innerCode", record.get("inner_code"));
             object.put("name", record.get("name"));
-            object.put("waterUseNum", record.get("waterUseNum"));
+            if (record.get("waterUseNum")!=null) {
+                object.put("waterUseNum", record.get("waterUseNum"));
+            } else {
+                object.put("waterUseNum", 0);
+            }
             object.put("address", record.get("address"));
             array.add(object);
         }
