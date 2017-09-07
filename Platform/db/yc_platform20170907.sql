@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50528
 File Encoding         : 65001
 
-Date: 2017-09-06 16:49:02
+Date: 2017-09-07 18:48:55
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -68,14 +68,11 @@ CREATE TABLE `dict_data` (
   `update_time` int(10) NOT NULL,
   `dict_type_id` int(11) NOT NULL COMMENT '字典类型ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of dict_data
 -- ----------------------------
-INSERT INTO `dict_data` VALUES ('4', '诽谤辱骂', '1', '', '1', '1467514812', '3');
-INSERT INTO `dict_data` VALUES ('5', '淫秽色情', '2', '', '2', '1467514834', '3');
-INSERT INTO `dict_data` VALUES ('6', '垃圾广告', '3', '', '3', '1467514907', '3');
 INSERT INTO `dict_data` VALUES ('7', '民营企业', '1', '民营企业', '1', '1503325387', '4');
 INSERT INTO `dict_data` VALUES ('8', '事业单位', '2', '事业单位', '2', '1503325407', '4');
 INSERT INTO `dict_data` VALUES ('9', '政府', '3', '政府', '3', '1503325424', '4');
@@ -89,6 +86,30 @@ INSERT INTO `dict_data` VALUES ('16', '市政自来水', '1', '市政自来水',
 INSERT INTO `dict_data` VALUES ('17', '自备井', '2', '自备井', '2', '1503325670', '7');
 INSERT INTO `dict_data` VALUES ('18', '预付费', '1', '预付费', '1', '1503325714', '8');
 INSERT INTO `dict_data` VALUES ('19', '后付费', '2', '后付费', '2', '1503325726', '8');
+INSERT INTO `dict_data` VALUES ('20', '永顺镇', '1', '永顺镇', '1', '1504751893', '9');
+INSERT INTO `dict_data` VALUES ('21', '梨园镇', '2', '梨园镇', '2', '1504751911', '9');
+INSERT INTO `dict_data` VALUES ('22', '宋庄镇', '3', '宋庄镇', '3', '1504751924', '9');
+INSERT INTO `dict_data` VALUES ('23', '漷县镇', '4', '漷县镇', '4', '1504751941', '9');
+INSERT INTO `dict_data` VALUES ('24', '张家湾镇', '5', '张家湾镇', '5', '1504751984', '9');
+INSERT INTO `dict_data` VALUES ('25', '马驹桥镇', '6', '马驹桥镇', '6', '1504752012', '9');
+INSERT INTO `dict_data` VALUES ('26', '西集镇', '7', '西集镇', '7', '1504752032', '9');
+INSERT INTO `dict_data` VALUES ('27', '永乐店镇', '8', '永乐店镇', '8', '1504752045', '9');
+INSERT INTO `dict_data` VALUES ('28', '潞城镇', '9', '潞城镇', '9', '1504752056', '9');
+INSERT INTO `dict_data` VALUES ('29', '台湖镇', '10', '台湖镇', '10', '1504752100', '9');
+INSERT INTO `dict_data` VALUES ('30', '于家务乡', '11', '于家务乡', '11', '1504752113', '9');
+INSERT INTO `dict_data` VALUES ('31', '中仓街道', '12', '中仓街道', '12', '1504752126', '9');
+INSERT INTO `dict_data` VALUES ('32', '北苑街道', '13', '北苑街道', '13', '1504752137', '9');
+INSERT INTO `dict_data` VALUES ('33', '玉桥街道', '14', '玉桥街道', '14', '1504752150', '9');
+INSERT INTO `dict_data` VALUES ('34', '新华街道', '15', '新华街道', '15', '1504752170', '9');
+INSERT INTO `dict_data` VALUES ('35', '水泵型号1', '1', '水泵型号1', '1', '1504752400', '10');
+INSERT INTO `dict_data` VALUES ('36', '水泵型号2', '2', '水泵型号2', '2', '1504752459', '10');
+INSERT INTO `dict_data` VALUES ('37', '水量计量设施类型1', '1', '水量计量设施类型1', '1', '1504752552', '11');
+INSERT INTO `dict_data` VALUES ('38', '水量计量设施类型2', '2', '水量计量设施类型2', '2', '1504752565', '11');
+INSERT INTO `dict_data` VALUES ('39', '平原', '1', '平原', '1', '1504752646', '12');
+INSERT INTO `dict_data` VALUES ('40', '山地', '2', '山地', '2', '1504752661', '12');
+INSERT INTO `dict_data` VALUES ('41', '丘陵', '3', '丘陵', '3', '1504752680', '12');
+INSERT INTO `dict_data` VALUES ('42', '纯净水', '1', '纯净水', '1', '1504752805', '13');
+INSERT INTO `dict_data` VALUES ('43', '山泉水', '2', '山泉水', '2', '1504752821', '13');
 
 -- ----------------------------
 -- Table structure for dict_type
@@ -101,18 +122,21 @@ CREATE TABLE `dict_type` (
   `update_time` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_name` (`name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of dict_type
 -- ----------------------------
-INSERT INTO `dict_type` VALUES ('1', '兴趣爱好', '用户选择兴趣爱好', '0');
-INSERT INTO `dict_type` VALUES ('3', '举报内容', '举报内容2', '1473167795');
 INSERT INTO `dict_type` VALUES ('4', 'UserType', '用户类型', '1503325346');
 INSERT INTO `dict_type` VALUES ('5', 'WaterUseType', '取水用途', '1503325468');
 INSERT INTO `dict_type` VALUES ('6', 'UnitType', '节水型单位类型', '1503325574');
 INSERT INTO `dict_type` VALUES ('7', 'WatersType', '水源类型', '1503325636');
 INSERT INTO `dict_type` VALUES ('8', 'ChargeType', '收费类型', '1503325697');
+INSERT INTO `dict_type` VALUES ('9', 'Street', '所属乡镇或街道', '1504751781');
+INSERT INTO `dict_type` VALUES ('10', 'PumpModel', '水泵型号', '1504752358');
+INSERT INTO `dict_type` VALUES ('11', 'CalculateType', '水量计量设施类型', '1504752510');
+INSERT INTO `dict_type` VALUES ('12', 'GeomorphicType', '所在地貌类型区', '1504752620');
+INSERT INTO `dict_type` VALUES ('13', 'GroundType', '所取用地下水的类型', '1504752757');
 
 -- ----------------------------
 -- Table structure for sys_log
@@ -135,11 +159,60 @@ CREATE TABLE `sys_log` (
   PRIMARY KEY (`id`),
   KEY `FK_sys_EVENT` (`uid`),
   CONSTRAINT `sys_log_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `sys_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=44769 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=45938 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_log
 -- ----------------------------
+INSERT INTO `sys_log` VALUES ('45889', '1', 'http://localhost/', '127.0.0.1', '/chart/baiduMap', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'baiduMap', '2017-09-07 18:42:28', '1881', null);
+INSERT INTO `sys_log` VALUES ('45890', '1', 'http://localhost/home', '127.0.0.1', '/chart', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'index', '2017-09-07 18:42:30', '7', null);
+INSERT INTO `sys_log` VALUES ('45891', '1', 'http://localhost/home', '127.0.0.1', '/chart/getMonth', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getMonth', '2017-09-07 18:42:30', '5', null);
+INSERT INTO `sys_log` VALUES ('45892', '1', 'http://localhost/home', '127.0.0.1', '/chart/getDilay', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getDilay', '2017-09-07 18:42:30', '9', null);
+INSERT INTO `sys_log` VALUES ('45893', '1', 'http://localhost/home', '127.0.0.1', '/chart/company', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'company', '2017-09-07 18:42:30', '26', null);
+INSERT INTO `sys_log` VALUES ('45894', '1', 'http://localhost/', '127.0.0.1', '/chart/baiduMap', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'baiduMap', '2017-09-07 18:42:50', '2716', null);
+INSERT INTO `sys_log` VALUES ('45895', '1', 'http://localhost/home', '127.0.0.1', '/chart', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'index', '2017-09-07 18:42:53', '6', null);
+INSERT INTO `sys_log` VALUES ('45896', '1', 'http://localhost/home', '127.0.0.1', '/chart/getDilay', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getDilay', '2017-09-07 18:42:53', '9', null);
+INSERT INTO `sys_log` VALUES ('45897', '1', 'http://localhost/home', '127.0.0.1', '/chart/getMonth', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getMonth', '2017-09-07 18:42:53', '11', null);
+INSERT INTO `sys_log` VALUES ('45898', '1', 'http://localhost/home', '127.0.0.1', '/chart/company', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'company', '2017-09-07 18:42:53', '26', null);
+INSERT INTO `sys_log` VALUES ('45899', '1', 'http://localhost/', '127.0.0.1', '/chart/baiduMap', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'baiduMap', '2017-09-07 18:43:16', '2', null);
+INSERT INTO `sys_log` VALUES ('45900', '1', 'http://localhost/home', '127.0.0.1', '/chart/getDilay', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getDilay', '2017-09-07 18:43:16', '3', null);
+INSERT INTO `sys_log` VALUES ('45901', '1', 'http://localhost/home', '127.0.0.1', '/chart/getMonth', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getMonth', '2017-09-07 18:43:16', '2', null);
+INSERT INTO `sys_log` VALUES ('45902', '1', 'http://localhost/home', '127.0.0.1', '/chart', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'index', '2017-09-07 18:43:16', '6', null);
+INSERT INTO `sys_log` VALUES ('45903', '1', 'http://localhost/home', '127.0.0.1', '/chart/company', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'company', '2017-09-07 18:43:16', '20', null);
+INSERT INTO `sys_log` VALUES ('45904', '1', 'http://localhost/', '127.0.0.1', '/chart/baiduMap', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'baiduMap', '2017-09-07 18:43:49', '3', null);
+INSERT INTO `sys_log` VALUES ('45905', '1', 'http://localhost/home', '127.0.0.1', '/chart/getDilay', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getDilay', '2017-09-07 18:43:50', '5', null);
+INSERT INTO `sys_log` VALUES ('45906', '1', 'http://localhost/home', '127.0.0.1', '/chart/getMonth', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getMonth', '2017-09-07 18:43:50', '4', null);
+INSERT INTO `sys_log` VALUES ('45907', '1', 'http://localhost/home', '127.0.0.1', '/chart', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'index', '2017-09-07 18:43:50', '8', null);
+INSERT INTO `sys_log` VALUES ('45908', '1', 'http://localhost/home', '127.0.0.1', '/chart/company', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'company', '2017-09-07 18:43:50', '22', null);
+INSERT INTO `sys_log` VALUES ('45909', '1', 'http://localhost/', '127.0.0.1', '/chart/baiduMap', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'baiduMap', '2017-09-07 18:45:21', '4', null);
+INSERT INTO `sys_log` VALUES ('45910', '1', 'http://localhost/home', '127.0.0.1', '/chart', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'index', '2017-09-07 18:45:21', '9', null);
+INSERT INTO `sys_log` VALUES ('45911', '1', 'http://localhost/home', '127.0.0.1', '/chart/getDilay', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getDilay', '2017-09-07 18:45:21', '4', null);
+INSERT INTO `sys_log` VALUES ('45912', '1', 'http://localhost/home', '127.0.0.1', '/chart/getMonth', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getMonth', '2017-09-07 18:45:21', '2', null);
+INSERT INTO `sys_log` VALUES ('45913', '1', 'http://localhost/home', '127.0.0.1', '/chart/company', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'company', '2017-09-07 18:45:21', '20', null);
+INSERT INTO `sys_log` VALUES ('45914', '1', 'http://localhost/', '127.0.0.1', '/chart/baiduMap', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'baiduMap', '2017-09-07 18:45:44', '2', null);
+INSERT INTO `sys_log` VALUES ('45915', '1', 'http://localhost/home', '127.0.0.1', '/chart/getMonth', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getMonth', '2017-09-07 18:45:45', '3', null);
+INSERT INTO `sys_log` VALUES ('45916', '1', 'http://localhost/home', '127.0.0.1', '/chart', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'index', '2017-09-07 18:45:45', '6', null);
+INSERT INTO `sys_log` VALUES ('45917', '1', 'http://localhost/home', '127.0.0.1', '/chart/getDilay', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getDilay', '2017-09-07 18:45:45', '6', null);
+INSERT INTO `sys_log` VALUES ('45918', '1', 'http://localhost/home', '127.0.0.1', '/chart/company', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'company', '2017-09-07 18:45:45', '20', null);
+INSERT INTO `sys_log` VALUES ('45919', '1', 'http://localhost/home', '127.0.0.1', '/chart', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'index', '2017-09-07 18:46:15', '5', null);
+INSERT INTO `sys_log` VALUES ('45920', '1', 'http://localhost/home', '127.0.0.1', '/chart/company', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'company', '2017-09-07 18:46:15', '16', null);
+INSERT INTO `sys_log` VALUES ('45921', '1', 'http://localhost/home', '127.0.0.1', '/chart/getDilay', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getDilay', '2017-09-07 18:46:15', '2', null);
+INSERT INTO `sys_log` VALUES ('45922', '1', 'http://localhost/home', '127.0.0.1', '/chart/getMonth', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getMonth', '2017-09-07 18:46:15', '2', null);
+INSERT INTO `sys_log` VALUES ('45923', '1', 'http://localhost/', '127.0.0.1', '/chart/baiduMap', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'baiduMap', '2017-09-07 18:46:20', '2', null);
+INSERT INTO `sys_log` VALUES ('45924', '1', 'http://localhost/home', '127.0.0.1', '/chart', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'index', '2017-09-07 18:46:20', '4', null);
+INSERT INTO `sys_log` VALUES ('45925', '1', 'http://localhost/home', '127.0.0.1', '/chart/getMonth', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getMonth', '2017-09-07 18:46:20', '3', null);
+INSERT INTO `sys_log` VALUES ('45926', '1', 'http://localhost/home', '127.0.0.1', '/chart/getDilay', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getDilay', '2017-09-07 18:46:20', '3', null);
+INSERT INTO `sys_log` VALUES ('45927', '1', 'http://localhost/home', '127.0.0.1', '/chart/company', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'company', '2017-09-07 18:46:20', '20', null);
+INSERT INTO `sys_log` VALUES ('45928', '1', 'http://localhost/login', '127.0.0.1', '/image/getCode', null, '', '0', 'com.shangsc.platform.controller.ImageController', 'getCode', '2017-09-07 18:46:25', '136', null);
+INSERT INTO `sys_log` VALUES ('45929', '1', 'http://localhost/home', '127.0.0.1', '/chart/getDilay', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getDilay', '2017-09-07 18:46:43', '2', null);
+INSERT INTO `sys_log` VALUES ('45930', '1', 'http://localhost/home', '127.0.0.1', '/chart', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'index', '2017-09-07 18:46:43', '7', null);
+INSERT INTO `sys_log` VALUES ('45931', '1', 'http://localhost/home', '127.0.0.1', '/chart/getMonth', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'getMonth', '2017-09-07 18:46:43', '3', null);
+INSERT INTO `sys_log` VALUES ('45932', '1', 'http://localhost/home', '127.0.0.1', '/chart/company', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'company', '2017-09-07 18:46:43', '44', null);
+INSERT INTO `sys_log` VALUES ('45933', '1', 'http://localhost/', '127.0.0.1', '/chart/baiduMap', null, '', '0', 'com.shangsc.platform.controller.ChartController', 'baiduMap', '2017-09-07 18:46:45', '6', null);
+INSERT INTO `sys_log` VALUES ('45934', '1', 'http://localhost/', '127.0.0.1', '/basic/company', null, '', '0', 'com.shangsc.platform.controller.basic.CompanyController', 'index', '2017-09-07 18:47:29', '0', null);
+INSERT INTO `sys_log` VALUES ('45935', '1', 'http://localhost/basic/company', '127.0.0.1', '/basic/company/getListData', null, '', '0', 'com.shangsc.platform.controller.basic.CompanyController', 'getListData', '2017-09-07 18:47:29', '15', null);
+INSERT INTO `sys_log` VALUES ('45936', '1', 'http://localhost/', '127.0.0.1', '/basic/well', null, '', '0', 'com.shangsc.platform.controller.basic.WellController', 'index', '2017-09-07 18:47:30', '1', null);
+INSERT INTO `sys_log` VALUES ('45937', '1', 'http://localhost/basic/well', '127.0.0.1', '/basic/well/getListData', null, '', '0', 'com.shangsc.platform.controller.basic.WellController', 'getListData', '2017-09-07 18:47:30', '21', null);
 
 -- ----------------------------
 -- Table structure for sys_login_record
@@ -152,7 +225,7 @@ CREATE TABLE `sys_login_record` (
   `login_err_times` int(11) NOT NULL COMMENT '1天内连续出错次数',
   `login_status` tinyint(4) NOT NULL COMMENT '1-成功  0-失败',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8 COMMENT='后台系统登陆记录';
+) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=utf8 COMMENT='后台系统登陆记录';
 
 -- ----------------------------
 -- Records of sys_login_record
@@ -275,6 +348,20 @@ INSERT INTO `sys_login_record` VALUES ('130', '1', '2017-09-06 15:20:27', '0', '
 INSERT INTO `sys_login_record` VALUES ('131', '1', '2017-09-06 16:14:46', '0', '1');
 INSERT INTO `sys_login_record` VALUES ('132', '1', '2017-09-06 16:37:56', '1', '0');
 INSERT INTO `sys_login_record` VALUES ('133', '1', '2017-09-06 16:38:02', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('134', '1', '2017-09-06 17:17:30', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('135', '1', '2017-09-06 17:38:24', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('136', '1', '2017-09-07 10:09:59', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('137', '1', '2017-09-07 10:10:16', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('138', '1', '2017-09-07 12:15:50', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('139', '1', '2017-09-07 12:16:05', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('140', '1', '2017-09-07 12:19:41', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('141', '1', '2017-09-07 12:19:52', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('142', '1', '2017-09-07 12:41:09', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('143', '1', '2017-09-07 16:44:25', '1', '0');
+INSERT INTO `sys_login_record` VALUES ('144', '1', '2017-09-07 16:44:39', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('145', '37', '2017-09-07 16:47:55', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('146', '37', '2017-09-07 16:56:52', '0', '1');
+INSERT INTO `sys_login_record` VALUES ('147', '1', '2017-09-07 18:46:43', '0', '1');
 
 -- ----------------------------
 -- Table structure for sys_res
@@ -315,8 +402,6 @@ INSERT INTO `sys_res` VALUES ('150', '1', '操作日志', null, '/sys/log', 'fa-
 INSERT INTO `sys_res` VALUES ('152', null, '控制台', '1234', '/', 'fa-tachometer', '1', '1', '2015-02-10 16:09:40', '1', '0');
 INSERT INTO `sys_res` VALUES ('181', '1', '数据字典', null, '/dict', 'fa-list', '12', '1', null, '1', '0');
 INSERT INTO `sys_res` VALUES ('182', '181', '数据字典列表', null, '/dict/list', 'fa-list', '1', '2', null, '1', '0');
-INSERT INTO `sys_res` VALUES ('192', null, 'APP管理', null, '', 'fa-android', '9', '1', null, '0', '0');
-INSERT INTO `sys_res` VALUES ('193', '192', 'App版本管理', null, '/app', '', '1', '1', null, '0', '0');
 INSERT INTO `sys_res` VALUES ('194', null, '基础信息', null, '', 'fa-pencil-square-o', '4', '1', null, '1', '1');
 INSERT INTO `sys_res` VALUES ('195', '194', '单位信息', null, '/basic/company', 'fa-list', '1', '1', null, '1', '2');
 INSERT INTO `sys_res` VALUES ('196', '194', '水表信息', null, '/basic/meter', 'fa-list', '2', '1', null, '1', '0');
@@ -366,7 +451,7 @@ CREATE TABLE `sys_role_res` (
   KEY `FK_sys_ROLE_RES_ROLE_ID` (`role_id`),
   CONSTRAINT `sys_role_res_ibfk_1` FOREIGN KEY (`res_id`) REFERENCES `sys_res` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `sys_role_res_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4231 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=4239 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_role_res
@@ -388,8 +473,6 @@ INSERT INTO `sys_role_res` VALUES ('4154', '150', '1');
 INSERT INTO `sys_role_res` VALUES ('4155', '181', '1');
 INSERT INTO `sys_role_res` VALUES ('4156', '182', '1');
 INSERT INTO `sys_role_res` VALUES ('4157', '152', '1');
-INSERT INTO `sys_role_res` VALUES ('4162', '192', '1');
-INSERT INTO `sys_role_res` VALUES ('4163', '193', '1');
 INSERT INTO `sys_role_res` VALUES ('4175', '194', '1');
 INSERT INTO `sys_role_res` VALUES ('4176', '195', '1');
 INSERT INTO `sys_role_res` VALUES ('4177', '196', '1');
@@ -422,6 +505,14 @@ INSERT INTO `sys_role_res` VALUES ('4227', '202', '60');
 INSERT INTO `sys_role_res` VALUES ('4228', '203', '60');
 INSERT INTO `sys_role_res` VALUES ('4229', '204', '60');
 INSERT INTO `sys_role_res` VALUES ('4230', '206', '1');
+INSERT INTO `sys_role_res` VALUES ('4231', '152', '57');
+INSERT INTO `sys_role_res` VALUES ('4232', '199', '57');
+INSERT INTO `sys_role_res` VALUES ('4233', '200', '57');
+INSERT INTO `sys_role_res` VALUES ('4234', '201', '57');
+INSERT INTO `sys_role_res` VALUES ('4235', '202', '57');
+INSERT INTO `sys_role_res` VALUES ('4236', '203', '57');
+INSERT INTO `sys_role_res` VALUES ('4237', '204', '57');
+INSERT INTO `sys_role_res` VALUES ('4238', '206', '57');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -441,16 +532,17 @@ CREATE TABLE `sys_user` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name_index` (`name`),
   UNIQUE KEY `token_index` (`token`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', 'admin', '69ed3f5b7210df52447c0675c67565eba0f5b3e7', '1289', '1', '/sys/static/i/9.jpg', 'admin@admin.com', '2017-08-01 18:00:27', '1234567', 'UzNk7MKbVABao0I275SAs9ShzyYtLQooG42fkoDcL9QtkuFP1Xm7QOtIMrbvxbLc');
+INSERT INTO `sys_user` VALUES ('1', 'admin', '6fc3b9ada8c1e50b400cd6998ff7be76ea3ae312', '1289', '1', '/sys/static/i/9.jpg', 'admin@admin.com', '2017-08-01 18:00:27', '1234567', 'UzNk7MKbVABao0I275SAs9ShzyYtLQooG42fkoDcL9QtkuFP1Xm7QOtIMrbvxbLc');
 INSERT INTO `sys_user` VALUES ('32', 'eason', '6fc3b9ada8c1e50b400cd6998ff7be76ea3ae312', '1288', '1', '/images/guest.jpg', '569165857@qq.com', '2017-08-10 23:54:24', '13332892938', null);
 INSERT INTO `sys_user` VALUES ('34', 'test', '6fc3b9ada8c1e50b400cd6998ff7be76ea3ae312', '1287', '1', '/images/guest.jpg', '569165857@qq.com', '2017-08-18 22:24:50', '13332892938', 'hDEflmnlVituFC6hbfTzeze8RVSRseIfdgBAGkAU2RRh4c4kIrIYXTTuwEG2Caem');
 INSERT INTO `sys_user` VALUES ('35', '123123', 'fe58cc7ab4ba9f207be0bf82efc8147e136f6b52', null, '1', '/images/guest.jpg', '23123', '2017-08-27 00:47:06', null, null);
 INSERT INTO `sys_user` VALUES ('36', '111111111', 'fe58cc7ab4ba9f207be0bf82efc8147e136f6b52', null, '1', '/images/guest.jpg', '1215665487@qq.com', '2017-08-27 01:04:25', '1111111', null);
+INSERT INTO `sys_user` VALUES ('37', 'sscs', 'fe58cc7ab4ba9f207be0bf82efc8147e136f6b52', null, '1', '/images/guest.jpg', '1@1.com', '2017-09-07 16:43:34', '134564565', null);
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -465,7 +557,7 @@ CREATE TABLE `sys_user_role` (
   KEY `FK_SYSTME_USER_ROLE_ROLE_ID` (`role_id`),
   CONSTRAINT `sys_user_role_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `sys_role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `sys_user_role_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `sys_user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=344 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB AUTO_INCREMENT=345 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
 -- Records of sys_user_role
@@ -475,6 +567,7 @@ INSERT INTO `sys_user_role` VALUES ('339', '32', '56');
 INSERT INTO `sys_user_role` VALUES ('341', '34', '60');
 INSERT INTO `sys_user_role` VALUES ('342', '35', '56');
 INSERT INTO `sys_user_role` VALUES ('343', '36', '56');
+INSERT INTO `sys_user_role` VALUES ('344', '37', '57');
 
 -- ----------------------------
 -- Table structure for t_actual_data
@@ -495,7 +588,7 @@ CREATE TABLE `t_actual_data` (
   PRIMARY KEY (`id`),
   KEY `idx_inner_code` (`inner_code`) USING BTREE,
   KEY `idx_meter_num` (`meter_num`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='实时数据';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='实时数据';
 
 -- ----------------------------
 -- Records of t_actual_data
@@ -505,6 +598,7 @@ INSERT INTO `t_actual_data` VALUES ('2', null, '002', '111122', '00201', '2', '1
 INSERT INTO `t_actual_data` VALUES ('3', null, '003', '1234123', '00301', '1', '1', '22.00', '2', '2017-10-05 12:02:51', '2');
 INSERT INTO `t_actual_data` VALUES ('4', null, '001', '1001', '00101', '1', '0', '3.00', '1', '2017-09-01 12:11:50', '220');
 INSERT INTO `t_actual_data` VALUES ('5', null, '001', '1001', '00101', '1', '0', '2.00', '1', '2017-09-05 01:54:28', '222');
+INSERT INTO `t_actual_data` VALUES ('6', null, '001', '1001', '00101', '1', '0', '8.00', '1', '2017-09-07 03:33:22', '22');
 
 -- ----------------------------
 -- Table structure for t_ad
@@ -534,7 +628,7 @@ CREATE TABLE `t_company` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `inner_code` varchar(50) DEFAULT NULL COMMENT '单位编号',
   `name` varchar(255) DEFAULT NULL COMMENT '单位名称',
-  `street` varchar(255) DEFAULT NULL COMMENT '所属乡镇或街道',
+  `street` tinyint(4) DEFAULT NULL COMMENT '所属乡镇或街道',
   `address` varchar(255) DEFAULT NULL COMMENT '单位地址',
   `customer_type` tinyint(4) DEFAULT NULL COMMENT '用户类型',
   `water_use_type` tinyint(4) DEFAULT NULL COMMENT '取水用途',
@@ -556,10 +650,10 @@ CREATE TABLE `t_company` (
 -- ----------------------------
 -- Records of t_company
 -- ----------------------------
-INSERT INTO `t_company` VALUES ('1', '001', '北京某某科技股份有限公司', '海淀区西二旗辉煌国际65号', '海淀区西二旗辉煌国际55号', '1', '1', '张三', '186222229', '234234234', '海淀区水利局', '10', '12', '10', '1', '116.615335', '39.896172', '2017-09-06 12:00:06');
-INSERT INTO `t_company` VALUES ('2', '002', '北京某某科技公司', '丹棱街12号', '海淀区中关村丹棱街1号', '3', '2', '李四', '1862342343', '8239042', '海淀区水利局', '1', '2', '2', '2', '116.677893', '39.905817', '2017-09-06 11:57:39');
-INSERT INTO `t_company` VALUES ('3', '003', '北京途牛科技股份有限公司', '通州区后南仓', '通州区后南仓', '1', '1', '王五', '1823420340', '100340', '海淀区水利局', '2', '1', '2', '1', '116.627623', '39.901085', '2017-09-02 15:06:17');
-INSERT INTO `t_company` VALUES ('5', '004', '北京体彩科技有限公司', '黄平路', '北京市昌平区霍营', '2', '1', '赵六', '154345345', '534345', '昌平水利局', '2', '2', '1', '1', '116.633624', '39.910604', '2017-09-05 01:53:24');
+INSERT INTO `t_company` VALUES ('1', '001', '北京某某科技股份有限公司', '2', '海淀区西二旗辉煌国际55号', '1', null, '张三', '186222229', '234234234', '海淀区水利局', '10', '12', '10', '1', '116.615335', '39.896172', '2017-09-07 12:42:45');
+INSERT INTO `t_company` VALUES ('2', '002', '北京某某科技公司', '3', '海淀区中关村丹棱街1号', '3', '2', '李四', '1862342343', '8239042', '海淀区水利局', '1', '2', '2', '2', '116.677893', '39.905817', '2017-09-06 11:57:39');
+INSERT INTO `t_company` VALUES ('3', '003', '北京途牛科技股份有限公司', '4', '通州区后南仓', '1', '1', '王五', '1823420340', '100340', '海淀区水利局', '2', '1', '2', '1', '116.627623', '39.901085', '2017-09-02 15:06:17');
+INSERT INTO `t_company` VALUES ('5', '004', '北京体彩科技有限公司', '6', '北京市昌平区霍营', '2', '1', '赵六', '154345345', '534345', '昌平水利局', '2', '2', '1', '1', '116.633624', '39.910604', '2017-09-05 01:53:24');
 
 -- ----------------------------
 -- Table structure for t_water_index
@@ -619,9 +713,9 @@ CREATE TABLE `t_water_meter` (
 -- Records of t_water_meter
 -- ----------------------------
 INSERT INTO `t_water_meter` VALUES ('1', null, '001', '昌平回龙观霞飞路', '00101', '2', '3', '公用表', '2', '1年', '2017-08-25 21:28:31');
-INSERT INTO `t_water_meter` VALUES ('2', null, '002', '育知路', '00201', '1', '1', '2', '1', '12个月', '2017-08-15 21:28:36');
+INSERT INTO `t_water_meter` VALUES ('2', null, '002', '育知路', '00201', '2', '1', '2', '1', '12个月', '2017-08-15 21:28:36');
 INSERT INTO `t_water_meter` VALUES ('4', null, '003', '黄平路', '00301', '1', '2', '123', '1', '12个月', '2017-09-03 11:28:15');
-INSERT INTO `t_water_meter` VALUES ('5', null, '001', '11', '00102', '1', '3', '11', '1', '11', '2017-09-03 12:39:27');
+INSERT INTO `t_water_meter` VALUES ('5', null, '001', '11', '00102', '2', '1', '11', '1', '11', '2017-09-03 12:39:27');
 
 -- ----------------------------
 -- Table structure for t_well
@@ -645,7 +739,7 @@ CREATE TABLE `t_well` (
   `application` varchar(255) DEFAULT NULL COMMENT '应用状况',
   `electromechanics` tinyint(2) DEFAULT NULL COMMENT '是否已配套机电设备',
   `calculate_water` tinyint(2) DEFAULT NULL COMMENT '是否已安装水量计量设施',
-  `pump_model` varchar(50) DEFAULT NULL COMMENT '水泵型号',
+  `pump_model` tinyint(4) DEFAULT NULL COMMENT '水泵型号',
   `calculate_type` tinyint(4) DEFAULT NULL COMMENT '水量计量设施类型',
   `above_scale` tinyint(2) DEFAULT NULL COMMENT '是否为规模以上地下水水源地的水井',
   `geomorphic_type` tinyint(4) DEFAULT NULL COMMENT '所在地貌类型区',
@@ -665,4 +759,4 @@ CREATE TABLE `t_well` (
 -- ----------------------------
 -- Records of t_well
 -- ----------------------------
-INSERT INTO `t_well` VALUES ('1', '00101#', '1号#', null, '001', '回龙观', '朱辛庄', '1', '2017-08-26 00:00:00', '1.00', '1.00', '1', '1.00', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1.00');
+INSERT INTO `t_well` VALUES ('1', '00101#', '1号#', null, '001', '回龙观', '朱辛庄', '1', '2017-01-01 00:00:00', '1.00', '1.00', '1', '1.00', '1', '1', '1', '1', '2', '1', '1', '1', '1', '100111', '1', '1', '1', '1', '1', '1.00');
