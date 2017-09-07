@@ -55,9 +55,9 @@
                 <div class="col-xs-12">
                     <div class="row-fluid" style="margin-bottom: 5px;">
                         <div class="span12 control-group">
-                            <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
-                            <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
-                            <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
+                            <jc:button className="btn btn-primary" id="btn-add" permission="/basic/meter" textName="添加"/>
+                            <jc:button className="btn btn-info" id="btn-edit" permission="/basic/meter" textName="编辑"/>
+                            <jc:button className="btn btn-danger" id="btn-deleteData" permission="/basic/meter" textName="删除"/>
                             <jc:button className="btn btn-success" id="btn-exportData" textName="导出"/>
                         </div>
                     </div>

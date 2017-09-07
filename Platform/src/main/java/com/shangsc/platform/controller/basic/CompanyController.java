@@ -1,8 +1,11 @@
 package com.shangsc.platform.controller.basic;
 
+import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
+import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
@@ -34,32 +37,33 @@ public class CompanyController extends BaseController {
     public void index() {
         render("company_index.jsp");
     }
-
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void position() {
         this.setAttr("address", this.getPara("address"));
         this.setAttr("position", this.getPara("position"));
         render("company_map.jsp");
     }
-
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void normal() {
         this.setAttr("flag", "Normal");
         render("company_index.jsp");
     }
-
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void warn() {
         this.setAttr("flag", "Warn");
         render("company_index.jsp");
     }
-
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void other() {
         this.setAttr("flag", "Other");
         render("company_index.jsp");
     }
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value={"/basic/company"})
     public void getListData() {
         String keyword=this.getPara("name");
@@ -69,6 +73,7 @@ public class CompanyController extends BaseController {
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
     }
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value={"/basic/company"})
     public void getNormalListData() {
         String keyword=this.getPara("name");
@@ -87,6 +92,7 @@ public class CompanyController extends BaseController {
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
     }
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value={"/basic/company"})
     public void getOtherListData() {
         String keyword=this.getPara("name");
@@ -113,7 +119,7 @@ public class CompanyController extends BaseController {
         Long id = this.getParaToLong("id");
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
-        String street = this.getPara("street");
+        Integer street = this.getParaToInt("street");
         String address = this.getPara("address");
         Integer customerType = this.getParaToInt("customerType");
         Integer waterUseType = this.getParaToInt("waterUseType");
@@ -155,21 +161,36 @@ public class CompanyController extends BaseController {
         Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
                 Company.me.getPage(getPage(), GlobalConfig.EXPORT_SUM, conditions, this.getOrderby());
         List<Company> companies = pageInfo.getList();
-        setVoProp(companies);
+        if (CommonUtils.isNotEmpty(companies)) {
+            Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
+            //Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
+            Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictCode.UnitType);
+            Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
+            for (int i = 0; i < companies.size(); i++) {
+                Company co = companies.get(i);
+                co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
+                //co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
+                co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
+                co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.getStreet()))));
+                companies.set(i, co);
+            }
+        }
         String path = service.export(companies);
         renderFile(new File(path));
     }
 
     private void setVoProp(List<Company> companies){
         if (CommonUtils.isNotEmpty(companies)) {
-            Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictData.UserType);
-            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
-            Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictData.UnitType);
+            Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
+            //Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
+            Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictCode.UnitType);
+            Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
             for (int i = 0; i < companies.size(); i++) {
                 Company co = companies.get(i);
                 co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
-                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
+                //co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
                 co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
+                co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.getStreet()))));
                 co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
                         + co.get("inner_code") + "')\">" + co.getAddress() + "</a>");
                 companies.set(i, co);

@@ -213,7 +213,7 @@
 
   function getDictMapData(){
     var submitData = {};
-    $.post("${context_path}/dict/getByType", submitData, function(data) {
+    $.post("${context_path}/dict/getIndexUseDict", submitData, function(data) {
       var waterUseType = data.WaterUseType;
       for(var i = 0;i<waterUseType.length;i++) {
         $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");

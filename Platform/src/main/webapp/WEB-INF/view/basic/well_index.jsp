@@ -55,9 +55,9 @@
                 <div class="col-xs-12">
                     <div class="row-fluid" style="margin-bottom: 5px;">
                         <div class="span12 control-group">
-                            <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
-                            <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
-                            <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
+                            <jc:button className="btn btn-primary" id="btn-add" permission="/basic/well" textName="添加"/>
+                            <jc:button className="btn btn-info" id="btn-edit" permission="/basic/well" textName="编辑"/>
+                            <jc:button className="btn btn-danger" id="btn-deleteData" permission="/basic/well" textName="删除"/>
                             <jc:button className="btn btn-success" id="btn-exportData" textName="导出"/>
                         </div>
                     </div>
@@ -119,11 +119,11 @@
                 { label: '水源类型', name: 'watersTypeName', width: 60, sortable:false},
                 /*{ label: '是否已配套机电设备', name: 'electromechanicsName', width: 80, sortable:false},
                 { label: '是否已安装水量计量设施', name: 'calculateWaterName', width: 100, sortable:false},*/
-                { label: '水泵型号', name: 'pump_model', width: 80, sortable:false},
-              /*  { label: '水量计量设施类型', name: 'calculate_type', width: 100, sortable:false},
-                { label: '是否为规模以上地下水水源地的水井', name: 'above_scale', width: 100, sortable:false},
-                { label: '所在地貌类型区', name: 'geomorphic_type', width: 70, sortable:false},
-                { label: '所取用地下水的类型', name: 'ground_type', width: 100, sortable:false},
+                { label: '水泵型号', name: 'pumpModelName', width: 80, sortable:false},
+              /*  { label: '水量计量设施类型', name: 'calculateTypeName', width: 100, sortable:false},
+                { label: '是否为规模以上地下水水源地的水井', name: 'aboveScaleName', width: 100, sortable:false},
+                { label: '所在地貌类型区', name: 'geomorphicTypeName', width: 70, sortable:false},
+                { label: '所取用地下水的类型', name: 'groundTypeName', width: 100, sortable:false},
                 { label: '所在水资源三级区名称及编码', name: 'name_code', width: 100, sortable:false},
                 { label: '主要取水用途及效益', name: 'use_efficiency', width: 100, sortable:false},
                 { label: '取水量确定方法', name: 'method', width: 100, sortable:false},*/

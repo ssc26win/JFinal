@@ -82,7 +82,7 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-											 String name, String innerCode, String street, Integer watersType) {
+											 String name, String innerCode, Integer street, Integer watersType) {
 		String select=" select twm.*,tc.name,tc.address,tc.street,tm.meter_attr ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
@@ -98,11 +98,8 @@ public class ActualData extends BaseActualData<ActualData> {
 				sqlExceptSelect.append(" and tc.name like '%" + name + "%'");
 			}
 		}
-		if (StringUtils.isNotEmpty(street)) {
-			street = StringUtils.trim(street);
-			if (StringUtils.isNotEmpty(street)) {
-				sqlExceptSelect.append(" and tc.street like '%" + street + "%'");
-			}
+		if (street != null && street > 0) {
+			sqlExceptSelect.append(" and tc.street=" + street);
 		}
 		if (StringUtils.isNotEmpty(innerCode)) {
 			innerCode = StringUtils.trim(innerCode);
@@ -121,8 +118,8 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-										   String name, String innerCode, String street, Integer watersType) {
-		String select=" select twm.*,sum(twm.net_water) as dailyNum,tc.name,tc.address,tm.meter_attr ";
+										   String name, String innerCode, Integer street, Integer watersType) {
+		String select=" select twm.*,tc.name,tc.address,tm.meter_attr ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
 		if (startTime != null) {
@@ -137,11 +134,8 @@ public class ActualData extends BaseActualData<ActualData> {
 				sqlExceptSelect.append(" and tc.name like '%" + name + "%'");
 			}
 		}
-		if (StringUtils.isNotEmpty(street)) {
-			street = StringUtils.trim(street);
-			if (StringUtils.isNotEmpty(street)) {
-				sqlExceptSelect.append(" and tc.street like '%" + street + "%'");
-			}
+		if (street != null && street > 0) {
+			sqlExceptSelect.append(" and tc.street=" + street);
 		}
 		if (StringUtils.isNotEmpty(innerCode)) {
 			innerCode = StringUtils.trim(innerCode);
@@ -160,7 +154,7 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-										   String name, String innerCode, String street, Integer watersType) {
+										   String name, String innerCode, Integer street, Integer watersType) {
 		String select=" select twm.*,tc.name,tc.address,sum(net_water) as netWaterNum,tm.billing_cycle,tm.meter_attr";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
@@ -176,11 +170,8 @@ public class ActualData extends BaseActualData<ActualData> {
 				sqlExceptSelect.append(" and tc.name like '%" + name + "%'");
 			}
 		}
-		if (StringUtils.isNotEmpty(street)) {
-			street = StringUtils.trim(street);
-			if (StringUtils.isNotEmpty(street)) {
-				sqlExceptSelect.append(" and tc.street like '%" + street + "%'");
-			}
+		if (street != null && street > 0) {
+			sqlExceptSelect.append(" and tc.street=" + street);
 		}
 		if (StringUtils.isNotEmpty(innerCode)) {
 			innerCode = StringUtils.trim(innerCode);
@@ -199,7 +190,7 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year,
-										  String name, String innerCode, String street, Integer watersType) {
+										  String name, String innerCode, Integer street, Integer watersType) {
 		String select=" select twm.*,tc.name,tc.address,sum(net_water) as netWaterNum,tm.meter_attr";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
@@ -215,11 +206,8 @@ public class ActualData extends BaseActualData<ActualData> {
 				sqlExceptSelect.append(" and tc.name like '%" + name + "%'");
 			}
 		}
-		if (StringUtils.isNotEmpty(street)) {
-			street = StringUtils.trim(street);
-			if (StringUtils.isNotEmpty(street)) {
-				sqlExceptSelect.append(" and tc.street like '%" + street + "%'");
-			}
+		if (street != null && street > 0) {
+			sqlExceptSelect.append(" and tc.street=" + street);
 		}
 		if (StringUtils.isNotEmpty(innerCode)) {
 			innerCode = StringUtils.trim(innerCode);

@@ -44,7 +44,7 @@
 														<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="value">数据值</label>
 														<div class="col-xs-12 col-sm-9">
 															<div class="clearfix">
-													           <input type="text" id="value" name="value" value="${item.value}" class="col-xs-12 col-sm-6">
+													           <input type="number" id="value" name="value" value="${item.value}" class="col-xs-12 col-sm-6">
 															</div>
 														</div>
 													</div>
@@ -60,7 +60,7 @@
 														<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="seq">排序号</label>
 														<div class="col-xs-12 col-sm-9">
 															<div class="clearfix">
-													           <input type="text" id="seq" name="seq" value="${item.seq}" class="col-xs-12 col-sm-6">
+													           <input type="number" id="seq" name="seq" value="${item.seq}" class="col-xs-12 col-sm-6">
 															</div>
 														</div>
 													</div>

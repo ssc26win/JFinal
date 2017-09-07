@@ -145,11 +145,11 @@ public abstract class BaseWell<M extends BaseWell<M>> extends BaseModel<M> imple
 		return get("calculate_water");
 	}
 
-	public void setPumpModel(String pumpModel) {
+	public void setPumpModel(Integer pumpModel) {
 		set("pump_model", pumpModel);
 	}
 
-	public String getPumpModel() {
+	public Integer getPumpModel() {
 		return get("pump_model");
 	}
 

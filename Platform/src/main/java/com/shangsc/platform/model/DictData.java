@@ -30,11 +30,6 @@ import java.util.*;
 public class DictData extends BaseDictData<DictData> {
 
 	public static final DictData dao = new DictData();
-	public static final String UserType = "UserType";
-	public static final String WaterUseType = "WaterUseType";
-	public static final String UnitType = "UnitType";
-	public static final String WatersType = "WatersType";
-	public static final String ChargeType = "ChargeType";
 
 	public InvokeResult saveDictData(Integer id, String name, String remark,
 			Integer seq, String value, Integer typeId) {

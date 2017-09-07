@@ -1,8 +1,11 @@
 package com.shangsc.platform.controller.basic;
 
+import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
+import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
@@ -30,76 +33,48 @@ public class MeterController extends BaseController {
         render("meter_index.jsp");
     }
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
     public void normal() {
         this.setAttr("flag", "Normal");
         render("meter_index.jsp");
     }
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
     public void exption() {
         this.setAttr("flag", "Exception");
         render("meter_index.jsp");
     }
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
     public void getListData() {
         String keyword = this.getPara("name");
         Page<WaterMeter> pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<WaterMeter> list = pageInfo.getList();
-        if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
-            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
-            Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictData.ChargeType);
-            for (int i = 0; i < list.size(); i++) {
-                WaterMeter co = list.get(i);
-                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
-                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
-                co.put("chargeTypeName", String.valueOf(mapChargeType.get(String.valueOf(co.getChargeType()))));
-                list.set(i, co);
-            }
-        }
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+        setVoProp(list);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
     public void getExceptionListData() {
         String keyword = this.getPara("name");
         Page<WaterMeter> pageInfo = WaterMeter.me.getExceptionWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<WaterMeter> list = pageInfo.getList();
-        if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
-            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
-            Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictData.ChargeType);
-            for (int i = 0; i < list.size(); i++) {
-                WaterMeter co = list.get(i);
-                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
-                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
-                co.put("chargeTypeName", String.valueOf(mapChargeType.get(String.valueOf(co.getChargeType()))));
-                list.set(i, co);
-            }
-        }
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+        setVoProp(list);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
     public void getNormalListData() {
         String keyword = this.getPara("name");
         Page<WaterMeter> pageInfo = WaterMeter.me.getNormalMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<WaterMeter> list = pageInfo.getList();
-        if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
-            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
-            Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictData.ChargeType);
-            for (int i = 0; i < list.size(); i++) {
-                WaterMeter co = list.get(i);
-                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
-                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
-                co.put("chargeTypeName", String.valueOf(mapChargeType.get(String.valueOf(co.getChargeType()))));
-                list.set(i, co);
-            }
-        }
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+        setVoProp(list);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
     @RequiresPermissions(value = {"/basic/meter"})
@@ -151,10 +126,19 @@ public class MeterController extends BaseController {
         }
         Page<WaterMeter> pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
         List<WaterMeter> list = pageInfo.getList();
+        setVoProp(list);
+        WaterMeterExportService service = new WaterMeterExportService();
+        String path = service.export(list);
+
+        renderFile(new File(path));
+
+    }
+
+    private void setVoProp(List<WaterMeter> list) {
         if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
-            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
-            Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictData.ChargeType);
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
+            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
+            Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictCode.ChargeType);
             for (int i = 0; i < list.size(); i++) {
                 WaterMeter co = list.get(i);
                 co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
@@ -163,11 +147,5 @@ public class MeterController extends BaseController {
                 list.set(i, co);
             }
         }
-        WaterMeterExportService service = new WaterMeterExportService();
-        String path = service.export(list);
-
-        renderFile(new File(path));
-
     }
-
 }

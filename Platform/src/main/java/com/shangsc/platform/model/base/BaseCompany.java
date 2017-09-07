@@ -33,11 +33,11 @@ public abstract class BaseCompany<M extends BaseCompany<M>> extends BaseModel<M>
 		return get("name");
 	}
 
-	public void setStreet(java.lang.String street) {
+	public void setStreet(java.lang.Integer street) {
 		set("street", street);
 	}
 
-	public java.lang.String getStreet() {
+	public java.lang.Integer getStreet() {
 		return get("street");
 	}
 

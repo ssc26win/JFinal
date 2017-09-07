@@ -1,6 +1,7 @@
 package com.shangsc.platform.controller.basic;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
@@ -38,21 +39,8 @@ public class WellController extends BaseController {
         String keyword = this.getPara("name");
         Page<Well> pageInfo = Well.me.getWellPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Well> list = pageInfo.getList();
-        if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
-            for (int i = 0; i < list.size(); i++) {
-                Well co = list.get(i);
-                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
-                co.put("aboveScaleName",  YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAboveScale())));
-                co.put("oneselfWellName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getOneselfWell())));
-                co.put("electromechanicsName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getElectromechanics())));
-                co.put("calculateWaterName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getCalculateType())));
-                co.put("licenceName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getLicence())));
-                co.put("yearDate", ToolDateTime.format(co.getStartDate(), "yyyy-MM-dd"));
-                list.set(i, co);
-            }
-        }
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+        setVoProp(list);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
     @RequiresPermissions(value={"/basic/well"})
@@ -88,7 +76,7 @@ public class WellController extends BaseController {
         String application = this.getPara("application");
         Integer electromechanics = this.getParaToInt("electromechanics");
         Integer calculateWater = this.getParaToInt("calculateWater");
-        String pumpModel = this.getPara("pumpModel");
+        Integer pumpModel = this.getParaToInt("pumpModel");
 
         Integer calculateType = this.getParaToInt("calculateType");
         Integer aboveScale = this.getParaToInt("aboveScale");
@@ -125,8 +113,19 @@ public class WellController extends BaseController {
         String keyword = this.getPara("name");
         Page<Well> pageInfo = Well.me.getWellPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
         List<Well> list = pageInfo.getList();
+        setVoProp(list);
+        WellExportService service = new WellExportService();
+        String path = service.export(list);
+        renderFile(new File(path));
+    }
+
+    private void setVoProp(List<Well> list) {
         if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
+            Map<String, Object> mapPumpModel = DictData.dao.getDictMap(0, DictCode.PumpModel);
+            Map<String, Object> mapCalculateType = DictData.dao.getDictMap(0, DictCode.CalculateType);
+            Map<String, Object> mapGeomorphicType = DictData.dao.getDictMap(0, DictCode.GeomorphicType);
+            Map<String, Object> mapGroundType = DictData.dao.getDictMap(0, DictCode.GroundType);
             for (int i = 0; i < list.size(); i++) {
                 Well co = list.get(i);
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
@@ -135,12 +134,14 @@ public class WellController extends BaseController {
                 co.put("electromechanicsName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getElectromechanics())));
                 co.put("calculateWaterName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getCalculateType())));
                 co.put("licenceName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getLicence())));
+                co.put("pumpModelName", String.valueOf(mapPumpModel.get(String.valueOf(co.getPumpModel()))));
+                co.put("calculateTypeName", String.valueOf(mapCalculateType.get(String.valueOf(co.getCalculateType()))));
+                co.put("geomorphicTypeName", String.valueOf(mapGeomorphicType.get(String.valueOf(co.getGeomorphicType()))));
+                co.put("groundTypeName", String.valueOf(mapGroundType.get(String.valueOf(co.getGroundType()))));
+                co.put("yearDate", ToolDateTime.format(co.getStartDate(), "yyyy-MM-dd"));
                 list.set(i, co);
             }
         }
-        WellExportService service = new WellExportService();
-        String path = service.export(list);
-        renderFile(new File(path));
     }
 }
 

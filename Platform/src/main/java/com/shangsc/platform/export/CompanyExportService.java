@@ -63,7 +63,7 @@ public class CompanyExportService extends ExportBaseService {
             Object[] obj = new Object[]{
                     company.getInnerCode(),
                     company.getName(),
-                    company.getStreet(),
+                    company.get("streetName"),
                     company.getAddress(),
                     company.get("customerTypeName"),
                     company.get("waterUseTypeName"),

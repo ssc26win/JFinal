@@ -55,7 +55,7 @@ public class Company extends BaseCompany<Company> {
         return InvokeResult.success();
     }
 
-    public InvokeResult save(Long id, String name, String innerCode, String street, String address, Integer customerType, Integer waterUseType,
+    public InvokeResult save(Long id, String name, String innerCode, Integer street, String address, Integer customerType, Integer waterUseType,
                              String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
                              Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude) {
         if (null != id && id > 0l) {
@@ -79,7 +79,7 @@ public class Company extends BaseCompany<Company> {
         return InvokeResult.success();
     }
 
-    private Company setProp(Company company, String name, String innerCode, String street, String address, Integer customerType,
+    private Company setProp(Company company, String name, String innerCode, Integer street, String address, Integer customerType,
                             Integer waterUseType, String contact, String phone, String postalCode, String department, Integer wellCount,
                             Integer firstWatermeterCount, Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude) {
         company.setName(name);

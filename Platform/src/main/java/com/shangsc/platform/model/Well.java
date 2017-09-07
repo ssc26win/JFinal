@@ -54,7 +54,7 @@ public class Well extends BaseWell<Well> {
 	public InvokeResult save(Long id, Long companyId, String innerCode,	String name, String wellNum, String township,
 							 String village, String address, BigDecimal wellDepth, BigDecimal groundDepth, Date startDate, Integer oneselfWell,
 							 BigDecimal innerDiameter, String material,	String application,	Integer electromechanics, Integer calculateWater,
-							 String pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType, Integer groundType,
+							 Integer pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType, Integer groundType,
 							 String nameCode, Integer watersType, String useEfficiency, String method, Integer licence,
 							 String licenceCode, BigDecimal waterWithdrawals) {
 		if (!Company.me.hasExistCompany(innerCode)) {
@@ -86,7 +86,7 @@ public class Well extends BaseWell<Well> {
 	private Well setProp(Well well, Long companyId, String innerCode, String name, String wellNum, String township,
 			String village, String address, BigDecimal wellDepth, BigDecimal groundDepth, Date startDate, Integer oneselfWell,
 			BigDecimal innerDiameter, String material,	String application,	Integer electromechanics, Integer calculateWater,
-			String pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType,Integer groundType,
+			Integer pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType,Integer groundType,
 			String nameCode, Integer watersType, String useEfficiency, String method, Integer licence,
 			String licenceCode, BigDecimal waterWithdrawals) {
 		well.setCompanyId(companyId);

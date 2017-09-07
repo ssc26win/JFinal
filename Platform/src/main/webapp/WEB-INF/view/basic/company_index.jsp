@@ -56,9 +56,9 @@
                 <div class="col-xs-12">
                     <div class="row-fluid" style="margin-bottom: 5px;">
                         <div class="span12 control-group">
-                            <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
-                            <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
-                            <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
+                            <jc:button className="btn btn-primary" id="btn-add" permission="/basic/company" textName="添加"/>
+                            <jc:button className="btn btn-info" id="btn-edit" permission="/basic/company" textName="编辑"/>
+                            <jc:button className="btn btn-danger" id="btn-deleteData" permission="/basic/company" textName="删除"/>
                             <jc:button className="btn btn-success" id="btn-exportData" textName="导出"/>
                         </div>
                     </div>
@@ -108,8 +108,8 @@
             datatype: "json",
             colModel: [
                 { label: '单位名称', name: 'name', width: 100, sortable:false},
-                { label: '单位编号', name: 'inner_code', width: 40, sortable:false},
-                { label: '所属乡镇或街道', name: 'street', width: 120, sortable:false},
+                { label: '单位编号', name: 'inner_code', width: 50, sortable:false},
+                { label: '所属乡镇或街道', name: 'street', width: 80, sortable:false},
                 { label: '用户类型', name: 'customerTypeName', width: 40, sortable:false},
                 /*{ label: '取水用途', name: 'waterUseTypeName', width: 40, sortable:false},*/
                 { label: '联系人', name: 'contact', width: 40, sortable:false},

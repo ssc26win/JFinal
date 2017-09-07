@@ -40,7 +40,9 @@
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option value="">请选择水源类型</option></select>
                                                 <input type="text" id="meterAttr" name="meterAttr" class="" placeholder="请输入水表属性" style="margin-left: 5px;"/>
-                                                <input type="text" id="street" name="street" class="" placeholder="请输入所属乡镇" style="margin-left: 5px;"/>
+                                                <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                    <option value="">所属乡镇或街道</option>
+                                                </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="btn_search" class="btn btn-purple btn-sm">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
@@ -80,9 +82,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
 
-
-
-
         var grid_selector = "#grid-table";
         var pager_selector = "#grid-pager";
         //resize to fit page size
@@ -119,7 +118,7 @@
                 { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
                 { label: '查询日期', name: 'searchDay', width: 100, sortable:true},
-                { label: '日用水量（立方米）', name: 'dailyNum', width: 100, sortable:false},
+                { label: '日用水量（立方米）', name: 'net_water', width: 100, sortable:false},
                 { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
             ],
             viewrecords: true,
@@ -150,10 +149,12 @@
             var startTime = $("#startTime").val();
             var endTime = $("#endTime").val();
             var street = $("#street").val();
+            var meterAttr = $("#meterAttr").val();
             var watersType = $("#watersType").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',
-                postData:{'name':name,'innerCode':innerCode,'startTime':startTime,'endTime':endTime,'street':street,'watersType':watersType}, //发送数据
+                postData:{'name':name,'innerCode':innerCode,'startTime':startTime,'endTime':endTime,
+                    'street':street,'watersType':watersType,'meterAttr':meterAttr}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });
@@ -214,10 +215,14 @@
 
     function getDictMapData(){
         var submitData = {};
-        $.post("${context_path}/dict/getByType", submitData, function(data) {
+        $.post("${context_path}/dict/getSearchStatisUseDict", submitData, function(data) {
             var watersType = data.WatersType;
             for(var i = 0;i<watersType.length;i++) {
                 $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+            }
+            var street = data.Street;
+            for(var i = 0;i<street.length;i++) {
+                $("#street").append("<option value='" + street[i].value + "'>"+street[i].name+"</option>");
             }
         },"json");
     }

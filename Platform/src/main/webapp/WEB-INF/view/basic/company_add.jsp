@@ -41,7 +41,8 @@
                                 <div class="col-sm-4">
                                     <input type="text" id="address" name="address" value="${item.address}" class="form-control">
                                 </div>
-                                <label class="col-sm-2 control-label" for="street"><a href="#" title="点击获取" style="text-decoration-line: none" onclick="getPosition();">位置</a>信息:</label>
+                                <label class="col-sm-2 control-label" for="position"><a href="#" title="点击获取" style="text-decoration: none" onclick="getPosition();">
+                                    <b>位置</b></a>信息:</label>
                                 <div class="col-sm-4">
                                     <input type="text" id="position" name="position" value="${position}" readonly class="form-control">
                                 </div>
@@ -54,7 +55,8 @@
                                 </div>
                                 <label class="col-sm-2 control-label" for="street">所属乡镇或街道:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" id="street" name="street" value="${item.street}" class="form-control">
+                                    <input type="hidden" id="streetInput" name="streetInput" value="${item.street}">
+                                    <select id="street" name="street" class="form-control"></select>
                                 </div>
                                 <%--<label class="col-sm-2 control-label" for="waterUseType">取水用途:</label>--%>
                                 <%--<div class="col-sm-4">--%>
@@ -103,16 +105,6 @@
                                     <select  id="unitType" name="unitType" value="${item.unitType}" class="form-control"> </select>
                                 </div>
                             </div>
-                            <%--<div class="form-group">--%>
-                                <%--<label class="col-sm-2 control-label" for="longitude" title="点击获取"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">地图经度</a>:</label>--%>
-                                <%--<div class="col-sm-4">--%>
-                                    <%--<input type="number" id="longitude" step="0.000000" name="longitude" value="${item.longitude}" class="form-control">--%>
-                                <%--</div>--%>
-                                <%--<label class="col-sm-2 control-label" for="latitude" title="点击获取"><a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">地图纬度</a>:</label>--%>
-                                <%--<div class="col-sm-4">--%>
-                                    <%--<input type="number" id="latitude" step="0.000000" name="latitude" value="${item.latitude}" class="form-control">--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
                             <div class="clearfix form-actions" align="center">
                                 <div class="col-md-offset-3 col-md-9">
                                     <button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">
@@ -257,22 +249,22 @@
 
     function getDictMapData(){
         var submitData = {};
-        $.post("${context_path}/dict/getByType", submitData, function(data) {
+        $.post("${context_path}/dict/getCompanyUseDict", submitData, function(data) {
             var unitType = data.UnitType;
             var customerType = data.UserType;
-            var waterUseType = data.WaterUseType;
+            var street = data.Street;
             for(var i = 0;i<unitType.length;i++) {
                 $("#unitType").append("<option value='" + unitType[i].value + "'>"+unitType[i].name+"</option>");
             }
             for(var i = 0;i<customerType.length;i++) {
                 $("#customerType").append("<option value='" + customerType[i].value + "'>"+customerType[i].name+"</option>");
             }
-            for(var i = 0;i<waterUseType.length;i++) {
-                $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
+            for(var i = 0;i<street.length;i++) {
+                $("#street").append("<option value='" + street[i].value + "'>"+street[i].name+"</option>");
             }
             $("#unitType").val($("#unitTypeInput").val());
             $("#customerType").val($("#customerTypeInput").val());
-            $("#waterUseType").val($("#waterUseTypeInput").val());
+            $("#street").val($("#streetInput").val());
 
         },"json");
     }

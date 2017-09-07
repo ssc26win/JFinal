@@ -204,7 +204,7 @@
 
     function getDictMapData(){
         var submitData = {};
-        $.post("${context_path}/dict/getByType", submitData, function(data) {
+        $.post("${context_path}/dict/getMeterUseDict", submitData, function(data) {
             var chargeType = data.ChargeType;
             var watersType = data.WatersType;
             var waterUseType = data.WaterUseType;

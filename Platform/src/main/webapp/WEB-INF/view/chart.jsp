@@ -58,7 +58,7 @@
                 plotShadow: false,
             };
             var title1 = {
-                text: '水表数量'
+                text: '水表数量（比例）'
             };
             var tooltip1 = {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
@@ -80,9 +80,9 @@
             };
             var series1 = [{
                 type: 'pie',
-                name: '水表数量',
+                name: '水表数量（%）',
                 data: [
-                    {name:'远传水表总数量' + '(' + total + ')', y:total,url:'${context_path}/basic/meter'},
+                    //{name:'远传水表总数量' + '(' + total + ')', y:total,url:'${context_path}/basic/meter'},
                     {name:'正常表数量' + '(' + normalTotal + ')', y:normalTotal,url:'${context_path}/basic/meter/normal'},
                     {name:'异常表数量' + '(' + exptionTotal + ')', y:exptionTotal,url:'${context_path}/basic/meter/exption'},
                 ]
@@ -114,7 +114,7 @@
                 plotShadow: false
             };
             var title1 = {
-                text: '单位数量'
+                text: '单位数量（比例）'
             };
             var tooltip1 = {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
@@ -136,9 +136,9 @@
             };
             var series1 = [{
                 type: 'pie',
-                name: '单位数量',
+                name: '单位数量（%）',
                 data: [
-                    {name:'单位总数量' + '(' + total2 + ')', y:total2,url:'${context_path}/basic/company'},
+                    //{name:'单位总数量' + '(' + total2 + ')', y:total2,url:'${context_path}/basic/company'},
                     {name:'正常单位数量' + '(' + normalTotal2 + ')', y:normalTotal2,url:'${context_path}/basic/company/normal'},
                     {name:'预警单位数量' + '(' + warnTotal2 + ')', y:warnTotal2,url:'${context_path}/basic/company/warn'},
                     {name:'其他' + '(' + otherTotal + ')', y:otherTotal,url:'${context_path}/basic/company/other'},
@@ -160,16 +160,12 @@
         })
 
         $.get("${context_path}/chart/getDilay", function (data) {
-
-
             var title = {
                 text: ''
             };
             var subtitle = {
                 text: '日用水量'
             };
-
-
             var xAxis = {
                 categories: data.day
             };
@@ -220,7 +216,6 @@
                             var time=event.point.category
 
                             window.location.href="${context_path}/statis/daily?time="+time;
-
 
                         }
                     }

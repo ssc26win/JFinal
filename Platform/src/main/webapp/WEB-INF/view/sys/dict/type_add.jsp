@@ -33,7 +33,7 @@
 												<form class="form-horizontal" id="validation-form" method="post">
 													<input name="id" type="hidden" value="${item.id}"/>
 													<div class="form-group">
-														<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="name">名称</label>
+														<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="name">字段代码</label>
 														<div class="col-xs-12 col-sm-9">
 															<div class="clearfix">
 													           <input type="text" id="name" name="name" value="${item.name}" class="col-xs-12 col-sm-6">

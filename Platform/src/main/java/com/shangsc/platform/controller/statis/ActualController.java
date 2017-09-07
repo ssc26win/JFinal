@@ -1,6 +1,7 @@
 package com.shangsc.platform.controller.statis;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
@@ -36,7 +37,7 @@ public class ActualController extends BaseController {
         Page<ActualData> pageInfo = ActualData.me.getActualDataPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));

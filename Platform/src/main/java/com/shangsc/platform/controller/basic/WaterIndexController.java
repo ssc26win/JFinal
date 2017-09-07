@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
+import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
@@ -41,15 +42,8 @@ public class WaterIndexController extends BaseController {
         String keyword=this.getPara("name");
         Page<WaterIndex> pageInfo = WaterIndex.me.getWaterIndexPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<WaterIndex> list = pageInfo.getList();
-        if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
-            for (int i = 0; i < list.size(); i++) {
-                WaterIndex co = list.get(i);
-                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
-                list.set(i, co);
-            }
-        }
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+        setVoProp(list);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
     @RequiresPermissions(value={"/basic/waterindex"})
@@ -121,14 +115,7 @@ public class WaterIndexController extends BaseController {
         String keyword=this.getPara("name");
         Page<WaterIndex> pageInfo = WaterIndex.me.getWaterIndexPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
         List<WaterIndex> list = pageInfo.getList();
-        if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictData.WaterUseType);
-            for (int i = 0; i < list.size(); i++) {
-                WaterIndex co = list.get(i);
-                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
-                list.set(i, co);
-            }
-        }
+        setVoProp(list);
         WaterIndexExportService service = new WaterIndexExportService();
         String path = service.export(list);
         renderFile(new File(path));
@@ -166,9 +153,19 @@ public class WaterIndexController extends BaseController {
         this.renderJson(InvokeResult.success());
     }
 
-
     @RequiresPermissions(value = {"/basic/waterindex"})
     public void downloadDemo() {
         renderFile(new File(PropKit.get("import.water.index.demo.path")));
+    }
+
+    private void setVoProp(List<WaterIndex> list) {
+        if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
+            for (int i = 0; i < list.size(); i++) {
+                WaterIndex co = list.get(i);
+                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
+                list.set(i, co);
+            }
+        }
     }
 }

@@ -32,6 +32,32 @@ public abstract class ToolDateTime {
 	public static final String pattern_ymd_hms_s = "yyyy-MM-dd HH:mm:ss:SSS"; // pattern_ymd timeMillisecond
 	public static final int pattern_ymd_hms_s_length = 23;
 
+	public static String getToday() {
+		Date currentTime = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat(pattern_ymd);
+		String dateString = formatter.format(currentTime);
+		return dateString + " 00:00:00";
+	}
+
+	public static Date getDateToday() {
+		return ToolDateTime.parse(getToday());
+	}
+
+	public static Date getTomorrow() {
+		Date today = getDateToday();
+		Calendar c = Calendar.getInstance();
+		c.setTime(today);
+		c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
+		return c.getTime();
+	}
+
+	public static Date getTomorrow(Date date) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
+		return c.getTime();
+	}
+
 	/**
 	 * 主要是给jfinal使用，数据库只认java.sql.*
 	 *
@@ -268,7 +294,7 @@ public abstract class ToolDateTime {
 	/**
 	 * 得到某一天是星期几
 	 *
-	 * @param strDate
+	 * @param date
 	 *            日期字符串
 	 * @return String 星期几
 	 */
@@ -392,7 +418,6 @@ public abstract class ToolDateTime {
 	 * 获取结束时间
 	 *
 	 * @param start
-	 * @param end
 	 * @return
 	 */
 	public static Date endDateByDay(Date start) {
@@ -424,7 +449,6 @@ public abstract class ToolDateTime {
 	/**
 	 * 获取结束时间
 	 *
-	 * @param start
 	 * @param end
 	 * @return
 	 */

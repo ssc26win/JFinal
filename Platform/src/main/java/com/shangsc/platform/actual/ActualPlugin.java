@@ -87,7 +87,7 @@ public class ActualPlugin implements IPlugin {
                                     }else{
                                         // 判断文件存在,就以FileWriter文件追加的方式写文件
                                         try {
-                                            fw = new FileWriter("c:\\123.txt",true);
+                                            fw = new FileWriter("/usr/local/tomcat7/apache-tomcat-7.0.52/webapps/platform/upload_udp.log",true);
                                             fw.write(text + "\r\n");
                                             fw.flush();
                                         } catch (IOException e) {

@@ -1,6 +1,7 @@
 package com.shangsc.platform.controller.statis;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
@@ -39,7 +40,11 @@ public class YearStatisController extends BaseController {
             String yearStr = StringUtils.trim(this.getPara("year"));
             year = Integer.parseInt(yearStr);
         }
-        String street = this.getPara("street");
+        Integer street = null;
+        if (StringUtils.isNotEmpty(this.getPara("street"))) {
+            String streetStr = StringUtils.trim(this.getPara("street"));
+            street = Integer.parseInt(streetStr);
+        }
         Integer watersType = null;
         if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
@@ -49,7 +54,7 @@ public class YearStatisController extends BaseController {
                 year, name, innerCode, street, watersType);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
                 String netWaterNum = "0";
@@ -79,7 +84,11 @@ public class YearStatisController extends BaseController {
             String yearStr = StringUtils.trim(this.getPara("year"));
             year = Integer.parseInt(yearStr);
         }
-        String street = this.getPara("street");
+        Integer street = null;
+        if (StringUtils.isNotEmpty(this.getPara("street"))) {
+            String streetStr = StringUtils.trim(this.getPara("street"));
+            street = Integer.parseInt(streetStr);
+        }
         Integer watersType = null;
         if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
@@ -89,7 +98,7 @@ public class YearStatisController extends BaseController {
                 year, name, innerCode, street, watersType);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictData.WatersType);
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));

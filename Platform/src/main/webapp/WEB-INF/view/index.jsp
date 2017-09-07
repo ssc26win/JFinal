@@ -46,16 +46,15 @@
 				<script type="text/javascript">
 					try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 				</script>
-
+				<%--
 				<div class="sidebar-shortcuts" id="sidebar-shortcuts">
 					<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
 						<button class="btn btn-success" onclick="setQuickLink('console');">
 							<i class="ace-icon fa fa-signal"></i>
 						</button>
-
-						<button class="btn btn-info"  onclick="setQuickLink('company');">
+						<jc:button className="btn btn-info" id="bnt-company" permission="/basic/company" onclick="setQuickLink('company');">
 							<i class="ace-icon fa fa-pencil"></i>
-						</button>
+						</jc:button>
 
 						<!-- #section:basics/sidebar.layout.shortcuts -->
 						<button class="btn btn-warning"  onclick="setQuickLink('users');">
@@ -78,7 +77,7 @@
 
 						<span class="btn btn-danger"></span>
 					</div>
-				</div><!-- /.sidebar-shortcuts -->
+				</div><!-- /.sidebar-shortcuts -->--%>
 
 				<!-- 菜单 -->
 				<jc:menu />

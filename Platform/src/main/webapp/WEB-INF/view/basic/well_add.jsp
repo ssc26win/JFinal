@@ -106,13 +106,15 @@
                                 </div>
                                 <label class="col-sm-3 control-label" for="pumpModel">水泵型号:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="pumpModel" name="pumpModel" value="${item.pumpModel}" class="form-control">
+                                    <input type="hidden" id="pumpModelInput" name="pumpModelInput" value="${item.pumpModel}">
+                                    <select id="pumpModel" name="pumpModel" value="${item.pumpModel}" class="form-control"></select>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="calculateType">水量计量设施类型:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="calculateType" name="calculateType" value="${item.calculateType}" class="form-control">
+                                    <input type="hidden" id="calculateTypeInput" name="calculateTypeInput" value="${item.calculateType}">
+                                    <select id="calculateType" name="calculateType" class="form-control"></select>
                                 </div>
                                 <label class="col-sm-3 control-label" for="aboveScale_0">规模以上地下水源地水井:</label>
                                 <div class="col-sm-3">
@@ -123,11 +125,13 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="geomorphicType">所在地貌类型区:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="geomorphicType" name="geomorphicType" value="${item.geomorphicType}" class="form-control">
+                                    <input type="hidden" id="geomorphicTypeInput" name="geomorphicTypeInput" value="${item.geomorphicType}">
+                                    <select id="geomorphicType" name="geomorphicType" value="${item.geomorphicType}" class="form-control"></select>
                                 </div>
                                 <label class="col-sm-3 control-label" for="groundType">所取地下水类型:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="groundType" name="groundType" value="${item.groundType}" class="form-control">
+                                    <input type="hidden" id="groundTypeInput" name="groundTypeInput" value="${item.groundType}">
+                                    <select id="groundType" name="groundType" value="${item.groundType}" class="form-control"></select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -270,8 +274,12 @@
     }
     function getDictMapData(){
         var submitData = {};
-        $.post("${context_path}/dict/getByType", submitData, function(data) {
+        $.post("${context_path}/dict/getWellUseDict", submitData, function(data) {
             var watersType = data.WatersType;
+            var pumpModel = data.PumpModel;
+            var calculateType = data.CalculateType;
+            var geomorphicType = data.GeomorphicType;
+            var groundType = data.GroundType;
             for(var i = 0;i<watersType.length;i++) {
                 if ($("#watersTypeInput").val() == watersType[i].value) {
                     $("#watersType").append("<option selected value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
@@ -279,6 +287,25 @@
                     $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
                 }
             }
+            for (var i = 0;i<pumpModel.length;i++) {
+                $("#pumpModel").append("<option value='" + pumpModel[i].value + "'>"+pumpModel[i].name+"</option>");
+            }
+            $("#pumpModel").val($("#pumpModelInput").val());
+
+            for (var i = 0;i<calculateType.length;i++) {
+                $("#calculateType").append("<option value='" + calculateType[i].value + "'>"+calculateType[i].name+"</option>");
+            }
+            $("#calculateType").val($("#calculateTypeInput").val());
+
+            for (var i = 0;i<geomorphicType.length;i++) {
+                $("#geomorphicType").append("<option value='" + geomorphicType[i].value + "'>"+geomorphicType[i].name+"</option>");
+            }
+            $("#geomorphicType").val($("#geomorphicTypeInput").val());
+
+            for (var i = 0;i<groundType.length;i++) {
+                $("#groundType").append("<option value='" + groundType[i].value + "'>"+groundType[i].name+"</option>");
+            }
+            $("#groundType").val($("#groundTypeInput").val());
         },"json");
     }
     $(function(){

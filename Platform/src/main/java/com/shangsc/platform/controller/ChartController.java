@@ -2,9 +2,11 @@ package com.shangsc.platform.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
+import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.WaterIndex;
@@ -25,6 +27,7 @@ public class ChartController extends Controller {
 
     private AtomicInteger count = new AtomicInteger(0);
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
     public void index() {
         JSONObject object = new JSONObject();
@@ -44,6 +47,7 @@ public class ChartController extends Controller {
         this.renderJson(object.toJSONString());
     }
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
     public void company() {
         JSONObject object = new JSONObject();
@@ -117,6 +121,7 @@ public class ChartController extends Controller {
         this.renderJson(object.toJSONString());
     }
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
     public void getDilay() {
         List<Record> records = ActualData.me.getDailyActualData();
@@ -135,6 +140,7 @@ public class ChartController extends Controller {
         this.renderJson(obj);
     }
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
     public void getMonth() {
         List<Record> records = ActualData.me.getMonthActualData();
@@ -153,6 +159,7 @@ public class ChartController extends Controller {
         this.renderJson(obj);
     }
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value={"/chart"})
     public void baiduMap() {
         String innerCode = this.getPara("innerCode");
