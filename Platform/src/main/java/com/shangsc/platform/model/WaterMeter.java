@@ -72,6 +72,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
                 meter = setProp(meter, companyId, innerCode, lineNum, meterNum, watersType, waterUseType, meterAttr, chargeType, billingCycle, registDate);
                 meter.setRegistDate(new Date());
                 meter.save();
+                Company.me.updateMeterNum(innerCode);
             }
         }
         return InvokeResult.success();

@@ -3,7 +3,7 @@
 	<a href="javascript:;" class="navbar-brand">
 		<small>
 			<i class="fa fa-cloud"></i>
-			通州水务管理系统
+			通州区远传水表采集系统
 		</small>
 	</a>
 </div>

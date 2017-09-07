@@ -34,6 +34,35 @@ public class Company extends BaseCompany<Company> {
         return num>0?true:false;
     }
 
+    public Company findByInnerCode(String inner_code) {
+        String sql = "select * from t_company where inner_code='" + inner_code + "'";
+        List<Company> companies = this.find(sql);
+        if (CollectionUtils.isNotEmpty(companies)) {
+            return companies.get(0);
+        }
+        return null;
+    }
+
+    public void updateMeterNum(String innerCode) {
+        Company company = Company.me.findByInnerCode(innerCode);
+        Integer num = company.getRemotemeterCount();
+        if (num == null) {
+            num = 0;
+        }
+        company.setRemotemeterCount(num+1);
+        company.update();
+    }
+
+    public void updateWellNum(String innerCode) {
+        Company company = Company.me.findByInnerCode(innerCode);
+        Integer num = company.getWellCount();
+        if (num == null) {
+            num = 0;
+        }
+        company.setWellCount(num+1);
+        company.update();
+    }
+
     /**
      * 单位名是否已存在
      * @param name
@@ -120,7 +149,22 @@ public class Company extends BaseCompany<Company> {
         String select="select * from t_company c left join (select sum(net_water) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
                 " on c.inner_code=tad.innerCode";
         if (StringUtils.isNotEmpty(innerCode)) {
-            select = select + " where c.inner_code=" + innerCode;
+            select = select + " where c.inner_code='" + innerCode + "'";
+        }
+        return Db.find(select);
+    }
+
+    public List<Record> getCompanyByType(String type) {
+        String select="select * from t_company c left join (select sum(net_water) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
+                " on c.inner_code=tad.innerCode";
+        if ("1".equals(type)) {
+            String innerCodes = getWarnInnerCodes();
+            select = select + " where c.inner_code not in (" + innerCodes + ")";
+        } else if ("2".equals(type)) {
+            String innerCodes = getWarnInnerCodes();
+            select = select + " where c.inner_code in (" + innerCodes + ")";
+        } else {
+            select = select + " where 1=1 ";
         }
         return Db.find(select);
     }

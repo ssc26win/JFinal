@@ -15,6 +15,42 @@
 </head>
 <body>
 <div class="main-container" id="main-container">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <script type="text/javascript">
+            try {
+                ace.settings.check('breadcrumbs', 'fixed')
+            } catch (e) {
+            }
+        </script>
+
+        <ul class="breadcrumb">
+            <li>
+                <i class="icon-home home-icon"></i>
+                <a href="#">首页</a>
+            </li>
+            <li class="active">导航地图</li>
+        </ul><!-- .breadcrumb -->
+
+        <div class="nav-search" id="nav-search">
+            <form class="form-search">
+                    <span class="input-icon">
+                        <div class="no-margin-right">
+                            <label style="margin-right: 10px;">
+                                <input type="radio" id="all" name="maptype" value="0" checked/> 全部
+                            </label>
+                            <label style="margin-right: 10px;">
+                                <input type="radio" id="normal" name="maptype" value="1"/> 正常单位
+                            </label>
+                            <label style="margin-right: 10px;">
+                                <input type="radio" id="warn" name="maptype" value="2"/> <span style="color: red">预警单位</span>
+                            </label>
+                            <input type="button" class="btn btn-primary btn-xs" value="搜索" onclick="findCompanyMap();">
+                        </div>
+                    </span>
+            </form>
+        </div><!-- #nav-search -->
+
+    </div>
     <script type="text/javascript">
         try{ace.settings.check('main-container' , 'fixed')}catch(e){}
     </script>
@@ -26,13 +62,36 @@
         </div>
     </div>
 </div>
+<script src="${res_url}js/charts/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        if ('${type}' != '') {
+            $("input[name='maptype']").each(function(){
+                if($(this).val()=='${type}') {
+                    $(this).attr("checked",true);
+                }
+            });
+        }
+    })
+    function findCompanyMap() {
+        var type = $("input[name='maptype']:checked").val();
+        window.location.href = "${context_path}/#/chart/baiduMap?type="+ type;
+    }
+</script>
 <script type="text/javascript">
     var markerArr;
     markerArr = JSON.parse('${companys}');
+    var longitude = 116.657140;
+    var latitude = 39.909982;
+    var position = '${position}';
+    if (position!='') {
+        longitude = parseFloat(position.split(",")[0]);
+        latitude = parseFloat(position.split(",")[1].toString());
+    }
     function map_init() {
         //alert(JSON.stringify(markerArr));
         var map = new BMap.Map("map"); // 创建Map实例
-        var point = new BMap.Point(116.657140, 39.909982); //地图中心点
+        var point = new BMap.Point(longitude, latitude); //地图中心点
         map.centerAndZoom(point, 15); // 初始化地图,设置中心点坐标和地图级别。
         map.enableScrollWheelZoom(true); //启用滚轮放大缩小
         //地图、卫星、混合模式切换

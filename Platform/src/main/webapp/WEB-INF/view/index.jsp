@@ -5,7 +5,7 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta charset="utf-8" />
-		<title>通州水务管理系统</title>
+		<title>通州区远传水表采集系统</title>
 
 		<meta name="description" content="overview &amp; stats" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -100,18 +100,19 @@
 						</script>
 
 						<!-- 面包屑 -->
-					<%--jc:breadcrumb / --%>
-					<div class="row content-tabs">
-                <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
-                </button>
-                <nav class="page-tabs J_menuTabs">
-                    <div class="page-tabs-content" style="margin-left: 0px;">
-                        <a href="javascript:;" class="J_menuTab active" data-id="/home">控制台</a>
-                    </div>
-                </nav>
-                <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
-                </button>
-            </div>
+						<%--jc:breadcrumb / --%>
+						<div class="row content-tabs">
+								<button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i>
+								</button>
+								<nav class="page-tabs J_menuTabs">
+									<div class="page-tabs-content" style="margin-left: 0px;">
+										<a href="javascript:;" class="J_menuTab active" data-id="/home">控制台</a>
+									</div>
+								</nav>
+								<button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
+								</button>
+
+						</div>
 					</div>
 				<div class="page-content" id="page-content">
 					<div class="row J_mainContent" id="content-main">

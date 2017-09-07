@@ -11,6 +11,8 @@ import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.WaterIndex;
 import com.shangsc.platform.model.WaterMeter;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -162,9 +164,16 @@ public class ChartController extends Controller {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value={"/chart"})
     public void baiduMap() {
-        String innerCode = this.getPara("innerCode");
+        List<Record> records = new ArrayList<>();
         JSONArray array = new JSONArray();
-        List<Record> records = Company.me.getCompanyAll(innerCode);
+        String type = this.getPara("type");
+        if (StringUtils.isNotEmpty(type)) {
+            records = Company.me.getCompanyByType(type);
+            this.setAttr("type", type);
+        } else {
+            String innerCode = this.getPara("innerCode");
+            records = Company.me.getCompanyAll(innerCode);
+        }
         for (Record record:records) {
             JSONObject object = new JSONObject();
             object.put("longitude", record.get("longitude"));
@@ -178,6 +187,10 @@ public class ChartController extends Controller {
             }
             object.put("address", record.get("address"));
             array.add(object);
+        }
+        if (CollectionUtils.isNotEmpty(records) && records.size() == 1) {
+            String centerPosition = records.get(0).get("longitude") + "," + records.get(0).get("latitude");
+            this.setAttr("position", centerPosition);
         }
         this.setAttr("companys", array.toJSONString());
         render("map.jsp");

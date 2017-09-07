@@ -78,6 +78,7 @@ public class Well extends BaseWell<Well> {
 						innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
 						groundType,	nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
 				well.save();
+				Company.me.updateWellNum(innerCode);
 			}
 		}
 		return InvokeResult.success();
