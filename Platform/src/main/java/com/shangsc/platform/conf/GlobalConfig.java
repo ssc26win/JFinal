@@ -17,13 +17,6 @@ package com.shangsc.platform.conf;
 
 import com.alibaba.druid.filter.stat.StatFilter;
 import com.alibaba.druid.wall.WallFilter;
-import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
-import com.shangsc.platform.core.auth.interceptor.SysLogInterceptor;
-import com.shangsc.platform.core.handler.ResourceHandler;
-import com.shangsc.platform.core.util.IWebUtils;
-import com.shangsc.platform.mail.MailPlugin;
-import com.shangsc.platform.model.SysUser;
-import com.shangsc.platform.model._MappingKit;
 import com.jfinal.config.*;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
@@ -34,6 +27,14 @@ import com.jfinal.plugin.druid.IDruidStatViewAuth;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.render.ViewType;
 import com.jfinal.template.Engine;
+import com.shangsc.platform.actual.ActualTcpPlugin;
+import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
+import com.shangsc.platform.core.auth.interceptor.SysLogInterceptor;
+import com.shangsc.platform.core.handler.ResourceHandler;
+import com.shangsc.platform.core.util.IWebUtils;
+import com.shangsc.platform.mail.MailPlugin;
+import com.shangsc.platform.model.SysUser;
+import com.shangsc.platform.model._MappingKit;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -96,6 +97,9 @@ public class GlobalConfig extends JFinalConfig {
 
 		//加载邮件配置
 		initMail();
+
+		//开启实时数据监听
+		initActual();
 	}
 
 	/**
@@ -131,5 +135,8 @@ public class GlobalConfig extends JFinalConfig {
 	}
 
 
-
+	public void initActual() {
+		//new ActualUdpPlugin().start();
+		new ActualTcpPlugin().start();
+	}
 }

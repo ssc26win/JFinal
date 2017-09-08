@@ -1,17 +1,17 @@
-package com.shangsc.platform.udp;
+package com.shangsc.platform.actual.udp;
 
 import java.io.IOException;
 import java.net.*;
 
-public class ChatterClient extends Thread {
+public class UdpClient extends Thread {
 
     private DatagramSocket s;
     private InetAddress hostAddress;
-    private byte[] buf = new byte[1000];
+    private byte[] buf = new byte[1024];
     private DatagramPacket dp = new DatagramPacket(buf, buf.length);
     private int id;
 
-    public ChatterClient(int identifier) {
+    public UdpClient(int identifier) {
         id = identifier;
         try {
             s = new DatagramSocket();
@@ -32,7 +32,7 @@ public class ChatterClient extends Thread {
         try {
             for (int i = 0; i < 25; i++) {
                 String outMessage = "Client #" + id + ",message #" + i;
-                s.send(Dgram.toDatagram(outMessage, hostAddress, ChatterServer.INPORT));
+                s.send(Dgram.toDatagram(outMessage, hostAddress, 10001));
                 s.receive(dp);
                 String rcvd = "Client #" + id + ",rcvd from " + dp.getAddress() + ", " + dp.getPort() + ":" + Dgram.toString(dp);
                 System.out.println(rcvd);
@@ -44,13 +44,8 @@ public class ChatterClient extends Thread {
     }
 
     public static void main(String[] args) {
-        try {
-            System.in.read();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         for (int i = 0; i < 10; i++) {
-            new ChatterClient(i).start();
+            new UdpClient(i).start();
         }
     }
 }

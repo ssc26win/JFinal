@@ -1,4 +1,4 @@
-package com.shangsc.platform.udp;
+package com.shangsc.platform.actual.udp;
 
 import java.net.DatagramPacket;;
 import java.net.InetAddress;
