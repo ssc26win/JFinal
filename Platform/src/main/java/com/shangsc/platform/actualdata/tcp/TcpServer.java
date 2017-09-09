@@ -7,6 +7,7 @@ import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 /**
@@ -17,13 +18,7 @@ import java.util.concurrent.Executors;
  */
 public class TcpServer {
 
-    private final int port;
-
     public TcpServer(int port) {
-        this.port = port;
-    }
-
-    public void run() {
         System.out.println("tcp server started, listening on port:" + port);
         ServerBootstrap sb = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(),
                 Executors.newCachedThreadPool()));
@@ -33,11 +28,19 @@ public class TcpServer {
                 return Channels.pipeline(new TcpServerHandler());
             }
         });
-        sb.bind(new InetSocketAddress(port));
+        //获取InetSocketAdress对象的InetAddress;
+        InetSocketAddress address = new InetSocketAddress(PropKit.get("config.host"), port);
+        //获取address的域名:wangrb.com
+        System.out.println(address.getHostName());
+        //获取端口:9993
+        System.out.println(address.getPort());
+        //获取address的IP
+        InetAddress add = address.getAddress();
+        sb.bind(new InetSocketAddress(add, port));
     }
 
     public static void main(String[] args) {
         PropKit.use("config.properties");
-        new TcpServer(Integer.parseInt(PropKit.get("config.tcp.port"))).run();
+        new TcpServer(Integer.parseInt(PropKit.get("config.tcp.port")));
     }
 }
