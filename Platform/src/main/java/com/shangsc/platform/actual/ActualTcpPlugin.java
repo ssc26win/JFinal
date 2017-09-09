@@ -17,7 +17,7 @@ public class ActualTcpPlugin implements IPlugin {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new TcpServer(PropKit.get("config.host"), Integer.parseInt(PropKit.get("config.tcp.port")));
+                new TcpServer(Integer.parseInt(PropKit.get("config.tcp.port")));
             }
         }).start();
         return true;

@@ -1,4 +1,4 @@
-package com.shangsc.platform.actualdata;
+package com.shangsc.platform.actual;
 
 /**
  * @Author ssc

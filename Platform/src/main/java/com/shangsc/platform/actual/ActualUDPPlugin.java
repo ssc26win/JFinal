@@ -18,7 +18,7 @@ public class ActualUdpPlugin implements IPlugin {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new UdpServer(PropKit.get("config.host"), Integer.parseInt(PropKit.get("config.udp.port")));
+                new UdpServer(Integer.parseInt(PropKit.get("config.udp.port")));
             }
         }).start();
         return true;

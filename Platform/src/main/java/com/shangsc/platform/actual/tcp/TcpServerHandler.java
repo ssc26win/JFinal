@@ -1,4 +1,4 @@
-package com.shangsc.platform.actualdata.tcp;
+package com.shangsc.platform.actual.tcp;
 
 import com.jfinal.kit.PropKit;
 import com.shangsc.platform.util.ToolDateTime;

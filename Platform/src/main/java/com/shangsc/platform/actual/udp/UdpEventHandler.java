@@ -1,7 +1,7 @@
-package com.shangsc.platform.actualdata.udp;
+package com.shangsc.platform.actual.udp;
 
 import com.jfinal.kit.PropKit;
-import com.shangsc.platform.actualdata.TypeConversionUtil;
+import com.shangsc.platform.actual.TypeConversionUtil;
 import com.shangsc.platform.util.ToolDateTime;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.ChannelHandlerContext;
@@ -49,6 +49,11 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
         log("------end-------");
 
         System.out.println("receive:" + buffer.toString(Charset.defaultCharset()));
+
+        System.out.println("receive:" + buffer.toString(Charset.forName("gbk")));
+
+        System.out.println("receive:" + buffer.toString(Charset.forName("gb2312")));
+
         //e.getChannel().write(e.getMessage());
         recordMsg(buffer.toString(Charset.defaultCharset()));
     }
