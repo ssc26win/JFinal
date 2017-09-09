@@ -58,6 +58,7 @@
                             <jc:button className="btn btn-primary" id="btn-add" permission="/basic/meter" textName="添加"/>
                             <jc:button className="btn btn-info" id="btn-edit" permission="/basic/meter" textName="编辑"/>
                             <jc:button className="btn btn-danger" id="btn-deleteData" permission="/basic/meter" textName="删除"/>
+                            <jc:button className="btn btn-warning" id="btn-importData" permission="/basic/meter" textName="导入"/>
                             <jc:button className="btn btn-success" id="btn-exportData" textName="导出"/>
                         </div>
                     </div>
@@ -108,9 +109,13 @@
             colModel: [
                 { label: '单位名称', name: 'companyName', width: 150, sortable:false},
                 { label: '单位编号', name: 'inner_code', width: 60, sortable:false},
+                { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
+                { label: '所属区县', name: 'county', width: 50, sortable:false},
                 { label: '路别', name: 'line_num', width: 100, sortable:false},
                 { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
                 { label: '水源类型', name: 'watersTypeName', width: 60, sortable:false},
+                { label: '国标行业', name: 'gb_industry', width: 40, sortable:false},
+                { label: '主要行业', name: 'main_industry', width: 40, sortable:false},
                 { label: '取水用途', name: 'waterUseTypeName', width: 80, sortable:false},
                 { label: '水表属性', name: 'meter_attr', width: 80, sortable:false},
                 { label: '收费类型', name: 'chargeTypeName', width: 50, sortable:false},

@@ -30,11 +30,10 @@ public class TcpServer {
         });
         //获取InetSocketAdress对象的InetAddress;
         InetSocketAddress address = new InetSocketAddress(PropKit.get("config.host"), port);
-        //获取address的域名:wangrb.com
+
         System.out.println(address.getHostName());
-        //获取端口:9993
         System.out.println(address.getPort());
-        //获取address的IP
+
         InetAddress add = address.getAddress();
         sb.bind(new InetSocketAddress(add, port));
     }

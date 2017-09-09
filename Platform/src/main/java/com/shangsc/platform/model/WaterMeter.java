@@ -72,7 +72,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
                 meter = setProp(meter, companyId, innerCode, lineNum, meterNum, watersType, waterUseType, meterAttr, chargeType, billingCycle, registDate);
                 meter.setRegistDate(new Date());
                 meter.save();
-                Company.me.updateMeterNum(innerCode);
+                Company.me.updateMeterNum(innerCode, true);
             }
         }
         return InvokeResult.success();
@@ -100,11 +100,17 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
     public InvokeResult deleteData(String idStrs) {
         List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
         for (int i = 0; i < ids.size(); i++) {
+            WaterMeter meter = WaterMeter.me.findById(ids.get(i));
+            Company.me.updateMeterNum(meter.getInnerCode(), false);
             this.deleteById(ids.get(i));
         }
         return InvokeResult.success();
     }
 
+    public WaterMeter findByMeterNum(String meterNum){
+        String sql = "SELECT * FROM t_Water_Meter WHERE meter_num= ?";
+        return this.findFirst(sql,meterNum);
+    }
 
     public  WaterMeter findByInnerCode(String innerCode){
         String sql = "SELECT * FROM t_Water_Meter WHERE inner_code= ?";

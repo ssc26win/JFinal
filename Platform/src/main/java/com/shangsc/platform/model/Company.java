@@ -43,23 +43,35 @@ public class Company extends BaseCompany<Company> {
         return null;
     }
 
-    public void updateMeterNum(String innerCode) {
+    public void updateMeterNum(String innerCode, boolean flag) {
         Company company = Company.me.findByInnerCode(innerCode);
         Integer num = company.getRemotemeterCount();
         if (num == null) {
             num = 0;
         }
-        company.setRemotemeterCount(num+1);
+        if (flag) {
+            company.setRemotemeterCount(num + 1);
+        } else {
+            if (num > 0) {
+                company.setRemotemeterCount(num-1);
+            }
+        }
         company.update();
     }
 
-    public void updateWellNum(String innerCode) {
+    public void updateWellNum(String innerCode, boolean flag) {
         Company company = Company.me.findByInnerCode(innerCode);
         Integer num = company.getWellCount();
         if (num == null) {
             num = 0;
         }
-        company.setWellCount(num+1);
+        if (flag) {
+            company.setWellCount(num + 1);
+        } else {
+            if (num > 0) {
+                company.setWellCount(num - 1);
+            }
+        }
         company.update();
     }
 

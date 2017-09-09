@@ -59,6 +59,7 @@
                             <jc:button className="btn btn-primary" id="btn-add" permission="/basic/company" textName="添加"/>
                             <jc:button className="btn btn-info" id="btn-edit" permission="/basic/company" textName="编辑"/>
                             <jc:button className="btn btn-danger" id="btn-deleteData" permission="/basic/company" textName="删除"/>
+                            <jc:button className="btn btn-warning" id="btn-importData" permission="/basic/company" textName="导入"/>
                             <jc:button className="btn btn-success" id="btn-exportData" textName="导出"/>
                         </div>
                     </div>
@@ -107,10 +108,15 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
+                { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
                 { label: '单位名称', name: 'name', width: 100, sortable:false},
                 { label: '单位编号', name: 'inner_code', width: 50, sortable:false},
-                { label: '所属乡镇或街道', name: 'street', width: 80, sortable:false},
+                { label: '所属区县', name: 'county', width: 50, sortable:false},
+                { label: '所属乡镇', name: 'street', width: 80, sortable:false},
+                { label: '原乡镇或街道', name: 'street_src', width: 80, sortable:false},
                 { label: '用户类型', name: 'customerTypeName', width: 40, sortable:false},
+                { label: '国标行业', name: 'gb_industry', width: 40, sortable:false},
+                { label: '主要行业', name: 'main_industry', width: 40, sortable:false},
                 /*{ label: '取水用途', name: 'waterUseTypeName', width: 40, sortable:false},*/
                 { label: '联系人', name: 'contact', width: 40, sortable:false},
                 { label: '联系电话', name: 'phone', width: 50, sortable:false},
@@ -120,6 +126,9 @@
                 { label: '一级表数量', name: 'first_watermeter_count', width: 50, sortable:false},
                 { label: '远传表数量', name: 'remotemeter_count', width: 50, sortable:false},
                 { label: '节约用水型单位类型', name: 'unitTypeName', width: 80, sortable:false},
+                { label: '自备井基本水价', name: 'self_well_price', width: 80, sortable:true},
+                { label: '地表水基本水价', name: 'surface_price', width: 80, sortable:true},
+                { label: '自来水基本水价', name: 'self_free_price', width: 80, sortable:true},
                 { label: '创建时间', name: 'create_time', width: 80, sortable:true},
                 { label: '单位地址', name: 'address', width: 120,sortable:false}
             ],

@@ -73,6 +73,14 @@ public abstract class BaseActualData<M extends BaseActualData<M>> extends BaseMo
 		return get("net_water");
 	}
 
+	public void setSumWater(java.math.BigDecimal sumWater) {
+		set("sum_water", sumWater);
+	}
+
+	public java.math.BigDecimal getSumWater() {
+		return get("sum_water");
+	}
+
 	public void setState(Integer state) {
 		set("state", state);
 	}

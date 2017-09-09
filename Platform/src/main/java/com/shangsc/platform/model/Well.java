@@ -54,7 +54,7 @@ public class Well extends BaseWell<Well> {
 	public InvokeResult save(Long id, Long companyId, String innerCode,	String name, String wellNum, String township,
 							 String village, String address, BigDecimal wellDepth, BigDecimal groundDepth, Date startDate, Integer oneselfWell,
 							 BigDecimal innerDiameter, String material,	String application,	Integer electromechanics, Integer calculateWater,
-							 Integer pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType, Integer groundType,
+							 String pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType, Integer groundType,
 							 String nameCode, Integer watersType, String useEfficiency, String method, Integer licence,
 							 String licenceCode, BigDecimal waterWithdrawals) {
 		if (!Company.me.hasExistCompany(innerCode)) {
@@ -78,7 +78,7 @@ public class Well extends BaseWell<Well> {
 						innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
 						groundType,	nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
 				well.save();
-				Company.me.updateWellNum(innerCode);
+				Company.me.updateWellNum(innerCode, true);
 			}
 		}
 		return InvokeResult.success();
@@ -87,7 +87,7 @@ public class Well extends BaseWell<Well> {
 	private Well setProp(Well well, Long companyId, String innerCode, String name, String wellNum, String township,
 			String village, String address, BigDecimal wellDepth, BigDecimal groundDepth, Date startDate, Integer oneselfWell,
 			BigDecimal innerDiameter, String material,	String application,	Integer electromechanics, Integer calculateWater,
-			Integer pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType,Integer groundType,
+			String pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType,Integer groundType,
 			String nameCode, Integer watersType, String useEfficiency, String method, Integer licence,
 			String licenceCode, BigDecimal waterWithdrawals) {
 		well.setCompanyId(companyId);
@@ -124,7 +124,10 @@ public class Well extends BaseWell<Well> {
 	public InvokeResult deleteData(String idStrs) {
 		List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
 		for (int i = 0; i < ids.size(); i++) {
+            Well well = Well.me.findById(ids.get(i));
+            Company.me.updateWellNum(well.getInnerCode(), false);
 			this.deleteById(ids.get(i));
+
 		}
 		return InvokeResult.success();
 	}

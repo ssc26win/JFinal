@@ -1,8 +1,11 @@
 package com.shangsc.platform.actual.udp;
 
 import com.jfinal.kit.PropKit;
-import com.shangsc.platform.actual.TypeConversionUtil;
+import com.shangsc.platform.actual.util.ConversionUtil;
+import com.shangsc.platform.model.ActualData;
+import com.shangsc.platform.model.WaterMeter;
 import com.shangsc.platform.util.ToolDateTime;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
@@ -13,6 +16,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.util.Date;
 
@@ -32,30 +36,21 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         log("messageReceived");
         ChannelBuffer buffer = (ChannelBuffer)e.getMessage();
-        log("received " + buffer.readableBytes() + " bytes [" + buffer.toString() + "]");
         log("received " + buffer + " bytes [" + buffer.toString() + "]");
         log("------start-------");
 
-        log("TypeConversionUtil.bytes2HexString 字节数组转16进制字符串 " + TypeConversionUtil.bytes2Hex16Str(buffer.array()));
+        String result = ConversionUtil.bytes2Hex16Str(buffer.array());
 
-        log("TypeConversionUtil.bytes2HexString 16进制字符串转字符串 " + TypeConversionUtil.hex16Str2String(TypeConversionUtil.bytes2Hex16Str(buffer.array())));
+        log("ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
 
-        byte[] ayy = buffer.array();
-        System.out.println("单个字节数组打印：");
-        for (int i = 0; i <ayy.length; i++) {
+        log("ConversionUtil.bytes2HexString 16进制字符串转字符串 " + ConversionUtil.hex16Str2String(ConversionUtil.bytes2Hex16Str(buffer.array())));
 
-            System.out.println(ayy[i]);
-        }
         log("------end-------");
 
-        System.out.println("receive:" + buffer.toString(Charset.defaultCharset()));
-
-        System.out.println("receive:" + buffer.toString(Charset.forName("gbk")));
-
-        System.out.println("receive:" + buffer.toString(Charset.forName("gb2312")));
-
         //e.getChannel().write(e.getMessage());
-        recordMsg(buffer.toString(Charset.defaultCharset()));
+        recordMsg(result);
+
+        recordDB(result);
     }
 
     @Override
@@ -95,13 +90,28 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
         }
     }
 
-    public static void printHexString(byte[] b) {
-        for (int i = 0; i < b.length; i++) {
-            String hex = Integer.toHexString(b[i] & 0xFF);
-            if (hex.length() == 1) {
-                hex = '0' + hex;
+    private synchronized void recordDB(String result) {
+        try {
+            if (StringUtils.isNotEmpty(result)) {
+                String meterNum = ConversionUtil.getMeterNum(result);
+                String innerCode = "";
+                if (StringUtils.isNotEmpty(meterNum)) {
+                    WaterMeter meter = WaterMeter.me.findByMeterNum(meterNum);
+                    if (meter != null) {
+                        innerCode = meter.getInnerCode();
+                    }
+                }
+                String lineNum = ConversionUtil.getLineNum(result);
+                BigDecimal sumWater = ConversionUtil.getMeterSum(result);
+                BigDecimal addWater = ConversionUtil.getMeterAdd(result);
+                Integer state = null;
+                String voltage = "";
+                Date writeTime = new Date();
+                ActualData.me.save(null, null, innerCode, lineNum, meterNum,
+                        null, null, addWater, state, voltage, writeTime);
             }
-            System.out.print("byte array 将指定byte数组以16进制的形式打印到控制台: " + hex.toUpperCase() );
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

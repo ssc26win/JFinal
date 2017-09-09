@@ -42,6 +42,7 @@ public class AdminRoutes extends Routes{
 		add("/app", AppVersionController.class,"/WEB-INF/view/app");
 		add("/image", ImageController.class,"/WEB-INF/view/image");
 
+        add("/basic/supply", SupplyUnitController.class, "/WEB-INF/view/basic");
         add("/basic/company", CompanyController.class, "/WEB-INF/view/basic");
         add("/basic/meter", MeterController.class, "/WEB-INF/view/basic");
         add("/basic/well", WellController.class, "/WEB-INF/view/basic");

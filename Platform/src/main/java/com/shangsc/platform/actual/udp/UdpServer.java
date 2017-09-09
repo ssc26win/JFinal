@@ -30,7 +30,6 @@ public class UdpServer {
                 return Channels.pipeline(new UdpEventHandler());
             }
         });
-        //udpBootstrap.bind(new InetSocketAddress(PropKit.get("config.host"), port));
         udpBootstrap.bind(new InetSocketAddress(PropKit.get("config.host"), port));
         System.out.println("udp server started, listening on port:" + port);
     }

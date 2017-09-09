@@ -76,7 +76,7 @@ public class WellController extends BaseController {
         String application = this.getPara("application");
         Integer electromechanics = this.getParaToInt("electromechanics");
         Integer calculateWater = this.getParaToInt("calculateWater");
-        Integer pumpModel = this.getParaToInt("pumpModel");
+        String pumpModel = this.getPara("pumpModel");
 
         Integer calculateType = this.getParaToInt("calculateType");
         Integer aboveScale = this.getParaToInt("aboveScale");

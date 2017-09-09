@@ -103,6 +103,7 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
+                { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
                 { label: '单位名称', name: 'companyName', width: 150, sortable:false},
                 { label: '单位编号', name: 'inner_code', width: 120, sortable:false},
                 { label: '取水用途', name: 'waterUseTypeName', width: 120, sortable:false},

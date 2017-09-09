@@ -23,7 +23,7 @@ public class _CodeGenerator {
 		// base model 所使用的包名
 		String baseModelPackageName = "com.shangsc.platform.model.base";
 		// base model 文件保存路径
-		String baseModelOutputDir = "D://Work//MyWork//Project//Jfinal//Platform//gen_code//base";
+		String baseModelOutputDir = "G:\\Work\\Project\\JFinal\\Platform\\gen_code\\base";
 		// model 所使用的包名 (MappingKit 默认使用的包名)
 		String modelPackageName = "com.shangsc.platform.model";
 		// model 文件保存路径 (MappingKit 与 DataDictionary 文件默认保存路径)

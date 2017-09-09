@@ -32,8 +32,9 @@
                             <div class="widget-main">
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-8">
-                                        <form id="exportForm" action="${context_path}/basic/well/export" method="post">
+                                        <form id="exportForm" action="${context_path}/basic/company/export" method="post">
                                             <div class="input-group">
+
                                                     <span class="input-group-addon">
                                                         <i class="ace-icon fa fa-check"></i>
                                                     </span>
@@ -55,10 +56,10 @@
                 <div class="col-xs-12">
                     <div class="row-fluid" style="margin-bottom: 5px;">
                         <div class="span12 control-group">
-                            <jc:button className="btn btn-primary" id="btn-add" permission="/basic/well" textName="添加"/>
-                            <jc:button className="btn btn-info" id="btn-edit" permission="/basic/well" textName="编辑"/>
-                            <jc:button className="btn btn-danger" id="btn-deleteData" permission="/basic/well" textName="删除"/>
-                            <jc:button className="btn btn-warning" id="btn-importData" permission="/basic/well" textName="导入"/>
+                            <jc:button className="btn btn-primary" id="btn-add" permission="/basic/company" textName="添加"/>
+                            <jc:button className="btn btn-info" id="btn-edit" permission="/basic/company" textName="编辑"/>
+                            <jc:button className="btn btn-danger" id="btn-deleteData" permission="/basic/company" textName="删除"/>
+                            <jc:button className="btn btn-warning" id="btn-importData" permission="/basic/company" textName="导入"/>
                             <jc:button className="btn btn-success" id="btn-exportData" textName="导出"/>
                         </div>
                     </div>
@@ -97,46 +98,35 @@
                 }, 0);
             }
         });
-
+        var flag = '${flag}';
+        var url = '${context_path}/basic/company/getListData';
+        if (flag != null && flag != undefined && flag != '') {
+            url = '${context_path}/basic/company/get'+flag+'ListData/';
+        }
         $("#grid-table").jqGrid({
-            url:'${context_path}/basic/well/getListData',
+            url:url,
             mtype: "GET",
             datatype: "json",
             colModel: [
-                { label: '单位名称', name: 'companyName', width: 120, sortable:false},
+                { label: '单位名称', name: 'name', width: 100, sortable:false},
                 { label: '单位编号', name: 'inner_code', width: 50, sortable:false},
-                { label: '水井编号', name: 'well_num', width: 50, sortable:false},
-                { label: '水井名称', name: 'name', width: 60,sortable:false},
-                { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
-                { label: '所属区县', name: 'county', width: 50, sortable:false},
-                /*{ label: '乡', name: 'township', width: 45, sortable:false},
-                { label: '村', name: 'village', width: 50, sortable:false},*/
-                { label: '水井地址', name: 'address', width: 60, sortable:false},
-                { label: '成井时间（年）', name: 'yearDate', width: 70, sortable:false},
-                { label: '井深（米）', name: 'well_depth', width: 45, sortable:false},
-                { label: '地下水埋深（米）', name: 'ground_depth', width: 80, sortable:false},
-                /*{ label: '是否为单位自备井', name: 'oneselfWellName', width: 80, sortable:false},*/
-                { label: '井口井管内径（毫米）', name: 'inner_diameter', width: 100, sortable:false},
-                /*{ label: '井壁管材料', name: 'material', width: 60, sortable:false},
-                { label: '应用状况', name: 'application', width: 60, sortable:false},*/
-                { label: '水源类型', name: 'watersTypeName', width: 60, sortable:false},
-                /*{ label: '是否已配套机电设备', name: 'electromechanicsName', width: 80, sortable:false},
-                { label: '是否已安装水量计量设施', name: 'calculateWaterName', width: 100, sortable:false},*/
-                { label: '水泵型号', name: 'pumpModelName', width: 80, sortable:false},
-              /*  { label: '水量计量设施类型', name: 'calculateTypeName', width: 100, sortable:false},
-                { label: '是否为规模以上地下水水源地的水井', name: 'aboveScaleName', width: 100, sortable:false},
-                { label: '所在地貌类型区', name: 'geomorphicTypeName', width: 70, sortable:false},
-                { label: '所取用地下水的类型', name: 'groundTypeName', width: 100, sortable:false},
-                { label: '所在水资源三级区名称及编码', name: 'name_code', width: 100, sortable:false},
-                { label: '主要取水用途及效益', name: 'use_efficiency', width: 100, sortable:false},
-                { label: '取水量确定方法', name: 'method', width: 100, sortable:false},*/
-                /*{ label: '是否已办理取水许可证', name: 'licenceName', width: 100, sortable:false},*/
-                { label: '取水许可证编号', name: 'licence_code', width: 80, sortable:false},
-                { label: '年许可取水量（万立方米）', name: 'water_withdrawals', width: 120, sortable:false}
+                { label: '所属乡镇或街道', name: 'street', width: 80, sortable:false},
+                { label: '用户类型', name: 'customerTypeName', width: 40, sortable:false},
+                /*{ label: '取水用途', name: 'waterUseTypeName', width: 40, sortable:false},*/
+                { label: '联系人', name: 'contact', width: 40, sortable:false},
+                { label: '联系电话', name: 'phone', width: 50, sortable:false},
+                { label: '邮政编码', name: 'postal_code', width: 50, sortable:false},
+                { label: '管水部门', name: 'department', width: 60, sortable:false},
+                { label: '水井数量', name: 'well_count', width: 40, sortable:false},
+                { label: '一级表数量', name: 'first_watermeter_count', width: 50, sortable:false},
+                { label: '远传表数量', name: 'remotemeter_count', width: 50, sortable:false},
+                { label: '节约用水型单位类型', name: 'unitTypeName', width: 80, sortable:false},
+                { label: '创建时间', name: 'create_time', width: 80, sortable:true},
+                { label: '单位地址', name: 'address', width: 120,sortable:false}
             ],
             viewrecords: true,
             height: 560,
-            rowNum: 20,
+            rowNum: 10,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
             recordtext:"{0} - {1} 共 {2} 条",
@@ -152,8 +142,8 @@
         $(window).triggerHandler('resize.jqGrid');
 
         $(window).bind('resize', function() {
-            //$("#jqgrid").setGridWidth($(window).width()*0.75);
-            //	$("#grid-table").setGridHeight($(window).height()-200);
+            $("#jqgrid").setGridWidth($(window).width()*0.75);
+            $("#grid-table").setGridHeight($(window).height()-200);
         });
         $("#btn_search").click(function(){
             //此处可以添加对查询数据的合法验证
@@ -166,12 +156,12 @@
         });
         $("#btn-add").click(function(){//添加页面
             parent.layer.open({
-                title:'添加水井',
+                title:'添加新单位',
                 type: 2,
-                area: ['900px', '880px'],
+                area: ['850px', '600px'],
                 fix: false, //不固定
                 maxmin: true,
-                content: '${context_path}/basic/well/add'
+                content: '${context_path}/basic/company/add'
             });
         });
         $("#btn-deleteData").click(function(){
@@ -191,12 +181,12 @@
                 });
             }else {
                 parent.layer.open({
-                    title:'修改水表信息',
+                    title:'修改单位信息',
                     type: 2,
-                    area: ['900px', '880px'],
+                    area: ['850px', '600px'],
                     fix: false, //不固定
                     maxmin: true,
-                    content: '${context_path}/basic/well/add?id='+rid
+                    content: '${context_path}/basic/company/add?id='+rid
                 });
             }
         });
@@ -264,7 +254,7 @@
             "ids" : getSelectedRows()
         };
         layer.confirm("确认删除记录？",function(){
-            $.post("${context_path}/basic/well/delete", submitData,function(data) {
+            $.post("${context_path}/basic/company/delete", submitData, function(data) {
                 if (data.code == 0) {
                     layer.msg("操作成功", {
                         icon: 1,
