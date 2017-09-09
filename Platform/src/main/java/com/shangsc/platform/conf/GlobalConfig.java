@@ -27,7 +27,8 @@ import com.jfinal.plugin.druid.IDruidStatViewAuth;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.render.ViewType;
 import com.jfinal.template.Engine;
-import com.shangsc.platform.actual.ActualTcpPlugin;
+import com.shangsc.platform.actualdata.ActualTcpPlugin;
+import com.shangsc.platform.actualdata.ActualUdpPlugin;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.auth.interceptor.SysLogInterceptor;
 import com.shangsc.platform.core.handler.ResourceHandler;
@@ -99,7 +100,9 @@ public class GlobalConfig extends JFinalConfig {
 		initMail();
 
 		//开启实时数据监听
-		initActual();
+		initActualUdp();
+
+        initActualTcp();
 	}
 
 	/**
@@ -135,8 +138,21 @@ public class GlobalConfig extends JFinalConfig {
 	}
 
 
-	public void initActual() {
-		//new ActualUdpPlugin().start();
-		new ActualTcpPlugin().start();
+	public void initActualUdp() {
+        try {
+            new ActualUdpPlugin().start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Udp server start failed");
+        }
 	}
+
+    public void initActualTcp() {
+        try {
+            new ActualTcpPlugin().start();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Udp server start failed");
+        }
+    }
 }
