@@ -162,13 +162,17 @@ public class DictController extends BaseController {
 
 		allData.put(DictCode.UserType, resultUserType);
 
-		List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMapList(0, DictCode.Street);
+		List<Map<String, Object>> resultStreet = DictData.dao.getDictMapList(0, DictCode.Street);
 
-		allData.put(DictCode.Street, resultWaterUseType);
+		allData.put(DictCode.Street, resultStreet);
 
 		List<Map<String, Object>> resultUnitType = DictData.dao.getDictMapList(0, DictCode.UnitType);
 
 		allData.put(DictCode.UnitType, resultUnitType);
+
+        List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMapList(0, DictCode.WaterUseType);
+
+        allData.put(DictCode.WaterUseType, resultWaterUseType);
 
 		this.renderJson(allData);
 	}
@@ -182,9 +186,9 @@ public class DictController extends BaseController {
 
 		allData.put(DictCode.WatersType, resultWatersType);
 
-		List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMapList(0, DictCode.WaterUseType);
-
-		allData.put(DictCode.WaterUseType, resultWaterUseType);
+		//List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMapList(0, DictCode.WaterUseType);
+        //
+		//allData.put(DictCode.WaterUseType, resultWaterUseType);
 
 		List<Map<String, Object>> resultChargeType = DictData.dao.getDictMapList(0, DictCode.ChargeType);
 
@@ -198,9 +202,9 @@ public class DictController extends BaseController {
 	public void getIndexUseDict() {
 		Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String,Object>>>();
 
-		List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMapList(0, DictCode.WaterUseType);
+		List<Map<String, Object>> resultsType = DictData.dao.getDictMapList(0, DictCode.WatersType);
 
-		allData.put(DictCode.WaterUseType, resultWaterUseType);
+		allData.put(DictCode.WatersType, resultsType);
 
 		this.renderJson(allData);
 	}
@@ -210,11 +214,8 @@ public class DictController extends BaseController {
 	public void getWellUseDict() {
 		Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String,Object>>>();
 
-		List<Map<String, Object>> resultUserType = DictData.dao.getDictMapList(0, DictCode.WatersType);
-		allData.put(DictCode.WatersType, resultUserType);
-
-		List<Map<String, Object>> resultPumpModel = DictData.dao.getDictMapList(0, DictCode.PumpModel);
-		allData.put(DictCode.PumpModel, resultPumpModel);
+		/*List<Map<String, Object>> resultWatersType = DictData.dao.getDictMapList(0, DictCode.WatersType);
+		allData.put(DictCode.WatersType, resultWatersType);*/
 
 		List<Map<String, Object>> resultCalculateType = DictData.dao.getDictMapList(0, DictCode.CalculateType);
 		allData.put(DictCode.CalculateType, resultCalculateType);

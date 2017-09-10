@@ -57,16 +57,10 @@ public class WaterIndexController extends BaseController {
     }
 
     @RequiresPermissions(value={"/basic/waterindex"})
-    public void importPage() {
-        render("water_index_import.jsp");
-    }
-
-    @RequiresPermissions(value={"/basic/waterindex"})
     public void save(){
         Long id = this.getParaToLong("id");
-        Long companyId = this.getParaToLong("companyId");
         String innerCode = this.getPara("innerCode");
-        String waterUseType = this.getPara("waterUseType");
+        Integer watersType = this.getParaToInt("watersType");
         BigDecimal waterIndex =  CodeNumUtil.getBigDecimal(this.getPara("waterIndex"), 2);
 
         BigDecimal january = CodeNumUtil.getBigDecimal(this.getPara("january"), 2);
@@ -98,7 +92,7 @@ public class WaterIndexController extends BaseController {
             this.renderJson(InvokeResult.failure("年用水指标不等于各月指标之和"));
             return;
         }
-        InvokeResult result = WaterIndex.me.save(id, companyId, innerCode, waterUseType, waterIndex,
+        InvokeResult result = WaterIndex.me.save(id, innerCode, watersType, waterIndex,
                 january, february, march, april, may, june, july, august, september, october, november, december);
         this.renderJson(result);
     }
@@ -119,6 +113,17 @@ public class WaterIndexController extends BaseController {
         WaterIndexExportService service = new WaterIndexExportService();
         String path = service.export(list);
         renderFile(new File(path));
+    }
+
+    @RequiresPermissions(value={"/basic/waterindex"})
+    public void importPage() {
+        this.setAttr("uploadUrl", "waterindex");
+        render("import_data.jsp");
+    }
+
+    @RequiresPermissions(value = {"/basic/waterindex"})
+    public void downloadDemo() {
+        renderFile(new File(PropKit.get("import.water.index.demo.path")));
     }
 
     @RequiresPermissions(value = {"/basic/waterindex"})
@@ -153,17 +158,12 @@ public class WaterIndexController extends BaseController {
         this.renderJson(InvokeResult.success());
     }
 
-    @RequiresPermissions(value = {"/basic/waterindex"})
-    public void downloadDemo() {
-        renderFile(new File(PropKit.get("import.water.index.demo.path")));
-    }
-
     private void setVoProp(List<WaterIndex> list) {
         if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
+            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 WaterIndex co = list.get(i);
-                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
+                co.put("watersTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWatersType()))));
                 list.set(i, co);
             }
         }

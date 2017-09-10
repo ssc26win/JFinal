@@ -35,8 +35,8 @@ public class ReadNumExportService extends ExportBaseService{
             Object[] obj = new Object[]{
                     actualData.get("name"),
                     actualData.getInnerCode(),
-                    actualData.getLineNum(),
-                    actualData.getMeterNum(),
+                    actualData.get("line_num"),
+                    actualData.getMeterAddress(),
                     actualData.get("watersTypeName"),
                     actualData.get("meter_attr"),
                     actualData.getWriteTime(),

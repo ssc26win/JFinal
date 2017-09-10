@@ -106,7 +106,6 @@
                 { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
                 { label: '路别', name: 'line_num', width: 100, sortable:false},
                 { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
-                { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
                 { label: '查询时间', name: 'yearStr', width: 100, sortable:true},
                 { label: '用水量（立方米）', name: 'net_water', width: 100, sortable:false},

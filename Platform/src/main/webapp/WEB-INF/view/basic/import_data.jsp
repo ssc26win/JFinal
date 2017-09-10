@@ -92,28 +92,24 @@
 </div><!-- /.main-container -->
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
 <script type="text/javascript">
-  function downloadFile() {
-    try{
-      var elemIF = document.createElement("iframe");
-      elemIF.src = "${context_path}/basic/waterindex/downloadDemo";
-      elemIF.style.display = "none";
-      document.body.appendChild(elemIF);
-    }catch(e){
-
-    }
-  }
-    function downloadDemo() {
-      var sfForm = document.createElement("form");
-      sfForm.method = "post";
-      sfForm.action = "${context_path}/basic/waterindex/downloadDemo";
-      document.body.appendChild(sfForm);
-      sfForm.submit();
+    var uploadUrl = "${uploadUrl}";
+    var demoPath = "${context_path}/basic/" + uploadUrl + "/downloadDemo";
+    var uploadPath = "${context_path}/basic/" + uploadUrl + "/uploadImportData";
+    var importDataPath = "${context_path}/basic/" + uploadUrl + "/importData";
+    function downloadFile() {
+        try{
+          var elemIF = document.createElement("iframe");
+          elemIF.src = demoPath;
+          elemIF.style.display = "none";
+          document.body.appendChild(elemIF);
+        }catch(e){
+        }
     }
     jQuery(function($) {
     $('#file_upload').uploadify({
       //校验数据
       'swf' : '${res_url}uploadify/uploadify.swf', //指定上传控件的主体文件，默认‘uploader.swf’
-      'uploader' : '/basic/waterindex/uploadImportData', //指定服务器端上传处理文件，默认‘upload.php’
+      'uploader' : uploadPath, //指定服务器端上传处理文件，默认‘upload.php’
       'auto' : true, //手动上传
       'buttonImage' : '${res_url}uploadify/uploadify-upload.png', //浏览按钮背景图片
       'width' :110,
@@ -185,7 +181,7 @@
           importUrl:$("#importUrl").val()
         };
         $btn.addClass("disabled");
-        $.post('/basic/waterindex/importData', submitData,function(data) {
+        $.post(importDataPath, submitData,function(data) {
           $btn.removeClass("disabled");
           if(data.code==0){
             window.parent.reloadGrid(); //重新载入

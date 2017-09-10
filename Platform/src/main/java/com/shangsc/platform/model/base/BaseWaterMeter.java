@@ -17,14 +17,6 @@ public abstract class BaseWaterMeter<M extends BaseWaterMeter<M>> extends BaseMo
 		return get("id");
 	}
 
-	public void setCompanyId(Long companyId) {
-		set("company_id", companyId);
-	}
-
-	public Long getCompanyId() {
-		return get("company_id");
-	}
-
 	public void setInnerCode(String innerCode) {
 		set("inner_code", innerCode);
 	}
@@ -45,9 +37,17 @@ public abstract class BaseWaterMeter<M extends BaseWaterMeter<M>> extends BaseMo
 		set("meter_num", meterNum);
 	}
 
-	public String getMeterNum() {
-		return get("meter_num");
+	public String getMeterAddress() {
+		return get("meter_address");
 	}
+
+    public void setMeterAddress(String meterAddress) {
+        set("meter_address", meterAddress);
+    }
+
+    public String getMeterNum() {
+        return get("meter_num");
+    }
 
 	public void setWatersType(Integer watersType) {
 		set("waters_type", watersType);
@@ -55,14 +55,6 @@ public abstract class BaseWaterMeter<M extends BaseWaterMeter<M>> extends BaseMo
 
 	public Integer getWatersType() {
 		return get("waters_type");
-	}
-
-	public void setWaterUseType(Integer waterUseType) {
-		set("water_use_type", waterUseType);
-	}
-
-	public Integer getWaterUseType() {
-		return get("water_use_type");
 	}
 
 	public void setMeterAttr(String meterAttr) {

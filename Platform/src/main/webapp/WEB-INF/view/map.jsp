@@ -15,7 +15,7 @@
 </head>
 <body>
 <div class="main-container" id="main-container">
-    <div class="breadcrumbs" id="breadcrumbs">
+    <%--<div class="breadcrumbs" id="breadcrumbs">
         <script type="text/javascript">
             try {
                 ace.settings.check('breadcrumbs', 'fixed')
@@ -50,7 +50,7 @@
             </form>
         </div><!-- #nav-search -->
 
-    </div>
+    </div>--%>
     <script type="text/javascript">
         try{ace.settings.check('main-container' , 'fixed')}catch(e){}
     </script>

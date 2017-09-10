@@ -86,4 +86,38 @@ public class DictData extends BaseDictData<DictData> {
         }
         return allList;
     }
+
+    public Map<String, Integer> getDictNameMap(String typeName){
+        Integer typeId = null;
+        if (StringUtils.isNotEmpty(typeName)) {
+            DictType dictType = DictType.dao.findFirst("select * from dict_type where name='" + typeName + "'");
+            typeId = dictType.getId();
+        }
+        List<DictData> list = this.find("select value,name from dict_data where dict_type_id=" + typeId);
+        Map<String, Integer> all = new HashMap<>();
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (DictData dictData:list) {
+                all.put(StringUtils.trim(dictData.getName()), Integer.parseInt(StringUtils.trim(dictData.getValue())));
+
+            }
+        }
+        return all;
+    }
+
+    public Map<Integer, String> getDictValMap(String typeName) {
+        Integer typeId = null;
+        if (StringUtils.isNotEmpty(typeName)) {
+            DictType dictType = DictType.dao.findFirst("select * from dict_type where name='" + typeName + "'");
+            typeId = dictType.getId();
+        }
+        List<DictData> list = this.find("select value,name from dict_data where dict_type_id=" + typeId);
+        Map<Integer, String>  all = new HashMap<>();
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (DictData dictData:list) {
+                all.put(Integer.parseInt(StringUtils.trim(dictData.getValue())), dictData.getName());
+
+            }
+        }
+        return all;
+    }
 }

@@ -106,7 +106,7 @@
                 { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
                 { label: '单位名称', name: 'companyName', width: 150, sortable:false},
                 { label: '单位编号', name: 'inner_code', width: 120, sortable:false},
-                { label: '取水用途', name: 'waterUseTypeName', width: 120, sortable:false},
+                { label: '水源类型', name: 'watersTypeName', width: 120, sortable:false},
                 { label: '年用水指标', name: 'water_index', width: 120,sortable:false},
                 { label: '一月', name: 'january', width: 55, sortable:false},
                 { label: '二月', name: 'february', width: 55, sortable:false},

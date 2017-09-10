@@ -51,20 +51,19 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterAddress">表记地址</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="text" id="meterAddress" name="meterAddress" value="${item.meterAddress}" class="col-xs-12 col-sm-6">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="watersType">水源类型</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
                                         <input type="hidden" id="watersTypeInput" name="watersTypeInput" value="${item.watersType}" />
                                         <select id="watersType" name="watersType" class="col-xs-12 col-sm-6"></select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterUseType">取水用途</label>
-                                <div class="col-xs-12 col-sm-9">
-                                    <div class="clearfix">
-                                        <input type="hidden" id="waterUseTypeInput" name="waterUseTypeInput" value="${item.waterUseType}"/>
-                                        <select id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="col-xs-12 col-sm-6"></select>
                                     </div>
                                 </div>
                             </div>
@@ -220,13 +219,6 @@
                     $("#watersType").append("<option selected value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
                 } else {
                     $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
-                }
-            }
-            for(var i = 0;i<waterUseType.length;i++) {
-                if ($("#waterUseTypeInput").val() == waterUseType[i].value) {
-                    $("#waterUseType").append("<option selected value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
-                } else {
-                    $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
                 }
             }
         },"json");

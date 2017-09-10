@@ -109,27 +109,27 @@
             datatype: "json",
             colModel: [
                 { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
-                { label: '单位名称', name: 'name', width: 100, sortable:false},
-                { label: '单位编号', name: 'inner_code', width: 50, sortable:false},
-                { label: '所属区县', name: 'county', width: 50, sortable:false},
-                { label: '所属乡镇', name: 'street', width: 80, sortable:false},
-                { label: '原乡镇或街道', name: 'street_src', width: 80, sortable:false},
-                { label: '用户类型', name: 'customerTypeName', width: 40, sortable:false},
-                { label: '国标行业', name: 'gb_industry', width: 40, sortable:false},
-                { label: '主要行业', name: 'main_industry', width: 40, sortable:false},
-                /*{ label: '取水用途', name: 'waterUseTypeName', width: 40, sortable:false},*/
-                { label: '联系人', name: 'contact', width: 40, sortable:false},
-                { label: '联系电话', name: 'phone', width: 50, sortable:false},
-                { label: '邮政编码', name: 'postal_code', width: 50, sortable:false},
-                { label: '管水部门', name: 'department', width: 60, sortable:false},
-                { label: '水井数量', name: 'well_count', width: 40, sortable:false},
-                { label: '一级表数量', name: 'first_watermeter_count', width: 50, sortable:false},
-                { label: '远传表数量', name: 'remotemeter_count', width: 50, sortable:false},
+                { label: '单位名称', name: 'name', width: 120, sortable:false},
+                { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
+                { label: '所属区县', name: 'county', width: 80, sortable:false},
+                { label: '所属乡镇', name: 'streetName', width: 80, sortable:false},
+               /* { label: '原乡镇或街道', name: 'street_src', width: 80, sortable:false},*/
+                { label: '用户类型', name: 'customerTypeName', width: 80, sortable:false},
+                { label: '国标行业', name: 'gb_industry', width: 80, sortable:false},
+                { label: '主要行业', name: 'main_industry', width: 80, sortable:false},
+                { label: '取水用途', name: 'waterUseTypeName', width: 80, sortable:false},
+                { label: '联系人', name: 'contact', width: 70, sortable:false},
+                { label: '联系电话', name: 'phone', width: 80, sortable:false},
+                { label: '邮政编码', name: 'postal_code', width: 70, sortable:false},
+                { label: '管水部门', name: 'department', width: 100, sortable:false},
+                { label: '水井数量', name: 'well_count', width: 80, sortable:false},
+                { label: '一级表数量', name: 'first_watermeter_count', width: 80, sortable:false},
+                { label: '远传表数量', name: 'remotemeter_count', width: 80, sortable:false},
                 { label: '节约用水型单位类型', name: 'unitTypeName', width: 80, sortable:false},
-                { label: '自备井基本水价', name: 'self_well_price', width: 80, sortable:true},
-                { label: '地表水基本水价', name: 'surface_price', width: 80, sortable:true},
-                { label: '自来水基本水价', name: 'self_free_price', width: 80, sortable:true},
-                { label: '创建时间', name: 'create_time', width: 80, sortable:true},
+                { label: '自备井水价', name: 'self_well_price', width: 80, sortable:true},
+                { label: '地表水水价', name: 'surface_price', width: 80, sortable:true},
+                { label: '自来水水价', name: 'self_free_price', width: 80, sortable:true},
+                { label: '注册时间', name: 'create_time', width: 90, sortable:true},
                 { label: '单位地址', name: 'address', width: 120,sortable:false}
             ],
             viewrecords: true,
@@ -280,6 +280,17 @@
     function reloadGrid(){
         $("#grid-table").trigger("reloadGrid"); //重新载入
     }
+
+    $("#btn-importData").click(function(){//添加页面
+        parent.layer.open({
+            title:'导入水表信息',
+            type: 2,
+            area: ['770px', '400px'],
+            fix: false, //不固定
+            maxmin: true,
+            content: '${context_path}/basic/company/importPage'
+        });
+    });
 </script>
 
 </body>

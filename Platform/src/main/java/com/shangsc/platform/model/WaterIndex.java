@@ -2,6 +2,7 @@ package com.shangsc.platform.model;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
@@ -32,7 +33,7 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 		return num>0?true:false;
 	}
 
-	public InvokeResult save(Long id, Long companyId, String innerCode, String waterUseType, BigDecimal waterIndex, BigDecimal january,
+	public InvokeResult save(Long id, String innerCode, Integer watersType, BigDecimal waterIndex, BigDecimal january,
 							 BigDecimal february, BigDecimal march, BigDecimal april, BigDecimal may, BigDecimal june, BigDecimal july,
 							 BigDecimal august, BigDecimal september, BigDecimal october, BigDecimal november, BigDecimal december) {
 		if (!Company.me.hasExistCompany(innerCode)) {
@@ -43,7 +44,7 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 			if (index == null) {
 				return InvokeResult.failure("更新失败, 该单位用水指标不存在");
 			}
-			index = setProp(index, companyId, innerCode, waterUseType, waterIndex, january, february, march, april,
+			index = setProp(index, innerCode, watersType, waterIndex, january, february, march, april,
 					may, june, july, august, september, october, november, december);
 			index.update();
 		} else {
@@ -51,7 +52,7 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 				return InvokeResult.failure("单位名称或编号已存在");
 			} else {
 				WaterIndex index = new WaterIndex();
-				index = setProp(index, companyId, innerCode, waterUseType, waterIndex, january, february, march, april,
+				index = setProp(index, innerCode, watersType, waterIndex, january, february, march, april,
 						may, june, july, august, september, october, november, december);
 				index.save();
 			}
@@ -59,14 +60,13 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 		return InvokeResult.success();
 	}
 
-	private WaterIndex setProp(WaterIndex index, Long companyId, String innerCode, String waterUseType, BigDecimal waterIndex,
+	private WaterIndex setProp(WaterIndex index, String innerCode, Integer watersType, BigDecimal waterIndex,
 							   BigDecimal january, BigDecimal february, BigDecimal march, BigDecimal april, BigDecimal may, BigDecimal june,
 							   BigDecimal july, BigDecimal august, BigDecimal september, BigDecimal october, BigDecimal november, BigDecimal december) {
-		index.setCompanyId(companyId);
 		index.setInnerCode(innerCode);
 		index.setWaterIndex(waterIndex);
-		index.setWaterUseType(waterUseType);
-		index.setJanuary(january);
+		index.setWatersType(watersType);
+        index.setJanuary(january);
 		index.setFebruary(february);
 		index.setMarch(march);
 		index.setApril(april);
@@ -90,7 +90,7 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 	}
 
 	public Page<WaterIndex> getWaterIndexPage(int page, int rows, String keyword, String orderbyStr) {
-		String select = "select twi.*,tc.name as companyName";
+		String select = "select twi.*,tc.name as companyName,tc.water_unit,tc.county";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_index twi, t_company tc");
 		sqlExceptSelect.append(" where 1=1 and twi.inner_code=tc.inner_code ");
 		if (StringUtils.isNotEmpty(keyword)) {
@@ -107,9 +107,9 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 	}
 
 	public static int[] saveBatch(List<WaterIndex> modelOrRecordList, int batchSize) {
-		String sql = "insert into t_water_index(inner_code,water_use_type,water_index,january,february,march," +
+		String sql = "insert into t_water_index(inner_code,waters_type,water_index,january,february,march," +
 				"april,may,june,july,august,september,october,november,december) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-		String columns = "inner_code,water_use_type,water_index,january,february,march," +
+		String columns = "inner_code,waters_type,water_index,january,february,march," +
 				"april,may,june,july,august,september,october,november,december";
 		int[] result = Db.batch(sql, columns, modelOrRecordList, batchSize);
 		return result;
@@ -117,25 +117,26 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 
 	public void importData(List<Map<Integer, String>> maps) {
 		List<WaterIndex> lists = new ArrayList<WaterIndex>();
-		for (int i = 0; i < maps.size(); i++) {
+        Map<String, Integer> dictNameMap = DictData.dao.getDictNameMap(DictCode.WatersType);
+        for (int i = 0; i < maps.size(); i++) {
 			WaterIndex index = new WaterIndex();
 			Map<Integer, String> map = maps.get(i);
-			String innerCode = map.get(0).toString();
-			String waterUseType = map.get(1).toString();
-			BigDecimal waterIndex = CodeNumUtil.getBigDecimal(map.get(2).toString(), 2);
-			BigDecimal january = CodeNumUtil.getBigDecimal(map.get(3).toString(), 2);
-			BigDecimal february = CodeNumUtil.getBigDecimal(map.get(4).toString(), 2);
-			BigDecimal march = CodeNumUtil.getBigDecimal(map.get(5).toString(), 2);
-			BigDecimal april = CodeNumUtil.getBigDecimal(map.get(6).toString(), 2);
-			BigDecimal may = CodeNumUtil.getBigDecimal(map.get(7).toString(), 2);
-			BigDecimal june = CodeNumUtil.getBigDecimal(map.get(8).toString(), 2);
-			BigDecimal july = CodeNumUtil.getBigDecimal(map.get(9).toString(), 2);
-			BigDecimal august = CodeNumUtil.getBigDecimal(map.get(10).toString(), 2);
-			BigDecimal september = CodeNumUtil.getBigDecimal(map.get(11).toString(), 2);
-			BigDecimal october = CodeNumUtil.getBigDecimal(map.get(12).toString(), 2);
-			BigDecimal november = CodeNumUtil.getBigDecimal(map.get(13).toString(), 2);
-			BigDecimal december = CodeNumUtil.getBigDecimal(map.get(14).toString(), 2);
-			index = setProp(index, null, innerCode, waterUseType, waterIndex, january, february, march, april,
+			String innerCode = map.get(1).toString();
+			Integer watersType = dictNameMap.get(StringUtils.trim(map.get(3).toString()));
+			BigDecimal waterIndex = CodeNumUtil.getBigDecimal(map.get(4).toString(), 2);
+			BigDecimal january = CodeNumUtil.getBigDecimal(map.get(5).toString(), 2);
+			BigDecimal february = CodeNumUtil.getBigDecimal(map.get(6).toString(), 2);
+			BigDecimal march = CodeNumUtil.getBigDecimal(map.get(7).toString(), 2);
+			BigDecimal april = CodeNumUtil.getBigDecimal(map.get(8).toString(), 2);
+			BigDecimal may = CodeNumUtil.getBigDecimal(map.get(9).toString(), 2);
+			BigDecimal june = CodeNumUtil.getBigDecimal(map.get(10).toString(), 2);
+			BigDecimal july = CodeNumUtil.getBigDecimal(map.get(11).toString(), 2);
+			BigDecimal august = CodeNumUtil.getBigDecimal(map.get(12).toString(), 2);
+			BigDecimal september = CodeNumUtil.getBigDecimal(map.get(13).toString(), 2);
+			BigDecimal october = CodeNumUtil.getBigDecimal(map.get(14).toString(), 2);
+			BigDecimal november = CodeNumUtil.getBigDecimal(map.get(15).toString(), 2);
+			BigDecimal december = CodeNumUtil.getBigDecimal(map.get(16).toString(), 2);
+			index = setProp(index, innerCode, watersType, waterIndex, january, february, march, april,
 					may, june, july, august, september, october, november, december);
 			lists.add(index);
 			//index.save();

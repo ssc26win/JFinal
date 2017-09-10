@@ -1,19 +1,23 @@
 package com.shangsc.platform.controller.basic;
 
+import com.google.common.collect.Maps;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.upload.UploadFile;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.DateUtils;
+import com.shangsc.platform.core.util.FileUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.WellExportService;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.Well;
 import com.shangsc.platform.util.CodeNumUtil;
-import com.shangsc.platform.util.ToolDateTime;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -58,16 +62,14 @@ public class WellController extends BaseController {
         Long id = this.getParaToLong("id");
         String name = this.getPara("name");
         String wellNum = this.getPara("wellNum");
-        Long companyId = this.getParaToLong("companyId");
         String innerCode = this.getPara("innerCode");
 
-        String township = this.getPara("township");
         String village = this.getPara("village");
         String address = this.getPara("address");
         BigDecimal wellDepth = CodeNumUtil.getBigDecimal(this.getPara("wellDepth"), 2);
         BigDecimal groundDepth = CodeNumUtil.getBigDecimal(this.getPara("groundDepth"), 2);
 
-        Date startDate = this.getParaToDate("startDate");
+        String year = this.getPara("year");
 
         Integer oneselfWell = this.getParaToInt("oneselfWell");
         BigDecimal innerDiameter = CodeNumUtil.getBigDecimal(this.getPara("innerDiameter"), 2);
@@ -84,7 +86,7 @@ public class WellController extends BaseController {
         Integer groundType = this.getParaToInt("groundType");
         String nameCode = this.getPara("nameCode");
 
-        Integer watersType = this.getParaToInt("watersType");
+        String watersType = this.getPara("watersType");
 
         String useEfficiency = this.getPara("useEfficiency");
 
@@ -95,7 +97,7 @@ public class WellController extends BaseController {
 
         BigDecimal waterWithdrawals = CodeNumUtil.getBigDecimal(this.getPara("waterWithdrawals"), 2);
 
-        InvokeResult result = Well.me.save(id, companyId, innerCode, name, wellNum, township, village, address, wellDepth, groundDepth, startDate,oneselfWell,
+        InvokeResult result = Well.me.save(id, innerCode, name, wellNum, village, address, wellDepth, groundDepth, year,oneselfWell,
                 innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
                 groundType,	nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
         this.renderJson(result);
@@ -121,27 +123,66 @@ public class WellController extends BaseController {
 
     private void setVoProp(List<Well> list) {
         if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
-            Map<String, Object> mapPumpModel = DictData.dao.getDictMap(0, DictCode.PumpModel);
             Map<String, Object> mapCalculateType = DictData.dao.getDictMap(0, DictCode.CalculateType);
             Map<String, Object> mapGeomorphicType = DictData.dao.getDictMap(0, DictCode.GeomorphicType);
             Map<String, Object> mapGroundType = DictData.dao.getDictMap(0, DictCode.GroundType);
             for (int i = 0; i < list.size(); i++) {
                 Well co = list.get(i);
-                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
                 co.put("aboveScaleName",  YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAboveScale())));
                 co.put("oneselfWellName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getOneselfWell())));
                 co.put("electromechanicsName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getElectromechanics())));
                 co.put("calculateWaterName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getCalculateType())));
                 co.put("licenceName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getLicence())));
-                co.put("pumpModelName", String.valueOf(mapPumpModel.get(String.valueOf(co.getPumpModel()))));
                 co.put("calculateTypeName", String.valueOf(mapCalculateType.get(String.valueOf(co.getCalculateType()))));
                 co.put("geomorphicTypeName", String.valueOf(mapGeomorphicType.get(String.valueOf(co.getGeomorphicType()))));
                 co.put("groundTypeName", String.valueOf(mapGroundType.get(String.valueOf(co.getGroundType()))));
-                co.put("yearDate", ToolDateTime.format(co.getStartDate(), "yyyy-MM-dd"));
                 list.set(i, co);
             }
         }
     }
+
+    @RequiresPermissions(value={"/basic/well"})
+    public void importPage() {
+        this.setAttr("uploadUrl", "well");
+        render("import_data.jsp");
+    }
+
+    @RequiresPermissions(value = {"/basic/well"})
+    public void downloadDemo() {
+        renderFile(new File(PropKit.get("import.water.well.demo.path")));
+    }
+
+    @RequiresPermissions(value = {"/basic/well"})
+    public void uploadImportData() {
+        String dataStr= DateUtils.format(new Date(), "yyyyMMddHHmm");
+        List<UploadFile> flist = this.getFiles("/temp", 1024 * 1024 * 50);
+        Map<String,Object> data= Maps.newHashMap();
+        if(flist.size()>0){
+            UploadFile uf=flist.get(0);
+            String status_url= PropKit.get("uploadWellPath");
+            String fileUrl=dataStr+"/"+uf.getFileName();
+            String newFile=status_url+fileUrl;
+            FileUtils.mkdir(newFile, false);
+            FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);
+            data.put("fileName", uf.getFileName());
+            data.put("fileUrl", newFile);
+            uf.getFile().delete();
+            renderJson(data);
+        }
+    }
+
+    @RequiresPermissions(value = {"/basic/well"})
+    public void importData() {
+        String newFilePath = this.getPara("importUrl");
+        WellExportService service = new WellExportService();
+        try {
+            List<Map<Integer, String>> maps = service.importExcel(newFilePath);
+            Well.me.importData(maps);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.renderJson(InvokeResult.success());
+    }
+
 }
 

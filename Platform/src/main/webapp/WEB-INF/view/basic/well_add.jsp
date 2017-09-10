@@ -37,19 +37,9 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="township">乡:</label>
-                                <div class="col-sm-3">
-                                    <input type="text" id="township" name="township" value="${item.township}" class="form-control">
-                                </div>
                                 <label class="col-sm-3 control-label" for="name">水井名称:</label>
                                 <div class="col-sm-3">
                                     <input type="text" id="name" name="name" value="${item.name}" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="village">村:</label>
-                                <div class="col-sm-3">
-                                    <input type="text" id="village" name="village" value="${item.village}" class="form-control">
                                 </div>
                                 <label class="col-sm-3 control-label" for="address">水井地址:</label>
                                 <div class="col-sm-3">
@@ -57,9 +47,19 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="startDate">成井时间（年）:</label>
+                                <label class="col-sm-3 control-label" for="village">村:</label>
                                 <div class="col-sm-3">
-                                    <input type="text" id="startDate" name="startDate" value="${item.startDate}" class="form-control form_datetime">
+                                    <input type="text" id="village" name="village" value="${item.village}" class="form-control">
+                                </div>
+                                <label class="col-sm-3 control-label" for="waterWithdrawals">年许可取水量（万立方米）:</label>
+                                <div class="col-sm-3">
+                                    <input type="number" id="waterWithdrawals" name="waterWithdrawals" value="${item.waterWithdrawals}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="year">成井时间（年）:</label>
+                                <div class="col-sm-3">
+                                    <input type="number" id="year" name="year" value="${item.year}" class="form-control">
                                 </div>
                                 <label class="col-sm-3 control-label" for="wellDepth">井深（米）:</label>
                                 <div class="col-sm-3">
@@ -106,8 +106,9 @@
                                 </div>
                                 <label class="col-sm-3 control-label" for="pumpModel">水泵型号:</label>
                                 <div class="col-sm-3">
-                                    <input type="hidden" id="pumpModelInput" name="pumpModelInput" value="${item.pumpModel}">
-                                    <select id="pumpModel" name="pumpModel" value="${item.pumpModel}" class="form-control"></select>
+                                    <%--<input type="hidden" id="pumpModelInput" name="pumpModelInput" value="${item.pumpModel}">
+                                    <select id="pumpModel" name="pumpModel" value="${item.pumpModel}" class="form-control"></select>--%>
+                                    <input type="text" id="pumpModel" name="pumpModel" value="${item.pumpModel}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -141,8 +142,9 @@
                                 </div>
                                 <label class="col-sm-3 control-label" for="watersType">水源类型:</label>
                                 <div class="col-sm-3">
-                                    <input type="hidden" id="watersTypeInput" name="watersTypeInput" value="${item.watersTypeInput}" >
-                                    <select id="watersType" name="watersType" value="${item.watersType}" class="form-control"></select>
+                                    <%--<input type="hidden" id="watersTypeInput" name="watersTypeInput" value="${item.watersTypeInput}" >
+                                    <select id="watersType" name="watersType" value="${item.watersType}" class="form-control"></select>--%>
+                                    <input type="text" id="watersType" name="watersType" value="${item.watersType}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -164,12 +166,6 @@
                                 <label class="col-sm-3 control-label" for="licenceCode">取水许可证编号:</label>
                                 <div class="col-sm-3">
                                     <input type="text" id="licenceCode" name="licenceCode" value="${item.licenceCode}" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="waterWithdrawals">年许可取水量（万立方米）:</label>
-                                <div class="col-sm-3">
-                                    <input type="number" id="waterWithdrawals" name="waterWithdrawals" value="${item.waterWithdrawals}" class="form-control">
                                 </div>
                             </div>
                             <div class="clearfix form-actions" align="center">
@@ -275,22 +271,22 @@
     function getDictMapData(){
         var submitData = {};
         $.post("${context_path}/dict/getWellUseDict", submitData, function(data) {
-            var watersType = data.WatersType;
-            var pumpModel = data.PumpModel;
+//            var watersType = data.WatersType;
+//            var pumpModel = data.PumpModel;
             var calculateType = data.CalculateType;
             var geomorphicType = data.GeomorphicType;
             var groundType = data.GroundType;
-            for(var i = 0;i<watersType.length;i++) {
-                if ($("#watersTypeInput").val() == watersType[i].value) {
-                    $("#watersType").append("<option selected value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
-                } else {
-                    $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
-                }
-            }
-            for (var i = 0;i<pumpModel.length;i++) {
-                $("#pumpModel").append("<option value='" + pumpModel[i].value + "'>"+pumpModel[i].name+"</option>");
-            }
-            $("#pumpModel").val($("#pumpModelInput").val());
+//            for(var i = 0;i<watersType.length;i++) {
+//                if ($("#watersTypeInput").val() == watersType[i].value) {
+//                    $("#watersType").append("<option selected value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+//                } else {
+//                    $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+//                }
+//            }
+//            for (var i = 0;i<pumpModel.length;i++) {
+//                $("#pumpModel").append("<option value='" + pumpModel[i].value + "'>"+pumpModel[i].name+"</option>");
+//            }
+//            $("#pumpModel").val($("#pumpModelInput").val());
 
             for (var i = 0;i<calculateType.length;i++) {
                 $("#calculateType").append("<option value='" + calculateType[i].value + "'>"+calculateType[i].name+"</option>");

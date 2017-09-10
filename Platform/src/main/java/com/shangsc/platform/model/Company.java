@@ -3,11 +3,15 @@ package com.shangsc.platform.model;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseCompany;
+import com.shangsc.platform.util.CodeNumUtil;
+import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -45,34 +49,38 @@ public class Company extends BaseCompany<Company> {
 
     public void updateMeterNum(String innerCode, boolean flag) {
         Company company = Company.me.findByInnerCode(innerCode);
-        Integer num = company.getRemotemeterCount();
-        if (num == null) {
-            num = 0;
-        }
-        if (flag) {
-            company.setRemotemeterCount(num + 1);
-        } else {
-            if (num > 0) {
-                company.setRemotemeterCount(num-1);
+        if (company != null) {
+            Integer num = company.getRemotemeterCount();
+            if (num == null) {
+                num = 0;
             }
+            if (flag) {
+                company.setRemotemeterCount(num + 1);
+            } else {
+                if (num > 0) {
+                    company.setRemotemeterCount(num - 1);
+                }
+            }
+            company.update();
         }
-        company.update();
     }
 
     public void updateWellNum(String innerCode, boolean flag) {
         Company company = Company.me.findByInnerCode(innerCode);
-        Integer num = company.getWellCount();
-        if (num == null) {
-            num = 0;
-        }
-        if (flag) {
-            company.setWellCount(num + 1);
-        } else {
-            if (num > 0) {
-                company.setWellCount(num - 1);
+        if (company != null) {
+            Integer num = company.getWellCount();
+            if (num == null) {
+                num = 0;
             }
+            if (flag) {
+                company.setWellCount(num + 1);
+            } else {
+                if (num > 0) {
+                    company.setWellCount(num - 1);
+                }
+            }
+            company.update();
         }
-        company.update();
     }
 
     /**
@@ -96,39 +104,50 @@ public class Company extends BaseCompany<Company> {
         return InvokeResult.success();
     }
 
-    public InvokeResult save(Long id, String name, String innerCode, Integer street, String address, Integer customerType, Integer waterUseType,
+    public InvokeResult save(Long id, String name, String innerCode, String waterUnit, String county, Integer street, String streetSrc,
+                             String address, Integer customerType, Integer waterUseType, String gbIndustry, String mainIndustry,
                              String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
-                             Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude) {
+                             Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createDate,
+                             BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price) {
         if (null != id && id > 0l) {
             Company company = this.findById(id);
             if (company == null) {
                 return InvokeResult.failure("更新失败单位, 该单位不存在");
             }
-            company = setProp(company, name, innerCode, street, address, customerType, waterUseType,
-                    contact, phone, postalCode, department, wellCount, firstWatermeterCount, remotemeterCount, unitType, longitude, latitude);
+            company = setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
+                    gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
+                    remotemeterCount, unitType, longitude, latitude, createDate, self_well_price, surface_price, self_free_price);
             company.update();
         } else {
             if(this.hasExist(name, innerCode)){
                 return InvokeResult.failure("单位名称已存在");
             } else {
                 Company company = new Company();
-                company = setProp(company, name, innerCode, street, address, customerType, waterUseType,
-                        contact, phone, postalCode, department, wellCount, firstWatermeterCount, remotemeterCount, unitType, longitude, latitude);
+                company = setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
+                        gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
+                        remotemeterCount, unitType, longitude, latitude, createDate, self_well_price, surface_price, self_free_price);
                 company.save();
             }
         }
         return InvokeResult.success();
     }
 
-    private Company setProp(Company company, String name, String innerCode, Integer street, String address, Integer customerType,
-                            Integer waterUseType, String contact, String phone, String postalCode, String department, Integer wellCount,
-                            Integer firstWatermeterCount, Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude) {
+    private Company setProp(Company company, String name, String innerCode, String waterUnit, String county, Integer street, String streetSrc,
+                            String address, Integer customerType, Integer waterUseType, String gbIndustry, String mainIndustry,
+                            String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
+                            Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createDate,
+                            BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price) {
         company.setName(name);
         company.setInnerCode(innerCode);
+        company.setWaterUnit(waterUnit);
+        company.setCounty(county);
         company.setStreet(street);
+        company.setStreetSrc(streetSrc);
         company.setAddress(address);
         company.setCustomerType(customerType);
         company.setWaterUseType(waterUseType);
+        company.setGbIndustry(gbIndustry);
+        company.setMainIndustry(mainIndustry);
         company.setContact(contact);
         company.setPhone(phone);
         company.setPostalCode(postalCode);
@@ -139,7 +158,14 @@ public class Company extends BaseCompany<Company> {
         company.setUnitType(unitType);
         company.setLongitude(longitude);
         company.setLatitude(latitude);
-        company.setCreateTime(new Date());
+        if (createDate == null) {
+            company.setCreateTime(new Date());
+        } else {
+            company.setCreateTime(createDate);
+        }
+        company.setSelfWellPrice(self_well_price);
+        company.setSurfacePrice(surface_price);
+        company.setSelfFreePrice(self_free_price);
         return company;
     }
 
@@ -368,5 +394,130 @@ public class Company extends BaseCompany<Company> {
         if (moth.add(this.THRESHOLD).compareTo(monthActTotal) < 0) {
             warnInnerCodes.add(innerCode);
         }
+    }
+
+    public static int[] saveBatch(List<Company> modelOrRecordList, int batchSize) {
+        String sql = "insert into t_company(inner_code,name,water_unit,county,street,street_src,address,customer_type,gb_industry," +
+                "main_industry,water_use_type,contact,phone,postal_code,department,well_count,first_watermeter_count," +
+                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time)" +
+                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String columns = "inner_code,name,water_unit,county,street,street_src,address,customer_type,gb_industry," +
+                "main_industry,water_use_type,contact,phone,postal_code,department,well_count,first_watermeter_count," +
+                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time";
+        int[] result = Db.batch(sql, columns, modelOrRecordList, batchSize);
+        return result;
+    }
+
+    public void importData(List<Map<Integer, String>> maps) {
+        List<Company> lists = new ArrayList<Company>();
+        Map<String, Integer> dictUserType = DictData.dao.getDictNameMap(DictCode.UserType);
+        Map<String, Integer> dictStreet = DictData.dao.getDictNameMap(DictCode.Street);
+        Map<String, Integer> dictWaterUseType = DictData.dao.getDictNameMap(DictCode.WaterUseType);
+        for (int i = 0; i < maps.size(); i++) {
+            Company company = new Company();
+            Map<Integer, String> map = maps.get(i);
+            String innerCode = null;
+            if (map.get(0) != null) {
+                innerCode = map.get(0).toString();
+            }
+            if (StringUtils.isEmpty(innerCode) || hasExistCompany(innerCode)) {
+                continue;
+            }
+            String name = null;
+            if (map.get(1) != null) {
+                name = map.get(1).toString();
+            }
+            String waterUnit = null;
+            if (map.get(2) != null) {
+                waterUnit = map.get(2).toString();
+            }
+            String county = null;
+            if (map.get(3) != null) {
+                county = map.get(3).toString();
+            }
+            Integer street = null;
+            if (map.get(4) != null) {
+                street = dictStreet.get(map.get(4).toString());
+            }
+            String streetSrc = null;
+            if (map.get(5) != null) {
+                streetSrc = map.get(5).toString();
+            }
+            Integer customerType = null;
+            if (map.get(6) != null) {
+                customerType = dictUserType.get(map.get(6).toString());
+            }
+            String gbIndustry = null;
+            if (map.get(7) != null) {
+                gbIndustry = map.get(7).toString();
+            }
+            String mainIndustry = null;
+            if (map.get(8) != null) {
+                mainIndustry = map.get(8).toString();
+            }
+            Integer waterUseType = null;
+            if (map.get(9) != null) {
+                waterUseType = dictWaterUseType.get(map.get(9).toString());
+            }
+            String contact = null;
+            if (map.get(10) != null) {
+                contact = map.get(10).toString();
+            }
+            String phone = null;
+            if (map.get(11) != null) {
+                phone = map.get(11).toString();
+            }
+            String address = null;
+            if (map.get(12) != null) {
+                address = map.get(12).toString();
+            }
+            String postalCode = null;
+            if (map.get(13) != null) {
+                postalCode = map.get(13).toString();
+            }
+            String department = null;
+            if (map.get(14) != null) {
+                department = map.get(14).toString();
+            }
+
+            Integer wellCount = 0;
+            Integer firstWatermeterCount = 0;
+            Integer remotemeterCount = 0;
+            Integer unitType = 1;
+
+            BigDecimal self_well_price = null;
+            if (map.get(15) != null) {
+                self_well_price = CodeNumUtil.getBigDecimal(map.get(15).toString(), 2);
+            }
+
+            BigDecimal surface_price = null;
+            if (map.get(16) != null) {
+                surface_price = CodeNumUtil.getBigDecimal(map.get(16).toString(), 2);
+            }
+            BigDecimal self_free_price = null;
+            if (map.get(17) != null) {
+                self_free_price = CodeNumUtil.getBigDecimal(map.get(17).toString(), 2);
+            }
+
+            Date createDate = null;
+            Object createDateObj = map.get(18);
+            if (createDateObj != null) {
+                String createDateStr = createDateObj.toString();
+                String date = "";
+                if (createDateStr.indexOf("-") > 0) {
+                    date = ToolDateTime.format(StringUtils.trim(createDateStr) + " 00:00:00", ToolDateTime.pattern_ymd, ToolDateTime.pattern_ymd_hms);
+                } else if (createDateStr.indexOf("/") > 0) {
+                    date = ToolDateTime.format(StringUtils.trim(createDateStr) + " 00:00:00", ToolDateTime.pattern_ymd2, ToolDateTime.pattern_ymd_hms);
+                } else {
+                    date = ToolDateTime.format(new Date(), ToolDateTime.pattern_ymd_hms);
+                }
+                createDate = DateUtils.getDate(date, ToolDateTime.pattern_ymd);
+            }
+            setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
+                    gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
+                    remotemeterCount, unitType, null, null, createDate, self_well_price, surface_price, self_free_price);
+            lists.add(company);
+        }
+        Company.me.saveBatch(lists, lists.size());
     }
 }

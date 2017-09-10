@@ -1,7 +1,10 @@
 package com.shangsc.platform.controller.basic;
 
+import com.google.common.collect.Maps;
 import com.jfinal.aop.Clear;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.upload.UploadFile;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
@@ -10,6 +13,8 @@ import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.DateUtils;
+import com.shangsc.platform.core.util.FileUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.WaterMeterExportService;
@@ -90,12 +95,11 @@ public class MeterController extends BaseController {
     @RequiresPermissions(value = {"/basic/meter"})
     public void save() {
         Long id = this.getParaToLong("id");
-        Long companyId = this.getParaToLong("companyId");
         String innerCode = this.getPara("innerCode");
         String lineNum = this.getPara("lineNum");
         String meterNum = this.getPara("meterNum");
+        String meterAddress = this.getPara("meterAddress");
         Integer watersType = this.getParaToInt("watersType");
-        Integer waterUseType = this.getParaToInt("waterUseType");
         String meterAttr = this.getPara("meterAttr");
         Integer chargeType = this.getParaToInt("chargeType");
         String billingCycle = this.getPara("billingCycle");
@@ -105,8 +109,8 @@ public class MeterController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        InvokeResult result = WaterMeter.me.save(id, companyId, innerCode, lineNum, meterNum,
-                watersType, waterUseType, meterAttr, chargeType, billingCycle, registDate);
+        InvokeResult result = WaterMeter.me.save(id, innerCode, lineNum, meterNum, meterAddress,
+                watersType, meterAttr, chargeType, billingCycle, registDate);
         this.renderJson(result);
     }
 
@@ -131,21 +135,62 @@ public class MeterController extends BaseController {
         String path = service.export(list);
 
         renderFile(new File(path));
-
     }
 
     private void setVoProp(List<WaterMeter> list) {
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
-            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
             Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictCode.ChargeType);
             for (int i = 0; i < list.size(); i++) {
                 WaterMeter co = list.get(i);
-                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
                 co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
                 co.put("chargeTypeName", String.valueOf(mapChargeType.get(String.valueOf(co.getChargeType()))));
                 list.set(i, co);
             }
         }
     }
+
+    @RequiresPermissions(value={"/basic/meter"})
+    public void importPage() {
+        this.setAttr("uploadUrl", "meter");
+        render("import_data.jsp");
+    }
+
+    @RequiresPermissions(value = {"/basic/meter"})
+    public void downloadDemo() {
+        renderFile(new File(PropKit.get("import.water.meter.demo.path")));
+    }
+
+    @RequiresPermissions(value = {"/basic/meter"})
+    public void uploadImportData() {
+        String dataStr= DateUtils.format(new Date(), "yyyyMMddHHmm");
+        List<UploadFile> flist = this.getFiles("/temp", 1024 * 1024 * 50);
+        Map<String,Object> data= Maps.newHashMap();
+        if(flist.size()>0){
+            UploadFile uf=flist.get(0);
+            String status_url= PropKit.get("uploadMeterPath");
+            String fileUrl=dataStr+"/"+uf.getFileName();
+            String newFile=status_url+fileUrl;
+            FileUtils.mkdir(newFile, false);
+            FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);
+            data.put("fileName", uf.getFileName());
+            data.put("fileUrl", newFile);
+            uf.getFile().delete();
+            renderJson(data);
+        }
+    }
+
+    @RequiresPermissions(value = {"/basic/meter"})
+    public void importData() {
+        String newFilePath = this.getPara("importUrl");
+        WaterMeterExportService service = new WaterMeterExportService();
+        try {
+            List<Map<Integer, String>> maps = service.importExcel(newFilePath);
+            WaterMeter.me.importData(maps);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.renderJson(InvokeResult.success());
+    }
+
 }

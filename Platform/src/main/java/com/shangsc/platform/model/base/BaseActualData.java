@@ -17,14 +17,6 @@ public abstract class BaseActualData<M extends BaseActualData<M>> extends BaseMo
 		return get("id");
 	}
 
-	public void setCompanyId(Long companyId) {
-		set("company_id", companyId);
-	}
-
-	public Long getCompanyId() {
-		return get("company_id");
-	}
-
 	public void setInnerCode(String innerCode) {
 		set("inner_code", innerCode);
 	}
@@ -33,20 +25,12 @@ public abstract class BaseActualData<M extends BaseActualData<M>> extends BaseMo
 		return get("inner_code");
 	}
 
-	public void setLineNum(String lineNum) {
-		set("line_num", lineNum);
+	public void setMeterAddress(String meterAddress) {
+		set("meter_address", meterAddress);
 	}
 
-	public String getLineNum() {
-		return get("line_num");
-	}
-
-	public void setMeterNum(String meterNum) {
-		set("meter_num", meterNum);
-	}
-
-	public String getMeterNum() {
-		return get("meter_num");
+	public String getMeterAddress() {
+		return get("meter_address");
 	}
 
 	public void setWatersType(Integer watersType) {

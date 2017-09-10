@@ -17,14 +17,6 @@ public abstract class BaseWaterIndex<M extends BaseWaterIndex<M>> extends BaseMo
 		return get("id");
 	}
 
-	public void setCompanyId(Long companyId) {
-		set("company_id", companyId);
-	}
-
-	public Long getCompanyId() {
-		return get("company_id");
-	}
-
 	public void setInnerCode(String innerCode) {
 		set("inner_code", innerCode);
 	}
@@ -33,12 +25,12 @@ public abstract class BaseWaterIndex<M extends BaseWaterIndex<M>> extends BaseMo
 		return get("inner_code");
 	}
 
-	public void setWaterUseType(String waterUseType) {
-		set("water_use_type", waterUseType);
+	public void setWatersType(Integer watersType) {
+		set("waters_type", watersType);
 	}
 
-	public String getWaterUseType() {
-		return get("water_use_type");
+	public Integer getWatersType() {
+		return get("waters_type");
 	}
 
 	public void setWaterIndex(java.math.BigDecimal waterIndex) {

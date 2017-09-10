@@ -65,8 +65,9 @@ public class ChartController extends Controller {
             if (null != waterMeter) {
                 Record records1 = ActualData.me.getYearActual(index.getInnerCode());
                 if (null != records1) {
-                    comp((BigDecimal) records1.get("yearTotal"), (BigDecimal) index.getWaterIndex());
-
+                    if (records1.get("yearTotal") != null) {
+                        comp((BigDecimal) records1.get("yearTotal"), (BigDecimal) index.getWaterIndex());
+                    }
                     List<Record> records = ActualData.me.getMonthActualDataPage(index.getInnerCode());
                     for (int i = 0; i < records.size(); i++) {
                         Record record = records.get(i);

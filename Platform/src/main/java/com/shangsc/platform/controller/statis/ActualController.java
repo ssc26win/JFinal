@@ -67,10 +67,11 @@ public class ActualController extends BaseController {
         Long companyId = this.getParaToLong("companyId");
         String innerCode = this.getPara("innerCode");
         String lineNum = this.getPara("lineNum");
-        String meterNum = this.getPara("meterNum");
+        String meter_address = this.getPara("meter_address");
         Integer watersType = this.getParaToInt("watersType");
         String alarm = this.getPara("alarm");
         BigDecimal netWater = CodeNumUtil.getBigDecimal(this.getPara("netWater"), 2);
+        BigDecimal sumWater = CodeNumUtil.getBigDecimal(this.getPara("sumWater"), 2);
         Integer state = this.getParaToInt("state");
         String voltage = this.getPara("voltage");
         Date writeTime = null;
@@ -79,8 +80,8 @@ public class ActualController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        InvokeResult result = ActualData.me.save(id, companyId, innerCode, lineNum, meterNum,
-                watersType, alarm, netWater, state, voltage, writeTime);
+        InvokeResult result = ActualData.me.save(id, companyId, innerCode, lineNum, meter_address,
+                watersType, alarm, netWater, sumWater, state, voltage, writeTime);
         this.renderJson(result);
     }
 

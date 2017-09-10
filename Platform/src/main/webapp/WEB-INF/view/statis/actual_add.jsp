@@ -40,10 +40,10 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterNum">水表表号</label>
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meter_address">表计地址</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" id="meterNum" name="meterNum" value="${item.meterNum}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="meter_address" name="meter_address" value="${item.meter_address}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>

@@ -33,28 +33,12 @@ public abstract class BaseWell<M extends BaseWell<M>> extends BaseModel<M> imple
 		return get("name");
 	}
 
-	public void setCompanyId(Long companyId) {
-		set("company_id", companyId);
-	}
-
-	public Long getCompanyId() {
-		return get("company_id");
-	}
-
 	public void setInnerCode(String innerCode) {
 		set("inner_code", innerCode);
 	}
 
 	public String getInnerCode() {
 		return get("inner_code");
-	}
-
-	public void setTownship(String township) {
-		set("township", township);
-	}
-
-	public String getTownship() {
-		return get("township");
 	}
 
 	public void setVillage(String village) {
@@ -73,12 +57,12 @@ public abstract class BaseWell<M extends BaseWell<M>> extends BaseModel<M> imple
 		return get("address");
 	}
 
-	public void setStartDate(java.util.Date startDate) {
-		set("start_date", startDate);
+	public void setYear(String year) {
+		set("year", year);
 	}
 
-	public java.util.Date getStartDate() {
-		return get("start_date");
+	public String getYear() {
+		return get("year");
 	}
 
 	public void setWellDepth(java.math.BigDecimal wellDepth) {
@@ -193,11 +177,11 @@ public abstract class BaseWell<M extends BaseWell<M>> extends BaseModel<M> imple
 		return get("name_code");
 	}
 
-	public void setWatersType(Integer watersType) {
+	public void setWatersType(String watersType) {
 		set("waters_type", watersType);
 	}
 
-	public Integer getWatersType() {
+	public String getWatersType() {
 		return get("waters_type");
 	}
 

@@ -137,9 +137,9 @@
 							$("#uiicon").empty().append("<span class='ui-icon "+rdata.uiicon+"'></span>");
 						}**/
 					} 
-				},
+				}
             });
-            $("#grid-table").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
+            //$("#grid-table").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
 			$(window).triggerHandler('resize.jqGrid');
 			
 			$("#bnt-add").click(function(){

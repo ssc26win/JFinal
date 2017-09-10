@@ -35,11 +35,11 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterUseType">取水用途:</label>
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="watersType">水源类型:</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <select id="waterUseType" name="waterUseType" class="col-xs-12 col-sm-6"></select>
-                    <input type="hidden" id="waterUseTypeInput" name="waterUseTypeInput" value="${item.waterUseType}">
+                    <select id="watersType" name="watersType" class="col-xs-12 col-sm-6"></select>
+                    <input type="hidden" id="watersTypeInput" name="watersTypeInput" value="${item.watersType}">
                   </div>
                 </div>
               </div>
@@ -214,11 +214,11 @@
   function getDictMapData(){
     var submitData = {};
     $.post("${context_path}/dict/getIndexUseDict", submitData, function(data) {
-      var waterUseType = data.WaterUseType;
-      for(var i = 0;i<waterUseType.length;i++) {
-        $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
+      var watersType = data.WatersType;
+      for(var i = 0;i<watersType.length;i++) {
+        $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
       }
-      $("#waterUseType").val($("#waterUseTypeInput").val());
+      $("#watersType").val($("#watersTypeInput").val());
     },"json");
   }
   $(function(){

@@ -112,7 +112,7 @@
                 /*{ label: '乡', name: 'township', width: 45, sortable:false},
                 { label: '村', name: 'village', width: 50, sortable:false},*/
                 { label: '水井地址', name: 'address', width: 60, sortable:false},
-                { label: '成井时间（年）', name: 'yearDate', width: 70, sortable:false},
+                { label: '成井时间（年）', name: 'year', width: 70, sortable:false},
                 { label: '井深（米）', name: 'well_depth', width: 45, sortable:false},
                 { label: '地下水埋深（米）', name: 'ground_depth', width: 80, sortable:false},
                 /*{ label: '是否为单位自备井', name: 'oneselfWellName', width: 80, sortable:false},*/
@@ -122,7 +122,7 @@
                 { label: '水源类型', name: 'watersTypeName', width: 60, sortable:false},
                 /*{ label: '是否已配套机电设备', name: 'electromechanicsName', width: 80, sortable:false},
                 { label: '是否已安装水量计量设施', name: 'calculateWaterName', width: 100, sortable:false},*/
-                { label: '水泵型号', name: 'pumpModelName', width: 80, sortable:false},
+                { label: '水泵型号', name: 'pump_model', width: 80, sortable:false},
               /*  { label: '水量计量设施类型', name: 'calculateTypeName', width: 100, sortable:false},
                 { label: '是否为规模以上地下水水源地的水井', name: 'aboveScaleName', width: 100, sortable:false},
                 { label: '所在地貌类型区', name: 'geomorphicTypeName', width: 70, sortable:false},
@@ -282,6 +282,17 @@
     function reloadGrid(){
         $("#grid-table").trigger("reloadGrid"); //重新载入
     }
+
+    $("#btn-importData").click(function(){//添加页面
+        parent.layer.open({
+            title:'导入水井信息',
+            type: 2,
+            area: ['770px', '400px'],
+            fix: false, //不固定
+            maxmin: true,
+            content: '${context_path}/basic/well/importPage'
+        });
+    });
 </script>
 
 </body>

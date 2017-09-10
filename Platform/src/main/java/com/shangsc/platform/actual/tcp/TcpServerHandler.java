@@ -1,7 +1,11 @@
 package com.shangsc.platform.actual.tcp;
 
 import com.jfinal.kit.PropKit;
+import com.shangsc.platform.actual.util.ConversionUtil;
+import com.shangsc.platform.model.ActualData;
+import com.shangsc.platform.model.WaterMeter;
 import com.shangsc.platform.util.ToolDateTime;
+import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
@@ -12,6 +16,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.util.Date;
 
@@ -27,8 +32,17 @@ public class TcpServerHandler extends SimpleChannelHandler {
         ChannelBuffer buffer = (ChannelBuffer) e.getMessage();
         System.out.println("received " + buffer.readableBytes() + " bytes [" + buffer.toString() + "]");
         System.out.println("receive:" + buffer.toString(Charset.defaultCharset()));
+
+        String result = ConversionUtil.bytes2Hex16Str(buffer.array());
+
+        System.out.println("ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
+
+        System.out.println("ConversionUtil.bytes2HexString 16进制字符串转字符串 " + ConversionUtil.hex16Str2String(ConversionUtil.bytes2Hex16Str(buffer.array())));
+
         //e.getChannel().write(e.getMessage());
-        recordMsg(buffer.toString(Charset.defaultCharset()));
+        recordMsg(result);
+
+        recordDB(result);
     }
 
     @Override
@@ -65,6 +79,33 @@ public class TcpServerHandler extends SimpleChannelHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private synchronized void recordDB(String result) {
+        try {
+            if (StringUtils.isNotEmpty(result)) {
+                String meterNum = ConversionUtil.getMeterNum(result);
+                String innerCode = "";
+                if (StringUtils.isNotEmpty(meterNum)) {
+                    WaterMeter meter = WaterMeter.me.findByMeterNum(meterNum);
+                    if (meter != null) {
+                        innerCode = meter.getInnerCode();
+                    }
+                }
+                String lineNum = ConversionUtil.getLineNum(result);
+                BigDecimal sumWater = ConversionUtil.getMeterSum(result);
+                BigDecimal addWater = ConversionUtil.getMeterAdd(result);
+                Integer state = null;
+                String voltage = "";
+                Date writeTime = new Date();
+                if (sumWater.compareTo(new BigDecimal(0.00)) > 0 || sumWater.compareTo(new BigDecimal(0.00)) > 0 ) {
+                    ActualData.me.save(null, null, innerCode, lineNum, meterNum,
+                            null, null, addWater, sumWater, state, voltage, writeTime);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

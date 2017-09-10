@@ -36,6 +36,16 @@
                                     <input type="text" id="innerCode" name="innerCode" value="${item.innerCode}" class="form-control">
                                 </div>
                             </div>
+                            <div class="form-group" style="margin-top: 15px;">
+                                <label class="col-sm-2 control-label" for="waterUnit">所属节水办:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="waterUnit" name="waterUnit" value="${item.waterUnit}" class="form-control">
+                                </div>
+                                <label class="col-sm-2 control-label" for="county">所属区县:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="county" name="county" value="${item.county}" class="form-control">
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="address">单位地址:</label>
                                 <div class="col-sm-4">
@@ -51,18 +61,33 @@
                                 <label class="col-sm-2 control-label" for="customerType">用户类型:</label>
                                 <div class="col-sm-4">
                                     <input type="hidden" id="customerTypeInput" name="customerTypeInput" value="${item.customerType}">
-                                    <select  id="customerType" name="customerType" class="form-control"> </select>
+                                    <select id="customerType" name="customerType" class="form-control"> </select>
                                 </div>
-                                <label class="col-sm-2 control-label" for="street">所属乡镇或街道:</label>
+                                <label class="col-sm-2 control-label" for="street">所属乡镇:</label>
                                 <div class="col-sm-4">
-                                    <input type="hidden" id="streetInput" name="streetInput" value="${item.street}">
+                                    <input type="hidden" id="streetInput" name="streetInput" value="${item.street}" class="form-control">
                                     <select id="street" name="street" class="form-control"></select>
                                 </div>
-                                <%--<label class="col-sm-2 control-label" for="waterUseType">取水用途:</label>--%>
-                                <%--<div class="col-sm-4">--%>
-                                    <%--<input type="hidden" id="waterUseTypeInput" name="waterUseTypeInput" value="${item.waterUseType}">--%>
-                                    <%--<select  id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="form-control"> </select>--%>
-                                <%--</div>--%>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="customerType">注册时间:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="createTime" name="createTime" value="${item.createTime}" class="form-control form_date">
+                                </div>
+                                <label class="col-sm-2 control-label" for="streetSrc">原乡镇或街道:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="streetSrc" name="streetSrc" value="${item.streetSrc}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="gb_industry">国标行业:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="gb_industry" name="gb_industry" value="${item.gb_industry}" class="form-control">
+                                </div>
+                                <label class="col-sm-2 control-label" for="main_industry">主要行业:</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="main_industry" name="main_industry" value="${item.main_industry}" class="form-control">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="contact">联系人:</label>
@@ -103,6 +128,27 @@
                                 <div class="col-sm-4">
                                     <input type="hidden" id="unitTypeInput" name="unitTypeInput" value="${item.unitType}">
                                     <select  id="unitType" name="unitType" value="${item.unitType}" class="form-control"> </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="waterUseType">取水用途:</label>
+                                <div class="col-sm-4">
+                                    <input type="hidden" id="waterUseTypeInput" name="waterUseTypeInput" value="${item.waterUseType}">
+                                    <select  id="waterUseType" name="waterUseType" value="${item.waterUseType}" class="form-control"> </select>
+                                </div>
+                                <label class="col-sm-2 control-label" for="self_well_price">自备井基本水价:</label>
+                                <div class="col-sm-4">
+                                    <input type="number" id="self_well_price" name="self_well_price" value="${item.self_well_price}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="surface_price">地表水基本水价:</label>
+                                <div class="col-sm-4">
+                                    <input type="number" id="surface_price" name="surface_price" value="${item.surface_price}" class="form-control">
+                                </div>
+                                <label class="col-sm-2 control-label" for="self_free_price">自来水基本水价:</label>
+                                <div class="col-sm-4">
+                                    <input type="number" id="self_free_price" name="self_free_price" value="${item.self_free_price}" class="form-control">
                                 </div>
                             </div>
                             <div class="clearfix form-actions" align="center">
@@ -256,15 +302,20 @@
             for(var i = 0;i<unitType.length;i++) {
                 $("#unitType").append("<option value='" + unitType[i].value + "'>"+unitType[i].name+"</option>");
             }
+            $("#unitType").val($("#unitTypeInput").val());
             for(var i = 0;i<customerType.length;i++) {
                 $("#customerType").append("<option value='" + customerType[i].value + "'>"+customerType[i].name+"</option>");
             }
+            $("#customerType").val($("#customerTypeInput").val());
             for(var i = 0;i<street.length;i++) {
                 $("#street").append("<option value='" + street[i].value + "'>"+street[i].name+"</option>");
             }
-            $("#unitType").val($("#unitTypeInput").val());
-            $("#customerType").val($("#customerTypeInput").val());
             $("#street").val($("#streetInput").val());
+            var waterUseType = data.WaterUseType;
+            for(var i = 0;i<waterUseType.length;i++) {
+                $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
+            }
+            $("#waterUseType").val($("#waterUseTypeInput").val());
 
         },"json");
     }

@@ -37,15 +37,12 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
         log("messageReceived");
         ChannelBuffer buffer = (ChannelBuffer)e.getMessage();
         log("received " + buffer + " bytes [" + buffer.toString() + "]");
-        log("------start-------");
 
         String result = ConversionUtil.bytes2Hex16Str(buffer.array());
 
         log("ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
 
         log("ConversionUtil.bytes2HexString 16进制字符串转字符串 " + ConversionUtil.hex16Str2String(ConversionUtil.bytes2Hex16Str(buffer.array())));
-
-        log("------end-------");
 
         //e.getChannel().write(e.getMessage());
         recordMsg(result);
@@ -107,8 +104,10 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                 Integer state = null;
                 String voltage = "";
                 Date writeTime = new Date();
-                ActualData.me.save(null, null, innerCode, lineNum, meterNum,
-                        null, null, addWater, state, voltage, writeTime);
+                if (sumWater.compareTo(new BigDecimal(0.00)) > 0 || sumWater.compareTo(new BigDecimal(0.00)) > 0 ) {
+                    ActualData.me.save(null, null, innerCode, lineNum, meterNum,
+                            null, null, addWater, sumWater, state, voltage, writeTime);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

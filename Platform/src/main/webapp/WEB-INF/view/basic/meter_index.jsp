@@ -113,10 +113,10 @@
                 { label: '所属区县', name: 'county', width: 50, sortable:false},
                 { label: '路别', name: 'line_num', width: 100, sortable:false},
                 { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
+                { label: '表记地址', name: 'meter_address', width: 100,sortable:false},
                 { label: '水源类型', name: 'watersTypeName', width: 60, sortable:false},
                 { label: '国标行业', name: 'gb_industry', width: 40, sortable:false},
                 { label: '主要行业', name: 'main_industry', width: 40, sortable:false},
-                { label: '取水用途', name: 'waterUseTypeName', width: 80, sortable:false},
                 { label: '水表属性', name: 'meter_attr', width: 80, sortable:false},
                 { label: '收费类型', name: 'chargeTypeName', width: 50, sortable:false},
                 { label: '计费周期', name: 'billing_cycle', width: 50, sortable:false},
@@ -270,6 +270,17 @@
     function reloadGrid(){
         $("#grid-table_meter").trigger("reloadGrid"); //重新载入
     }
+
+    $("#btn-importData").click(function(){//添加页面
+        parent.layer.open({
+            title:'导入水表信息',
+            type: 2,
+            area: ['770px', '400px'],
+            fix: false, //不固定
+            maxmin: true,
+            content: '${context_path}/basic/meter/importPage'
+        });
+    });
 </script>
 
 </body>

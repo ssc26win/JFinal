@@ -90,8 +90,12 @@ public abstract class ExportBaseService {
             Map<Integer, String> map = new HashMap<Integer, String>();
             for(int j=0;j<row.getLastCellNum(); j++) {
                 Cell cell = row.getCell(j);// 获取到第j行的数据(单元格)
-                cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-                map.put(j, cell.getStringCellValue());
+                if (cell != null) {
+                    cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+                    map.put(j, cell.getStringCellValue());
+                } else {
+                    break;
+                }
             }
             list.add(map);
         }

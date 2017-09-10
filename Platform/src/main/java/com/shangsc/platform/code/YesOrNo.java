@@ -9,10 +9,13 @@ public class YesOrNo {
     public static final String Yes = "1";
     public static final String No = "0";
 
+    public static final String YesStr = "是";
+    public static final String NoStr = "否";
+
     public static Map<String, String> getYesOrNoMap() {
         Map<String, String> addType = new HashMap<String, String>();
-        addType.put(Yes, "是");
-        addType.put(No, "否");
+        addType.put(Yes, YesStr);
+        addType.put(No, NoStr);
         return addType;
     }
 
