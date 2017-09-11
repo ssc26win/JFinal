@@ -135,7 +135,7 @@ public class ConversionUtil {
     private static final String CUT = "FEFEFE";
     private static final String T2C = "2C";
 
-    public static String getMeterNum(String target) {
+    public static String getMeterAddress(String target) {
         try {
             if (StringUtils.isNotEmpty(target)) {
                 String[] array = target.split(CUT);
@@ -255,7 +255,7 @@ public class ConversionUtil {
 
         System.out.println(Integer.parseInt("00000000", 16));
 
-        System.out.println(getMeterNum(target));
+        System.out.println(getMeterAddress(target));
 
         System.out.println(getMeterSum(target));
 

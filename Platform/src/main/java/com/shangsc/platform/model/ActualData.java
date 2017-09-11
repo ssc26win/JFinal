@@ -22,28 +22,27 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public static final ActualData me = new ActualData();
 
-	public InvokeResult save(Long id, Long companyId, String innerCode, String lineNum, String meter_address,
-							 Integer watersType, String alarm, BigDecimal netWater, BigDecimal sumWater, Integer state, String voltage, Date writeTime) {
+	public InvokeResult save(Long id, String innerCode, String meter_address,
+							 String alarm, BigDecimal netWater, BigDecimal sumWater, Integer state, String voltage, Date writeTime) {
 		if (null != id && id > 0l) {
 			ActualData actualData = this.findById(id);
 			if (actualData == null) {
 				return InvokeResult.failure("更新失败, 该记录不存在");
 			}
-			actualData = setProp(actualData, companyId, innerCode, lineNum, meter_address, watersType, alarm, netWater, sumWater, state, voltage, writeTime);
+			actualData = setProp(actualData, innerCode, meter_address, alarm, netWater, sumWater, state, voltage, writeTime);
 			actualData.update();
 		} else {
 			ActualData actualData = new ActualData();
-			actualData = setProp(actualData, companyId, innerCode, lineNum, meter_address, watersType, alarm, netWater, sumWater, state, voltage, writeTime);
+			actualData = setProp(actualData, innerCode, meter_address, alarm, netWater, sumWater, state, voltage, writeTime);
 			actualData.save();
 		}
 		return InvokeResult.success();
 	}
 
-	private ActualData setProp(ActualData actualData, Long companyId, String innerCode, String meter_address, String meterNum,
-							   Integer watersType, String alarm, BigDecimal netWater, BigDecimal sumWater, Integer state, String voltage, Date writeTime) {
+	private ActualData setProp(ActualData actualData, String innerCode, String meter_address,
+							   String alarm, BigDecimal netWater, BigDecimal sumWater, Integer state, String voltage, Date writeTime) {
 		actualData.setInnerCode(innerCode);
 		actualData.setMeterAddress(meter_address);
-		actualData.setWatersType(watersType);
 		actualData.setAlarm(alarm);
 		actualData.setNetWater(netWater);
 		actualData.setState(state);
@@ -66,8 +65,9 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getActualDataPage(int page, int rows, String keyword, String orderbyStr) {
-		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad, t_company tc ");
+		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county,(select tm.line_num from t_water_meter tm where tad.meter_address=tm.meter_address) as line_num" +
+				",(select tm.waters_type from t_water_meter tm where tad.meter_address=tm.meter_address) as waters_type";
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad, t_company tc");
 		sqlExceptSelect.append(" where 1=1 and tad.inner_code=tc.inner_code");
 		if (StringUtils.isNotEmpty(keyword)) {
 			sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
@@ -82,7 +82,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 											 String name, String innerCode, Integer street, Integer watersType) {
-		String select=" select twm.*,tc.name,tc.address,tc.street,tc.water_unit,tc.county,tm.meter_attr ";
+		String select=" select twm.*,tc.name,tc.address,tc.street,tc.water_unit,tc.county,tm.meter_attr,tm.meter_address,tm.meter_num,tm.line_num ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
 		if (startTime != null) {
@@ -118,7 +118,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 										   String name, String innerCode, Integer street, Integer watersType) {
-		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tm.meter_attr ";
+		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tm.meter_attr,tm.meter_address,tm.meter_num,tm.line_num ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
 		if (startTime != null) {
@@ -154,7 +154,8 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 										   String name, String innerCode, Integer street, Integer watersType) {
-		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,sum(net_water) as netWaterNum,tm.billing_cycle,tm.meter_attr";
+		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,sum(net_water) as netWaterNum,tm.billing_cycle," +
+				"tm.meter_num,tm.meter_attr,tm.meter_address,tm.line_num";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
 		if (startTime != null) {
@@ -190,7 +191,8 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year,
 										  String name, String innerCode, Integer street, Integer watersType) {
-		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,sum(net_water) as netWaterNum,tm.meter_attr";
+		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,sum(net_water) as netWaterNum," +
+				"tm.meter_attr,tm.meter_num,tm.meter_address,tm.line_num";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
 		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
 		if (year != null && year > 0) {

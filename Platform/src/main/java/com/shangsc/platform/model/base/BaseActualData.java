@@ -33,14 +33,6 @@ public abstract class BaseActualData<M extends BaseActualData<M>> extends BaseMo
 		return get("meter_address");
 	}
 
-	public void setWatersType(Integer watersType) {
-		set("waters_type", watersType);
-	}
-
-	public Integer getWatersType() {
-		return get("waters_type");
-	}
-
 	public void setAlarm(String alarm) {
 		set("alarm", alarm);
 	}

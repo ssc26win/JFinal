@@ -101,7 +101,6 @@ public class GlobalConfig extends JFinalConfig {
 
 		//开启实时数据监听
 		//initActualUdp();
-
         //initActualTcp();
 	}
 
@@ -116,7 +115,6 @@ public class GlobalConfig extends JFinalConfig {
 	@Override
 	public void configEngine(Engine arg0) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	/**

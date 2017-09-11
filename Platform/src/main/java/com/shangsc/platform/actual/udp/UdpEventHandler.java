@@ -90,10 +90,10 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
     private synchronized void recordDB(String result) {
         try {
             if (StringUtils.isNotEmpty(result)) {
-                String meterNum = ConversionUtil.getMeterNum(result);
+                String meterAddress = ConversionUtil.getMeterAddress(result);
                 String innerCode = "";
-                if (StringUtils.isNotEmpty(meterNum)) {
-                    WaterMeter meter = WaterMeter.me.findByMeterNum(meterNum);
+                if (StringUtils.isNotEmpty(meterAddress)) {
+                    WaterMeter meter = WaterMeter.me.findByMeterNum(meterAddress);
                     if (meter != null) {
                         innerCode = meter.getInnerCode();
                     }
@@ -105,8 +105,7 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                 String voltage = "";
                 Date writeTime = new Date();
                 if (sumWater.compareTo(new BigDecimal(0.00)) > 0 || sumWater.compareTo(new BigDecimal(0.00)) > 0 ) {
-                    ActualData.me.save(null, null, innerCode, lineNum, meterNum,
-                            null, null, addWater, sumWater, state, voltage, writeTime);
+                    ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, voltage, writeTime);
                 }
             }
         } catch (Exception e) {

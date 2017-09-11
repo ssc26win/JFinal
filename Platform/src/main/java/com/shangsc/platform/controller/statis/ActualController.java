@@ -40,7 +40,9 @@ public class ActualController extends BaseController {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
-                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                if (co.get("Waters_type") != null) {
+                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("Waters_type")))));
+                }
                 co.put("alarm", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAlarm())));
                 list.set(i, co);
             }
@@ -64,11 +66,8 @@ public class ActualController extends BaseController {
     @RequiresPermissions(value={"/statis/actual"})
     public void save(){
         Long id = this.getParaToLong("id");
-        Long companyId = this.getParaToLong("companyId");
         String innerCode = this.getPara("innerCode");
-        String lineNum = this.getPara("lineNum");
         String meter_address = this.getPara("meter_address");
-        Integer watersType = this.getParaToInt("watersType");
         String alarm = this.getPara("alarm");
         BigDecimal netWater = CodeNumUtil.getBigDecimal(this.getPara("netWater"), 2);
         BigDecimal sumWater = CodeNumUtil.getBigDecimal(this.getPara("sumWater"), 2);
@@ -80,8 +79,8 @@ public class ActualController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        InvokeResult result = ActualData.me.save(id, companyId, innerCode, lineNum, meter_address,
-                watersType, alarm, netWater, sumWater, state, voltage, writeTime);
+        InvokeResult result = ActualData.me.save(id, innerCode, meter_address,
+                alarm, netWater, sumWater, state, voltage, writeTime);
         this.renderJson(result);
     }
 
