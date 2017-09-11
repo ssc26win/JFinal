@@ -38,9 +38,10 @@ public class WaterIndexExportService extends ExportBaseService{
          */
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[]{
+                "所属节水办",
                 "单位编号",
                 "单位名称",
-                "取水用途",
+                "水源类型",
                 "年用水指标",
                 "一月",
                 "二月",
@@ -60,9 +61,10 @@ public class WaterIndexExportService extends ExportBaseService{
         List<Object[]> objects = new ArrayList<Object[]>();
         for (WaterIndex waterIndex : list) {
             Object[] obj = new Object[]{
+                    waterIndex.get("water_unit"),
                     waterIndex.getInnerCode(),
                     waterIndex.get("companyName"),
-                    waterIndex.get("waterUseTypeName"),
+                    waterIndex.get("watersName"),
                     waterIndex.getWaterIndex(),
                     waterIndex.getJanuary(),
                     waterIndex.getFebruary(),

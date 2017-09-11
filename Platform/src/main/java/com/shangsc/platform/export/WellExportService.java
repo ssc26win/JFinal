@@ -49,10 +49,12 @@ public class WellExportService extends ExportBaseService {
 
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[]{
-                "单位名称",
-                "单位编号",
                 "水井编号",
                 "水井名称",
+                "单位名称",
+                "单位编号",
+                "所属节水办",
+                "所属区县",
                 "乡",
                 "村",
                 "水井地址",
@@ -82,10 +84,12 @@ public class WellExportService extends ExportBaseService {
         List<Object[]> objects = new ArrayList<Object[]>();
         for (Well well : wells) {
             Object[] obj = new Object[] {
-                    well.get("companyName"),
-                    well.getInnerCode(),
                     well.getWellNum(),
                     well.getName(),
+                    well.get("companyName"),
+                    well.getInnerCode(),
+                    well.get("water_unit"),
+                    well.get("county"),
                     well.get("streetName"),
                     well.getVillage(),
                     well.getAddress(),

@@ -42,9 +42,14 @@ public class CompanyExportService extends ExportBaseService {
         listHeader.addAll(Arrays.asList(new String[]{
                 "单位编号",
                 "单位名称",
-                "所属乡镇或街道",
+                "所属节水办",
+                "所属区县",
+                "所属乡镇",
+                "原乡镇或街道",
                 "单位地址",
                 "用户类型",
+                "国标行业",
+                "主要行业",
                 "取水用途",
                 "联系人",
                 "联系电话",
@@ -54,6 +59,9 @@ public class CompanyExportService extends ExportBaseService {
                 "一级表数量",
                 "远传表数量",
                 "节水型单位类型",
+                "自备井基本水价",
+                "地表水基本水价",
+                "自来水基本水价",
                 "创建时间"
         }));
 
@@ -63,9 +71,14 @@ public class CompanyExportService extends ExportBaseService {
             Object[] obj = new Object[]{
                     company.getInnerCode(),
                     company.getName(),
+                    company.getWaterUnit(),
+                    company.getCounty(),
                     company.get("streetName"),
+                    company.getStreetSrc(),
                     company.getAddress(),
                     company.get("customerTypeName"),
+                    company.getGbIndustry(),
+                    company.getMainIndustry(),
                     company.get("waterUseTypeName"),
                     company.getContact(),
                     company.getPhone(),
@@ -75,6 +88,9 @@ public class CompanyExportService extends ExportBaseService {
                     company.getFirstWatermeterCount(),
                     company.getRemotemeterCount(),
                     company.get("unitTypeName"),
+                    company.getSelfWellPrice(),
+                    company.getSurfacePrice(),
+                    company.getSelfFreePrice(),
                     company.getCreateTime()
 
             };

@@ -23,7 +23,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
 	public static final WaterMeter me = new WaterMeter();
 
     public Page<WaterMeter> getWaterMeterPage(int page, int rows, String keyword, String orderbyStr) {
-        String select = "select twm.*,tc.name as companyName,tc.water_unit,tc.county";
+        String select = "select twm.*,tc.name as companyName,tc.water_unit,tc.county,tc.gb_industry,tc.main_industry,tc.water_use_type";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm, t_company tc");
         sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code ");
         if (StringUtils.isNotEmpty(keyword)) {
