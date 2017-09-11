@@ -37,19 +37,27 @@ public abstract class ToolDateTime {
     public static final String pattern_ymd_hms_s2 = "yyyy/MM/dd HH:mm:ss:SSS"; // pattern_ymd timeMillisecond
 	public static final int pattern_ymd_hms_s_length = 23;
 
-	public static String getToday() {
+	public static boolean isOddMonth(Date date) {
+		int month = date.getMonth();
+		if (CodeNumUtil.isOdd(month)) {
+			return true;
+		}
+		return false;
+	}
+
+	public static String getTodayStart() {
 		Date currentTime = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat(pattern_ymd);
 		String dateString = formatter.format(currentTime);
 		return dateString + " 00:00:00";
 	}
 
-	public static Date getDateToday() {
-		return ToolDateTime.parse(getToday());
+	public static Date getDateTodayStart() {
+		return ToolDateTime.parse(getTodayStart());
 	}
 
-	public static Date getTomorrow() {
-		Date today = getDateToday();
+	public static Date getTomorrowStart() {
+		Date today = getDateTodayStart();
 		Calendar c = Calendar.getInstance();
 		c.setTime(today);
 		c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
@@ -62,6 +70,33 @@ public abstract class ToolDateTime {
 		c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
 		return c.getTime();
 	}
+
+	public static Date getYesterday(Date date) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.DAY_OF_MONTH, -1);// 今天-1天
+		return c.getTime();
+	}
+
+	public static String getDateStr(Date date) {
+		return ToolDateTime.format(ToolDateTime.getYesterday(date), ToolDateTime.pattern_ymd_hms);
+	}
+
+	public static String getYesterdayStr(Date date) {
+		return ToolDateTime.format(ToolDateTime.getYesterday(date), ToolDateTime.pattern_ymd_hms);
+	}
+
+	public static void main(String[] args) {
+		String str1 = ToolDateTime.format(new Date(), ToolDateTime.pattern_ymd_hms);
+		System.out.println(str1);
+		String str2 = ToolDateTime.format(getYesterday(new Date()), ToolDateTime.pattern_ymd_hms);
+		System.out.println(str2);
+
+		System.out.println(getMonthDate(new Date()));
+
+		System.out.println(get2MonthDateBetween(new Date()));
+	}
+
 
 	/**
 	 * 主要是给jfinal使用，数据库只认java.sql.*
@@ -529,6 +564,10 @@ public abstract class ToolDateTime {
 		Date start = calendar.getTime();
 
 		// 得到前一个月的最后一天
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		calendar.set(Calendar.MILLISECOND, 999);
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		Date end = calendar.getTime();
 
@@ -537,6 +576,66 @@ public abstract class ToolDateTime {
 		map.put("end", end);
 		return map;
 	}
+
+	/**
+	 * 根据日期月份，获取月份的开始和结束日期
+	 *
+	 * @param date
+	 * @return
+	 */
+	public static Map<String, String> get2MonthDateBetween(Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		Map<String, String> map = new HashMap<String, String>();
+		if (CodeNumUtil.isOdd(calendar.get(Calendar.MONTH) + 1)) {
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.set(Calendar.MILLISECOND, 0);
+			// 得到这个月的第一天
+			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+			Date start = calendar.getTime();
+			String strStart = format(start, ToolDateTime.pattern_ymd_hms);
+			map.put("start", strStart);
+
+			int month=calendar.get(Calendar.MONTH)+1;
+			calendar.set(Calendar.MONTH, month);
+			calendar.set(Calendar.HOUR_OF_DAY, 23);
+			calendar.set(Calendar.MINUTE, 59);
+			calendar.set(Calendar.SECOND, 59);
+			calendar.set(Calendar.MILLISECOND, 999);
+			// 得到这个月的最后一天
+			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			Date end = calendar.getTime();
+			String strEnd = format(end, ToolDateTime.pattern_ymd_hms);
+			map.put("end", strEnd);
+		} else {
+			calendar.set(Calendar.HOUR_OF_DAY, 23);
+			calendar.set(Calendar.MINUTE, 59);
+			calendar.set(Calendar.SECOND, 59);
+			calendar.set(Calendar.MILLISECOND, 999);
+			// 得到这个月的最后一天
+			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+			Date end = calendar.getTime();
+			String strEnd = format(end, ToolDateTime.pattern_ymd_hms);
+			map.put("end", strEnd);
+
+			int month=calendar.get(Calendar.MONTH);
+			calendar.set(Calendar.MONTH, month-1);
+			calendar.set(Calendar.HOUR_OF_DAY, 0);
+			calendar.set(Calendar.MINUTE, 0);
+			calendar.set(Calendar.SECOND, 0);
+			calendar.set(Calendar.MILLISECOND, 0);
+			Date start = calendar.getTime();
+			// 得到这个月的第一天
+			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+			String strStart = format(start, ToolDateTime.pattern_ymd_hms);
+			map.put("start", strStart);
+		}
+		return map;
+	}
+
+
 
 	/**
 	 * 分割List

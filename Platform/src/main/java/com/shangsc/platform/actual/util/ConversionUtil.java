@@ -135,7 +135,7 @@ public class ConversionUtil {
     private static final String CUT = "FEFEFE";
     private static final String T2C = "2C";
 
-    public static String getMeterAddress(String target) {
+    public static String getUdpMeterAddress(String target) {
         try {
             if (StringUtils.isNotEmpty(target)) {
                 String[] array = target.split(CUT);
@@ -155,9 +155,9 @@ public class ConversionUtil {
         return "";
     }
 
-    public static BigDecimal getMeterSum(String target) {
+    public static BigDecimal getUdpMeterSum(String target) {
         try {
-            if (StringUtils.isNotEmpty(target)) {
+            if (StringUtils.isNotEmpty(target) && target.length() > 96) {
                 String numStr = target.substring(76, 96);
                 if (StringUtils.isNotEmpty(numStr)) {
                     String[] numArray = numStr.split(T2C);
@@ -184,9 +184,9 @@ public class ConversionUtil {
         return new BigDecimal(0.00);
     }
 
-    public static BigDecimal getMeterAdd(String target) {
+    public static BigDecimal getUdpMeterAdd(String target) {
         try {
-            if (StringUtils.isNotEmpty(target)) {
+            if (StringUtils.isNotEmpty(target) && target.length() > 96) {
                 String numStr = target.substring(76, 96);
                 if (StringUtils.isNotEmpty(numStr)) {
                     String[] numArray = numStr.split(T2C);
@@ -255,11 +255,11 @@ public class ConversionUtil {
 
         System.out.println(Integer.parseInt("00000000", 16));
 
-        System.out.println(getMeterAddress(target));
+        System.out.println(getUdpMeterAddress(target));
 
-        System.out.println(getMeterSum(target));
+        System.out.println(getUdpMeterSum(target));
 
-        System.out.println(getMeterAdd(target));
+        System.out.println(getUdpMeterAdd(target));
 
         System.out.println(target.substring(52, 66));
     }

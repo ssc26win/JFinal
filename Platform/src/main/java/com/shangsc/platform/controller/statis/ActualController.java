@@ -1,6 +1,7 @@
 package com.shangsc.platform.controller.statis;
 
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.code.ActualState;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
@@ -36,6 +37,9 @@ public class ActualController extends BaseController {
         String keyword=this.getPara("name");
         Page<ActualData> pageInfo = ActualData.me.getActualDataPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<ActualData> list = pageInfo.getList();
+        Map<String, String> stateMap = ActualState.getMap();
+        long dayTime = 24 * 60 * 60 * 1000;
+        Date now = new Date();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
@@ -44,6 +48,19 @@ public class ActualController extends BaseController {
                     co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("Waters_type")))));
                 }
                 co.put("alarm", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAlarm())));
+                // 正常 异常（24小时内没有数据传回来时是异常） 停用（一天传回来数没有增量是停用）
+                if (co.getWriteTime() != null) {
+                    long target = now.getTime() - co.getWriteTime().getTime();
+                    if (target > dayTime) {
+                        co.setState(Integer.parseInt(ActualState.EXCEPTION));
+                    }
+                } else {
+                    co.setState(Integer.parseInt(ActualState.EXCEPTION));
+                }
+                if (co.getNetWater().compareTo(new BigDecimal(0.00)) <= 0) {
+                    co.setState(Integer.parseInt(ActualState.STOP));
+                }
+                co.put("stateName", stateMap.get(String.valueOf(co.getState())));
                 list.set(i, co);
             }
         }

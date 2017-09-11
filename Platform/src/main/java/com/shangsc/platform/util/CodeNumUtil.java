@@ -13,6 +13,18 @@ public class CodeNumUtil {
 
     public static final String COMPANY_CODE_PREFIX = "0001";
 
+    /**
+     * 是奇数
+     * @param a
+     * @return
+     */
+    public static boolean isOdd(int a) {
+        if(a%2 == 1){
+            return true;
+        }
+        return false;
+    }
+
     public static BigDecimal getBigDecimal(String target, int subScale) {
         Double f = Double.parseDouble(target);
         BigDecimal b = new BigDecimal(f);
@@ -33,11 +45,8 @@ public class CodeNumUtil {
     }
 
     public static void main(String[] args) {
-
-
         System.out.println(genInnerCode(1));
-
-
+        System.out.println(isOdd(2));
         System.out.println(genInnerCode2(22332));
     }
 }

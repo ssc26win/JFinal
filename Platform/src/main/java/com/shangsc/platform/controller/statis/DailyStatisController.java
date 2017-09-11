@@ -61,8 +61,8 @@ public class DailyStatisController extends BaseController {
             startTime = this.getParaToDate("startTime");
             endTime = this.getParaToDate("endTime");
             if (startTime == null && endTime == null) {
-                startTime = ToolDateTime.getDateToday();
-                endTime = ToolDateTime.getTomorrow();
+                startTime = ToolDateTime.getDateTodayStart();
+                endTime = ToolDateTime.getTomorrowStart();
             } else {
                 endTime = ToolDateTime.getTomorrow(startTime);
             }

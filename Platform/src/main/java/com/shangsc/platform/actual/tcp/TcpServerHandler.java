@@ -85,7 +85,7 @@ public class TcpServerHandler extends SimpleChannelHandler {
     private synchronized void recordDB(String result) {
         try {
             if (StringUtils.isNotEmpty(result)) {
-                String meterNum = ConversionUtil.getMeterAddress(result);
+                String meterNum = ConversionUtil.getUdpMeterAddress(result);
                 String innerCode = "";
                 if (StringUtils.isNotEmpty(meterNum)) {
                     WaterMeter meter = WaterMeter.me.findByMeterNum(meterNum);
@@ -94,8 +94,8 @@ public class TcpServerHandler extends SimpleChannelHandler {
                     }
                 }
                 String lineNum = ConversionUtil.getLineNum(result);
-                BigDecimal sumWater = ConversionUtil.getMeterSum(result);
-                BigDecimal addWater = ConversionUtil.getMeterAdd(result);
+                BigDecimal sumWater = ConversionUtil.getUdpMeterSum(result);
+                BigDecimal addWater = ConversionUtil.getUdpMeterAdd(result);
                 Integer state = null;
                 String voltage = "";
                 Date writeTime = new Date();

@@ -116,9 +116,27 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return this.findFirst(sql,innerCode);
     }
 
+    public  WaterMeter findByInnerCodeAndWatersType(String innerCode, String watersType){
+        String sql = "SELECT * FROM t_Water_Meter WHERE inner_code=? and waters_type=?";
+        return this.findFirst(sql,innerCode, watersType);
+    }
+
+    private String normalMeterConditionSql(){
+        Date date = new Date();
+        String nowBefore = ToolDateTime.getYesterdayStr(date);
+        String now = ToolDateTime.getDateStr(date);
+        StringBuffer exceptionMeterSql = new StringBuffer("select t.meter_address from t_actual_data t where 1=1");
+        exceptionMeterSql.append(" and t.write_time >='" + nowBefore + "'");
+        exceptionMeterSql.append(" and t.write_time <='" + now + "'");
+        exceptionMeterSql.append(" GROUP BY t.meter_address");
+        return exceptionMeterSql.toString();
+    }
+
     public Page<WaterMeter> getExceptionWaterMeterPage(int page, int rows, String keyword, String orderbyStr) {
+        String normalMeterSql = normalMeterConditionSql();
         String select = "select twm.*,tc.name as companyName,tc.water_unit,tc.county";
-        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT t.* FROM t_Water_Meter t WHERE t.meter_address NOT in  (select t.meter_address from t_actual_data t where to_days(t.write_time) = to_days(now()) GROUP BY t.meter_address)) twm, t_company tc ");
+        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT t.* FROM t_Water_Meter t WHERE t.meter_address NOT in  (" +
+                normalMeterSql + ")) twm, t_company tc ");
         sqlExceptSelect.append("where 1=1 and twm.inner_code=tc.inner_code");
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
@@ -135,8 +153,10 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
 
 
     public Page<WaterMeter> getNormalMeterPage(int page, int rows, String keyword, String orderbyStr) {
+        String normalMeterSql = normalMeterConditionSql();
         String select = "select twm.*,tc.name as companyName,tc.water_unit,tc.county";
-        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT t.* FROM t_Water_Meter t WHERE t.meter_address in  (select t.meter_address from t_actual_data t where to_days(t.write_time) = to_days(now()) GROUP BY t.meter_address)) twm, t_company tc ");
+        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT t.* FROM t_Water_Meter t WHERE t.meter_address in (" +
+                normalMeterSql + ")) twm, t_company tc ");
         sqlExceptSelect.append("where 1=1 and twm.inner_code=tc.inner_code");
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);

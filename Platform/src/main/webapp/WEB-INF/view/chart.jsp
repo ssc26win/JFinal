@@ -45,7 +45,6 @@
     </div>
 </div>
 <script language="JavaScript">
-
     $(document).ready(function () {
         var total, normalTotal, exptionTotal;
         $.get("${context_path}/chart", function (data) {
@@ -58,7 +57,7 @@
                 plotShadow: false,
             };
             var title1 = {
-                text: '水表数量（比例）'
+                text: '远传水表数量（共：' + total + ' 按比例查看）'
             };
             var tooltip1 = {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
@@ -91,7 +90,6 @@
             var credits = {
                 enabled:false // 禁用版权信息
             }
-
             var json1 = {};
             json1.chart = chart1;
             json1.title = title1;
@@ -114,7 +112,7 @@
                 plotShadow: false
             };
             var title1 = {
-                text: '单位数量（比例）'
+                text: '单位数量（共：' + total2 + ' 按比例查看）'
             };
             var tooltip1 = {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
@@ -144,11 +142,9 @@
                     {name:'其他' + '(' + otherTotal + ')', y:otherTotal,url:'${context_path}/basic/company/other'},
                 ]
             }];
-
             var credits = {
                 enabled:false // 禁用版权信息
             }
-
             var json1 = {};
             json1.chart = chart1;
             json1.title = title1;

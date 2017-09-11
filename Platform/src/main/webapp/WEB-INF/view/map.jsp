@@ -49,20 +49,6 @@
                     </span>
             </form>
         </div><!-- #nav-search -->
-
-    </div>--%>
-    <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
-    </script>
-    <div class="main-content" id="page-wrapper">
-        <div class="row">
-            <div class="col-sm-12">
-                <div style="height:0px;padding-bottom:48%;" id="map"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="${res_url}js/charts/jquery.min.js"></script>
 <script type="text/javascript">
     $(function(){
         if ('${type}' != '') {
@@ -78,6 +64,19 @@
         window.location.href = "${context_path}/#/chart/baiduMap?type="+ type;
     }
 </script>
+    </div>--%>
+    <script type="text/javascript">
+        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+    </script>
+    <div class="main-content" id="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <div style="height:0px;padding-bottom:48%;" id="map"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${res_url}js/charts/jquery.min.js"></script>
 <script type="text/javascript">
     var markerArr;
     markerArr = JSON.parse('${companys}');

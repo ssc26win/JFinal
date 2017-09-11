@@ -47,15 +47,15 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 			index = setProp(index, innerCode, watersType, waterIndex, january, february, march, april,
 					may, june, july, august, september, october, november, december);
 			index.update();
-		} else {
-			if (this.hasExist(innerCode)) {
-				return InvokeResult.failure("单位名称或编号已存在");
-			} else {
+		} else { //一个单位可能存在多个指标
+			//if (this.hasExist(innerCode)) {
+			//	return InvokeResult.failure("单位名称或编号已存在");
+			//} else {
 				WaterIndex index = new WaterIndex();
 				index = setProp(index, innerCode, watersType, waterIndex, january, february, march, april,
 						may, june, july, august, september, october, november, december);
 				index.save();
-			}
+			//}
 		}
 		return InvokeResult.success();
 	}

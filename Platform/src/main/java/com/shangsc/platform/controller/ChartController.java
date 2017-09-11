@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
+import com.shangsc.platform.code.MapState;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.model.ActualData;
@@ -17,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -39,12 +41,11 @@ public class ChartController extends Controller {
 
         object.put("total", total);
 
-        // 异常水表数量 水表每天都会接收到数据 否则就异常
-        int today = ActualData.me.getToddayActualDataPage().size();
+        // 异常水表数量24小时之内都会接收到数据 否则就异常
+        int today = ActualData.me.getTodayActualDataPage().size();//正常水表
+        object.put("normalTotal", today);
 
         object.put("exptionTotal", (total >= today) ? (total - today) : 0);
-
-        object.put("normalTotal", today);
 
         this.renderJson(object.toJSONString());
     }
@@ -175,11 +176,16 @@ public class ChartController extends Controller {
             String innerCode = this.getPara("innerCode");
             records = Company.me.getCompanyAll(innerCode);
         }
+        Map<Integer, String> stateMap = MapState.getMap();
+
         for (Record record:records) {
             JSONObject object = new JSONObject();
             object.put("longitude", record.get("longitude"));
             object.put("latitude", record.get("latitude"));
             object.put("innerCode", record.get("inner_code"));
+
+            object.put("state", MapState.NORMAL);
+
             object.put("name", record.get("name"));
             if (record.get("waterUseNum")!=null) {
                 object.put("waterUseNum", record.get("waterUseNum"));
@@ -187,6 +193,7 @@ public class ChartController extends Controller {
                 object.put("waterUseNum", 0);
             }
             object.put("address", record.get("address"));
+
             array.add(object);
         }
         if (CollectionUtils.isNotEmpty(records) && records.size() == 1) {
