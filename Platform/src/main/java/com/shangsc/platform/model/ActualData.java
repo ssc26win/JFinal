@@ -292,10 +292,9 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 
-	public Set<String> getMapWarnInnerCode() {
+	public Set<String> getMapWarnInnerCode(Date date) {
 		Map<Integer, String> map = MonthCode.getMap();
-		Date date = new Date();
-		//ToolDateTime.getMonthDate()
+		Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(date);
 		String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm\n" +
 				"on twm.meter_address=tad.meter_address) allad where allad.write_time >='2017-09-01 00:00:00' and allad.write_time <'2017-09-31 00:00:00' group by allad.meter_address) t\n" +
 				"INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi.january and t.waters_type=twi.waters_type";

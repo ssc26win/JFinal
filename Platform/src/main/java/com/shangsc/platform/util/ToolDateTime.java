@@ -587,6 +587,7 @@ public abstract class ToolDateTime {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		Map<String, String> map = new HashMap<String, String>();
+		map.put("month", calendar.get(Calendar.MONTH) + 1 + "");
 		if (CodeNumUtil.isOdd(calendar.get(Calendar.MONTH) + 1)) {
 			calendar.set(Calendar.HOUR_OF_DAY, 0);
 			calendar.set(Calendar.MINUTE, 0);
