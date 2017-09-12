@@ -27,10 +27,10 @@
         <div class="page-content" id="page-content">
             <div class="row">
                 <div class="col-xs-6">
-                    <div id="container1" style="width: 45%; height: 25%; margin: 0 auto"></div>
+                    <div id="container1" style="width: 50%; height: 25%; margin: 0 auto"></div>
                 </div>
                 <div class="col-xs-6">
-                    <div id="container12" style="width: 45%; height: 25%; margin: 0 auto"></div>
+                    <div id="container12" style="width: 50%; height: 25%; margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row" style="margin-top: 20px;">
@@ -54,10 +54,10 @@
             var chart1 = {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
-                plotShadow: false,
+                plotShadow: false
             };
             var title1 = {
-                text: '远传水表数量（共：' + total + ' 按比例查看）'
+                text: '水表总数量（' + total + '）'
             };
             var tooltip1 = {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
@@ -97,22 +97,24 @@
             json1.series = series1;
             json1.plotOptions = plotOptions1;
             json1.credits=credits;
-            $('#container1').highcharts(json1);
+            $('#container12').highcharts(json1);
         })
 
-        var total2, warnTotal2, normalTotal2, otherTotal;
+        var total2, warnTotal2, normalTotal2, warnTitle, supplyTotal;
         $.get("${context_path}/chart/company", function (data) {
             total2 = data.total;
             warnTotal2 = data.warnTotal;
             normalTotal2 = data.normalTotal;
-            otherTotal = data.otherTotal;
+            supplyTotal = data.supplyTotal;
+            warnTitle = data.warnTitle;
+
             var chart1 = {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false
             };
             var title1 = {
-                text: '单位数量（共：' + total2 + ' 按比例查看）'
+                text: '单位总数量（' + total2 + '）'
             };
             var tooltip1 = {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
@@ -137,9 +139,9 @@
                 name: '单位数量（%）',
                 data: [
                     //{name:'单位总数量' + '(' + total2 + ')', y:total2,url:'${context_path}/basic/company'},
-                    {name:'正常单位数量' + '(' + normalTotal2 + ')', y:normalTotal2,url:'${context_path}/basic/company/normal'},
-                    {name:'预警单位数量' + '(' + warnTotal2 + ')', y:warnTotal2,url:'${context_path}/basic/company/warn'},
-                    {name:'其他' + '(' + otherTotal + ')', y:otherTotal,url:'${context_path}/basic/company/other'},
+                    {name:'用水单位' + '(' + normalTotal2 + ')', y:normalTotal2,url:'${context_path}/basic/company/normal'},
+                    {name: warnTitle + '单位' + '(' + warnTotal2 + ')', y:warnTotal2,url:'${context_path}/basic/company/warn'},
+                    {name:'供水单位' + '(' + supplyTotal + ')', y:supplyTotal,url:'${context_path}/basic/company/supply'},
                 ]
             }];
             var credits = {
@@ -152,7 +154,7 @@
             json1.series = series1;
             json1.plotOptions = plotOptions1;
             json1.credits=credits;
-            $('#container12').highcharts(json1);
+            $('#container1').highcharts(json1);
         })
 
         $.get("${context_path}/chart/getDilay", function (data) {
@@ -174,27 +176,22 @@
                     width: 10
                 }]
             };
-
             var tooltip = {
                 valueSuffix: ''
             }
-
             var legend = {
                 layout: 'vertical',
                 align: 'right',
                 verticalAlign: 'middle',
                 borderWidth: 0
             };
-
             var series = [
                 {
                     name: '日用水量',
                     data: data.sumWater
                 }
             ];
-
             var plotOptions={
-
                 spline: {
                     shadow: true,
                         animation: true,
@@ -212,18 +209,14 @@
                             var time=event.point.category
 
                             window.location.href="${context_path}/statis/daily?time="+time;
-
                         }
                     }
                 }
             };
-
             var credits = {
                 enabled:false // 禁用版权信息
             }
-
             var json = {};
-
             json.title = title;
             json.subtitle = subtitle;
             json.xAxis = xAxis;
@@ -234,11 +227,9 @@
             json.plotOptions = plotOptions;
             json.credits=credits;
             $('#container').highcharts(json);
-
         });
 
         $.get("${context_path}/chart/getMonth", function (data) {
-
             var title = {
                 text: ''
             };
@@ -257,25 +248,21 @@
                     width: 10
                 }]
             };
-
             var tooltip = {
                 valueSuffix: ''
             }
-
             var legend = {
                 layout: 'vertical',
                 align: 'right',
                 verticalAlign: 'middle',
                 borderWidth: 0
             };
-
             var series = [
                 {
                     name: '月用水量',
                     data: data.sumWater
                 }
             ];
-
             var plotOptions={
 
                 spline: {
@@ -301,13 +288,10 @@
                     }
                 }
             };
-
             var credits = {
                 enabled:false // 禁用版权信息
             }
-
             var json = {};
-
             json.title = title;
             json.subtitle = subtitle;
             json.xAxis = xAxis;
@@ -318,14 +302,9 @@
             json.plotOptions = plotOptions;
             json.credits = credits;
             $('#containe2').highcharts(json);
-
         });
-
     });
-//    $(function(){
-//        var obj = $(".highcharts-plot-lines-0").firstChild;
-//        $(obj).attr("stroke","");
-//    })
+
 </script>
 </body>
 </html>

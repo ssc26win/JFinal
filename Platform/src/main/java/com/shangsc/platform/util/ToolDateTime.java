@@ -1,6 +1,7 @@
 package com.shangsc.platform.util;
 
 import com.jfinal.log.Log;
+import com.shangsc.platform.code.MonthCode;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -588,6 +589,7 @@ public abstract class ToolDateTime {
 		calendar.setTime(date);
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("month", calendar.get(Calendar.MONTH) + 1 + "");
+        map.put("month_str", MonthCode.getMap().get(calendar.get(Calendar.MONTH) + 1));
 		if (CodeNumUtil.isOdd(calendar.get(Calendar.MONTH) + 1)) {
 			calendar.set(Calendar.HOUR_OF_DAY, 0);
 			calendar.set(Calendar.MINUTE, 0);

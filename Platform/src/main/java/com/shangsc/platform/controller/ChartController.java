@@ -12,25 +12,54 @@ import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.WaterIndex;
 import com.shangsc.platform.model.WaterMeter;
+import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Administrator on 2017/8/26.
  */
 public class ChartController extends Controller {
-
     // 预警閥值
     private static final BigDecimal THRESHOLD = new BigDecimal("2");
 
     private AtomicInteger count = new AtomicInteger(0);
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/chart"})
+    public void company() {
+        JSONObject object = new JSONObject();
+        //取得用水指标数据
+        int total = Company.me.totalCount();
+        object.put("total", total);//单位总数
+        // 预警或报警用水单位
+        Set<String> warnOrExceptionCompanies = Company.me.getWarnExceptionInnerCode(new Date());
+        int warnOrExceptionCount = 0;
+        int supplyCount = Company.me.getSupplyCompanyCount();
+        if (CollectionUtils.isNotEmpty(warnOrExceptionCompanies)) {
+            warnOrExceptionCount = warnOrExceptionCompanies.size();
+        }
+        int normalTotal = total-warnOrExceptionCount-supplyCount;
 
+        object.put("warnTotal", warnOrExceptionCount); //预警总数
+
+        object.put("normalTotal", normalTotal);
+
+        object.put("supplyTotal", supplyCount);
+
+        int month = new Date().getMonth()+1;
+
+        if (CodeNumUtil.isOdd(month)) {
+            object.put("warnTitle", "预警");
+        } else {
+            object.put("warnTitle", "告警");
+        }
+
+        this.renderJson(object.toJSONString());
+    }
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
     public void index() {
@@ -52,7 +81,7 @@ public class ChartController extends Controller {
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
-    public void company() {
+    public void companyBak() {
         JSONObject object = new JSONObject();
         //取得用水指标数据
         int total = Company.me.totalCount();
@@ -122,6 +151,8 @@ public class ChartController extends Controller {
         object.put("warnTotal", count); //预警总数
 
         object.put("otherTotal", total-normalTotal);
+
+        object.put("supplyTotal", Company.me.getSupplyCompanyCount());
         this.renderJson(object.toJSONString());
     }
 
@@ -176,20 +207,33 @@ public class ChartController extends Controller {
             String innerCode = this.getPara("innerCode");
             records = Company.me.getCompanyAll(innerCode);
         }
+        Date date = new Date();
         Map<Integer, String> stateMap = MapState.getMap();
-
+        Set<String> warnCodes = Company.me.getWarnExceptionInnerCode(date);
+        int month = new Date().getMonth()+1;
         for (Record record:records) {
+            String innerCode = record.get("inner_code").toString();
             JSONObject object = new JSONObject();
             object.put("longitude", record.get("longitude"));
             object.put("latitude", record.get("latitude"));
             object.put("innerCode", record.get("inner_code"));
-
             object.put("state", MapState.NORMAL);
-
+            if (warnCodes.contains(innerCode)) {
+                if (CodeNumUtil.isOdd(month)) {
+                    //预警
+                    object.put("state", MapState.WARN);
+                } else {
+                    //告警
+                    object.put("state", MapState.OVER);
+                }
+            }
             object.put("name", record.get("name"));
             if (record.get("waterUseNum")!=null) {
                 object.put("waterUseNum", record.get("waterUseNum"));
             } else {
+                object.put("waterUseNum", 0);
+            }
+            if ("0".equals(object.get("waterUseNum").toString())) {
                 object.put("waterUseNum", 0);
             }
             object.put("address", record.get("address"));

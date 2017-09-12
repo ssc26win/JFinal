@@ -120,6 +120,7 @@
         var info = new Array(); //存放提示信息窗口对象的数组
         var searchInfoWindow = new Array();//存放检索信息窗口对象的数组
         for (var i = 0; i < markerArr.length; i++) {
+            var state = markerArr[i].state;
             var p0 = markerArr[i].longitude; //
             var p1 = markerArr[i].latitude; //按照原数组的point格式将地图点坐标的经纬度分别提出来
             point[i] = new window.BMap.Point(p0, p1); //循环生成新的地图点
@@ -130,14 +131,27 @@
             map.addOverlay(marker[i]);
             //marker[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
             //显示marker的title，marker多的话可以注释掉
-            var label = new window.BMap.Label("<span style='font-size:12px;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>", {
+            var title = "<span style='font-size:12px;color: #0CC415;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>";
+            if (state == 1) {
+                title = "<span style='font-size:12px;color: #F0D456;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>";
+            } else if (state == 2) {
+                title = "<span style='font-size:12px;color: #D43628;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>";
+            }
+            if (markerArr[i].waterUseNum == 0) {
+                title = "<span style='font-size:12px;color: #FF7B29;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>";
+            }
+            var label = new window.BMap.Label(title, {
                 offset : new window.BMap.Size(20, -10)
             });
             marker[i].setLabel(label);
             // 创建信息窗口对象
-            info[i] = "<p style='font-size:12px;padding-left: 10px;'>"
-                    + "</br>单位名称：" + markerArr[i].name + "</br>"
-                    + "</br>单位地址：" + markerArr[i].address + "</p>";
+            if (state == 1) {
+                info[i] = "<p style='font-size:12px;padding-left: 10px;'>" + "</br>单位名称：" + markerArr[i].name + "</br>" + "</br>单位地址：" + markerArr[i].address + "</p>";
+            } else if (state == 2) {
+                info[i] = "<p style='font-size:12px;padding-left: 10px;'>" + "</br>单位名称：" + markerArr[i].name + "</br>" + "</br>单位地址：" + markerArr[i].address + "</p>";
+            } else {
+                info[i] = "<p style='font-size:12px;padding-left: 10px;'>" + "</br>单位名称：" + markerArr[i].name + "</br>" + "</br>单位地址：" + markerArr[i].address + "</p>";
+            }
             //创建百度样式检索信息窗口对象
             searchInfoWindow[i] = new BMapLib.SearchInfoWindow(map,
                     info[i], {

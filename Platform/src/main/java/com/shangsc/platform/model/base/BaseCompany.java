@@ -33,6 +33,14 @@ public abstract class BaseCompany<M extends BaseCompany<M>> extends BaseModel<M>
 		return get("name");
 	}
 
+	public void setCompanyType(Integer companyType) {
+		set("company_type", companyType);
+	}
+
+	public Integer getCompanyType() {
+		return get("company_type");
+	}
+
 	public void setWaterUnit(String waterUnit) {
 		set("water_unit", waterUnit);
 	}
@@ -73,14 +81,6 @@ public abstract class BaseCompany<M extends BaseCompany<M>> extends BaseModel<M>
 		return get("address");
 	}
 
-	public void setCustomerType(Integer customerType) {
-		set("customer_type", customerType);
-	}
-
-	public Integer getCustomerType() {
-		return get("customer_type");
-	}
-
 	public void setGbIndustry(String gbIndustry) {
 		set("gb_industry", gbIndustry);
 	}
@@ -103,6 +103,14 @@ public abstract class BaseCompany<M extends BaseCompany<M>> extends BaseModel<M>
 
 	public Integer getWaterUseType() {
 		return get("water_use_type");
+	}
+
+	public void setCustomerType(Integer customerType) {
+		set("customer_type", customerType);
+	}
+
+	public Integer getCustomerType() {
+		return get("customer_type");
 	}
 
 	public void setContact(String contact) {

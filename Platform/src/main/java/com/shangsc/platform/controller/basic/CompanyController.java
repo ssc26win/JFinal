@@ -64,6 +64,12 @@ public class CompanyController extends BaseController {
         this.setAttr("flag", "Other");
         render("company_index.jsp");
     }
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/basic/company"})
+    public void supply() {
+        this.setAttr("flag", "Supply");
+        render("company_index.jsp");
+    }
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value={"/basic/company"})
@@ -99,6 +105,16 @@ public class CompanyController extends BaseController {
     public void getOtherListData() {
         String keyword=this.getPara("name");
         Page<Company> pageInfo = Company.me.getOtherCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        List<Company> companies = pageInfo.getList();
+        setVoProp(companies);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value={"/basic/company"})
+    public void getSupplyListData() {
+        String keyword=this.getPara("name");
+        Page<Company> pageInfo = Company.me.getSupplyCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
         setVoProp(companies);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );

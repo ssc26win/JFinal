@@ -3,8 +3,9 @@ package com.shangsc.platform.actual.udp;
 import com.jfinal.kit.PropKit;
 import com.shangsc.platform.actual.util.ConversionUtil;
 import com.shangsc.platform.code.ActualState;
+import com.shangsc.platform.code.ActualType;
 import com.shangsc.platform.model.ActualData;
-import com.shangsc.platform.model.WaterMeter;
+import com.shangsc.platform.model.ActualLog;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -46,6 +47,10 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
         log("ConversionUtil.bytes2HexString 16进制字符串转字符串 " + ConversionUtil.hex16Str2String(ConversionUtil.bytes2Hex16Str(buffer.array())));
 
         //e.getChannel().write(e.getMessage());
+
+        //记录消息来源
+        ActualLog.dao.save(null, ActualType.UDP, 10001, PropKit.get("config.host"), result, new Date());
+
         recordMsg(result);
 
         recordDB(result);
@@ -89,18 +94,10 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
     }
 
     private synchronized void recordDB(String result) {
-        //TODO 5分钟内返回的同一地址传回来的数，丢弃掉
-        try {
+        try { //TODO 5分钟内返回的同一地址传回来的数，丢弃掉
             if (StringUtils.isNotEmpty(result)) {
                 String meterAddress = ConversionUtil.getUdpMeterAddress(result);
                 String innerCode = "";
-                if (StringUtils.isNotEmpty(meterAddress)) {
-                    WaterMeter meter = WaterMeter.me.findByMeterNum(meterAddress);
-                    if (meter != null) {
-                        innerCode = meter.getInnerCode();
-                    }
-                }
-                String lineNum = ConversionUtil.getLineNum(result);
                 BigDecimal sumWater = ConversionUtil.getUdpMeterSum(result);
                 BigDecimal addWater = ConversionUtil.getUdpMeterAdd(result);
                 Integer state = null;
@@ -114,7 +111,14 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                     if (sumWater.compareTo(new BigDecimal(0.00)) <= 0) {
                         addWater = sumWater.subtract(data.getSumWater());
                     }
-                    ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, voltage, writeTime);
+                    ActualData exist = ActualData.me.getLastMeterAddress(meterAddress);
+                    if (exist != null) {
+                        innerCode = exist.getInnerCode();
+                    }
+                    boolean timesReduce = (writeTime.getTime() - exist.getWriteTime().getTime()) > 1000*60*5;
+                    if (exist != null && timesReduce ) {
+                        ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, voltage, writeTime);
+                    }
                 }
             }
         } catch (Exception e) {

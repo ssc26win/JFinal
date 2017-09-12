@@ -2,8 +2,11 @@ package com.shangsc.platform.actual.tcp;
 
 import com.jfinal.kit.PropKit;
 import com.shangsc.platform.actual.util.ConversionUtil;
+import com.shangsc.platform.code.ActualState;
+import com.shangsc.platform.code.ActualType;
+import com.shangsc.platform.code.TcpData;
 import com.shangsc.platform.model.ActualData;
-import com.shangsc.platform.model.WaterMeter;
+import com.shangsc.platform.model.ActualLog;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -30,6 +33,7 @@ public class TcpServerHandler extends SimpleChannelHandler {
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         ChannelBuffer buffer = (ChannelBuffer) e.getMessage();
+
         System.out.println("received " + buffer.readableBytes() + " bytes [" + buffer.toString() + "]");
         System.out.println("receive:" + buffer.toString(Charset.defaultCharset()));
 
@@ -37,12 +41,20 @@ public class TcpServerHandler extends SimpleChannelHandler {
 
         System.out.println("ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
 
-        System.out.println("ConversionUtil.bytes2HexString 16进制字符串转字符串 " + ConversionUtil.hex16Str2String(ConversionUtil.bytes2Hex16Str(buffer.array())));
-
-        //e.getChannel().write(e.getMessage());
-        recordMsg(result);
-
-        recordDB(result);
+        if (StringUtils.isNotEmpty(result)) {
+            if (TcpData.login_data_length == result.length()) {
+                String response = ConversionUtil.tcpLoginResp(result, "login");
+                e.getChannel().write(response);
+            }
+            if (TcpData.login_data_length == result.length()) {
+                recordMsg(result);
+                // 记录消息来源
+                ActualLog.dao.save(null, ActualType.TCP, 10002, PropKit.get("config.host"), result, new Date());
+                recordDB(result);
+                String response = ConversionUtil.receiveDataResp(result);
+                e.getChannel().write(response);
+            }
+        }
     }
 
     @Override
@@ -85,26 +97,25 @@ public class TcpServerHandler extends SimpleChannelHandler {
     private synchronized void recordDB(String result) {
         try {
             if (StringUtils.isNotEmpty(result)) {
-                String meterNum = ConversionUtil.getUdpMeterAddress(result);
-                String innerCode = "";
-                if (StringUtils.isNotEmpty(meterNum)) {
-                    WaterMeter meter = WaterMeter.me.findByMeterNum(meterNum);
-                    if (meter != null) {
-                        innerCode = meter.getInnerCode();
-                    }
+                String meterAddress = ConversionUtil.getTcpMeterAddress(result);
+                BigDecimal sumWater = ConversionUtil.getTcpSumNum(result);
+                BigDecimal addWater = new BigDecimal("0.00");
+                ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
+                Integer state = Integer.parseInt(ActualState.NORMAL);
+                if (data.getSumWater().compareTo(sumWater) > 0) {
+                    state = Integer.parseInt(ActualState.EXCEPTION);
                 }
-                String lineNum = ConversionUtil.getLineNum(result);
-                BigDecimal sumWater = ConversionUtil.getUdpMeterSum(result);
-                BigDecimal addWater = ConversionUtil.getUdpMeterAdd(result);
-                Integer state = null;
-                String voltage = "";
-                Date writeTime = new Date();
-                if (sumWater.compareTo(new BigDecimal(0.00)) > 0 || sumWater.compareTo(new BigDecimal(0.00)) > 0 ) {
-                    ActualData.me.save(null, innerCode, meterNum, null, addWater, sumWater, state, voltage, writeTime);
+                if (sumWater.compareTo(new BigDecimal(0.00)) <= 0) {
+                    addWater = sumWater.subtract(data.getSumWater());
                 }
+                ActualData.me.save(null, data.getInnerCode(), meterAddress, null, addWater, sumWater, state, "", new Date());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(ConversionUtil.hex16Str2String("067BBF55"));
     }
 }

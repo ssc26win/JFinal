@@ -37,17 +37,25 @@ public abstract class BaseWaterMeter<M extends BaseWaterMeter<M>> extends BaseMo
 		set("meter_num", meterNum);
 	}
 
+	public String getMeterNum() {
+		return get("meter_num");
+	}
+
+	public void setMeterAddress(String meterAddress) {
+		set("meter_address", meterAddress);
+	}
+
 	public String getMeterAddress() {
 		return get("meter_address");
 	}
 
-    public void setMeterAddress(String meterAddress) {
-        set("meter_address", meterAddress);
-    }
+	public void setTimes(Integer times) {
+		set("times", times);
+	}
 
-    public String getMeterNum() {
-        return get("meter_num");
-    }
+	public Integer getTimes() {
+		return get("times");
+	}
 
 	public void setWatersType(Integer watersType) {
 		set("waters_type", watersType);

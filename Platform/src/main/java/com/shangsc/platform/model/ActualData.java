@@ -65,7 +65,7 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getActualDataPage(int page, int rows, String keyword, String orderbyStr) {
-		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county,max(t.write_time)";
+		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county,max(tad.write_time)";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad, t_company tc");
 		sqlExceptSelect.append(" where 1=1 and tad.inner_code=tc.inner_code");
 		if (StringUtils.isNotEmpty(keyword)) {
@@ -291,20 +291,31 @@ public class ActualData extends BaseActualData<ActualData> {
 		return address;
 	}
 
-
 	public Set<String> getMapWarnInnerCode(Date date) {
-		Map<Integer, String> map = MonthCode.getMap();
 		Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(date);
-		String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm\n" +
-				"on twm.meter_address=tad.meter_address) allad where allad.write_time >='2017-09-01 00:00:00' and allad.write_time <'2017-09-31 00:00:00' group by allad.meter_address) t\n" +
-				"INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi.january and t.waters_type=twi.waters_type";
-		return new HashSet<>();
+        String start = monthDateBetween.get("start");
+        String end = monthDateBetween.get("end");
+        String month_str = monthDateBetween.get("month_str");
+        Integer month = Integer.parseInt(monthDateBetween.get("month"));
+        String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
+				"on twm.meter_address=tad.meter_address) allad where allad.write_time >='"+start+"' and allad.write_time <'"+end+"' group by allad.meter_address) t" +
+				"INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
+        List<Record> records = Db.find(sql);
+        Set<String> set = new HashSet<>();
+        for (Record record:records) {
+            set.add(record.get("inner_code").toString());
+        }
+        return set;
 	}
 
-	public Set<String> getMapExceptionInnerCode() {
-		String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm\n" +
-				"on twm.meter_address=tad.meter_address) allad where allad.write_time >='2017-09-01 00:00:00' and allad.write_time <'2017-09-31 00:00:00' group by allad.meter_address) t\n" +
-				"INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi.january and t.waters_type=twi.waters_type";
-		return new HashSet<>();
-	}
+    public static void main(String[] args) {
+        Map<Integer, String> map = MonthCode.getMap();
+        Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(new Date());
+        String start = monthDateBetween.get("start");
+        String end = monthDateBetween.get("end");
+        String month_str = monthDateBetween.get("month_str");
+        Integer month = Integer.parseInt(monthDateBetween.get("month"));
+
+        System.out.println(start + end + month_str +month);
+    }
 }

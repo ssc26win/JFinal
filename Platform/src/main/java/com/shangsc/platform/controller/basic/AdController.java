@@ -13,6 +13,7 @@ import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Ad;
 import com.shangsc.platform.model.AppVersion;
 import com.shangsc.platform.model.SysUser;
+import com.shangsc.platform.util.CreateData;
 
 import java.io.File;
 import java.util.*;
@@ -27,6 +28,10 @@ public class AdController extends BaseController {
     @RequiresPermissions(value={"/basic/ad"})
     public void index() {
         render("ad_index.jsp");
+        //CreateData.createCompany();
+        //CreateData.createWaterIndex();
+        //CreateData.createMeter();
+        CreateData.createActual();
     }
 
     @RequiresPermissions(value={"/basic/ad"})

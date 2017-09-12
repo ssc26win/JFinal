@@ -3,6 +3,7 @@ package com.shangsc.platform.model;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.shangsc.platform.code.CompanyType;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
@@ -262,16 +263,13 @@ public class Company extends BaseCompany<Company> {
     }
 
     public Page<Company> getWarnCompanyPage(int page, int rows, String keyword, String orderbyStr) {
-        String innerCodes = getWarnInnerCodes();
         String select="select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
-        sqlExceptSelect.append(" where 1=1 ");
+        sqlExceptSelect.append(" where company_type=1 ");
+        sqlExceptSelect.append(" and inner_code in (" + getWarnExceptionInnerCodeSql(new Date()) + ")");
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
-        }
-        if (StringUtils.isNotEmpty(innerCodes)) {
-            sqlExceptSelect.append(" and c.inner_code in (" + innerCodes+ ")");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
@@ -283,14 +281,11 @@ public class Company extends BaseCompany<Company> {
     public Page<Company> getNormalCompanyPage(int page, int rows, String keyword, String orderbyStr) {
         String select="select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
-        sqlExceptSelect.append(" where 1=1 and c.inner_code in (select DISTINCT inner_code from t_actual_data tad )");
+        sqlExceptSelect.append(" where company_type=1");
+        sqlExceptSelect.append(" and inner_code not in (" + getWarnExceptionInnerCodeSql(new Date()) + ")");
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
-        }
-        String warnInnercode = getWarnInnerCodes();
-        if (StringUtils.isNotEmpty(warnInnercode)) {
-            sqlExceptSelect.append(" and c.inner_code not in (" + warnInnercode+ ")");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
@@ -301,7 +296,7 @@ public class Company extends BaseCompany<Company> {
     public Page<Company> getOtherCompanyPage(int page, int rows, String keyword, String orderbyStr) {
         String select="select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c");
-        sqlExceptSelect.append(" where 1=1 and c.inner_code not in (select DISTINCT inner_code from t_actual_data tad )");
+        sqlExceptSelect.append(" where company_type=1 and c.inner_code not in (select DISTINCT inner_code from t_actual_data tad )");
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
@@ -312,10 +307,30 @@ public class Company extends BaseCompany<Company> {
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 
+    public Page<Company> getSupplyCompanyPage(int page, int rows, String keyword, String orderbyStr) {
+        String select="select c.*";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c");
+        sqlExceptSelect.append(" where company_type=2 ");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+                    + "' or contact='" + StringUtils.trim(keyword) + "') ");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
+
+    public Integer getSupplyCompanyCount() {
+       return Integer.parseInt(this.find("select count(*) as sumCount from t_company where company_type=2").get(0).get("sumCount").toString());
+    }
+
+
     private Set<String> warnInnerCodes = new HashSet<>();
     // 预警閥值
     private static final BigDecimal THRESHOLD = new BigDecimal("2");
 
+    @Deprecated
     public String getWarnInnerCodes() {
         //用水量告警单位数量
         //取得用水指标数据
@@ -387,6 +402,47 @@ public class Company extends BaseCompany<Company> {
         return innerCodes;
     }
 
+    public String getWarnExceptionInnerCodeSql(Date date) {
+        Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(date);
+        String start = monthDateBetween.get("start");
+        String end = monthDateBetween.get("end");
+        String month_str = monthDateBetween.get("month_str");
+        Integer month = Integer.parseInt(monthDateBetween.get("month"));
+        String sql = "select t.inner_code from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
+                " on twm.meter_address=tad.meter_address) allad where allad.write_time >='"+start+"' and allad.write_time <'"+end+"' group by allad.meter_address) t" +
+                " INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
+        return sql;
+    }
+
+    public String getWarnExceptionSql(Date date) {
+        Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(date);
+        String start = monthDateBetween.get("start");
+        String end = monthDateBetween.get("end");
+        String month_str = monthDateBetween.get("month_str");
+        Integer month = Integer.parseInt(monthDateBetween.get("month"));
+        String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
+                " on twm.meter_address=tad.meter_address) allad where allad.write_time >='"+start+"' and allad.write_time <'"+end+"' group by allad.meter_address) t" +
+                " INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
+        return sql;
+    }
+
+    public Set<String> getWarnExceptionInnerCode(Date date) {
+        Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(date);
+        String start = monthDateBetween.get("start");
+        String end = monthDateBetween.get("end");
+        String month_str = monthDateBetween.get("month_str");
+        Integer month = Integer.parseInt(monthDateBetween.get("month"));
+        String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
+                " on twm.meter_address=tad.meter_address) allad where allad.write_time >='"+start+"' and allad.write_time <'"+end+"' group by allad.meter_address) t" +
+                " INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
+        List<Record> records = Db.find(sql);
+        Set<String> set = new HashSet<>();
+        for (Record record:records) {
+            set.add(record.get("inner_code").toString());
+        }
+        return set;
+    }
+
     private void comp(BigDecimal monthActTotal, BigDecimal moth, String innerCode) {
         if (null == moth) {
             moth = new BigDecimal(0);
@@ -415,6 +471,7 @@ public class Company extends BaseCompany<Company> {
         Map<String, Integer> dictWaterUseType = DictData.dao.getDictNameMap(DictCode.WaterUseType);
         for (int i = 0; i < maps.size(); i++) {
             Company company = new Company();
+            company.setCompanyType(CompanyType.COMPANY);
             Map<Integer, String> map = maps.get(i);
             String innerCode = null;
             if (map.get(0) != null) {
@@ -426,6 +483,9 @@ public class Company extends BaseCompany<Company> {
             String name = null;
             if (map.get(1) != null) {
                 name = map.get(1).toString();
+                if (CompanyType.notCompany(name)) {
+                    company.setCompanyType(CompanyType.SUPPLY);
+                }
             }
             String waterUnit = null;
             if (map.get(2) != null) {
@@ -446,6 +506,9 @@ public class Company extends BaseCompany<Company> {
             Integer customerType = null;
             if (map.get(6) != null) {
                 customerType = dictUserType.get(map.get(6).toString());
+                if (CompanyType.notCompany(name)) {
+                    company.setCompanyType(CompanyType.SUPPLY);
+                }
             }
             String gbIndustry = null;
             if (map.get(7) != null) {
