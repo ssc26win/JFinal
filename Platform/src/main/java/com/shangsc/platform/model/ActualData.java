@@ -66,14 +66,16 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getActualDataPage(int page, int rows, String keyword, String orderbyStr) {
 		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county,max(tad.write_time)";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad, t_company tc");
-		sqlExceptSelect.append(" where 1=1 and tad.inner_code=tc.inner_code");
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad inner join " +
+				" t_company tc on tad.inner_code=tc.inner_code");
+		sqlExceptSelect.append(" where 1=1");
 		if (StringUtils.isNotEmpty(keyword)) {
 			sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
 					+ "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ");
 		}
 		String groupbyStr = " group by tad.meter_address ";
 		sqlExceptSelect.append(groupbyStr);
+		orderbyStr = " order by tad.write_time desc ";
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
 		}
@@ -82,10 +84,12 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-											 String name, String innerCode, Integer street, Integer watersType) {
+											 String name, String innerCode, Integer street, Integer watersType, String meterAttr) {
 		String select=" select twm.*,tc.name,tc.address,tc.street,tc.water_unit,tc.county,tm.meter_attr,tm.meter_address,tm.meter_num,tm.line_num ";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
-		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
+				" t_company tc on twm.inner_code=tc.inner_code " +
+				" inner join t_water_meter tm on twm.inner_code=tm.inner_code");
+		sqlExceptSelect.append(" where 1=1 ");
 		if (startTime != null) {
 			sqlExceptSelect.append(" and twm.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "'");
 		}
@@ -96,6 +100,12 @@ public class ActualData extends BaseActualData<ActualData> {
 			name = StringUtils.trim(name);
 			if (StringUtils.isNotEmpty(name)) {
 				sqlExceptSelect.append(" and tc.name like '%" + name + "%'");
+			}
+		}
+		if (StringUtils.isNotEmpty(meterAttr)) {
+			meterAttr = StringUtils.trim(meterAttr);
+			if (StringUtils.isNotEmpty(meterAttr)) {
+				sqlExceptSelect.append(" and tm.meter_attr like '%" + meterAttr + "%'");
 			}
 		}
 		if (street != null && street > 0) {
@@ -118,10 +128,12 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-										   String name, String innerCode, Integer street, Integer watersType) {
+										   String name, String innerCode, Integer street, Integer watersType, String meterAttr) {
 		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tm.meter_attr,tm.meter_address,tm.meter_num,tm.line_num ";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
-		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
+				" t_company tc on twm.inner_code=tc.inner_code " +
+				" inner join t_water_meter tm on twm.inner_code=tm.inner_code");
+		sqlExceptSelect.append(" where 1=1 ");
 		if (startTime != null) {
 			sqlExceptSelect.append(" and twm.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "'");
 		}
@@ -132,6 +144,12 @@ public class ActualData extends BaseActualData<ActualData> {
 			name = StringUtils.trim(name);
 			if (StringUtils.isNotEmpty(name)) {
 				sqlExceptSelect.append(" and tc.name like '%" + name + "%'");
+			}
+		}
+		if (StringUtils.isNotEmpty(meterAttr)) {
+			meterAttr = StringUtils.trim(meterAttr);
+			if (StringUtils.isNotEmpty(meterAttr)) {
+				sqlExceptSelect.append(" and tm.meter_attr like '%" + meterAttr + "%'");
 			}
 		}
 		if (street != null && street > 0) {
@@ -154,11 +172,13 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-										   String name, String innerCode, Integer street, Integer watersType) {
+										   String name, String innerCode, Integer street, Integer watersType, String meterAttr) {
 		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,sum(net_water) as netWaterNum,tm.billing_cycle," +
 				"tm.meter_num,tm.meter_attr,tm.meter_address,tm.line_num";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
-		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
+				" t_company tc on twm.inner_code=tc.inner_code " +
+				" inner join t_water_meter tm on twm.inner_code=tm.inner_code");
+		sqlExceptSelect.append(" where 1=1 ");
 		if (startTime != null) {
 			sqlExceptSelect.append(" and twm.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "'");
 		}
@@ -169,6 +189,12 @@ public class ActualData extends BaseActualData<ActualData> {
 			name = StringUtils.trim(name);
 			if (StringUtils.isNotEmpty(name)) {
 				sqlExceptSelect.append(" and tc.name like '%" + name + "%'");
+			}
+		}
+		if (StringUtils.isNotEmpty(meterAttr)) {
+			meterAttr = StringUtils.trim(meterAttr);
+			if (StringUtils.isNotEmpty(meterAttr)) {
+				sqlExceptSelect.append(" and tm.meter_attr like '%" + meterAttr + "%'");
 			}
 		}
 		if (street != null && street > 0) {
@@ -191,11 +217,13 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year,
-										  String name, String innerCode, Integer street, Integer watersType) {
+										  String name, String innerCode, Integer street, Integer watersType, String meterAttr) {
 		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,sum(net_water) as netWaterNum," +
 				"tm.meter_attr,tm.meter_num,tm.meter_address,tm.line_num";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm, t_company tc, t_water_meter tm");
-		sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code and twm.inner_code=tm.inner_code");
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
+				" t_company tc on twm.inner_code=tc.inner_code " +
+				" inner join t_water_meter tm on twm.inner_code=tm.inner_code");
+		sqlExceptSelect.append(" where 1=1 ");
 		if (year != null && year > 0) {
 			String yearStart = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year) + "-01-01 00:00:00"));
 			String yearEnd = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year) + "-12-31 23:59:59"));
@@ -206,6 +234,12 @@ public class ActualData extends BaseActualData<ActualData> {
 			name = StringUtils.trim(name);
 			if (StringUtils.isNotEmpty(name)) {
 				sqlExceptSelect.append(" and tc.name like '%" + name + "%'");
+			}
+		}
+		if (StringUtils.isNotEmpty(meterAttr)) {
+			meterAttr = StringUtils.trim(meterAttr);
+			if (StringUtils.isNotEmpty(meterAttr)) {
+				sqlExceptSelect.append(" and tm.meter_attr like '%" + meterAttr + "%'");
 			}
 		}
 		if (street != null && street > 0) {

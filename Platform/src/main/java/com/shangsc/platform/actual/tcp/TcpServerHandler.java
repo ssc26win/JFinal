@@ -7,6 +7,7 @@ import com.shangsc.platform.code.ActualType;
 import com.shangsc.platform.code.TcpData;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.ActualLog;
+import com.shangsc.platform.model.WaterMeter;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -46,13 +47,25 @@ public class TcpServerHandler extends SimpleChannelHandler {
             ActualLog.dao.save(null, ActualType.TCP, Integer.parseInt(PropKit.get("config.tcp.port")), PropKit.get("config.host"), result, new Date());
             if (TcpData.login_data_length == result.length()) {
                 String response = ConversionUtil.tcpLoginResp(result, "login");
-                e.getChannel().write(response);
+                //e.getChannel().write(response);
+                buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
+                e.getChannel().write(buffer);
             }
-            if (result.length() >= TcpData.upload_data_length) {
+            if (result.length() == TcpData.upload_data_length) {
                 recordMsg(result);
-                recordDB(result);
+                recordDB(result, false);
                 String response = ConversionUtil.receiveDataResp(result);
-                e.getChannel().write(response);
+                //e.getChannel().write(response);
+                buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
+                e.getChannel().write(buffer);
+            }
+            if (result.length() > TcpData.upload_data_length) {
+                recordMsg(result);
+                recordDB(result, true);
+                String response = ConversionUtil.getTcpMultChkStr(result);
+                //e.getChannel().write(response);
+                buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
+                e.getChannel().write(buffer);
             }
         }
     }
@@ -94,21 +107,52 @@ public class TcpServerHandler extends SimpleChannelHandler {
         }
     }
 
-    private synchronized void recordDB(String result) {
+    private synchronized void recordDB(String result, boolean isMulti) {
         try {
             if (StringUtils.isNotEmpty(result)) {
-                String meterAddress = ConversionUtil.getTcpMeterAddress(result);
-                BigDecimal sumWater = ConversionUtil.getTcpSumNum(result);
-                BigDecimal addWater = new BigDecimal("0.00");
-                ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
-                Integer state = Integer.parseInt(ActualState.NORMAL);
-                if (data != null && data.getSumWater().compareTo(sumWater) > 0) {
-                    state = Integer.parseInt(ActualState.EXCEPTION);
+                if (isMulti) {
+                    String meterAddress = ConversionUtil.getTcpMultAddress(result);
+                    BigDecimal sumWater = ConversionUtil.getTcpMultRecordSumWater(result);
+                    BigDecimal addWater = new BigDecimal("0.00");
+                    ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
+                    Integer state = Integer.parseInt(ActualState.NORMAL);
+                    if (data != null && data.getSumWater().compareTo(sumWater) > 0) {
+                        state = Integer.parseInt(ActualState.EXCEPTION);
+                    }
+                    if (data != null) {
+                        addWater = sumWater.subtract(data.getSumWater());
+                    }
+                    String innerCode = "";
+                    BigDecimal times = new BigDecimal("1");
+                    WaterMeter meter = WaterMeter.me.findByMeterAddress(meterAddress);
+                    if (meter != null) {
+                        innerCode = meter.getInnerCode();
+                        times = meter.getTimes();
+                    }
+                    sumWater = times.multiply(sumWater);
+                    ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
+                } else {
+                    String meterAddress = ConversionUtil.getTcpMeterAddress(result);
+                    BigDecimal sumWater = ConversionUtil.getTcpSumNum(result);
+                    BigDecimal addWater = new BigDecimal("0.00");
+                    ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
+                    Integer state = Integer.parseInt(ActualState.NORMAL);
+                    if (data != null && data.getSumWater().compareTo(sumWater) > 0) {
+                        state = Integer.parseInt(ActualState.EXCEPTION);
+                    }
+                    if (data != null) {
+                        addWater = sumWater.subtract(data.getSumWater());
+                    }
+                    String innerCode = "";
+                    BigDecimal times = new BigDecimal("1");
+                    WaterMeter meter = WaterMeter.me.findByMeterAddress(meterAddress);
+                    if (meter != null) {
+                        innerCode = meter.getInnerCode();
+                        times = meter.getTimes();
+                    }
+                    sumWater = times.multiply(sumWater);
+                    ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
                 }
-                if (data != null && sumWater.compareTo(new BigDecimal(0.00)) <= 0) {
-                    addWater = sumWater.subtract(data.getSumWater());
-                }
-                ActualData.me.save(null, data.getInnerCode(), meterAddress, null, addWater, sumWater, state, "", new Date());
             }
         } catch (Exception e) {
             e.printStackTrace();

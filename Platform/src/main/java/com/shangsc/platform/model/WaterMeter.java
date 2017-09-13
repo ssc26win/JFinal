@@ -12,6 +12,7 @@ import com.shangsc.platform.model.base.BaseWaterMeter;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -24,8 +25,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
 
     public Page<WaterMeter> getWaterMeterPage(int page, int rows, String keyword, String orderbyStr) {
         String select = "select twm.*,tc.name as companyName,tc.water_unit,tc.county,tc.gb_industry,tc.main_industry,tc.water_use_type";
-        StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm, t_company tc");
-        sqlExceptSelect.append(" where 1=1 and twm.inner_code=tc.inner_code ");
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm inner join " +
+                " t_company tc on twm.inner_code=tc.inner_code ");
+        sqlExceptSelect.append(" where 1=1 ");
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
@@ -52,7 +54,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
     }
 
 
-    public InvokeResult save(Long id, String innerCode, String lineNum, String meterNum,String meterAddress,
+    public InvokeResult save(Long id, String innerCode, String lineNum, String meterNum,String meterAddress, BigDecimal times,
                             Integer watersType, String meterAttr, Integer chargeType, String billingCycle, Date registDate) {
         if (!Company.me.hasExistCompany(innerCode)) {
             return InvokeResult.failure("公司编号不存在");
@@ -62,14 +64,14 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
             if (meter == null) {
                 return InvokeResult.failure("更新失败, 该水表不存在");
             }
-            meter = setProp(meter, innerCode, lineNum, meterNum, meterAddress, watersType, meterAttr, chargeType, billingCycle, registDate);
+            meter = setProp(meter, innerCode, lineNum, meterNum, meterAddress, times, watersType, meterAttr, chargeType, billingCycle, registDate);
             meter.update();
         } else {
             if (this.hasExist(meterNum)) {
                 return InvokeResult.failure("水表编号已存在");
             } else {
                 WaterMeter meter = new WaterMeter();
-                meter = setProp(meter, innerCode, lineNum, meterNum, meterAddress, watersType, meterAttr, chargeType, billingCycle, registDate);
+                meter = setProp(meter, innerCode, lineNum, meterNum, meterAddress, times, watersType, meterAttr, chargeType, billingCycle, registDate);
                 meter.setRegistDate(new Date());
                 meter.save();
                 Company.me.updateMeterNum(innerCode, true);
@@ -78,12 +80,13 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return InvokeResult.success();
     }
 
-    private WaterMeter setProp(WaterMeter meter, String innerCode, String lineNum, String meterNum,String meterAddress,
+    private WaterMeter setProp(WaterMeter meter, String innerCode, String lineNum, String meterNum,String meterAddress, BigDecimal times,
                             Integer watersType, String meterAttr, Integer chargeType, String billingCycle, Date registDate) {
         meter.setInnerCode(innerCode);
         meter.setLineNum(lineNum);
         meter.setMeterNum(meterNum);
         meter.setMeterAddress(meterAddress);
+        meter.setTimes(times);
         meter.setWatersType(watersType);
         meter.setMeterAttr(meterAttr);
         meter.setChargeType(chargeType);
@@ -106,9 +109,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return InvokeResult.success();
     }
 
-    public WaterMeter findByMeterNum(String meterNum){
-        String sql = "SELECT * FROM t_Water_Meter WHERE meter_num= ?";
-        return this.findFirst(sql,meterNum);
+    public WaterMeter findByMeterAddress(String meterAddress){
+        String sql = " SELECT * FROM t_Water_Meter WHERE meter_address=? ";
+        return this.findFirst(sql,meterAddress);
     }
 
     public  WaterMeter findByInnerCode(String innerCode){

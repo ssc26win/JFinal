@@ -6,6 +6,7 @@ import com.shangsc.platform.code.ActualState;
 import com.shangsc.platform.code.ActualType;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.ActualLog;
+import com.shangsc.platform.model.WaterMeter;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
@@ -100,22 +101,27 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                 String innerCode = "";
                 BigDecimal sumWater = ConversionUtil.getUdpMeterSum(result);
                 BigDecimal addWater = ConversionUtil.getUdpMeterAdd(result);
-                Integer state = null;
+                Integer state = Integer.parseInt(ActualState.NORMAL);
                 String voltage = "";
                 Date writeTime = new Date();
-                if (sumWater.compareTo(new BigDecimal(0.00)) > 0 || sumWater.compareTo(new BigDecimal(0.00)) > 0) {
+                if (sumWater.compareTo(new BigDecimal(0.00)) > 0 || addWater.compareTo(new BigDecimal(0.00)) > 0) {
                     ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
+                    boolean timesReduce = true;
                     if (data!= null && data.getSumWater().compareTo(sumWater) > 0) {
                         state = Integer.parseInt(ActualState.EXCEPTION);
                     }
-                    if (data!= null && sumWater.compareTo(new BigDecimal(0.00)) <= 0) {
+                    if (data!= null) {
                         addWater = sumWater.subtract(data.getSumWater());
+                        timesReduce = (writeTime.getTime() - data.getWriteTime().getTime()) > 1000*60*5;
                     }
-                    if (data != null) {
-                        innerCode = data.getInnerCode();
+                    BigDecimal times = new BigDecimal("1");
+                    WaterMeter meter = WaterMeter.me.findByMeterAddress(meterAddress);
+                    if (meter != null) {
+                        innerCode = meter.getInnerCode();
+                        times = meter.getTimes();
                     }
-                    boolean timesReduce = (writeTime.getTime() - data.getWriteTime().getTime()) > 1000*60*5;
-                    if (data != null && timesReduce ) {
+                    sumWater = times.multiply(sumWater);
+                    if (timesReduce) {
                         ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, voltage, writeTime);
                     }
                 }

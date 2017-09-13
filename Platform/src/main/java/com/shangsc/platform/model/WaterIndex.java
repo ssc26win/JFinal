@@ -91,8 +91,9 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 
 	public Page<WaterIndex> getWaterIndexPage(int page, int rows, String keyword, String orderbyStr) {
 		String select = "select twi.*,tc.name as companyName,tc.water_unit,tc.county";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_index twi, t_company tc");
-		sqlExceptSelect.append(" where 1=1 and twi.inner_code=tc.inner_code ");
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_index twi inner join " +
+				" t_company tc on twi.inner_code=tc.inner_code ");
+		sqlExceptSelect.append(" where 1=1 ");
 		if (StringUtils.isNotEmpty(keyword)) {
 			keyword = StringUtils.trim(keyword);
 			if (StringUtils.isNotEmpty(keyword)) {

@@ -50,6 +50,7 @@ public class DailyStatisController extends BaseController {
             String streetStr = StringUtils.trim(this.getPara("street"));
             street = Integer.parseInt(streetStr);
         }
+        String meterAttr = this.getPara("meterAttr");
         Integer watersType = null;
         if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
@@ -60,17 +61,18 @@ public class DailyStatisController extends BaseController {
         try {
             startTime = this.getParaToDate("startTime");
             endTime = this.getParaToDate("endTime");
-            if (startTime == null && endTime == null) {
+            if (startTime == null) {
                 startTime = ToolDateTime.getDateTodayStart();
                 endTime = ToolDateTime.getTomorrowStart();
-            } else {
+            }
+            if (endTime == null) {
                 endTime = ToolDateTime.getTomorrow(startTime);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         Page<ActualData> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType);
+                startTime, endTime, name, innerCode, street, watersType, meterAttr);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
@@ -95,6 +97,7 @@ public class DailyStatisController extends BaseController {
             String streetStr = StringUtils.trim(this.getPara("street"));
             street = Integer.parseInt(streetStr);
         }
+        String meterAttr = this.getPara("meterAttr");
         Integer watersType = null;
         if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
@@ -115,7 +118,7 @@ public class DailyStatisController extends BaseController {
             e.printStackTrace();
         }
         Page<ActualData> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType);
+                startTime, endTime, name, innerCode, street, watersType, meterAttr);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);

@@ -59,6 +59,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="times">读数倍数</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="number" id="times" name="times" value="${item.times}" class="col-xs-12 col-sm-6">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="watersType">水源类型</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">

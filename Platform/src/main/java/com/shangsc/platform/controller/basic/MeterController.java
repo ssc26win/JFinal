@@ -21,8 +21,10 @@ import com.shangsc.platform.export.WaterMeterExportService;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.WaterMeter;
 import com.shangsc.platform.util.ToolDateTime;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -99,6 +101,10 @@ public class MeterController extends BaseController {
         String lineNum = this.getPara("lineNum");
         String meterNum = this.getPara("meterNum");
         String meterAddress = this.getPara("meterAddress");
+        BigDecimal times = new BigDecimal("1");
+        if (StringUtils.isNotEmpty(this.getPara("times"))) {
+            times = new BigDecimal(StringUtils.trim(this.getPara("times")));
+        }
         Integer watersType = this.getParaToInt("watersType");
         String meterAttr = this.getPara("meterAttr");
         Integer chargeType = this.getParaToInt("chargeType");
@@ -109,7 +115,7 @@ public class MeterController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        InvokeResult result = WaterMeter.me.save(id, innerCode, lineNum, meterNum, meterAddress,
+        InvokeResult result = WaterMeter.me.save(id, innerCode, lineNum, meterNum, meterAddress, times,
                 watersType, meterAttr, chargeType, billingCycle, registDate);
         this.renderJson(result);
     }

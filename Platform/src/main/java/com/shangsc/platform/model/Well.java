@@ -25,8 +25,9 @@ public class Well extends BaseWell<Well> {
 
 	public Page<Well> getWellPage(int page, int rows, String keyword, String orderbyStr) {
 		String select = "select tw.*,tc.name as companyName,tc.water_unit,tc.county,tc.street";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_well tw, t_company tc");
-		sqlExceptSelect.append(" where 1=1 and tw.inner_code=tc.inner_code ");
+		StringBuffer sqlExceptSelect = new StringBuffer(" from t_well tw inner join " +
+                " t_company tc on tw.inner_code=tc.inner_code ");
+		sqlExceptSelect.append(" where 1=1 ");
 		if (StringUtils.isNotEmpty(keyword)) {
 			keyword = StringUtils.trim(keyword);
 			if (StringUtils.isNotEmpty(keyword)) {

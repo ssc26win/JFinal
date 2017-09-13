@@ -39,6 +39,10 @@
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option value="">请选择水源类型</option></select>
+                                                <input type="text" id="meterAttr" name="meterAttr" class="" placeholder="请输入水表属性" style="margin-left: 5px;"/>
+                                                <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                    <option value="">所属乡镇或街道</option>
+                                                </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="btn_search" class="btn btn-purple btn-sm">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
@@ -111,7 +115,7 @@
             ],
             viewrecords: true,
             height: 560,
-            rowNum: 10,
+            rowNum: 20,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
             recordtext:"{0} - {1} 共 {2} 条",
@@ -137,9 +141,12 @@
             var startTime = $("#startTime").val();
             var endTime = $("#endTime").val();
             var watersType = $("#watersType").val();
+            var street = $("#street").val();
+            var meterAttr = $("#meterAttr").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',
-                postData:{'name':name,'innerCode':innerCode,'startTime':startTime,'endTime':endTime,'watersType':watersType}, //发送数据
+                postData:{'name':name,'innerCode':innerCode,'startTime':startTime,'endTime':endTime,'watersType':watersType,
+                        'street':street,'meterAttr':meterAttr}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });
@@ -200,10 +207,14 @@
 
     function getDictMapData(){
         var submitData = {};
-        $.post("${context_path}/dict/getByType", submitData, function(data) {
+        $.post("${context_path}/dict/getSearchStatisUseDict", submitData, function(data) {
             var watersType = data.WatersType;
             for(var i = 0;i<watersType.length;i++) {
                 $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+            }
+            var street = data.Street;
+            for(var i = 0;i<street.length;i++) {
+                $("#street").append("<option value='" + street[i].value + "'>"+street[i].name+"</option>");
             }
         },"json");
     }

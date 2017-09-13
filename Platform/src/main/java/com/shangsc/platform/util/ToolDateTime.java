@@ -57,6 +57,13 @@ public abstract class ToolDateTime {
 		return ToolDateTime.parse(getTodayStart());
 	}
 
+	public static void main(String[] args) {
+		Date a = ToolDateTime.parse("2017-09-13 00:00:00");
+		System.out.println(a);
+		System.out.println(getDateTodayStart());
+		System.out.println(getTomorrowStart());
+	}
+
 	public static Date getTomorrowStart() {
 		Date today = getDateTodayStart();
 		Calendar c = Calendar.getInstance();
@@ -87,7 +94,10 @@ public abstract class ToolDateTime {
 		return ToolDateTime.format(ToolDateTime.getYesterday(date), ToolDateTime.pattern_ymd_hms);
 	}
 
-	public static void main(String[] args) {
+	public static void main2(String[] args) {
+
+
+
 		String str1 = ToolDateTime.format(new Date(), ToolDateTime.pattern_ymd_hms);
 		System.out.println(str1);
 		String str2 = ToolDateTime.format(getYesterday(new Date()), ToolDateTime.pattern_ymd_hms);
