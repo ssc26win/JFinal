@@ -65,9 +65,9 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getActualDataPage(int page, int rows, String keyword, String orderbyStr) {
-		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county,max(tad.write_time)";
+		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad inner join " +
-				" t_company tc on tad.inner_code=tc.inner_code");
+				" t_company tc on tad.inner_code=tc.inner_code ");
 		sqlExceptSelect.append(" where 1=1");
 		if (StringUtils.isNotEmpty(keyword)) {
 			sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
