@@ -103,10 +103,10 @@
         { label: '路别', name: 'line_num', width: 100, sortable:false},
         { label: '表计地址', name: 'meter_address', width: 100,sortable:false},
         { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
-        { label: '告警', name: 'alarm', width: 45, sortable:false},
+       /* { label: '告警', name: 'alarm', width: 45, sortable:false},*/
         { label: '净用水量（立方米）', name: 'net_water', width: 100, sortable:false},
         { label: '累计用水量（立方米）', name: 'sum_water', width: 100, sortable:false},
-        { label: '当前状态', name: 'state', width: 50, sortable:false},
+        { label: '当前状态', name: 'stateName', width: 50, sortable:false},
         { label: '抄表时间', name: 'write_time', width: 100, sortable:true},
         { label: '电池电压（伏特v）', name: 'voltage', width: 100, sortable:true}
       ],

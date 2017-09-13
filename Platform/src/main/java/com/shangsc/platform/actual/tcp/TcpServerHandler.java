@@ -42,14 +42,14 @@ public class TcpServerHandler extends SimpleChannelHandler {
         System.out.println("ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
 
         if (StringUtils.isNotEmpty(result)) {
+            // 记录消息来源
+            ActualLog.dao.save(null, ActualType.TCP, Integer.parseInt(PropKit.get("config.tcp.port")), PropKit.get("config.host"), result, new Date());
             if (TcpData.login_data_length == result.length()) {
                 String response = ConversionUtil.tcpLoginResp(result, "login");
                 e.getChannel().write(response);
             }
-            if (TcpData.login_data_length == result.length()) {
+            if (result.length() >= TcpData.upload_data_length) {
                 recordMsg(result);
-                // 记录消息来源
-                ActualLog.dao.save(null, ActualType.TCP, 10002, PropKit.get("config.host"), result, new Date());
                 recordDB(result);
                 String response = ConversionUtil.receiveDataResp(result);
                 e.getChannel().write(response);
@@ -102,10 +102,10 @@ public class TcpServerHandler extends SimpleChannelHandler {
                 BigDecimal addWater = new BigDecimal("0.00");
                 ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
                 Integer state = Integer.parseInt(ActualState.NORMAL);
-                if (data.getSumWater().compareTo(sumWater) > 0) {
+                if (data != null && data.getSumWater().compareTo(sumWater) > 0) {
                     state = Integer.parseInt(ActualState.EXCEPTION);
                 }
-                if (sumWater.compareTo(new BigDecimal(0.00)) <= 0) {
+                if (data != null && sumWater.compareTo(new BigDecimal(0.00)) <= 0) {
                     addWater = sumWater.subtract(data.getSumWater());
                 }
                 ActualData.me.save(null, data.getInnerCode(), meterAddress, null, addWater, sumWater, state, "", new Date());

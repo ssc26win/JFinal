@@ -105,18 +105,17 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                 Date writeTime = new Date();
                 if (sumWater.compareTo(new BigDecimal(0.00)) > 0 || sumWater.compareTo(new BigDecimal(0.00)) > 0) {
                     ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
-                    if (data.getSumWater().compareTo(sumWater) > 0) {
+                    if (data!= null && data.getSumWater().compareTo(sumWater) > 0) {
                         state = Integer.parseInt(ActualState.EXCEPTION);
                     }
-                    if (sumWater.compareTo(new BigDecimal(0.00)) <= 0) {
+                    if (data!= null && sumWater.compareTo(new BigDecimal(0.00)) <= 0) {
                         addWater = sumWater.subtract(data.getSumWater());
                     }
-                    ActualData exist = ActualData.me.getLastMeterAddress(meterAddress);
-                    if (exist != null) {
-                        innerCode = exist.getInnerCode();
+                    if (data != null) {
+                        innerCode = data.getInnerCode();
                     }
-                    boolean timesReduce = (writeTime.getTime() - exist.getWriteTime().getTime()) > 1000*60*5;
-                    if (exist != null && timesReduce ) {
+                    boolean timesReduce = (writeTime.getTime() - data.getWriteTime().getTime()) > 1000*60*5;
+                    if (data != null && timesReduce ) {
                         ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, voltage, writeTime);
                     }
                 }

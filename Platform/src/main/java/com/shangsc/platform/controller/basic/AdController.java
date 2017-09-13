@@ -4,16 +4,16 @@ import com.google.common.collect.Maps;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
+import com.shangsc.platform.code.ActualType;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.*;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.model.ActualLog;
 import com.shangsc.platform.model.Ad;
-import com.shangsc.platform.model.AppVersion;
 import com.shangsc.platform.model.SysUser;
-import com.shangsc.platform.util.CreateData;
 
 import java.io.File;
 import java.util.*;
@@ -31,7 +31,8 @@ public class AdController extends BaseController {
         //CreateData.createCompany();
         //CreateData.createWaterIndex();
         //CreateData.createMeter();
-        CreateData.createActual();
+        //CreateData.createActual();
+        ActualLog.dao.save(null, ActualType.TCP, 10002, PropKit.get("config.host"), "123", new Date());
     }
 
     @RequiresPermissions(value={"/basic/ad"})
@@ -54,7 +55,6 @@ public class AdController extends BaseController {
         this.setAttr("id", id);
         String action="add";
         if(id!=null){
-            this.setAttr("item", AppVersion.dao.findById(id));
             action="edit";
         }
         this.setAttr("action", action);

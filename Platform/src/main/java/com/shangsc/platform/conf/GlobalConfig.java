@@ -100,8 +100,8 @@ public class GlobalConfig extends JFinalConfig {
 		initMail();
 
 		//开启实时数据监听
-		//initActualUdp();
-        //initActualTcp();
+		initActualUdp();
+        initActualTcp();
 	}
 
 	/**

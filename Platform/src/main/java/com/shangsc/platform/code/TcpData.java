@@ -19,7 +19,7 @@ public class TcpData {
     public static void main(String[] args) {
         System.out.println("68090068C91707160002027001".length());
 
-        System.out.println("067BBF5533332341840000003333B33E64007800D200620006A40B1F0F015802".length());
+        System.out.println("68090068C91707160002027001067BBF5533332341840000003333B33E64007800D200620006A40B1F0F0158027216".length());
 
         System.out.println(upload_data.substring(26, 26 + 64));
     }

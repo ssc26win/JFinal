@@ -133,12 +133,12 @@
             //显示marker的title，marker多的话可以注释掉
             var title = "<span style='font-size:12px;color: #0CC415;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>";
             if (state == 1) {
-                title = "<span style='font-size:12px;color: #F0D456;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>";
+                title = "<span style='font-size:12px;color: #FFD306;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>";
             } else if (state == 2) {
-                title = "<span style='font-size:12px;color: #D43628;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>";
+                title = "<span style='font-size:12px;color: #FF0000;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>";
             }
             if (markerArr[i].waterUseNum == 0) {
-                title = "<span style='font-size:12px;color: #FF7B29;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>";
+                title = "<span style='font-size:12px;color: #FF8040;'><b>用水量："+markerArr[i].waterUseNum+" 立方米</b></span>";
             }
             var label = new window.BMap.Label(title, {
                 offset : new window.BMap.Size(20, -10)
