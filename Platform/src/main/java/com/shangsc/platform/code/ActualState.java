@@ -25,5 +25,4 @@ public class ActualState {
         actualStateMap.put(STOP, STOP_STR);
         return actualStateMap;
     }
-
 }

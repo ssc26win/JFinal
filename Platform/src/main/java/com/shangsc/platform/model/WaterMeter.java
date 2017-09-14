@@ -41,18 +41,12 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 
-    /**
-     * 水表编号是否已存在
-     * @param meterNum
-     * @return
-     */
     public boolean hasExist(String meterNum){
         Set<Condition> conditions = new HashSet<Condition>();
         conditions.add(new Condition("meter_num", Operators.EQ, meterNum));
         long num = this.getCount(conditions);
         return num>0?true:false;
     }
-
 
     public InvokeResult save(Long id, String innerCode, String lineNum, String meterNum,String meterAddress, BigDecimal times,
                             Integer watersType, String meterAttr, Integer chargeType, String billingCycle, Date registDate) {
@@ -153,7 +147,6 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         this.paginate(page, rows, select, sqlExceptSelect.toString());
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
-
 
     public Page<WaterMeter> getNormalMeterPage(int page, int rows, String keyword, String orderbyStr) {
         String normalMeterSql = normalMeterConditionSql();

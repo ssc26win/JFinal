@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body bgcolor="#F7F7F7">
+<!--图片漂浮广告代码开始-->
+<div id="float_ad" style="position:absolute">
+    <!--链接地址--><a href="http://www.dabaoku.com" _fcksavedurl="/" target="_blank">
+    <!--
+        &lt;!&ndash;图片地址&ndash;&gt;<img src="http://www.dabaoku.com/images/logo.gif" _fcksavedurl="http://www.dabaoku.com/images/logo.gif" border="0">
+    -->
+    <table>
+        <tr><td rowspan="3"><img src="http://www.dabaoku.com/images/logo.gif" _fcksavedurl="http://www.dabaoku.com/images/logo.gif" border="0"></td></tr>
+        <tr><td><h4>标题</h4></td></tr>
+        <tr><td>内容</td></tr>
+    </table>
+</a>
+</div>
+<script>
+    var x = 50,y = 60
+    var xin = true, yin = true
+    var step = 1
+    var delay = 10
+    var obj=document.getElementById("float_ad")
+    function float_ad() {
+        var L=T=0
+        var R= document.body.clientWidth-obj.offsetWidth
+        var B = document.body.clientHeight-obj.offsetHeight
+        obj.style.left = x + document.body.scrollLeft
+        obj.style.top = y + document.body.scrollTop
+        x = x + step*(xin?1:-1)
+        if (x < L) { xin = true; x = L}
+        if (x > R){ xin = false; x = R}
+        y = y + step*(yin?1:-1)
+        if (y < T) { yin = true; y = T }
+        if (y > B) { yin = false; y = B }
+    }
+    var itl= setInterval("float_ad()", delay)
+    obj.onmouseover=function(){clearInterval(itl)}
+    obj.onmouseout=function(){itl=setInterval("float_ad()", delay)}
+</script>
+<!--图片漂浮广告代码结束-->
+</body>
+</html>

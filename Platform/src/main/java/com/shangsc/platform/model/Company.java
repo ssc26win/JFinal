@@ -27,11 +27,6 @@ public class Company extends BaseCompany<Company> {
 	public static final Company me = new Company();
     private static final long serialVersionUID = -1982696969221258167L;
 
-    /**
-     * 公司编号是否已存在
-     * @param inner_code
-     * @return
-     */
     public boolean hasExistCompany(String inner_code){
         Set<Condition> conditions = new HashSet<Condition>();
         conditions.add(new Condition("inner_code", Operators.EQ, inner_code));
@@ -84,11 +79,6 @@ public class Company extends BaseCompany<Company> {
         }
     }
 
-    /**
-     * 单位名是否已存在
-     * @param name
-     * @return
-     */
     public boolean hasExist(String name, String innerCode){
         Set<Condition> conditions = new HashSet<Condition>();
         conditions.add(new Condition("name", Operators.EQ, name));
@@ -208,6 +198,7 @@ public class Company extends BaseCompany<Company> {
         return Db.find(select);
     }
 
+    @Deprecated
     public Map<String, Object> getCompanyMap() {
         List<Company> allList = this.getAllList();
         Map<String , Object> map = new HashMap<String, Object>();
@@ -246,6 +237,7 @@ public class Company extends BaseCompany<Company> {
         return 0;
     }
 
+    @Deprecated
     public int warnCount() {
         String innerCodes = getWarnInnerCodes();
         String sqlExceptSelect = " select count(*) as warnCompany from t_company" +
@@ -434,7 +426,8 @@ public class Company extends BaseCompany<Company> {
         Integer month = Integer.parseInt(monthDateBetween.get("month"));
         String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
                 " on twm.meter_address=tad.meter_address) allad where allad.write_time >='"+start+"' and allad.write_time <'"+end+"' group by allad.meter_address) t" +
-                " INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
+                " INNER join t_water_index twi on twi.inner_code=t.inner_code left join t_company c on c.inner_code=t.inner_code " +
+                "where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type and c.company_type=1";
         List<Record> records = Db.find(sql);
         Set<String> set = new HashSet<>();
         for (Record record:records) {
@@ -542,17 +535,14 @@ public class Company extends BaseCompany<Company> {
             if (map.get(14) != null) {
                 department = map.get(14).toString();
             }
-
             Integer wellCount = 0;
             Integer firstWatermeterCount = 0;
             Integer remotemeterCount = 0;
             Integer unitType = 1;
-
             BigDecimal self_well_price = null;
             if (map.get(15) != null) {
                 self_well_price = CodeNumUtil.getBigDecimal(map.get(15).toString(), 2);
             }
-
             BigDecimal surface_price = null;
             if (map.get(16) != null) {
                 surface_price = CodeNumUtil.getBigDecimal(map.get(16).toString(), 2);
@@ -561,7 +551,6 @@ public class Company extends BaseCompany<Company> {
             if (map.get(17) != null) {
                 self_free_price = CodeNumUtil.getBigDecimal(map.get(17).toString(), 2);
             }
-
             Date createDate = null;
             Object createDateObj = map.get(18);
             if (createDateObj != null) {

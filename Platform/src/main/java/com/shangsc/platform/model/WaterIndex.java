@@ -140,7 +140,6 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 			index = setProp(index, innerCode, watersType, waterIndex, january, february, march, april,
 					may, june, july, august, september, october, november, december);
 			lists.add(index);
-			//index.save();
 		}
 		WaterIndex.me.saveBatch(lists, lists.size());
 	}

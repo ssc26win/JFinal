@@ -47,7 +47,7 @@ public class CompanyType {
         return addType;
     }
 
-    public static boolean isYes(String str) {
+    public static boolean isCompany(String str) {
         return COMPANY.equals(str);
     }
 }

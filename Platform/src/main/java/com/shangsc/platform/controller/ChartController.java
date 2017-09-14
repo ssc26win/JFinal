@@ -57,7 +57,6 @@ public class ChartController extends Controller {
         } else {
             object.put("warnTitle", "告警");
         }
-
         this.renderJson(object.toJSONString());
     }
     @Clear(AuthorityInterceptor.class)

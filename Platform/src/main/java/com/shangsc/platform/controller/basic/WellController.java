@@ -185,6 +185,5 @@ public class WellController extends BaseController {
         }
         this.renderJson(InvokeResult.success());
     }
-
 }
 

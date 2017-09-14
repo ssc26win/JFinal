@@ -66,9 +66,10 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getActualDataPage(int page, int rows, String keyword, String orderbyStr) {
 		//select * from (select * from t_actual_data order by write_time desc) a group by a.meter_address order by write_time desc
-		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county ";
+		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county,twm.line_num ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from (select * from t_actual_data order by write_time desc)  tad left join " +
-				" t_company tc on tad.inner_code=tc.inner_code ");
+				" t_company tc on tad.inner_code=tc.inner_code left join t_water_meter twm on tad.inner_code=twm.inner_code");
+
 		sqlExceptSelect.append(" where 1=1");
 		if (StringUtils.isNotEmpty(keyword)) {
 			sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
@@ -85,7 +86,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 											 String name, String innerCode, Integer street, Integer watersType, String meterAttr) {
-		String select=" select twm.*,tc.name,tc.address,tc.street,tc.water_unit,tc.county,tm.meter_attr,tm.meter_address,tm.meter_num,tm.line_num ";
+		String select=" select twm.*,tc.name,tc.address,tc.street,tc.water_unit,tc.county,tc.company_type,tm.meter_attr,tm.meter_address,tm.meter_num,tm.line_num ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
 				" t_company tc on twm.inner_code=tc.inner_code " +
 				" inner join t_water_meter tm on twm.inner_code=tm.inner_code");
@@ -129,7 +130,8 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 										   String name, String innerCode, Integer street, Integer watersType, String meterAttr) {
-		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tm.meter_attr,tm.meter_address,tm.meter_num,tm.line_num ";
+		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tm.meter_attr,tm.meter_address," +
+				"tm.meter_num,tm.line_num,tc.company_type ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
 				" t_company tc on twm.inner_code=tc.inner_code " +
 				" inner join t_water_meter tm on twm.inner_code=tm.inner_code");
@@ -173,7 +175,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 										   String name, String innerCode, Integer street, Integer watersType, String meterAttr) {
-		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,sum(net_water) as netWaterNum,tm.billing_cycle," +
+		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tc.company_type,sum(net_water) as netWaterNum,tm.billing_cycle," +
 				"tm.meter_num,tm.meter_attr,tm.meter_address,tm.line_num";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
 				" t_company tc on twm.inner_code=tc.inner_code " +
@@ -218,7 +220,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year,
 										  String name, String innerCode, Integer street, Integer watersType, String meterAttr) {
-		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,sum(net_water) as netWaterNum," +
+		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tc.company_type,sum(net_water) as netWaterNum," +
 				"tm.meter_attr,tm.meter_num,tm.meter_address,tm.line_num";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
 				" t_company tc on twm.inner_code=tc.inner_code " +
@@ -341,23 +343,6 @@ public class ActualData extends BaseActualData<ActualData> {
 		return address;
 	}
 
-	public Set<String> getMapWarnInnerCode(Date date) {
-		Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(date);
-        String start = monthDateBetween.get("start");
-        String end = monthDateBetween.get("end");
-        String month_str = monthDateBetween.get("month_str");
-        Integer month = Integer.parseInt(monthDateBetween.get("month"));
-        String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
-				"on twm.meter_address=tad.meter_address) allad where allad.write_time >='"+start+"' and allad.write_time <'"+end+"' group by allad.meter_address) t" +
-				"INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
-        List<Record> records = Db.find(sql);
-        Set<String> set = new HashSet<>();
-        for (Record record:records) {
-            set.add(record.get("inner_code").toString());
-        }
-        return set;
-	}
-
     public static void main(String[] args) {
         Map<Integer, String> map = MonthCode.getMap();
         Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(new Date());
@@ -365,7 +350,6 @@ public class ActualData extends BaseActualData<ActualData> {
         String end = monthDateBetween.get("end");
         String month_str = monthDateBetween.get("month_str");
         Integer month = Integer.parseInt(monthDateBetween.get("month"));
-
         System.out.println(start + end + month_str +month);
     }
 }

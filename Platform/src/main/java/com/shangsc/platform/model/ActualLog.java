@@ -39,5 +39,4 @@ public class ActualLog extends BaseActualLog<ActualLog> {
             actualLog.setAddTime(addTime);
         }
     }
-    //{content:123, port:10002, src_type:tcp, add_time:Wed Sep 13 11:25:48 CST 2017, ip:172.17.227.92}
 }

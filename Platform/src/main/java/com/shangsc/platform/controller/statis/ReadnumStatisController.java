@@ -102,7 +102,6 @@ public class ReadnumStatisController extends BaseController {
                 list.set(i, co);
             }
         }
-
         ReadNumExportService service = new ReadNumExportService();
         String path = service.export(list);
         renderFile(new File(path));

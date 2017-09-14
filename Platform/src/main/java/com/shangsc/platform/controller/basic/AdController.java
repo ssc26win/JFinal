@@ -4,14 +4,12 @@ import com.google.common.collect.Maps;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
-import com.shangsc.platform.code.ActualType;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.*;
 import com.shangsc.platform.core.view.InvokeResult;
-import com.shangsc.platform.model.ActualLog;
 import com.shangsc.platform.model.Ad;
 import com.shangsc.platform.model.SysUser;
 
@@ -32,7 +30,6 @@ public class AdController extends BaseController {
         //CreateData.createWaterIndex();
         //CreateData.createMeter();
         //CreateData.createActual();
-        ActualLog.dao.save(null, ActualType.TCP, 10002, PropKit.get("config.host"), "123", new Date());
     }
 
     @RequiresPermissions(value={"/basic/ad"})
@@ -88,13 +85,13 @@ public class AdController extends BaseController {
         if(flist.size()>0){
             UploadFile uf=flist.get(0);
             String status_url= PropKit.get("static_url");
-            String fileUrl="ad_img/"+dataStr+"/"+uf.getFileName();
-            String newFile=PropKit.get("uploadPath")+fileUrl;
+            String fileUrl= dataStr + "/" + uf.getFileName();
+            String newFile = PropKit.get("uploadAdImgPath") + fileUrl;
             FileUtils.mkdir(newFile, false);
             FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);
             uf.getFile().delete();
-            data.put("staticUrl",status_url);
-            data.put("fileUrl",fileUrl);
+            data.put("staticUrl", status_url);
+            data.put("fileUrl", newFile);
             renderJson(data);
         }
     }

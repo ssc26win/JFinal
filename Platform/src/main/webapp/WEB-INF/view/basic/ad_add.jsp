@@ -73,7 +73,7 @@
                                                                     <input id="imgUrl" class="cover-input" value="${item.imgUrl}" name="imgUrl" type="hidden" />
                                                                 </div>
                                                                 <p id="upload-tip" class="upload-tip"></p>
-                                                                <p id="apkArea" class="cover-bd" style="display: ${action eq 'add'?'none':''}">
+                                                                <p id="imgArea" class="cover-bd" style="display: ${action eq 'add'?'none':''}">
                                                                     <a class="vb cover-del" href="#" style="width: 600px;">${item.imgUrl}</a>
                                                                 </p>
                                                             </div>
@@ -120,9 +120,7 @@
 </div><!-- /.main-container -->
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
 <script type="text/javascript">
-
     jQuery(function($) {
-
         $('#file_upload').uploadify({
             //校验数据
             'swf' : '${res_url}uploadify/uploadify.swf', //指定上传控件的主体文件，默认‘uploader.swf’
@@ -139,8 +137,8 @@
             'successTimeout' : 30, //成功等待时间
             'onUploadSuccess' : function(file, data,response) {//每成功完成一次文件上传时触发一次
                 data=eval("["+data+"]")[0];
-                $("#apkArea").show().find(".cover-del").html(data.fileUrl);
-                $("#url").val(data.fileUrl);
+                $("#imgArea").show().find(".cover-del").html(data.fileUrl);
+                $("#imgUrl").val(data.fileUrl);
             },
             'onUploadError' : function(file, data, response) {//当上传返回错误时触发
                 $('#f_pics').append("<div class=\"pics_con\">" + data + "</div>");
@@ -164,7 +162,6 @@
                 content:{
                     required: true
                 }
-
             },
             messages: {
                 title:{
@@ -180,12 +177,10 @@
             highlight: function (e) {
                 $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
             },
-
             success: function (e) {
                 $(e).closest('.form-group').removeClass('has-error');//.addClass('has-info');
                 $(e).remove();
             },
-
             errorPlacement: function (error, element) {
                 if(element.is(':checkbox') || element.is(':radio')) {
                     var controls = element.closest('div[class*="col-"]');
@@ -238,16 +233,13 @@
             invalidHandler: function (form) {
             }
         });
-
     });
 
     function closeView(){
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
         parent.layer.close(index); //再执行关闭
     }
-
 </script>
 </body>
-
 </html>
 
