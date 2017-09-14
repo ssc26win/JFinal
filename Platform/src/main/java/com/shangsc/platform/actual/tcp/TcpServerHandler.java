@@ -21,7 +21,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.util.Date;
 
 /**
@@ -36,7 +35,6 @@ public class TcpServerHandler extends SimpleChannelHandler {
         ChannelBuffer buffer = (ChannelBuffer) e.getMessage();
 
         System.out.println("received " + buffer.readableBytes() + " bytes [" + buffer.toString() + "]");
-        System.out.println("receive:" + buffer.toString(Charset.defaultCharset()));
 
         String result = ConversionUtil.bytes2Hex16Str(buffer.array());
 
@@ -110,56 +108,38 @@ public class TcpServerHandler extends SimpleChannelHandler {
     private synchronized void recordDB(String result, boolean isMulti) {
         try {
             if (StringUtils.isNotEmpty(result)) {
+                String meterAddress = "";
+                BigDecimal sumWater = null;
+                BigDecimal addWater = new BigDecimal("0.00");
+                Integer state = Integer.parseInt(ActualState.NORMAL);
+                BigDecimal times = new BigDecimal("1");
+                String innerCode = "";
                 if (isMulti) {
-                    String meterAddress = ConversionUtil.getTcpMultAddress(result);
-                    BigDecimal sumWater = ConversionUtil.getTcpMultRecordSumWater(result);
-                    BigDecimal addWater = new BigDecimal("0.00");
-                    ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
-                    Integer state = Integer.parseInt(ActualState.NORMAL);
-                    if (data != null && data.getSumWater().compareTo(sumWater) > 0) {
-                        state = Integer.parseInt(ActualState.EXCEPTION);
-                    }
-                    if (data != null) {
-                        addWater = sumWater.subtract(data.getSumWater());
-                    }
-                    String innerCode = "";
-                    BigDecimal times = new BigDecimal("1");
-                    WaterMeter meter = WaterMeter.me.findByMeterAddress(meterAddress);
-                    if (meter != null) {
-                        innerCode = meter.getInnerCode();
-                        times = meter.getTimes();
-                    }
-                    sumWater = times.multiply(sumWater);
-                    ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
+                    meterAddress = ConversionUtil.getTcpMultAddress(result);
+                    sumWater = ConversionUtil.getTcpMultRecordSumWater(result);
                 } else {
-                    String meterAddress = ConversionUtil.getTcpMeterAddress(result);
-                    BigDecimal sumWater = ConversionUtil.getTcpSumNum(result);
-                    BigDecimal addWater = new BigDecimal("0.00");
-                    ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
-                    Integer state = Integer.parseInt(ActualState.NORMAL);
-                    if (data != null && data.getSumWater().compareTo(sumWater) > 0) {
-                        state = Integer.parseInt(ActualState.EXCEPTION);
-                    }
-                    if (data != null) {
-                        addWater = sumWater.subtract(data.getSumWater());
-                    }
-                    String innerCode = "";
-                    BigDecimal times = new BigDecimal("1");
-                    WaterMeter meter = WaterMeter.me.findByMeterAddress(meterAddress);
-                    if (meter != null) {
-                        innerCode = meter.getInnerCode();
-                        times = meter.getTimes();
-                    }
-                    sumWater = times.multiply(sumWater);
-                    ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
+                    meterAddress = ConversionUtil.getTcpMeterAddress(result);
+                    sumWater = ConversionUtil.getTcpSumNum(result);
                 }
+                ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
+                if (data != null && data.getSumWater().compareTo(sumWater) > 0) {
+                    state = Integer.parseInt(ActualState.EXCEPTION);
+                }
+                WaterMeter meter = WaterMeter.me.findByMeterAddress(meterAddress);
+                if (meter != null) {
+                    innerCode = meter.getInnerCode();
+                    times = meter.getTimes();
+                }
+                sumWater = times.multiply(sumWater);
+                if (data != null) {
+                    addWater = sumWater.subtract(data.getSumWater());
+                } else {
+                    addWater = times.multiply(sumWater);
+                }
+                ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        System.out.println(ConversionUtil.hex16Str2String("067BBF55"));
     }
 }

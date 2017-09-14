@@ -33,16 +33,16 @@
                 <div class="row">
                   <div class="col-xs-12 col-sm-8">
                     <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    <i class="ace-icon fa fa-check"></i>
-                                                </span>
-                      <input type="text" id="name" name="name" class="form-control search-query" placeholder="请输入关键字" />
-                                                <span class="input-group-btn">
-                                                    <button type="button" id="btn_search" class="btn btn-purple btn-sm">
-                                                      <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
-                                                      搜索
-                                                    </button>
-                                                </span>
+                          <span class="input-group-addon">
+                              <i class="ace-icon fa fa-check"></i>
+                          </span>
+                       <input type="text" id="name" name="name" class="form-control search-query" placeholder="请输入关键字" />
+                          <span class="input-group-btn">
+                              <button type="button" id="btn_search" class="btn btn-purple btn-sm">
+                                <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+                                搜索
+                              </button>
+                          </span>
                     </div>
                   </div>
                 </div>

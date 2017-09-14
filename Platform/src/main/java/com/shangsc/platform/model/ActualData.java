@@ -65,16 +65,16 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getActualDataPage(int page, int rows, String keyword, String orderbyStr) {
+		//select * from (select * from t_actual_data order by write_time desc) a group by a.meter_address order by write_time desc
 		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county ";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad inner join " +
+		StringBuffer sqlExceptSelect = new StringBuffer(" from (select * from t_actual_data order by write_time desc)  tad left join " +
 				" t_company tc on tad.inner_code=tc.inner_code ");
 		sqlExceptSelect.append(" where 1=1");
 		if (StringUtils.isNotEmpty(keyword)) {
 			sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
 					+ "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ");
 		}
-		String groupbyStr = " group by tad.meter_address ";
-		sqlExceptSelect.append(groupbyStr);
+		sqlExceptSelect.append(" group by tad.meter_address ");
 		orderbyStr = " order by tad.write_time desc ";
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
@@ -263,8 +263,8 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public List<Record> getTodayActualDataPage() {
 		Date date = new Date();
-		String nowBefore = ToolDateTime.getYesterdayStr(date);
 		String now = ToolDateTime.getDateStr(date);
+		String nowBefore = ToolDateTime.getYesterdayStr(date);
 		StringBuffer sqlExceptSelect = new StringBuffer("select t.* from t_actual_data t where 1=1");
 		sqlExceptSelect.append(" and t.write_time >='" + nowBefore + "'");
 		sqlExceptSelect.append(" and t.write_time <='" + now + "'");
@@ -289,14 +289,30 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public List<Record> getDailyActualData( ) {
-		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t GROUP BY  date_format(t.write_time, '%Y-%m-%d')";
-
+		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+				" where inner_code in (select inner_code from t_company where company_type=1)" +
+				" GROUP BY date_format(t.write_time, '%Y-%m-%d')";
 		return Db.find(sql);
 	}
 
 	public List<Record> getMonthActualData( ) {
-		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t GROUP BY  date_format(t.write_time, '%Y-%m')";
+		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+				" where inner_code in (select inner_code from t_company where company_type=1)" +
+				" GROUP BY date_format(t.write_time, '%Y-%m')";
+		return Db.find(sql);
+	}
 
+	public List<Record> getSupplyDailyActualData( ) {
+		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+				" where inner_code in (select inner_code from t_company where company_type=2)" +
+				" GROUP BY date_format(t.write_time, '%Y-%m-%d')";
+		return Db.find(sql);
+	}
+
+	public List<Record> getSupplyMonthActualData( ) {
+		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+				" where inner_code in (select inner_code from t_company where company_type=2)" +
+				" GROUP BY date_format(t.write_time, '%Y-%m-%d')";
 		return Db.find(sql);
 	}
 

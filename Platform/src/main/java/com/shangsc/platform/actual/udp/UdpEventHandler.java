@@ -95,7 +95,7 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
     }
 
     private synchronized void recordDB(String result) {
-        try { //TODO 5分钟内返回的同一地址传回来的数，丢弃掉
+        try {
             if (StringUtils.isNotEmpty(result)) {
                 String meterAddress = ConversionUtil.getUdpMeterAddress(result);
                 String innerCode = "";
@@ -104,23 +104,25 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                 Integer state = Integer.parseInt(ActualState.NORMAL);
                 String voltage = "";
                 Date writeTime = new Date();
+                BigDecimal times = new BigDecimal("1");
                 if (sumWater.compareTo(new BigDecimal(0.00)) > 0 || addWater.compareTo(new BigDecimal(0.00)) > 0) {
                     ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
                     boolean timesReduce = true;
-                    if (data!= null && data.getSumWater().compareTo(sumWater) > 0) {
-                        state = Integer.parseInt(ActualState.EXCEPTION);
-                    }
-                    if (data!= null) {
-                        addWater = sumWater.subtract(data.getSumWater());
-                        timesReduce = (writeTime.getTime() - data.getWriteTime().getTime()) > 1000*60*5;
-                    }
-                    BigDecimal times = new BigDecimal("1");
                     WaterMeter meter = WaterMeter.me.findByMeterAddress(meterAddress);
                     if (meter != null) {
                         innerCode = meter.getInnerCode();
                         times = meter.getTimes();
                     }
+                    if (data!= null && data.getSumWater().compareTo(sumWater) > 0) {
+                        state = Integer.parseInt(ActualState.EXCEPTION);
+                    } else {
+                        addWater = times.multiply(sumWater);
+                    }
                     sumWater = times.multiply(sumWater);
+                    if (data!= null) {
+                        addWater = sumWater.subtract(data.getSumWater());
+                        timesReduce = (writeTime.getTime() - data.getWriteTime().getTime()) > 1000*60*1;
+                    }
                     if (timesReduce) {
                         ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, voltage, writeTime);
                     }

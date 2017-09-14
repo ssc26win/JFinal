@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Administrator
-  Date: 2017/8/26
-  Time: 15:38
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -27,18 +20,26 @@
         <div class="page-content" id="page-content">
             <div class="row">
                 <div class="col-xs-6">
-                    <div id="container1" style="width: 50%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerCompany" style="width: 50%; height: 25%; margin: 0 auto"></div>
                 </div>
                 <div class="col-xs-6">
-                    <div id="container12" style="width: 50%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerMeter" style="width: 50%; height: 25%; margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row" style="margin-top: 20px;">
                 <div class="col-xs-12">
-                    <div id="container" style="width: 50%; height: 35%; margin: 0 auto"></div>
+                    <div id="containerUseD" style="width: 50%; height: 35%; margin: 0 auto"></div>
                 </div>
                 <div class="col-xs-12">
-                    <div id="containe2" style="width: 50%; height: 35%; margin: 0 auto"></div>
+                    <div id="containerUseM" style="width: 50%; height: 35%; margin: 0 auto"></div>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-xs-12">
+                    <div id="containerSupplyD" style="width: 50%; height: 35%; margin: 0 auto"></div>
+                </div>
+                <div class="col-xs-12">
+                    <div id="containeSupplyM" style="width: 50%; height: 35%; margin: 0 auto"></div>
                 </div>
             </div>
         </div>
@@ -97,7 +98,7 @@
             json1.series = series1;
             json1.plotOptions = plotOptions1;
             json1.credits=credits;
-            $('#container12').highcharts(json1);
+            $('#containerMeter').highcharts(json1);
         })
 
         var total2, warnTotal2, normalTotal2, warnTitle, supplyTotal;
@@ -154,7 +155,7 @@
             json1.series = series1;
             json1.plotOptions = plotOptions1;
             json1.credits=credits;
-            $('#container1').highcharts(json1);
+            $('#containerCompany').highcharts(json1);
         })
 
         $.get("${context_path}/chart/getDilay", function (data) {
@@ -226,7 +227,7 @@
             json.series = series;
             json.plotOptions = plotOptions;
             json.credits=credits;
-            $('#container').highcharts(json);
+            $('#containerUseD').highcharts(json);
         });
 
         $.get("${context_path}/chart/getMonth", function (data) {
@@ -264,7 +265,6 @@
                 }
             ];
             var plotOptions={
-
                 spline: {
                     shadow: true,
                     animation: true,
@@ -276,14 +276,10 @@
                     cursor: 'pointer',
                     events: {
                         click: function(event) {
-
                             /*   alert(event.point.category); // X轴值
                              alert(this.data[event.point.x].y); // Y轴值*/
                             var time=event.point.category
-
                             window.location.href="${context_path}/statis/month?time="+time;
-
-
                         }
                     }
                 }
@@ -301,7 +297,7 @@
             json.series = series;
             json.plotOptions = plotOptions;
             json.credits = credits;
-            $('#containe2').highcharts(json);
+            $('#containerUseM').highcharts(json);
         });
     });
 

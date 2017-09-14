@@ -104,21 +104,21 @@
             datatype: "json",
             colModel: [
                 { label: '单位名称', name: 'companyName', width: 120, sortable:false},
-                { label: '单位编号', name: 'inner_code', width: 50, sortable:false},
-                { label: '水井编号', name: 'well_num', width: 50, sortable:false},
+                { label: '单位编号', name: 'inner_code', width: 60, sortable:true},
+                { label: '水井编号', name: 'well_num', width: 60, sortable:false},
                 { label: '水井名称', name: 'name', width: 60,sortable:false},
                 { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
-                { label: '所属区县', name: 'county', width: 50, sortable:false},
-                /*{ label: '乡', name: 'township', width: 45, sortable:false},
-                { label: '村', name: 'village', width: 50, sortable:false},*/
+                { label: '所属区县', name: 'county', width: 60, sortable:false},
+                { label: '乡', name: 'streetName', width: 60, sortable:false},
+                { label: '村', name: 'village', width: 60, sortable:false},
                 { label: '水井地址', name: 'address', width: 60, sortable:false},
-                { label: '成井时间（年）', name: 'year', width: 70, sortable:false},
-                { label: '井深（米）', name: 'well_depth', width: 45, sortable:false},
-                { label: '地下水埋深（米）', name: 'ground_depth', width: 80, sortable:false},
-                /*{ label: '是否为单位自备井', name: 'oneselfWellName', width: 80, sortable:false},*/
-                { label: '井口井管内径（毫米）', name: 'inner_diameter', width: 100, sortable:false},
-                /*{ label: '井壁管材料', name: 'material', width: 60, sortable:false},
-                { label: '应用状况', name: 'application', width: 60, sortable:false},*/
+                { label: '成井时间（年）', name: 'year', width: 80, sortable:true},
+                { label: '井深（米）', name: 'well_depth', width: 70, sortable:true},
+                { label: '地下水埋深（米）', name: 'ground_depth', width: 90, sortable:true},
+                { label: '是否为单位自备井', name: 'oneselfWellName', width: 80, sortable:false},
+                { label: '井口井管内径（毫米）', name: 'inner_diameter', width: 120, sortable:true},
+                { label: '井壁管材料', name: 'material', width: 60, sortable:false},
+                { label: '应用状况', name: 'application', width: 60, sortable:false},
                 { label: '水源类型', name: 'watersTypeName', width: 60, sortable:false},
                 /*{ label: '是否已配套机电设备', name: 'electromechanicsName', width: 80, sortable:false},
                 { label: '是否已安装水量计量设施', name: 'calculateWaterName', width: 100, sortable:false},*/
@@ -132,7 +132,7 @@
                 { label: '取水量确定方法', name: 'method', width: 100, sortable:false},*/
                 /*{ label: '是否已办理取水许可证', name: 'licenceName', width: 100, sortable:false},*/
                 { label: '取水许可证编号', name: 'licence_code', width: 80, sortable:false},
-                { label: '年许可取水量（万立方米）', name: 'water_withdrawals', width: 120, sortable:false}
+                { label: '年许可取水量（万立方米）', name: 'water_withdrawals', width: 120, sortable:true}
             ],
             viewrecords: true,
             height: 560,

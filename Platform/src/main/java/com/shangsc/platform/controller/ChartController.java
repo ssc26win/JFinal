@@ -64,21 +64,17 @@ public class ChartController extends Controller {
     @RequiresPermissions(value = {"/chart"})
     public void index() {
         JSONObject object = new JSONObject();
-        // 水表总数量
         List<WaterMeter> waterMeters = WaterMeter.me.getAllList();
         int total = waterMeters.size();
-
         object.put("total", total);
-
         // 异常水表数量24小时之内都会接收到数据 否则就异常
         int today = ActualData.me.getTodayActualDataPage().size();//正常水表
         object.put("normalTotal", today);
-
         object.put("exptionTotal", (total >= today) ? (total - today) : 0);
-
         this.renderJson(object.toJSONString());
     }
 
+    @Deprecated
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
     public void companyBak() {
@@ -86,12 +82,10 @@ public class ChartController extends Controller {
         //取得用水指标数据
         int total = Company.me.totalCount();
         object.put("total", total);//单位总数
-
         List<WaterIndex> waterIndices = WaterIndex.me.getAllList();
         for (WaterIndex index : waterIndices) {
             index.getWaterIndex();//年
             WaterMeter waterMeter = WaterMeter.me.findByInnerCode(index.getInnerCode());
-
             if (null != waterMeter) {
                 Record records1 = ActualData.me.getYearActual(index.getInnerCode());
                 if (null != records1) {
@@ -147,11 +141,8 @@ public class ChartController extends Controller {
         // 正常用水单位
         int normalTotal = Company.me.hasActual();
         object.put("normalTotal", normalTotal-count.get());
-
         object.put("warnTotal", count); //预警总数
-
         object.put("otherTotal", total-normalTotal);
-
         object.put("supplyTotal", Company.me.getSupplyCompanyCount());
         this.renderJson(object.toJSONString());
     }
@@ -163,15 +154,12 @@ public class ChartController extends Controller {
         JSONObject obj = new JSONObject();
         JSONArray sumWater = new JSONArray();
         List<String> day = new ArrayList<String>();
-
         for (Record record : records) {
             sumWater.add(record.get("sumWater"));
             day.add( record.get("DAY").toString());
         }
-
         obj.put("sumWater", sumWater);
         obj.put("day", day);
-
         this.renderJson(obj);
     }
 
@@ -182,15 +170,44 @@ public class ChartController extends Controller {
         JSONObject obj = new JSONObject();
         JSONArray sumWater = new JSONArray();
         List<String> month = new ArrayList<String>();
-
         for (Record record : records) {
             sumWater.add(record.get("sumWater"));
             month.add( record.get("month").toString());
         }
-
         obj.put("sumWater", sumWater);
         obj.put("month", month);
+        this.renderJson(obj);
+    }
 
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/chart"})
+    public void getSupplyDay() {
+        List<Record> records = ActualData.me.getSupplyDailyActualData();
+        JSONObject obj = new JSONObject();
+        JSONArray sumWater = new JSONArray();
+        List<String> day = new ArrayList<String>();
+        for (Record record : records) {
+            sumWater.add(record.get("sumWater"));
+            day.add( record.get("DAY").toString());
+        }
+        obj.put("sumWater", sumWater);
+        obj.put("day", day);
+        this.renderJson(obj);
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/chart"})
+    public void getSupplyMonth() {
+        List<Record> records = ActualData.me.getSupplyMonthActualData();
+        JSONObject obj = new JSONObject();
+        JSONArray sumWater = new JSONArray();
+        List<String> day = new ArrayList<String>();
+        for (Record record : records) {
+            sumWater.add(record.get("sumWater"));
+            day.add( record.get("DAY").toString());
+        }
+        obj.put("sumWater", sumWater);
+        obj.put("day", day);
         this.renderJson(obj);
     }
 
@@ -208,7 +225,6 @@ public class ChartController extends Controller {
             records = Company.me.getCompanyAll(innerCode);
         }
         Date date = new Date();
-        Map<Integer, String> stateMap = MapState.getMap();
         Set<String> warnCodes = Company.me.getWarnExceptionInnerCode(date);
         int month = new Date().getMonth()+1;
         for (Record record:records) {
@@ -219,11 +235,9 @@ public class ChartController extends Controller {
             object.put("innerCode", record.get("inner_code"));
             object.put("state", MapState.NORMAL);
             if (warnCodes.contains(innerCode)) {
-                if (CodeNumUtil.isOdd(month)) {
-                    //预警
+                if (CodeNumUtil.isOdd(month)) {//预警
                     object.put("state", MapState.WARN);
-                } else {
-                    //告警
+                } else {//告警
                     object.put("state", MapState.OVER);
                 }
             }
@@ -237,7 +251,6 @@ public class ChartController extends Controller {
                 object.put("waterUseNum", 0);
             }
             object.put("address", record.get("address"));
-
             array.add(object);
         }
         if (CollectionUtils.isNotEmpty(records) && records.size() == 1) {

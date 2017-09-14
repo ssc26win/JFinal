@@ -123,7 +123,6 @@ public class WellController extends BaseController {
 
     private void setVoProp(List<Well> list) {
         if (CommonUtils.isNotEmpty(list)) {
-
             Map<String, Object> mapCalculateType = DictData.dao.getDictMap(0, DictCode.CalculateType);
             Map<String, Object> mapGeomorphicType = DictData.dao.getDictMap(0, DictCode.GeomorphicType);
             Map<String, Object> mapGroundType = DictData.dao.getDictMap(0, DictCode.GroundType);

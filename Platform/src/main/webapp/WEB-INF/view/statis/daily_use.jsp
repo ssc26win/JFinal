@@ -118,7 +118,7 @@
                 { label: '表计地址', name: 'meter_address', width: 100,sortable:false},
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
                 { label: '查询日期', name: 'searchDay', width: 100, sortable:true},
-                { label: '日用水量（立方米）', name: 'net_water', width: 100, sortable:false},
+                { label: '日用水量（立方米）', name: 'net_water', width: 120, sortable:true},
                 { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
             ],
             viewrecords: true,

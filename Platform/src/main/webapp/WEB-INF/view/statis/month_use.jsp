@@ -117,7 +117,7 @@
                 { label: '表计地址', name: 'meter_address', width: 100,sortable:false},
                 { label: '水表属性', name: 'alarm', width: 45, sortable:false},
                 { label: '查询月份', name: 'searchMonth', width: 100, sortable:true},
-                { label: '月用水量（立方米）', name: 'net_water', width: 100, sortable:false},
+                { label: '月用水量（立方米）', name: 'net_water', width: 120, sortable:true},
                 { label: '计费周期', name: 'billing_cycle', width: 80, sortable:false},
                 { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
             ],

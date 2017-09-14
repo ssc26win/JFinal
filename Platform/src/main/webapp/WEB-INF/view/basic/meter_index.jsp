@@ -108,7 +108,7 @@
             datatype: "json",
             colModel: [
                 { label: '单位名称', name: 'companyName', width: 150, sortable:false},
-                { label: '单位编号', name: 'inner_code', width: 60, sortable:false},
+                { label: '单位编号', name: 'inner_code', width: 60, sortable:true},
                 { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
                 { label: '所属区县', name: 'county', width: 50, sortable:false},
                 { label: '路别', name: 'line_num', width: 100, sortable:false},
@@ -120,7 +120,7 @@
                 { label: '水表属性', name: 'meter_attr', width: 80, sortable:false},
                 { label: '收费类型', name: 'chargeTypeName', width: 50, sortable:false},
                 { label: '计费周期', name: 'billing_cycle', width: 50, sortable:false},
-                { label: '注册日期', name: 'regist_date', width: 100, sortable:false}
+                { label: '注册日期', name: 'regist_date', width: 100, sortable:true}
             ],
             viewrecords: true,
             height: 560,
