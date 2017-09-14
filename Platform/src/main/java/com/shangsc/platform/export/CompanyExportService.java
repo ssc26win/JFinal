@@ -84,14 +84,14 @@ public class CompanyExportService extends ExportBaseService {
                     company.getAddress(),
                     company.getPostalCode(),
                     company.getDepartment(),
+                    company.get("unitTypeName"),
+                    company.getSelfWellPrice(),
+                    company.getSurfacePrice(),
+                    company.getSelfFreePrice(),
                     company.getWellCount(),
                     company.getFirstWatermeterCount(),
                     company.getRemotemeterCount(),
-                    company.get("unitTypeName"),
-                    company.getCreateTime(),
-                    company.getSelfWellPrice(),
-                    company.getSurfacePrice(),
-                    company.getSelfFreePrice()
+                    company.getCreateTime()
 
             };
             objects.add(obj);
