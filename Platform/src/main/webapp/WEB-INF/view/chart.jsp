@@ -39,7 +39,7 @@
                     <div id="containerSupplyD" style="width: 50%; height: 35%; margin: 0 auto"></div>
                 </div>
                 <div class="col-xs-12">
-                    <div id="containeSupplyM" style="width: 50%; height: 35%; margin: 0 auto"></div>
+                    <div id="containerSupplyM" style="width: 50%; height: 35%; margin: 0 auto"></div>
                 </div>
             </div>
         </div>
@@ -209,7 +209,7 @@
                             alert(this.data[event.point.x].y); // Y轴值*/
                             var time=event.point.category
 
-                            window.location.href="${context_path}/statis/daily?time="+time;
+                            window.location.href="${context_path}/statis/daily?time="+time + "&type=1";
                         }
                     }
                 }
@@ -279,7 +279,7 @@
                             /*   alert(event.point.category); // X轴值
                              alert(this.data[event.point.x].y); // Y轴值*/
                             var time=event.point.category
-                            window.location.href="${context_path}/statis/month?time="+time;
+                            window.location.href="${context_path}/statis/month?time="+time + "&type=1";
                         }
                     }
                 }
@@ -298,6 +298,146 @@
             json.plotOptions = plotOptions;
             json.credits = credits;
             $('#containerUseM').highcharts(json);
+        });
+        $.get("${context_path}/chart/getSupplyDay", function (data) {
+            var title = {
+                text: ''
+            };
+            var subtitle = {
+                text: '日供水量'
+            };
+            var xAxis = {
+                categories: data.day
+            };
+            var yAxis = {
+                title: {
+                    text: '水量单位（立方米）'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 10
+                }]
+            };
+            var tooltip = {
+                valueSuffix: ''
+            }
+            var legend = {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            };
+            var series = [
+                {
+                    name: '日供水量',
+                    data: data.sumWater
+                }
+            ];
+            var plotOptions={
+                spline: {
+                    shadow: true,
+                    animation: true,
+                    lineWidth: 1
+                },
+                series: {
+                    color: '#00b16a',
+                    lineWidth:4,
+                    cursor: 'pointer',
+                    events: {
+                        click: function(event) {
+                            /*   alert(event.point.category); // X轴值
+                             alert(this.data[event.point.x].y); // Y轴值*/
+                            var time=event.point.category
+
+                            window.location.href="${context_path}/statis/daily?time=" + time + "&type=2";
+                        }
+                    }
+                }
+            };
+            var credits = {
+                enabled:false // 禁用版权信息
+            }
+            var json = {};
+            json.title = title;
+            json.subtitle = subtitle;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.tooltip = tooltip;
+            json.legend = legend;
+            json.series = series;
+            json.plotOptions = plotOptions;
+            json.credits=credits;
+            $('#containerSupplyD').highcharts(json);
+        });
+
+        $.get("${context_path}/chart/getSupplyMonth", function (data) {
+            var title = {
+                text: ''
+            };
+            var subtitle = {
+                text: '月供水量'
+            };
+            var xAxis = {
+                categories: data.month
+            };
+            var yAxis = {
+                title: {
+                    text: '水量单位（立方米）'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 10
+                }]
+            };
+            var tooltip = {
+                valueSuffix: ''
+            }
+            var legend = {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            };
+            var series = [
+                {
+                    name: '月供水量',
+                    data: data.sumWater
+                }
+            ];
+            var plotOptions={
+                spline: {
+                    shadow: true,
+                    animation: true,
+                    lineWidth: 1
+                },
+                series: {
+                    color: '#00b16a',
+                    lineWidth:4,
+                    cursor: 'pointer',
+                    events: {
+                        click: function(event) {
+                            /*   alert(event.point.category); // X轴值
+                             alert(this.data[event.point.x].y); // Y轴值*/
+                            var time=event.point.category
+                            window.location.href="${context_path}/statis/month?time=" + time + "&type=2";
+                        }
+                    }
+                }
+            };
+            var credits = {
+                enabled:false // 禁用版权信息
+            }
+            var json = {};
+            json.title = title;
+            json.subtitle = subtitle;
+            json.xAxis = xAxis;
+            json.yAxis = yAxis;
+            json.tooltip = tooltip;
+            json.legend = legend;
+            json.series = series;
+            json.plotOptions = plotOptions;
+            json.credits = credits;
+            $('#containerSupplyM').highcharts(json);
         });
     });
 

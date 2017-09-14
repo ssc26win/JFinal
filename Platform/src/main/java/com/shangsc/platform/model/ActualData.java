@@ -129,7 +129,7 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-										   String name, String innerCode, Integer street, Integer watersType, String meterAttr) {
+										   String name, String innerCode, Integer street, Integer watersType, String meterAttr, String type) {
 		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tm.meter_attr,tm.meter_address," +
 				"tm.meter_num,tm.line_num,tc.company_type ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
@@ -154,6 +154,12 @@ public class ActualData extends BaseActualData<ActualData> {
 				sqlExceptSelect.append(" and tm.meter_attr like '%" + meterAttr + "%'");
 			}
 		}
+		if (StringUtils.isNotEmpty(type)) {
+			type = StringUtils.trim(type);
+			if (StringUtils.isNotEmpty(type)) {
+				sqlExceptSelect.append(" and tc.company_type=" + type + " ");
+			}
+		}
 		if (street != null && street > 0) {
 			sqlExceptSelect.append(" and tc.street=" + street);
 		}
@@ -174,7 +180,7 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-										   String name, String innerCode, Integer street, Integer watersType, String meterAttr) {
+										   String name, String innerCode, Integer street, Integer watersType, String meterAttr, String type) {
 		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tc.company_type,sum(net_water) as netWaterNum,tm.billing_cycle," +
 				"tm.meter_num,tm.meter_attr,tm.meter_address,tm.line_num";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
@@ -197,6 +203,12 @@ public class ActualData extends BaseActualData<ActualData> {
 			meterAttr = StringUtils.trim(meterAttr);
 			if (StringUtils.isNotEmpty(meterAttr)) {
 				sqlExceptSelect.append(" and tm.meter_attr like '%" + meterAttr + "%'");
+			}
+		}
+		if (StringUtils.isNotEmpty(type)) {
+			type = StringUtils.trim(type);
+			if (StringUtils.isNotEmpty(type)) {
+				sqlExceptSelect.append(" and tc.company_type=" + type + " ");
 			}
 		}
 		if (street != null && street > 0) {

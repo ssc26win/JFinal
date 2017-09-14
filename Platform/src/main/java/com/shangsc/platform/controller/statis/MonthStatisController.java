@@ -60,8 +60,9 @@ public class MonthStatisController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        String type = this.getPara("type");
         Page<ActualData> pageInfo = ActualData.me.getMonthStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr);
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
@@ -104,8 +105,9 @@ public class MonthStatisController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        String type = this.getPara("type");
         Page<ActualData> pageInfo = ActualData.me.getMonthStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr);
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);

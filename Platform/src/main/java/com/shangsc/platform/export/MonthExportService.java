@@ -30,6 +30,7 @@ public class MonthExportService extends ExportBaseService {
         super.logger.info("导出月用水量信息开始");
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[]{
+                "所属节水办",
                 "单位名称",
                 "单位编号",
                 "路别",
@@ -47,6 +48,7 @@ public class MonthExportService extends ExportBaseService {
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
             Object[] obj = new Object[]{
+                    actualData.get("water_unit"),
                     actualData.get("name"),
                     actualData.getInnerCode(),
                     actualData.get("line_num"),

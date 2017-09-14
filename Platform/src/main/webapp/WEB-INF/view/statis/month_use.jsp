@@ -35,7 +35,7 @@
                                         <form id="exportForm" action="${context_path}/statis/month/exportData" method="post">
                                             <div class="input-group">
                                                 日期时间:
-                                                <input type="text" id="startTime" name="startTime" class="form_date"/>~<input type="text" id="endTime" name="endTime" class="form_date"/>
+                                                <input type="text" id="startTime" name="startTime" class="form_month"/>~<input type="text" id="endTime" name="endTime" class="form_month"/>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px;height: 34px;"><option value="">请选择水源类型</option></select>
@@ -100,16 +100,21 @@
         var url = '${context_path}/statis/month/getListData';
         var startTime = '${startTime}';
         var endTime = '${endTime}';
+        var type = '${type}';
         if((startTime!=undefined&&startTime!=null&&startTime!='') && (endTime!=undefined&&endTime!=null&&endTime!='')){
             var startTime = $("#startTime").val(startTime);
             var endTime = $("#endTime").val(endTime);
             url= '${context_path}/statis/month/getListData?startTime=${startTime}&endTime=${endTime}';
+            if (type != '' && type != undefined) {
+                url = url + '&type=${type}';
+            }
         }
         $("#grid-table").jqGrid({
             url:url,
             mtype: "GET",
             datatype: "json",
             colModel: [
+                { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
                 { label: '单位名称', name: 'name', width: 120, sortable:false},
                 { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
                 { label: '路别', name: 'line_num', width: 100, sortable:false},

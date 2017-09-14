@@ -18,6 +18,7 @@ public class ReadNumExportService extends ExportBaseService{
         super.logger.info("导出读数查询信息开始");
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[]{
+                "所属节水办",
                 "单位名称",
                 "单位编号",
                 "路别",
@@ -34,6 +35,7 @@ public class ReadNumExportService extends ExportBaseService{
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
             Object[] obj = new Object[]{
+                    actualData.get("water_unit"),
                     actualData.get("name"),
                     actualData.getInnerCode(),
                     actualData.get("line_num"),
