@@ -31,20 +31,26 @@
                         <div class="widget-body">
                             <div class="widget-main">
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-8">
+                                    <div class="col-sm-12">
                                         <form id="exportForm" action="${context_path}/basic/company/export" method="post">
                                             <div class="input-group">
-
-                                                    <span class="input-group-addon">
-                                                        <i class="ace-icon fa fa-check"></i>
-                                                    </span>
-                                                    <input type="text" id="name" name="name" class="form-control search-query" placeholder="请输入关键字" />
-                                                    <span class="input-group-btn">
-                                                        <button type="button" id="btn_search" class="btn btn-purple btn-sm">
-                                                            <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
-                                                            搜索
-                                                        </button>
-                                                    </span>
+                                                    <div class=" col-sm-6">
+                                                        <input type="text" id="name" name="name" class="form-control search-query" placeholder="请输入关键字" />
+                                                        </div>
+                                                    <div class="col-sm-3">
+                                                    <select id="company_type" name="company_type" style="height: 34px;">
+                                                        <option value="1">用水单位</option>
+                                                        <option value="2">供水单位</option>
+                                                    </select>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <span class="input-group-btn">
+                                                            <button type="button" id="btn_search" class="btn btn-purple btn-sm">
+                                                                <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+                                                                搜索
+                                                            </button>
+                                                        </span>
+                                                    </div>
                                             </div>
                                         </form>
                                     </div>
@@ -156,9 +162,10 @@
         $("#btn_search").click(function(){
             //此处可以添加对查询数据的合法验证
             var name = $("#name").val();
+            var company_type = $("#company_type").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',
-                postData:{'name':name}, //发送数据
+                postData:{'name':name,'companyType':company_type},//发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });

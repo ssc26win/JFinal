@@ -151,6 +151,19 @@
                                     <input type="number" id="self_free_price" name="self_free_price" value="${item.self_free_price}" class="form-control">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="surface_price">单位类型:</label>
+                                <div class="col-sm-4">
+                                    <input  type="hidden" id="company_typeInput" name="company_typeInput" value="${item.company_type}" />
+                                    <select id="company_type" name="company_type" value="${item.companyType}" class="form-control">
+                                        <option value="1">用水单位</option>
+                                        <option value="2">供水单位</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-2 control-label" for="self_free_price"></label>
+                                <div class="col-sm-4">
+                                </div>
+                            </div>
                             <div class="clearfix form-actions" align="center">
                                 <div class="col-md-offset-3 col-md-9">
                                     <button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">
@@ -316,6 +329,7 @@
                 $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
             }
             $("#waterUseType").val($("#waterUseTypeInput").val());
+            $("#company_type").val($("#company_typeInput").val());
 
         },"json");
     }

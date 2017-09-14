@@ -46,22 +46,22 @@ public class CompanyExportService extends ExportBaseService {
                 "所属区县",
                 "所属乡镇",
                 "原乡镇或街道",
-                "单位地址",
                 "用户类型",
                 "国标行业",
                 "主要行业",
                 "取水用途",
                 "联系人",
                 "联系电话",
+                "单位地址",
                 "邮政编码",
                 "管水部门",
-                "水井数量",
-                "一级表数量",
-                "远传表数量",
                 "节水型单位类型",
                 "自备井基本水价",
                 "地表水基本水价",
                 "自来水基本水价",
+                "水井数量",
+                "一级表数量",
+                "远传表数量",
                 "创建时间"
         }));
 
@@ -75,23 +75,23 @@ public class CompanyExportService extends ExportBaseService {
                     company.getCounty(),
                     company.get("streetName"),
                     company.getStreetSrc(),
-                    company.getAddress(),
                     company.get("customerTypeName"),
                     company.getGbIndustry(),
                     company.getMainIndustry(),
                     company.get("waterUseTypeName"),
                     company.getContact(),
                     company.getPhone(),
+                    company.getAddress(),
                     company.getPostalCode(),
                     company.getDepartment(),
                     company.getWellCount(),
                     company.getFirstWatermeterCount(),
                     company.getRemotemeterCount(),
                     company.get("unitTypeName"),
+                    company.getCreateTime(),
                     company.getSelfWellPrice(),
                     company.getSurfacePrice(),
-                    company.getSelfFreePrice(),
-                    company.getCreateTime()
+                    company.getSelfFreePrice()
 
             };
             objects.add(obj);

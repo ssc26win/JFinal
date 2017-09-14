@@ -26,7 +26,8 @@ public class WaterMeterExportService extends ExportBaseService {
                 "所属节水办",
                 "所属区县",
                 "路别",
-                "水表表号",
+                "表计地址",
+                "最小单位",
                 "水源类型",
                 "国标行业",
                 "主要行业",
@@ -58,7 +59,8 @@ public class WaterMeterExportService extends ExportBaseService {
                     waterMeter.get("water_unit"),
                     waterMeter.get("county"),
                     waterMeter.getLineNum(),
-                    waterMeter.getMeterNum(),
+                    waterMeter.getMeterAddress(),
+                    waterMeter.getTimes(),
                     waterMeter.get("watersTypeName"),
                     waterMeter.get("gb_industry"),
                     waterMeter.get("main_industry"),
@@ -66,7 +68,7 @@ public class WaterMeterExportService extends ExportBaseService {
                     waterMeter.getMeterAttr(),
                     waterMeter.get("chargeTypeName"),
                     waterMeter.getBillingCycle(),
-                    waterMeter.getRegistDate()
+                    waterMeter.getRegistDate(),
 
             };
             objects.add(obj);

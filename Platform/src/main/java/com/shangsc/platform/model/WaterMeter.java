@@ -150,7 +150,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
 
     public Page<WaterMeter> getNormalMeterPage(int page, int rows, String keyword, String orderbyStr) {
         String normalMeterSql = normalMeterConditionSql();
-        String select = "select twm.*,tc.name as companyName,tc.water_unit,tc.county";
+        String select = "select twm.*,tc.name as companyName,tc.water_unit,tc.county,tc.water_use_type";
         StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT t.* FROM t_Water_Meter t WHERE t.meter_address in (" +
                 normalMeterSql + ")) twm, t_company tc ");
         sqlExceptSelect.append("where 1=1 and twm.inner_code=tc.inner_code");
@@ -190,22 +190,25 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
             if (map.get(5) != null) {
                 meter.setMeterAddress(map.get(5));
             }
-            if (map.get(6) == null || hasExist(StringUtils.trim(map.get(6)))) {
+            if (map.get(6) != null) {
+                meter.setTimes(new BigDecimal(map.get(6).toString()));
+            }
+            if (map.get(7) == null || hasExist(StringUtils.trim(map.get(7)))) {
                 continue;
             }
-            meter.setMeterNum(map.get(6));
+            meter.setMeterNum(map.get(7));
             Company.me.updateMeterNum(map.get(0), true);
-            if (map.get(7) != null) {
-                meter.setWatersType(dictNameMap.get(map.get(7)));
-            }
             if (map.get(8) != null) {
-                meter.setMeterAttr(map.get(8));
+                meter.setWatersType(dictNameMap.get(map.get(8)));
             }
             if (map.get(9) != null) {
-                meter.setChargeType(dictNameCharge.get(map.get(9)));
+                meter.setMeterAttr(map.get(9));
+            }
+            if (map.get(10) != null) {
+                meter.setChargeType(dictNameCharge.get(map.get(10)));
             }
             Date registDate = null;
-            Object createDateObj = map.get(13);
+            Object createDateObj = map.get(14);
             if (createDateObj != null) {
                 String createDateStr = createDateObj.toString();
                 String date = "";

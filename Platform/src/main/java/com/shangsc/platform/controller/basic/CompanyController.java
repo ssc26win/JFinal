@@ -10,8 +10,6 @@ import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
-import com.shangsc.platform.core.model.Condition;
-import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.FileUtils;
@@ -25,7 +23,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author ssc
@@ -75,7 +75,8 @@ public class CompanyController extends BaseController {
     @RequiresPermissions(value={"/basic/company"})
     public void getListData() {
         String keyword=this.getPara("name");
-        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        String companyType=this.getPara("companyType");
+        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), companyType);
         List<Company> companies = pageInfo.getList();
         setVoProp(companies);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
@@ -144,7 +145,7 @@ public class CompanyController extends BaseController {
         String streetSrc = this.getPara("streetSrc");
         Integer street = this.getParaToInt("street");
         String address = this.getPara("address");
-        Integer customerType = this.getParaToInt("customerType");
+        Integer customerType = this.getParaToInt("company_type");
         String gbIndustry = this.getPara("gb_industry");
         String mainIndustry = this.getPara("main_industry");
         Integer waterUseType = this.getParaToInt("waterUseType");
@@ -194,12 +195,8 @@ public class CompanyController extends BaseController {
     public void export() {
         CompanyExportService service = new CompanyExportService();
         String keyword = this.getPara("name");
-        Set<Condition> conditions=new HashSet<Condition>();
-        if(CommonUtils.isNotEmpty(keyword)){
-            conditions.add(new Condition("name", Operators.LIKE, keyword));
-        }
-        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
-                Company.me.getPage(getPage(), GlobalConfig.EXPORT_SUM, conditions, this.getOrderby());
+        String companyType=this.getPara("companyType");
+        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr(), companyType);
         List<Company> companies = pageInfo.getList();
         if (CommonUtils.isNotEmpty(companies)) {
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
