@@ -433,7 +433,7 @@ public class Company extends BaseCompany<Company> {
         String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
                 " on twm.meter_address=tad.meter_address) allad where allad.write_time >='"+start+"' and allad.write_time <'"+end+"' group by allad.meter_address) t" +
                 " INNER join t_water_index twi on twi.inner_code=t.inner_code left join t_company c on c.inner_code=t.inner_code " +
-                "where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type and c.company_type=1";
+                "where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
         List<Record> records = Db.find(sql);
         Set<String> set = new HashSet<>();
         for (Record record:records) {

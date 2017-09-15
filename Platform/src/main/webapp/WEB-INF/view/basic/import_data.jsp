@@ -9,10 +9,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
   <title>Login Example - Semantic</title>
   <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
-  <link rel="stylesheet" href="${res_url}js/omui/development-bundle/themes/default/om-fileupload.css" />
+  <%--<link rel="stylesheet" href="${res_url}js/omui/development-bundle/themes/default/om-fileupload.css" />--%>
   <script src="${res_url}ace-1.3.3/assets/js/jquery.js" ></script>
   <script src="${res_url}ace-1.3.3/assets/js/ace-extra.js"></script>
-  <script src="${res_url}js/semantic/assets/library/jquery.min.js"></script>
+  <%--<script src="${res_url}uploadify/jquery.min.js"></script>--%>
   <link rel="stylesheet" type="text/css" href="${res_url}uploadify/uploadify.css">
   <script src="${res_url}uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
   <style type="text/css">
