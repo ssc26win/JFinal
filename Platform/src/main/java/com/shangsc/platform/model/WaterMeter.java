@@ -167,10 +167,27 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 
+    /**
+     * id
+     inner_code
+     line_num
+     meter_num
+     meter_address
+     times
+     waters_type
+     meter_attr
+     charge_type
+     billing_cycle
+     regist_date
+
+     * @param modelOrRecordList
+     * @param batchSize
+     * @return
+     */
     public static int[] saveBatch(List<WaterMeter> modelOrRecordList, int batchSize) {
-        String sql = "insert into t_water_meter(inner_code,line_num,meter_address,meter_num,waters_type," +
-                "meter_attr,charge_type,billing_cycle,regist_date) values (?,?,?,?,?,?,?,?,?)";
-        String columns = "inner_code,line_num,meter_address,meter_num,waters_type," +
+        String sql = "insert into t_water_meter(inner_code,line_num,meter_num,meter_address,times,waters_type," +
+                "meter_attr,charge_type,billing_cycle,regist_date) values (?,?,?,?,?,?,?,?,?,?)";
+        String columns = "inner_code,line_num,meter_num,meter_address,times,waters_type," +
                 "meter_attr,charge_type,billing_cycle,regist_date";
         int[] result = Db.batch(sql, columns, modelOrRecordList, batchSize);
         return result;
@@ -180,31 +197,33 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         List<WaterMeter> lists = new ArrayList<WaterMeter>();
         Map<String, Integer> dictNameMap = DictData.dao.getDictNameMap(DictCode.WatersType);
         Map<String, Integer> dictNameCharge = DictData.dao.getDictNameMap(DictCode.ChargeType);
+        //单位编号	单位名称	所属节水办	所属区县	路别	表计地址	最小单位	表号	水源类型	国标行业	主要行业	取水用途	水表属性	收费类型	注册日期
         for (int i = 0; i < maps.size(); i++) {
             Map<Integer, String> map = maps.get(i);
             WaterMeter meter = new WaterMeter();
             meter.setInnerCode(map.get(0));
-            if (map.get(4) != null) {
+            if (StringUtils.isNotEmpty(map.get(4))) {
                 meter.setLineNum(map.get(4));
             }
-            if (map.get(5) != null) {
+            if (StringUtils.isNotEmpty(map.get(5))) {
                 meter.setMeterAddress(map.get(5));
             }
-            if (map.get(6) != null) {
+            if (StringUtils.isNotEmpty(map.get(6))) {
                 meter.setTimes(new BigDecimal(map.get(6).toString()));
+            } else {
+                meter.setTimes(new BigDecimal("1"));
             }
-            if (map.get(7) == null || hasExist(StringUtils.trim(map.get(7)))) {
-                continue;
+            if (StringUtils.isNotEmpty(map.get(7) ) || hasExist(StringUtils.trim(map.get(7)))) {
+                meter.setMeterNum(map.get(7));
             }
-            meter.setMeterNum(map.get(7));
             Company.me.updateMeterNum(map.get(0), true);
-            if (map.get(8) != null) {
+            if (StringUtils.isNotEmpty(map.get(8))) {
                 meter.setWatersType(dictNameMap.get(map.get(8)));
             }
-            if (map.get(9) != null) {
+            if (StringUtils.isNotEmpty(map.get(9))) {
                 meter.setMeterAttr(map.get(9));
             }
-            if (map.get(10) != null) {
+            if (StringUtils.isNotEmpty(map.get(10))) {
                 meter.setChargeType(dictNameCharge.get(map.get(10)));
             }
             Date registDate = null;
@@ -220,6 +239,8 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
                     date = ToolDateTime.format(new Date(), ToolDateTime.pattern_ymd_hms);
                 }
                 registDate = DateUtils.getDate(date, ToolDateTime.pattern_ymd);
+            } else {
+                registDate = DateUtils.getDate(ToolDateTime.format(new Date(), ToolDateTime.pattern_ymd_hms), ToolDateTime.pattern_ymd);
             }
             meter.setRegistDate(registDate);
             lists.add(meter);

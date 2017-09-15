@@ -145,7 +145,8 @@ public class CompanyController extends BaseController {
         String streetSrc = this.getPara("streetSrc");
         Integer street = this.getParaToInt("street");
         String address = this.getPara("address");
-        Integer customerType = this.getParaToInt("company_type");
+        Integer customerType = this.getParaToInt("customerType");
+        Integer company_type = this.getParaToInt("company_type");
         String gbIndustry = this.getPara("gb_industry");
         String mainIndustry = this.getPara("main_industry");
         Integer waterUseType = this.getParaToInt("waterUseType");
@@ -180,7 +181,7 @@ public class CompanyController extends BaseController {
         InvokeResult result = Company.me.save(id, name, innerCode, waterUnit, county, street, streetSrc, address,
                 customerType, waterUseType, gbIndustry, mainIndustry, contact, phone, postalCode, department,
                 wellCount, firstWatermeterCount, remotemeterCount, unitType, longitude, latitude, createDate,
-                self_well_price, surface_price, self_free_price);
+                self_well_price, surface_price, self_free_price, company_type);
         this.renderJson(result);
     }
 

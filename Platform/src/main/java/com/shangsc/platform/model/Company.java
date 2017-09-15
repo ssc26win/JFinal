@@ -99,7 +99,7 @@ public class Company extends BaseCompany<Company> {
                              String address, Integer customerType, Integer waterUseType, String gbIndustry, String mainIndustry,
                              String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
                              Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createDate,
-                             BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price) {
+                             BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type) {
         if (null != id && id > 0l) {
             Company company = this.findById(id);
             if (company == null) {
@@ -107,7 +107,8 @@ public class Company extends BaseCompany<Company> {
             }
             company = setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                     gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
-                    remotemeterCount, unitType, longitude, latitude, createDate, self_well_price, surface_price, self_free_price);
+                    remotemeterCount, unitType, longitude, latitude, createDate, self_well_price, surface_price,
+                    self_free_price, company_type);
             company.update();
         } else {
             if(this.hasExist(name, innerCode)){
@@ -116,7 +117,8 @@ public class Company extends BaseCompany<Company> {
                 Company company = new Company();
                 company = setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                         gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
-                        remotemeterCount, unitType, longitude, latitude, createDate, self_well_price, surface_price, self_free_price);
+                        remotemeterCount, unitType, longitude, latitude, createDate, self_well_price, surface_price,
+                        self_free_price, company_type);
                 company.save();
             }
         }
@@ -127,7 +129,7 @@ public class Company extends BaseCompany<Company> {
                             String address, Integer customerType, Integer waterUseType, String gbIndustry, String mainIndustry,
                             String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
                             Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createDate,
-                            BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price) {
+                            BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type) {
         company.setName(name);
         company.setInnerCode(innerCode);
         company.setWaterUnit(waterUnit);
@@ -149,6 +151,7 @@ public class Company extends BaseCompany<Company> {
         company.setUnitType(unitType);
         company.setLongitude(longitude);
         company.setLatitude(latitude);
+        company.setCompanyType(company_type);
         if (createDate == null) {
             company.setCreateTime(new Date());
         } else {
@@ -451,11 +454,11 @@ public class Company extends BaseCompany<Company> {
     public static int[] saveBatch(List<Company> modelOrRecordList, int batchSize) {
         String sql = "insert into t_company(inner_code,name,water_unit,county,street,street_src,address,customer_type,gb_industry," +
                 "main_industry,water_use_type,contact,phone,postal_code,department,well_count,first_watermeter_count," +
-                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time)" +
-                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type)" +
+                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         String columns = "inner_code,name,water_unit,county,street,street_src,address,customer_type,gb_industry," +
                 "main_industry,water_use_type,contact,phone,postal_code,department,well_count,first_watermeter_count," +
-                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time";
+                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type";
         int[] result = Db.batch(sql, columns, modelOrRecordList, batchSize);
         return result;
     }
@@ -467,75 +470,78 @@ public class Company extends BaseCompany<Company> {
         Map<String, Integer> dictWaterUseType = DictData.dao.getDictNameMap(DictCode.WaterUseType);
         for (int i = 0; i < maps.size(); i++) {
             Company company = new Company();
-            company.setCompanyType(CompanyType.COMPANY);
+            Integer company_type = CompanyType.COMPANY;
             Map<Integer, String> map = maps.get(i);
             String innerCode = null;
-            if (map.get(0) != null) {
+            if (StringUtils.isNotEmpty(map.get(0))) {
                 innerCode = map.get(0).toString();
             }
             if (StringUtils.isEmpty(innerCode) || hasExistCompany(innerCode)) {
                 continue;
             }
             String name = null;
-            if (map.get(1) != null) {
+            if (StringUtils.isNotEmpty(map.get(1))) {
                 name = map.get(1).toString();
                 if (CompanyType.notCompany(name)) {
-                    company.setCompanyType(CompanyType.SUPPLY);
+                    company_type = CompanyType.SUPPLY;
                 }
             }
             String waterUnit = null;
-            if (map.get(2) != null) {
+            if (StringUtils.isNotEmpty(map.get(2))) {
                 waterUnit = map.get(2).toString();
             }
             String county = null;
-            if (map.get(3) != null) {
+            if (StringUtils.isNotEmpty(map.get(3))) {
                 county = map.get(3).toString();
             }
             Integer street = null;
-            if (map.get(4) != null) {
+            if (StringUtils.isNotEmpty(map.get(4))) {
                 street = dictStreet.get(map.get(4).toString());
             }
             String streetSrc = null;
-            if (map.get(5) != null) {
+            if (StringUtils.isNotEmpty(map.get(5))) {
                 streetSrc = map.get(5).toString();
             }
             Integer customerType = null;
-            if (map.get(6) != null) {
+            if (StringUtils.isNotEmpty(map.get(6))) {
                 customerType = dictUserType.get(map.get(6).toString());
                 if (CompanyType.notCompany(name)) {
-                    company.setCompanyType(CompanyType.SUPPLY);
+                    company_type = CompanyType.SUPPLY;
                 }
             }
             String gbIndustry = null;
-            if (map.get(7) != null) {
+            if (StringUtils.isNotEmpty(map.get(7))) {
                 gbIndustry = map.get(7).toString();
             }
+            // 单位编号	单位名称	所属节水办	所属区县	所属乡镇	原乡镇或街道	用户类型	国标行业	主要行业
+            // 取水用途	联系人	联系电话	单位地址	邮政编码	管水部门	自备井基本水价	地表水基本水价
+            // 自来水基本水价	注册日期
             String mainIndustry = null;
-            if (map.get(8) != null) {
+            if (StringUtils.isNotEmpty(map.get(8))) {
                 mainIndustry = map.get(8).toString();
             }
             Integer waterUseType = null;
-            if (map.get(9) != null) {
+            if (StringUtils.isNotEmpty(map.get(9))) {
                 waterUseType = dictWaterUseType.get(map.get(9).toString());
             }
             String contact = null;
-            if (map.get(10) != null) {
+            if (StringUtils.isNotEmpty(map.get(10))) {
                 contact = map.get(10).toString();
             }
             String phone = null;
-            if (map.get(11) != null) {
+            if (StringUtils.isNotEmpty(map.get(11))) {
                 phone = map.get(11).toString();
             }
             String address = null;
-            if (map.get(12) != null) {
+            if (StringUtils.isNotEmpty(map.get(12))) {
                 address = map.get(12).toString();
             }
             String postalCode = null;
-            if (map.get(13) != null) {
+            if (StringUtils.isNotEmpty(map.get(13))) {
                 postalCode = map.get(13).toString();
             }
             String department = null;
-            if (map.get(14) != null) {
+            if (StringUtils.isNotEmpty(map.get(14))) {
                 department = map.get(14).toString();
             }
             Integer wellCount = 0;
@@ -543,15 +549,15 @@ public class Company extends BaseCompany<Company> {
             Integer remotemeterCount = 0;
             Integer unitType = 1;
             BigDecimal self_well_price = null;
-            if (map.get(15) != null) {
+            if (StringUtils.isNotEmpty(map.get(15))) {
                 self_well_price = CodeNumUtil.getBigDecimal(map.get(15).toString(), 2);
             }
             BigDecimal surface_price = null;
-            if (map.get(16) != null) {
+            if (StringUtils.isNotEmpty(map.get(16))) {
                 surface_price = CodeNumUtil.getBigDecimal(map.get(16).toString(), 2);
             }
             BigDecimal self_free_price = null;
-            if (map.get(17) != null) {
+            if (StringUtils.isNotEmpty(map.get(17))) {
                 self_free_price = CodeNumUtil.getBigDecimal(map.get(17).toString(), 2);
             }
             Date createDate = null;
@@ -570,7 +576,8 @@ public class Company extends BaseCompany<Company> {
             }
             setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                     gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
-                    remotemeterCount, unitType, null, null, createDate, self_well_price, surface_price, self_free_price);
+                    remotemeterCount, unitType, null, null, createDate, self_well_price, surface_price, self_free_price,
+                    company_type);
             lists.add(company);
         }
         Company.me.saveBatch(lists, lists.size());

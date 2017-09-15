@@ -15,46 +15,49 @@ public class DailyExportService extends ExportBaseService{
     private static final String FILE_NAME = "日用水量信息导出";
 
     /*
-        { label: '单位名称', name: 'companyName', width: 120, sortable:false},
-        { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
-        { label: '路别', name: 'line_num', width: 100, sortable:false},
-        { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
-        { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
-        { label: '水表属性', name: 'alarm', width: 45, sortable:false},
-        { label: '查询日期', name: 'find_date', width: 100, sortable:true},
-        { label: '日用水量', name: 'daily_num', width: 80, sortable:false},
+         "所属节水办",
+                "单位编号",
+                "单位名称",
+                "路别",
+                "水表编号",
+                "水源类型",
+                "日用水量",
+                "水表属性",
+                "表计地址",
+                "单位地址",
      */
     public String export(List<ActualData> list) {
         super.logger.info("导出日用水量信息开始");
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[]{
                 "所属节水办",
-                "单位名称",
                 "单位编号",
+                "单位名称",
                 "路别",
                 "水表编号",
-                "表计地址",
                 "水源类型",
-                "水表属性",
-                "查询日期",
                 "日用水量",
-                "单位地址"
+                "水表属性",
+                "表计地址",
+                "单位地址",
         }));
 
         logger.info("导出日用水量信息导出条数为:{}", list.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
+            if (actualData.get("dailyNum") == null) {
+                actualData.put("dailyNum", 0);
+            }
             Object[] obj = new Object[]{
                     actualData.get("water_unit"),
-                    actualData.get("name"),
                     actualData.getInnerCode(),
+                    actualData.get("name"),
                     actualData.get("line_num"),
                     actualData.get("meter_num"),
-                    actualData.getMeterAddress(),
                     actualData.get("watersTypeName"),
-                    actualData.get("meter_attr"),
-                    actualData.getWriteTime(),
                     actualData.get("dailyNum"),
+                    actualData.get("meter_attr"),
+                    actualData.getMeterAddress(),
                     actualData.get("address")
             };
             objects.add(obj);

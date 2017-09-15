@@ -86,7 +86,8 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 											 String name, String innerCode, Integer street, Integer watersType, String meterAttr) {
-		String select=" select twm.*,tc.name,tc.address,tc.street,tc.water_unit,tc.county,tc.company_type,tm.meter_attr,tm.meter_address,tm.meter_num,tm.line_num ";
+		String select=" select twm.*,tc.name,tc.address,tc.street,tc.water_unit,tc.county,tc.company_type,tm.waters_type,tm.meter_attr," +
+				"tm.meter_address,tm.meter_num,tm.line_num ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
 				" t_company tc on twm.inner_code=tc.inner_code " +
 				" inner join t_water_meter tm on twm.inner_code=tm.inner_code");
@@ -119,7 +120,7 @@ public class ActualData extends BaseActualData<ActualData> {
 			}
 		}
 		if (watersType != null) {
-			sqlExceptSelect.append(" and twm.waters_type=" + watersType);
+			sqlExceptSelect.append(" and tm.waters_type=" + watersType);
 		}
 		sqlExceptSelect.append(" group by twm.write_time ");
 		if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -130,7 +131,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 										   String name, String innerCode, Integer street, Integer watersType, String meterAttr, String type) {
-		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tm.meter_attr,tm.meter_address," +
+		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tm.waters_type,tm.meter_attr,tm.meter_address," +
 				"tm.meter_num,tm.line_num,tc.company_type ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
 				" t_company tc on twm.inner_code=tc.inner_code " +
@@ -170,7 +171,7 @@ public class ActualData extends BaseActualData<ActualData> {
 			}
 		}
 		if (watersType != null) {
-			sqlExceptSelect.append(" and twm.waters_type=" + watersType);
+			sqlExceptSelect.append(" and tm.waters_type=" + watersType);
 		}
 		sqlExceptSelect.append(" group by twm.inner_code ");
 		if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -181,7 +182,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
 										   String name, String innerCode, Integer street, Integer watersType, String meterAttr, String type) {
-		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tc.company_type,sum(net_water) as netWaterNum,tm.billing_cycle," +
+		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tm.waters_type,tc.company_type,sum(net_water) as netWaterNum,tm.billing_cycle," +
 				"tm.meter_num,tm.meter_attr,tm.meter_address,tm.line_num";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
 				" t_company tc on twm.inner_code=tc.inner_code " +
@@ -221,7 +222,7 @@ public class ActualData extends BaseActualData<ActualData> {
 			}
 		}
 		if (watersType != null) {
-			sqlExceptSelect.append(" and twm.waters_type=" + watersType);
+			sqlExceptSelect.append(" and tm.waters_type=" + watersType);
 		}
 		sqlExceptSelect.append(" group by twm.inner_code ");
 		if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -232,7 +233,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year,
 										  String name, String innerCode, Integer street, Integer watersType, String meterAttr) {
-		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tc.company_type,sum(net_water) as netWaterNum," +
+		String select=" select twm.*,tc.name,tc.address,tc.water_unit,tc.county,tm.waters_type,tc.company_type,sum(net_water) as netWaterNum," +
 				"tm.meter_attr,tm.meter_num,tm.meter_address,tm.line_num";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
 				" t_company tc on twm.inner_code=tc.inner_code " +
@@ -266,9 +267,9 @@ public class ActualData extends BaseActualData<ActualData> {
 			}
 		}
 		if (watersType != null) {
-			sqlExceptSelect.append(" and twm.waters_type=" + watersType);
+			sqlExceptSelect.append(" and tm.waters_type=" + watersType);
 		}
-		sqlExceptSelect.append(" group by twm.inner_code ");
+		sqlExceptSelect.append(" group by tc.inner_code ");
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
 		}

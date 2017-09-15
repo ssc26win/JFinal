@@ -139,7 +139,6 @@ public class MeterController extends BaseController {
         setVoProp(list);
         WaterMeterExportService service = new WaterMeterExportService();
         String path = service.export(list);
-
         renderFile(new File(path));
     }
 

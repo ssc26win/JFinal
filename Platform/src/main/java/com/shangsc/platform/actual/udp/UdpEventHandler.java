@@ -114,19 +114,19 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                     if (meter != null) {
                         innerCode = meter.getInnerCode();
                         times = meter.getTimes();
-                    }
-                    if (data!= null && data.getSumWater().compareTo(sumWater) > 0) {
-                        state = Integer.parseInt(ActualState.EXCEPTION);
-                    } else {
-                        addWater = times.multiply(sumWater);
-                    }
-                    sumWater = times.multiply(sumWater);
-                    if (data!= null) {
-                        addWater = sumWater.subtract(data.getSumWater());
-                        timesReduce = (writeTime.getTime() - data.getWriteTime().getTime()) > 1000*60*1;
-                    }
-                    if (timesReduce) {
-                        ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, voltage, writeTime);
+                        if (data!= null && data.getSumWater().compareTo(sumWater) > 0) {
+                            state = Integer.parseInt(ActualState.EXCEPTION);
+                        } else {
+                            addWater = times.multiply(sumWater);
+                        }
+                        sumWater = times.multiply(sumWater);
+                        if (data!= null) {
+                            addWater = sumWater.subtract(data.getSumWater());
+                            timesReduce = (writeTime.getTime() - data.getWriteTime().getTime()) > 1000*60*1;
+                        }
+                        if (timesReduce) {
+                            ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, voltage, writeTime);
+                        }
                     }
                 }
             }

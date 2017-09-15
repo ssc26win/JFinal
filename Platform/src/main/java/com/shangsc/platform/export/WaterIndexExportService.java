@@ -19,22 +19,7 @@ public class WaterIndexExportService extends ExportBaseService{
     public String export(List<WaterIndex> list) {
         super.logger.info("导出单位用水指标信息开始");
         /**
-         *  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
-         `inner_code` varchar(50) DEFAULT NULL COMMENT '单位编号',
-         `name` varchar(255) DEFAULT NULL COMMENT '单位名称',
-         `street` varchar(255) DEFAULT NULL COMMENT '所属乡镇或街道',
-         `address` varchar(255) DEFAULT NULL COMMENT '单位地址',
-         `customer_type` tinyint(2) DEFAULT NULL COMMENT '用户类型',
-         `water_use_type` tinyint(2) DEFAULT NULL COMMENT '取水用途',
-         `contact` varchar(100) DEFAULT NULL COMMENT '联系人',
-         `phone` varchar(20) DEFAULT NULL COMMENT '联系电话',
-         `postal_code` varchar(50) DEFAULT NULL COMMENT '邮政编码',
-         `department` varchar(255) DEFAULT NULL COMMENT '管水部门',
-         `well_count` int(11) DEFAULT 0 COMMENT '水井数量',
-         `first_watermeter_count` int(11) DEFAULT 0 COMMENT '一级表数量',
-         `remotemeter_count` int(11) DEFAULT 0 COMMENT '远传表数量',
-         `unit_type` tinyint(4) DEFAULT NULL COMMENT '节水型单位类型',
-         `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+         所属节水办	用户编号	用户名称	水源类型	小计	01月	02月	03月	04月	05月	06月	07月	08月	09月	10月	11月	12月
          */
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[]{
@@ -42,7 +27,7 @@ public class WaterIndexExportService extends ExportBaseService{
                 "单位编号",
                 "单位名称",
                 "水源类型",
-                "年用水指标",
+                "小计",
                 "一月",
                 "二月",
                 "三月",
@@ -64,7 +49,7 @@ public class WaterIndexExportService extends ExportBaseService{
                     waterIndex.get("water_unit"),
                     waterIndex.getInnerCode(),
                     waterIndex.get("companyName"),
-                    waterIndex.get("watersName"),
+                    waterIndex.get("watersTypeName"),
                     waterIndex.getWaterIndex(),
                     waterIndex.getJanuary(),
                     waterIndex.getFebruary(),

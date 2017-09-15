@@ -62,7 +62,6 @@ public class WaterIndexController extends BaseController {
         String innerCode = this.getPara("innerCode");
         Integer watersType = this.getParaToInt("watersType");
         BigDecimal waterIndex =  CodeNumUtil.getBigDecimal(this.getPara("waterIndex"), 2);
-
         BigDecimal january = CodeNumUtil.getBigDecimal(this.getPara("january"), 2);
         BigDecimal february = CodeNumUtil.getBigDecimal(this.getPara("february"), 2);
         BigDecimal march = CodeNumUtil.getBigDecimal(this.getPara("march"), 2);

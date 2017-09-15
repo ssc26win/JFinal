@@ -1,6 +1,5 @@
 package com.shangsc.platform.actual.util;
 
-import com.shangsc.platform.code.ActualType;
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -288,11 +287,10 @@ public class ConversionUtil {
 
     public static String tcpStupidBCD(String numSrc) {
         char[] chars = numSrc.toCharArray();
-        Long total = 0l;
-        total = total + Long.valueOf(String.valueOf(chars[6]) + String.valueOf(chars[7]) , 16);
-        total = total + Long.valueOf(String.valueOf(chars[4]) + String.valueOf(chars[5]) , 16);
-        total = total + Long.valueOf(String.valueOf(chars[2]) + String.valueOf(chars[3]) , 16);
-        total = total + Long.valueOf(String.valueOf(chars[0]) + String.valueOf(chars[1]) , 16);
+        String totalStr = String.valueOf(chars[6]) + String.valueOf(chars[7]) + String.valueOf(chars[4]) + String.valueOf(chars[5])
+                + String.valueOf(chars[2]) + String.valueOf(chars[3]) + String.valueOf(chars[0]) + String.valueOf(chars[1]);
+        System.out.println(totalStr);
+        Long total = Long.parseLong(totalStr, 16);
         return String.valueOf(total);
     }
 
@@ -305,7 +303,7 @@ public class ConversionUtil {
     }
 
     public static BigDecimal getTcpMultRecordSumWater(String result) {
-        String lastRecord = result.substring(result.length() - 40, result.length() - 4);
+        String lastRecord = result.substring(result.length() - 40, result.length());
         System.out.println("Multi last record:" + lastRecord);
         //String sumNumStr = result.substring(26 + 8 * 2, 26 + 12 * 2);
         String sumNumStr = lastRecord.substring(8, 16);
@@ -324,42 +322,17 @@ public class ConversionUtil {
     }
 
 
-    public static String aa = "68370268" +
-            "CA" +
-            "1707160002" +
-            "0D1004" +
-            "FFB0" +
-            "B659" +
-            "A921" +
-            "EF09" +
-
-            "10" +
-            "00" +
-            "00" +
-            "00" +
-
-            "00" +
-            "00" +
-            "00" +
-            "22" +
-            "2A" +
-            "0007B3B659A921EF0900000000000000EC290C59B5B6596400000000000000000000C72910B8B7B659640000000000000000000016" +
-            "2A0010BAB6596400000000000000000000B2290068BCB65964000000000000000000000E2A00C0BEB6596400000000000000000000FD290018C1B6596400000000000000000000D7290070C3B6596400000000000000000000FD2900C8C5B659640000000000000000000016" +
-            "2A0020C8B6596400000000000000000000A9290078CAB65964000000000000000000000E2A00D0CCB6596400000000000000000000012A0028CFB6596400000000000000000000A1290080D1B65964000000000000000000000E2A00D8D3B659640000000000000000000005" +
-            "2A0030D6B6596400000000000000000000AE290088D8B6596400000000000000000000122A00E0DAB6596400000000000000000000F9290038DDB6596400000000000000000000A1290090DFB6596400000000000000000000F02900E8E1B6596400000000000000000000F9" +
-            "290040E4B6596400000000000000000000C2290098E6B6596400000000000000000000EC2900F0E8B6596400000000000000000000012A0048EBB6596400000000000000000000AE2900A0EDB6596400000000000000000000C72900F8EFB6596400000000000000000000F0" +
-            "290050F2B6596400000000000000000000EC2900A8F4B6596400000000000000000000F4290000F7B6596400000000000000000000FD29002016";
+    public static String aa = "683F0068CA17071600020D7004E891BB596400000000000000000000AE29004094BB596400000000000000000000AE29009896BB596400000000000000000000942900CF16";
 
     public static void main(String args[]) {
 
-        System.out.println(aa.startsWith(ActualType.TCP_PRFIX) + "" +aa.endsWith(ActualType.TCP_SUFFIX) );
 
         System.out.println(getTcpMultRecordSumWater(aa));
 
-        System.out.println("last record:" + aa.substring(aa.length()-40, aa.length()-4));
+        System.out.println("last record:" + aa.substring(aa.length()-40, aa.length()));
 
-        System.out.println(aa.substring(aa.length()-40, aa.length()-4).substring(8, 16));
-        System.out.println(aa.substring(aa.length()-40, aa.length()-4).substring(16, 24));
+        System.out.println(aa.substring(aa.length()-40, aa.length()).substring(8, 16));
+        System.out.println(aa.substring(aa.length()-40, aa.length()).substring(16, 24));
 
 
         System.out.println(getTcpMultChkStr(aa));

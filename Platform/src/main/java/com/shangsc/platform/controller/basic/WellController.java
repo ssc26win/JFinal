@@ -141,8 +141,8 @@ public class WellController extends BaseController {
                 if (co.getElectromechanics() != null) {
                     co.put("electromechanicsName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getElectromechanics())));
                 }
-                if (co.getCalculateType() != null) {
-                    co.put("calculateWaterName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getCalculateType())));
+                if (co.getCalculateWater() != null) {
+                    co.put("calculateWaterName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getCalculateWater())));
                 }
                 if (co.getLicence() != null) {
                     co.put("licenceName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getLicence())));

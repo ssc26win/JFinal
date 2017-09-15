@@ -117,26 +117,73 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 	}
 
 	public void importData(List<Map<Integer, String>> maps) {
+		//所属节水办	用户编号	用户名称	水源类型	小计	01月	02月	03月	04月	05月	06月	07月	08月	09月	10月	11月	12月
 		List<WaterIndex> lists = new ArrayList<WaterIndex>();
         Map<String, Integer> dictNameMap = DictData.dao.getDictNameMap(DictCode.WatersType);
         for (int i = 0; i < maps.size(); i++) {
 			WaterIndex index = new WaterIndex();
 			Map<Integer, String> map = maps.get(i);
-			String innerCode = map.get(1).toString();
-			Integer watersType = dictNameMap.get(StringUtils.trim(map.get(3).toString()));
-			BigDecimal waterIndex = CodeNumUtil.getBigDecimal(map.get(4).toString(), 2);
-			BigDecimal january = CodeNumUtil.getBigDecimal(map.get(5).toString(), 2);
-			BigDecimal february = CodeNumUtil.getBigDecimal(map.get(6).toString(), 2);
-			BigDecimal march = CodeNumUtil.getBigDecimal(map.get(7).toString(), 2);
-			BigDecimal april = CodeNumUtil.getBigDecimal(map.get(8).toString(), 2);
-			BigDecimal may = CodeNumUtil.getBigDecimal(map.get(9).toString(), 2);
-			BigDecimal june = CodeNumUtil.getBigDecimal(map.get(10).toString(), 2);
-			BigDecimal july = CodeNumUtil.getBigDecimal(map.get(11).toString(), 2);
-			BigDecimal august = CodeNumUtil.getBigDecimal(map.get(12).toString(), 2);
-			BigDecimal september = CodeNumUtil.getBigDecimal(map.get(13).toString(), 2);
-			BigDecimal october = CodeNumUtil.getBigDecimal(map.get(14).toString(), 2);
-			BigDecimal november = CodeNumUtil.getBigDecimal(map.get(15).toString(), 2);
-			BigDecimal december = CodeNumUtil.getBigDecimal(map.get(16).toString(), 2);
+			String innerCode = "";
+			if (StringUtils.isNotEmpty(map.get(1))) {
+				innerCode = map.get(1).toString();
+			}
+			Integer watersType = null;
+			if (StringUtils.isNotEmpty(map.get(3))) {
+				watersType = dictNameMap.get(StringUtils.trim(map.get(3).toString()));
+			}
+			BigDecimal waterIndex = null;
+			if (StringUtils.isNotEmpty(map.get(4))) {
+				waterIndex = CodeNumUtil.getBigDecimal(map.get(4).toString(), 2);
+			}
+			BigDecimal january = null;
+			if (StringUtils.isNotEmpty(map.get(5))) {
+				january = CodeNumUtil.getBigDecimal(map.get(5).toString(), 2);
+			}
+			BigDecimal february = null;
+			if (StringUtils.isNotEmpty(map.get(6))) {
+				february = CodeNumUtil.getBigDecimal(map.get(6).toString(), 2);
+			}
+			BigDecimal march = null;
+			if (StringUtils.isNotEmpty(map.get(7))) {
+				march = CodeNumUtil.getBigDecimal(map.get(7).toString(), 2);
+			}
+			BigDecimal april = null;
+			if (StringUtils.isNotEmpty(map.get(8))) {
+				april = CodeNumUtil.getBigDecimal(map.get(8).toString(), 2);
+			}
+			BigDecimal may = null;
+			if (StringUtils.isNotEmpty(map.get(9))) {
+
+				may = CodeNumUtil.getBigDecimal(map.get(9).toString(), 2);
+			}
+			BigDecimal june = null;
+			if (StringUtils.isNotEmpty(map.get(10))) {
+				june = CodeNumUtil.getBigDecimal(map.get(10).toString(), 2);
+			}
+			BigDecimal july = null;
+			if (StringUtils.isNotEmpty(map.get(11))) {
+				july = CodeNumUtil.getBigDecimal(map.get(11).toString(), 2);
+			}
+			BigDecimal august = null;
+			if (StringUtils.isNotEmpty(map.get(12))) {
+				august = CodeNumUtil.getBigDecimal(map.get(12).toString(), 2);
+			}
+			BigDecimal september = null;
+			if (StringUtils.isNotEmpty(map.get(13))) {
+				september = CodeNumUtil.getBigDecimal(map.get(13).toString(), 2);
+			}
+			BigDecimal october = null;
+			if (StringUtils.isNotEmpty(map.get(14))) {
+				october = CodeNumUtil.getBigDecimal(map.get(14).toString(), 2);
+			}
+			BigDecimal november = null;
+			if (StringUtils.isNotEmpty(map.get(15))) {
+				november = CodeNumUtil.getBigDecimal(map.get(15).toString(), 2);
+			}
+			BigDecimal december = null;
+			if (StringUtils.isNotEmpty(map.get(16))) {
+				december = CodeNumUtil.getBigDecimal(map.get(16).toString(), 2);
+			}
 			index = setProp(index, innerCode, watersType, waterIndex, january, february, march, april,
 					may, june, july, august, september, october, november, december);
 			lists.add(index);

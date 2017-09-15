@@ -119,7 +119,7 @@
                 { label: '井口井管内径（毫米）', name: 'inner_diameter', width: 120, sortable:true},
                 { label: '井壁管材料', name: 'material', width: 60, sortable:false},
                 { label: '应用状况', name: 'application', width: 60, sortable:false},
-                { label: '水源类型', name: 'watersTypeName', width: 60, sortable:false},
+                { label: '水源类型', name: 'waters_type', width: 60, sortable:false},
                 { label: '是否已配套机电设备', name: 'electromechanicsName', width: 80, sortable:false},
                 { label: '是否已安装水量计量设施', name: 'calculateWaterName', width: 100, sortable:false},
                 { label: '水泵型号', name: 'pump_model', width: 80, sortable:false},

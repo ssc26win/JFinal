@@ -14,20 +14,34 @@ import java.util.List;
 public class ReadNumExportService extends ExportBaseService{
     private static final String FILE_NAME = "读数查询信息导出";
 
+    /**
+     *  "所属节水办",
+     "单位编号",
+     "单位名称",
+     "路别",
+     "水表编号",
+     "水源类型",
+     "日用水量",
+     "水表属性",
+     "表计地址",
+     "单位地址",
+     * @param list
+     * @return
+     */
     public String export(List<ActualData> list) {
         super.logger.info("导出读数查询信息开始");
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[]{
                 "所属节水办",
-                "单位名称",
                 "单位编号",
+                "单位名称",
                 "路别",
                 "水表编号",
-                "表计地址",
                 "水源类型",
-                "水表属性",
-                "查询时间",
                 "水表读数",
+                "水表属性",
+                "表计地址",
+                "查询时间",
                 "单位地址"
         }));
 
@@ -36,15 +50,15 @@ public class ReadNumExportService extends ExportBaseService{
         for (ActualData actualData : list) {
             Object[] obj = new Object[]{
                     actualData.get("water_unit"),
-                    actualData.get("name"),
                     actualData.getInnerCode(),
+                    actualData.get("name"),
                     actualData.get("line_num"),
                     actualData.get("meter_num"),
-                    actualData.getMeterAddress(),
                     actualData.get("watersTypeName"),
-                    actualData.get("meter_attr"),
-                    actualData.getWriteTime(),
                     actualData.getNetWater(),
+                    actualData.get("meter_attr"),
+                    actualData.getMeterAddress(),
+                    actualData.getWriteTime(),
                     actualData.get("address")
 
             };

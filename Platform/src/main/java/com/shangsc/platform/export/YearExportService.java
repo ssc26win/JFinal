@@ -15,47 +15,49 @@ public class YearExportService extends ExportBaseService {
     private static final String FILE_NAME = "年用水量信息导出";
 
     /*
-     { label: '单位名称', name: 'companyName', width: 120, sortable:false},
-    { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
-    { label: '路别', name: 'line_num', width: 100, sortable:false},
-    { label: '水表表号', name: 'meter_num', width: 100,sortable:false},
-    { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
-    { label: '水表属性', name: 'alarm', width: 45, sortable:false},
-    { label: '查询时间', name: 'find_time', width: 100, sortable:true},
-    { label: '用水量', name: 'net_water', width: 80, sortable:false},
-    { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
+      "所属节水办",
+                "单位编号",
+                "单位名称",
+                "路别",
+                "水表编号",
+                "水源类型",
+                "日用水量",
+                "水表属性",
+                "表计地址",
+                "单位地址",
      */
     public String export(List<ActualData> list,int year) {
         super.logger.info("导出月用水量信息开始");
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[]{
                 "所属节水办",
-                "单位名称",
                 "单位编号",
+                "单位名称",
                 "路别",
                 "水表编号",
-                "表计地址",
                 "水源类型",
-                "水表属性",
-                "查询时间",
                 "年用水量",
+                "水表属性",
+                "表计地址",
                 "单位地址"
         }));
 
         logger.info("导出年用水量信息导出条数为:{}", list.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
+            if (actualData.get("netWaterNum") == null) {
+                actualData.put("netWaterNum", 0);
+            }
             Object[] obj = new Object[]{
                     actualData.get("water_unit"),
-                    actualData.get("name"),
                     actualData.getInnerCode(),
+                    actualData.get("name"),
                     actualData.get("line_num"),
                     actualData.get("meter_num"),
-                    actualData.getMeterAddress(),
                     actualData.get("watersTypeName"),
-                    actualData.get("meter_attr"),
-                    actualData.get("yearStr"),
                     actualData.get("netWaterNum"),
+                    actualData.get("meter_attr"),
+                    actualData.getMeterAddress(),
                     actualData.get("address")
             };
             objects.add(obj);

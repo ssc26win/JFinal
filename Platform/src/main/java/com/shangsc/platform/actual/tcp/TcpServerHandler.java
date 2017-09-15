@@ -121,22 +121,22 @@ public class TcpServerHandler extends SimpleChannelHandler {
                     meterAddress = ConversionUtil.getTcpMeterAddress(result);
                     sumWater = ConversionUtil.getTcpSumNum(result);
                 }
-                ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
-                if (data != null && data.getSumWater().compareTo(sumWater) > 0) {
-                    state = Integer.parseInt(ActualState.EXCEPTION);
-                }
                 WaterMeter meter = WaterMeter.me.findByMeterAddress(meterAddress);
                 if (meter != null) {
+                    ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
+                    if (data != null && data.getSumWater().compareTo(sumWater) > 0) {
+                        state = Integer.parseInt(ActualState.EXCEPTION);
+                    }
                     innerCode = meter.getInnerCode();
                     times = meter.getTimes();
+                    sumWater = times.multiply(sumWater);
+                    if (data != null) {
+                        addWater = sumWater.subtract(data.getSumWater());
+                    } else {
+                        addWater = times.multiply(sumWater);
+                    }
+                    ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
                 }
-                sumWater = times.multiply(sumWater);
-                if (data != null) {
-                    addWater = sumWater.subtract(data.getSumWater());
-                } else {
-                    addWater = times.multiply(sumWater);
-                }
-                ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
             }
         } catch (Exception e) {
             e.printStackTrace();

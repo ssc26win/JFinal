@@ -120,7 +120,7 @@
       'fileTypeExts' : '*.xls;*.xlsx;', //允许上传的文件后缀
       'fileSizeLimit' : '50MB', //上传文件的大小限制，单位为B, KB, MB, 或 GB
       'successTimeout' : 30, //成功等待时间
-      'onUploadSuccess' : function(file, data,response) {//每成功完成一次文件上传时触发一次
+      'onUploadSuccess' : function(file, data, response) {//每成功完成一次文件上传时触发一次
         data=eval("["+data+"]")[0];
         $("#apkArea").show().find(".cover-del").html(data.fileName);
         $("#importUrl").val(data.fileUrl);

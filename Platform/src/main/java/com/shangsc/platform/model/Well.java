@@ -159,54 +159,60 @@ public class Well extends BaseWell<Well> {
             if (StringUtils.isEmpty(map.get(0)) || hasExist(map.get(0))) {
                 continue;
             }
-            if (map.get(0) != null) {
+            if (StringUtils.isNotEmpty(map.get(0))) {
                 well.setWellNum(map.get(0));
             }
-            if (map.get(1) != null) {
+            if (StringUtils.isNotEmpty(map.get(1))) {
                 well.setName(map.get(1));
             }
-            if (map.get(2) != null) {
+            if (StringUtils.isNotEmpty(map.get(2))) {
                 well.setInnerCode(map.get(2));
                 Company.me.updateWellNum(map.get(2), true);
             }
-            if (map.get(7) != null) {
+            if (StringUtils.isNotEmpty(map.get(7))) {
                 well.setVillage(map.get(7));
             }
-            if (map.get(8) != null) {
+            if (StringUtils.isNotEmpty(map.get(8))) {
                 well.setAddress(map.get(8));
             }
-            if (map.get(9) != null) {
+            if (StringUtils.isNotEmpty(map.get(9))) {
                 well.setYear(map.get(9));
             }
-            if (map.get(10) != null) {
+    /*
+      水井编号	水井名称	单位编号	单位名称	所属节水办	所属区县	乡	村	水井地址	成井时间（年）
+      井深（米）	地下水埋深（米）	是否为单位自备井	井口井管内径(毫米)	井壁管材料	水源类型	应用状况	是否已配套机电设备
+      是否已安装水量计量设施	水泵型号	水量计量设施类型	是否为规模以上地下水水源地的水井	所在地貌类型区	所取用地下水的类型
+      所在水资源三级区名称及编码	水源类型	主要取水用途及效益	取水量确定方法	是否已办理取水许可证	取水许可证编号	年许可取水量(万立方米)
+     */
+            if (StringUtils.isNotEmpty(map.get(10))) {
                 well.setWellDepth(CodeNumUtil.getBigDecimal(map.get(10), 2));
             }
-            if (map.get(11) != null) {
+            if (StringUtils.isNotEmpty(map.get(11))) {
                 well.setGroundDepth(CodeNumUtil.getBigDecimal(map.get(11), 2));
             }
-            if (map.get(12) != null && YesOrNo.YesStr.equals(map.get(12).toString())) {
+            if (StringUtils.isNotEmpty(map.get(12)) && YesOrNo.YesStr.equals(StringUtils.trim(map.get(12).toString()))) {
                 well.setOneselfWell(Integer.parseInt(YesOrNo.Yes));
-            } else{
+            } else {
                 well.setOneselfWell(Integer.parseInt(YesOrNo.No));
             }
-            if (map.get(13) != null) {
+            if (StringUtils.isNotEmpty(map.get(13))) {
                 well.setInnerDiameter(CodeNumUtil.getBigDecimal(map.get(13), 2));
             }
-            if (map.get(14) != null) {
+            if (StringUtils.isNotEmpty(map.get(14))) {
                 well.setMaterial(map.get(14));
             }
-            if (map.get(15) != null) {
+            if (StringUtils.isNotEmpty(map.get(15))) {
                 well.setWatersType(map.get(15));
             }
-            if (map.get(16) != null) {
+            if (StringUtils.isNotEmpty(map.get(16))) {
                 well.setApplication(map.get(16));
             }
-            if (map.get(17) != null && YesOrNo.YesStr.equals(map.get(17).toString())) {
+            if (StringUtils.isNotEmpty(map.get(17)) && YesOrNo.YesStr.equals(StringUtils.trim(map.get(17).toString()))) {
                 well.setElectromechanics(Integer.parseInt(YesOrNo.Yes));
             } else{
                 well.setElectromechanics(Integer.parseInt(YesOrNo.No));
             }
-            if (map.get(18) != null && YesOrNo.YesStr.equals(map.get(18).toString())) {
+            if (StringUtils.isNotEmpty(map.get(18)) && YesOrNo.YesStr.equals(StringUtils.trim(map.get(18).toString()))) {
                 well.setCalculateWater(Integer.parseInt(YesOrNo.Yes));
             } else{
                 well.setCalculateWater(Integer.parseInt(YesOrNo.No));
@@ -217,35 +223,35 @@ public class Well extends BaseWell<Well> {
             if (map.get(20)!=null) {
                 well.setCalculateType(dictCalculateType.get(map.get(20)));
             }
-            if (map.get(21) != null && YesOrNo.YesStr.equals(map.get(21).toString())) {
+            if (StringUtils.isNotEmpty(map.get(21)) && YesOrNo.YesStr.equals(StringUtils.trim(map.get(21).toString()))) {
                 well.setAboveScale(Integer.parseInt(YesOrNo.Yes));
             } else{
                 well.setAboveScale(Integer.parseInt(YesOrNo.No));
             }
-            if (map.get(22) != null) {
+            if (StringUtils.isNotEmpty(map.get(22))) {
                 well.setGeomorphicType(dictGeomorphicType.get(map.get(22)));
             }
-            if (map.get(23) != null) {
+            if (StringUtils.isNotEmpty(map.get(23))) {
                 well.setGroundType(dictGroundType.get(map.get(23)));
             }
-            if (map.get(24) != null) {
+            if (StringUtils.isNotEmpty(map.get(24))) {
                 well.setNameCode(map.get(24));
             }
-            if (map.get(25) != null) {
+            if (StringUtils.isNotEmpty(map.get(25))) {
                 well.setUseEfficiency(map.get(25));
             }
-            if (map.get(26) != null) {
+            if (StringUtils.isNotEmpty(map.get(26))) {
                 well.setMethod(map.get(26));
             }
-            if (map.get(27) != null && YesOrNo.YesStr.equals(map.get(27).toString())) {
+            if (StringUtils.isNotEmpty(map.get(27)) && YesOrNo.YesStr.equals(StringUtils.trim(map.get(27).toString()))) {
                 well.setLicence(Integer.parseInt(YesOrNo.Yes));
             } else{
                 well.setLicence(Integer.parseInt(YesOrNo.No));
             }
-            if (map.get(28) != null) {
+            if (StringUtils.isNotEmpty(map.get(28))) {
                 well.setLicenceCode(map.get(28));
             }
-            if (map.get(29) != null) {
+            if (StringUtils.isNotEmpty(map.get(29))) {
                 well.setWaterWithdrawals(CodeNumUtil.getBigDecimal(map.get(29), 2));
             } else {
                 well.setWaterWithdrawals(CodeNumUtil.getBigDecimal("0.00", 2));

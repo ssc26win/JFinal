@@ -23,5 +23,4 @@ public class TcpData {
 
         System.out.println(upload_data.substring(26, 26 + 64));
     }
-
 }

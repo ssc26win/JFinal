@@ -36,7 +36,6 @@ public class DailyStatisController extends BaseController {
             this.setAttr("startTime", time + " 00:00:00");
             this.setAttr("endTime", time + " 23:59:59");
         }
-
         render("daily_use.jsp");
     }
 
@@ -65,7 +64,7 @@ public class DailyStatisController extends BaseController {
                 startTime = ToolDateTime.getDateTodayStart();
                 endTime = ToolDateTime.getTomorrowStart();
             }
-            if (endTime == null) {
+            if (endTime == null || (endTime!=null && endTime.compareTo(startTime) <=0)) {
                 endTime = ToolDateTime.getTomorrow(startTime);
             }
         } catch (Exception e) {
