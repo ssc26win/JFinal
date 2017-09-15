@@ -103,9 +103,13 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return InvokeResult.success();
     }
 
-    public WaterMeter findByMeterAddress(String meterAddress){
-        String sql = " SELECT * FROM t_Water_Meter WHERE meter_address=? ";
-        return this.findFirst(sql,meterAddress);
+    public WaterMeter findByMeterAddress(String meterAddress) {
+        if (StringUtils.isNotEmpty(meterAddress)) {
+            String sql = " SELECT * FROM t_Water_Meter WHERE meter_address='" + StringUtils.trim(meterAddress) + "'";
+            return this.findFirst(sql);
+        } else {
+            return null;
+        }
     }
 
     public  WaterMeter findByInnerCode(String innerCode){
