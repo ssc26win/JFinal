@@ -127,6 +127,8 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                         if (timesReduce) {
                             ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, voltage, writeTime);
                         }
+                    } else {
+                        System.out.println("log not exist meter_address :" + meterAddress);
                     }
                 }
             }

@@ -136,6 +136,8 @@ public class TcpServerHandler extends SimpleChannelHandler {
                         addWater = times.multiply(sumWater);
                     }
                     ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
+                } else {
+                    System.out.println("log not exist meter_address :" + meterAddress);
                 }
             }
         } catch (Exception e) {
