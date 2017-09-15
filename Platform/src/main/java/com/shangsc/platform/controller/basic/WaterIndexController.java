@@ -163,7 +163,9 @@ public class WaterIndexController extends BaseController {
             Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 WaterIndex co = list.get(i);
-                co.put("watersTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWatersType()))));
+                if (co.getWatersType() != null) {
+                    co.put("watersTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWatersType()))));
+                }
                 list.set(i, co);
             }
         }

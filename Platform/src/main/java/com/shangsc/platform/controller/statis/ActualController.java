@@ -3,7 +3,6 @@ package com.shangsc.platform.controller.statis;
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.code.ActualState;
 import com.shangsc.platform.code.DictCode;
-import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
@@ -47,7 +46,7 @@ public class ActualController extends BaseController {
                 if (co.get("Waters_type") != null) {
                     co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("Waters_type")))));
                 }
-                co.put("alarm", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAlarm())));
+                //co.put("alarm", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAlarm())));
                 // 正常 异常（24小时内没有数据传回来时是异常） 停用（一天传回来数没有增量是停用）
                 if (co.getWriteTime() != null) {
                     long target = now.getTime() - co.getWriteTime().getTime();

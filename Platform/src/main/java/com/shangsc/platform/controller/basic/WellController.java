@@ -129,15 +129,33 @@ public class WellController extends BaseController {
             Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
             for (int i = 0; i < list.size(); i++) {
                 Well co = list.get(i);
-                co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.get("street")))));
-                co.put("aboveScaleName",  YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAboveScale())));
-                co.put("oneselfWellName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getOneselfWell())));
-                co.put("electromechanicsName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getElectromechanics())));
-                co.put("calculateWaterName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getCalculateType())));
-                co.put("licenceName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getLicence())));
-                co.put("calculateTypeName", String.valueOf(mapCalculateType.get(String.valueOf(co.getCalculateType()))));
-                co.put("geomorphicTypeName", String.valueOf(mapGeomorphicType.get(String.valueOf(co.getGeomorphicType()))));
-                co.put("groundTypeName", String.valueOf(mapGroundType.get(String.valueOf(co.getGroundType()))));
+                if (co.get("street") != null) {
+                    co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.get("street")))));
+                }
+                if (co.getAboveScale() != null) {
+                    co.put("aboveScaleName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAboveScale())));
+                }
+                if (co.getOneselfWell() != null) {
+                    co.put("oneselfWellName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getOneselfWell())));
+                }
+                if (co.getElectromechanics() != null) {
+                    co.put("electromechanicsName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getElectromechanics())));
+                }
+                if (co.getCalculateType() != null) {
+                    co.put("calculateWaterName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getCalculateType())));
+                }
+                if (co.getLicence() != null) {
+                    co.put("licenceName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getLicence())));
+                }
+                if (co.getCalculateType() != null) {
+                    co.put("calculateTypeName", String.valueOf(mapCalculateType.get(String.valueOf(co.getCalculateType()))));
+                }
+                if (co.getGeomorphicType() != null) {
+                    co.put("geomorphicTypeName", String.valueOf(mapGeomorphicType.get(String.valueOf(co.getGeomorphicType()))));
+                }
+                if (co.getGroundType() != null) {
+                    co.put("groundTypeName", String.valueOf(mapGroundType.get(String.valueOf(co.getGroundType()))));
+                }
                 list.set(i, co);
             }
         }

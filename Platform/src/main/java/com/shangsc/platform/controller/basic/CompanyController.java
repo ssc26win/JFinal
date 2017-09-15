@@ -205,10 +205,18 @@ public class CompanyController extends BaseController {
             Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
             for (int i = 0; i < companies.size(); i++) {
                 Company co = companies.get(i);
-                co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
-                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
-                co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
-                co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.getStreet()))));
+                if (co.getCustomerType() != null) {
+                    co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
+                }
+                if (co.getWaterUseType() != null) {
+                    co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
+                }
+                if (co.getUnitType() != null) {
+                    co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
+                }
+                if (co.getStreet() != null) {
+                    co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.getStreet()))));
+                }
                 companies.set(i, co);
             }
         }
@@ -224,12 +232,22 @@ public class CompanyController extends BaseController {
             Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
             for (int i = 0; i < companies.size(); i++) {
                 Company co = companies.get(i);
-                co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
-                co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
-                co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
-                co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.getStreet()))));
-                co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
-                        + co.get("inner_code") + "')\">" + co.getAddress() + "</a>");
+                if (co.getCustomerType() != null) {
+                    co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
+                }
+                if (co.getWaterUseType() != null) {
+                    co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
+                }
+                if (co.getUnitType() != null) {
+                    co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
+                }
+                if (co.getStreet() != null) {
+                    co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.getStreet()))));
+                }
+                if (co.getAddress() != null) {
+                    co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
+                            + co.get("inner_code") + "')\">" + co.getAddress() + "</a>");
+                }
                 companies.set(i, co);
             }
         }

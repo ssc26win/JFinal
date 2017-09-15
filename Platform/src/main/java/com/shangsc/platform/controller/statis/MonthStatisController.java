@@ -72,7 +72,9 @@ public class MonthStatisController extends BaseController {
                 if (co.get("netWaterNum") != null) {
                     netWaterNum = co.get("netWaterNum").toString();
                 }
-                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                if (co.get("waters_type") != null) {
+                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                }
                 co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
                         + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
                 co.put("searchMonth", ToolDateTime.format(new Date(), "yyyy-MM"));
@@ -113,7 +115,9 @@ public class MonthStatisController extends BaseController {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
-                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                if (co.get("waters_type") != null) {
+                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                }
                 list.set(i, co);
             }
         }

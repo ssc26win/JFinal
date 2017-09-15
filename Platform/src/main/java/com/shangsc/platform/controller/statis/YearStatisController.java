@@ -67,7 +67,9 @@ public class YearStatisController extends BaseController {
                 } else {
                     co.put("yearStr", ToolDateTime.format(new Date(), "yyyy") + " 年");
                 }
-                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                if (co.get("waters_type") != null) {
+                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                }
                 co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
                         + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
                 list.set(i, co);
@@ -103,7 +105,9 @@ public class YearStatisController extends BaseController {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
-                co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                if (co.get("waters_type") != null) {
+                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                }
                 if (year != null && year > 0) {
                     co.put("yearStr", year + " 年");
                 } else {
