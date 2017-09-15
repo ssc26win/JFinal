@@ -133,7 +133,7 @@ public class TcpServerHandler extends SimpleChannelHandler {
                     if (data != null) {
                         addWater = sumWater.subtract(data.getSumWater());
                     } else {
-                        addWater = times.multiply(sumWater);
+                        addWater = sumWater;
                     }
                     ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
                 } else {

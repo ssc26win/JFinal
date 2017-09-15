@@ -114,12 +114,12 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                     if (meter != null) {
                         innerCode = meter.getInnerCode();
                         times = meter.getTimes();
+                        sumWater = times.multiply(sumWater);
                         if (data!= null && data.getSumWater().compareTo(sumWater) > 0) {
                             state = Integer.parseInt(ActualState.EXCEPTION);
                         } else {
-                            addWater = times.multiply(sumWater);
+                            addWater = sumWater;
                         }
-                        sumWater = times.multiply(sumWater);
                         if (data!= null) {
                             addWater = sumWater.subtract(data.getSumWater());
                             timesReduce = (writeTime.getTime() - data.getWriteTime().getTime()) > 1000*60*1;
