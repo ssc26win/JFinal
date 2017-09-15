@@ -47,14 +47,16 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
 
         log("ConversionUtil.bytes2HexString 16进制字符串转字符串 " + ConversionUtil.hex16Str2String(ConversionUtil.bytes2Hex16Str(buffer.array())));
 
+        String chkStr = ConversionUtil.hex16Str2String(ConversionUtil.bytes2Hex16Str(buffer.array()));
         //e.getChannel().write(e.getMessage());
+        if (StringUtils.isNotEmpty(chkStr) && chkStr.indexOf(ActualType.UDP_PRFIX) > 0) {
+            //记录消息来源
+            ActualLog.dao.save(null, ActualType.UDP, 10001, PropKit.get("config.host"), result, new Date());
 
-        //记录消息来源
-        ActualLog.dao.save(null, ActualType.UDP, 10001, PropKit.get("config.host"), result, new Date());
+            recordMsg(result);
 
-        recordMsg(result);
-
-        recordDB(result);
+            recordDB(result);
+        }
     }
 
     @Override

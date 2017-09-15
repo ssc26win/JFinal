@@ -7,6 +7,12 @@ package com.shangsc.platform.code;
  * @Desc
  */
 public class ActualType {
+
     public static final String UDP = "udp";
     public static final String TCP = "tcp";
+
+    public static final String  UDP_PRFIX = "CTRL";
+
+    public static final String TCP_PRFIX = "68";
+    public static final String TCP_SUFFIX = "16";
 }

@@ -34,23 +34,17 @@
                                     <div class="col-sm-12">
                                         <form id="exportForm" action="${context_path}/basic/company/export" method="post">
                                             <div class="input-group">
-                                                    <div class=" col-sm-6">
-                                                        <input type="text" id="name" name="name" class="form-control search-query" placeholder="请输入关键字" />
-                                                        </div>
-                                                    <div class="col-sm-3">
-                                                    <select id="company_type" name="company_type" style="height: 34px;">
+                                                    <input type="text" id="name" name="name" class="search-query" style="height: 34px;width: 400px;" placeholder="请输入关键字" />
+                                                    <select id="company_type" name="company_type" style="height: 34px;width: 159px;margin-left: 5px;">
                                                         <option value="1">用水单位</option>
                                                         <option value="2">供水单位</option>
                                                     </select>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <span class="input-group-btn">
-                                                            <button type="button" id="btn_search" class="btn btn-purple btn-sm">
-                                                                <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
-                                                                搜索
-                                                            </button>
-                                                        </span>
-                                                    </div>
+                                                    <span class="" style="margin-left: 10px;margin-bottom: 5px;">
+                                                        <button type="button" id="btn_search" class="btn btn-purple btn-sm">
+                                                            <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+                                                            搜索
+                                                        </button>
+                                                    </span>
                                             </div>
                                         </form>
                                     </div>

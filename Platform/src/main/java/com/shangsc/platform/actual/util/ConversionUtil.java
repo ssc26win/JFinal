@@ -1,5 +1,6 @@
 package com.shangsc.platform.actual.util;
 
+import com.shangsc.platform.code.ActualType;
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -350,6 +351,8 @@ public class ConversionUtil {
             "290050F2B6596400000000000000000000EC2900A8F4B6596400000000000000000000F4290000F7B6596400000000000000000000FD29002016";
 
     public static void main(String args[]) {
+
+        System.out.println(aa.startsWith(ActualType.TCP_PRFIX) + "" +aa.endsWith(ActualType.TCP_SUFFIX) );
 
         System.out.println(getTcpMultRecordSumWater(aa));
 
