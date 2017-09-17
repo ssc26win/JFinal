@@ -66,9 +66,9 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getActualDataPage(int page, int rows, String keyword, String orderbyStr) {
 		//select * from (select * from t_actual_data order by write_time desc) a group by a.meter_address order by write_time desc
-		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county,twm.line_num ";
+		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county,twm.line_num,twm.waters_type ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from (select * from t_actual_data order by write_time desc)  tad left join " +
-				" t_company tc on tad.inner_code=tc.inner_code left join t_water_meter twm on tad.inner_code=twm.inner_code");
+				" t_company tc on tad.inner_code=tc.inner_code left join t_water_meter twm on tad.meter_address=twm.meter_address");
 
 		sqlExceptSelect.append(" where 1=1");
 		if (StringUtils.isNotEmpty(keyword)) {

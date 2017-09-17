@@ -43,8 +43,8 @@ public class ActualController extends BaseController {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
-                if (co.get("Waters_type") != null) {
-                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("Waters_type")))));
+                if (co.get("waters_type") != null) {
+                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
                 }
                 //co.put("alarm", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAlarm())));
                 // 正常 异常（24小时内没有数据传回来时是异常） 停用（一天传回来数没有增量是停用）
