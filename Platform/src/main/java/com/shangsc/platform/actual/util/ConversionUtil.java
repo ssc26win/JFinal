@@ -182,7 +182,6 @@ public class ConversionUtil {
         sb.append(chars[5]);
         sb.append(chars[2]);
         sb.append(chars[3]);
-        sb.append(".");
         sb.append(chars[0]);
         sb.append(chars[1]);
         return sb.toString();

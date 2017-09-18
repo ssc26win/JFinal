@@ -20,7 +20,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.util.Date;
 
 /**
@@ -115,7 +114,7 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                         innerCode = meter.getInnerCode();
                         times = meter.getTimes();
                         sumWater = times.multiply(sumWater);
-                        if (data!= null && data.getSumWater().compareTo(sumWater) > 0) {
+                        if (data != null && data.getSumWater().compareTo(sumWater) > 0) {
                             state = Integer.parseInt(ActualState.EXCEPTION);
                         } else {
                             addWater = sumWater;
@@ -138,6 +137,10 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
     }
 
     public static void main(String[] args) {
-        System.out.println(Charset.defaultCharset());
+        String test = "4354524C3A26323031373037303030303030393231FEFEFE6810210900001700028116901F00000200002C000000002C0000000000000000005B16";
+        System.out.println(test.length());
+        System.out.println(ConversionUtil.getUdpMeterAddress(test));
+        System.out.println(ConversionUtil.getUdpMeterSum(test));
+        System.out.println(ConversionUtil.getUdpMeterAdd(test));
     }
 }
