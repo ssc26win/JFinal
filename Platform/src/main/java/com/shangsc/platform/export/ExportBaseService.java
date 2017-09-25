@@ -2,7 +2,6 @@ package com.shangsc.platform.export;
 
 import com.shangsc.platform.util.ToolPoi;
 import org.apache.commons.lang3.ObjectUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -12,10 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 通用导出类
@@ -88,16 +85,28 @@ public abstract class ExportBaseService {
         for(int i = 1;i<sheet.getLastRowNum() + 1; i++) {// 第二行开始取值，第一行为标题行
             Row row = sheet.getRow(i);// 获取到第i列的行数据(表格行)
             Map<Integer, String> map = new HashMap<Integer, String>();
-            for(int j=0;j<row.getLastCellNum(); j++) {
-                Cell cell = row.getCell(j);// 获取到第j行的数据(单元格)
-                if (cell != null) {
-                    cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-                    map.put(j, cell.getStringCellValue());
-                } else {
-                    break;
+            if (row != null) {
+                for (int j = 0; j < row.getLastCellNum(); j++) {
+                    Cell cell = row.getCell(j);// 获取到第j行的数据(单元格)
+                    if (cell != null) {
+                        if("yyyy/mm;@".equals(cell.getCellStyle().getDataFormatString()) || "m/d/yy".equals(cell.getCellStyle().getDataFormatString())
+                                || "yy/m/d".equals(cell.getCellStyle().getDataFormatString()) || "mm/dd/yy".equals(cell.getCellStyle().getDataFormatString())
+                                || "dd-mmm-yy".equals(cell.getCellStyle().getDataFormatString())|| "yyyy/m/d".equals(cell.getCellStyle().getDataFormatString())){
+                            if (cell.getDateCellValue() != null) {
+                                map.put(j, new SimpleDateFormat("yyyy/MM/dd").format(cell.getDateCellValue()));
+                            } else {
+                                map.put(j, new SimpleDateFormat("yyyy/MM/dd").format(new Date()));
+                            }
+                        } else {
+                            cell.setCellType(Cell.CELL_TYPE_STRING);
+                            map.put(j, cell.getStringCellValue());
+                        }
+                    } else {
+                        break;
+                    }
                 }
+                list.add(map);
             }
-            list.add(map);
         }
         return list;
     }
