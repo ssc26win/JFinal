@@ -145,6 +145,9 @@
           innerCode:{
             required: true
           },
+          watersType:{
+            required: true
+          },
           waterIndex:{
             required: true
           },
@@ -152,6 +155,9 @@
       messages: {
           innerCode:{
             required: "请输入单位编号"
+          },
+          watersType:{
+            required: "请选择水源类型"
           },
           waterIndex:{
             required: "请输入年用水指标"
