@@ -28,11 +28,11 @@
                             <input name="id" type="hidden" value="${id}"/>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label" for="innerCode">单位编号:</label>
-                                <div class="col-sm-3">
+                                <div class="col-sm-3 common-tip-append">
                                     <input type="text" id="innerCode" name="innerCode" value="${item.innerCode}" class="form-control">
                                 </div>
                                 <label class="col-sm-3 control-label" for="wellNum">水井编号:</label>
-                                <div class="col-sm-3">
+                                <div class="col-sm-3 common-tip-append">
                                     <input type="text" id="wellNum" name="wellNum" value="${item.wellNum}" class="form-control">
                                 </div>
                             </div>
@@ -197,16 +197,22 @@
         $('#validation-form').validate({
             errorElement: 'div',
             errorClass: 'help-block',
-            focusInvalid: false,
+            focusInvalid: true,
             rules: {
-                name:{
+                innerCode:{
                     required: true
-                }
+                },
+                wellNum:{
+                    required: true
+                },
             },
             messages: {
-                name:{
-                    required: "请输入用户名"
-                }
+                innerCode:{
+                    required: "请输入单位编号"
+                },
+                wellNum:{
+                    required: "请输入水井编号"
+                },
             },
             highlight: function (e) {
                 $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
@@ -229,7 +235,7 @@
                 else if(element.is('.chosen-select')) {
                     error.insertAfter(element.siblings('[class*="chosen-container"]:eq(0)'));
                 }
-                else error.insertAfter(element.parent());
+                else error.insertAfter(element);
             },
 
             submitHandler: function (form) {

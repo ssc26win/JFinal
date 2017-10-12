@@ -41,3 +41,4 @@
 		<script src="${res_url}ace-1.3.3/assets/js/html5shiv.js"></script>
 		<script src="${res_url}ace-1.3.3/assets/js/respond.js"></script>
 		<![endif]-->
+		<script src="${res_url}css/system.css"></script>

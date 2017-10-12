@@ -143,13 +143,13 @@
       focusInvalid: false,
       rules: {
           innerCode:{
-          required: true
-        }
+            required: true
+          }
       },
       messages: {
           innerCode:{
-          required: "请输入单位编号"
-        }
+            required: "请输入单位编号"
+          }
       },
       highlight: function (e) {
         $(e).closest('.form-group').removeClass('has-info').addClass('has-error');

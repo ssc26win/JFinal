@@ -31,7 +31,8 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
-                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword + "' or tc.name like '%" + keyword + "%') ");
+                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword +
+                        "' or twm.meter_address='" + keyword + "' or tc.name like '%" + keyword + "%') ");
             }
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -142,7 +143,8 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
-                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_address='" + keyword + "' or tc.name like '%" + keyword + "%') ");
+                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword +
+                        "' or twm.meter_address='" + keyword + "' or tc.name like '%" + keyword + "%') ");
             }
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -161,7 +163,8 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
-                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_address='" + keyword + "' or tc.name like '%" + keyword + "%') ");
+                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword +
+                        "' or twm.meter_address='" + keyword + "' or tc.name like '%" + keyword + "%') ");
             }
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -229,6 +232,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
             }
             if (StringUtils.isNotEmpty(map.get(10))) {
                 meter.setChargeType(dictNameCharge.get(map.get(10)));
+            }
+            if (StringUtils.isEmpty(meter.getInnerCode()) && StringUtils.isEmpty(meter.getMeterNum()) && StringUtils.isEmpty(meter.getMeterAddress())) {
+                continue;
             }
             Date registDate = null;
             Object createDateObj = map.get(14);

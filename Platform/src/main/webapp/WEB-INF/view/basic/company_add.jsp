@@ -9,7 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
 </head>
-
 <body class="no-skin">
 <div class="main-container" id="main-container">
     <script type="text/javascript">
@@ -28,11 +27,11 @@
                             <input name="id" type="hidden" value="${id}"/>
                             <div class="form-group" style="margin-top: 15px;">
                                 <label class="col-sm-2 control-label" for="name">单位名称:</label>
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 common-tip-append">
                                     <input type="text" id="name" name="name" value="${item.name}" class="form-control">
                                 </div>
                                 <label class="col-sm-2 control-label" for="innerCode">单位编号:</label>
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 common-tip-append">
                                     <input type="text" id="innerCode" name="innerCode" value="${item.innerCode}" class="form-control">
                                 </div>
                             </div>
@@ -225,33 +224,29 @@
         $('#validation-form').validate({
             errorElement: 'div',
             errorClass: 'help-block',
-            focusInvalid: false,
+            focusInvalid: true,
             rules: {
                 name:{
+                    required: true
+                },
+                innerCode:{
                     required: true
                 }
             },
             messages: {
                 name:{
                     required: "请输入单位名称"
-                }
-            },
-            rules: {
+                },
                 innerCode:{
-                    required: true
-                }
-            },
-            messages: {
-                innerCode:{
-                    required: "请输入单位编码"
+                    required: "请输入单位编号"
                 }
             },
             highlight: function (e) {
-                $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+                $(e).closest('.common-tip-append').removeClass('has-info').addClass('has-error');
             },
 
             success: function (e) {
-                $(e).closest('.form-group').removeClass('has-error');//.addClass('has-info');
+                $(e).closest('.common-tip-append').removeClass('has-error');//.addClass('has-info');
                 $(e).remove();
             },
 
@@ -267,7 +262,7 @@
                 else if(element.is('.chosen-select')) {
                     error.insertAfter(element.siblings('[class*="chosen-container"]:eq(0)'));
                 }
-                else error.insertAfter(element.parent());
+                else error.insertAfter(element);
             },
 
             submitHandler: function (form) {

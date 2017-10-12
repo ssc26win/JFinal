@@ -137,16 +137,28 @@
         $('#validation-form').validate({
             errorElement: 'div',
             errorClass: 'help-block',
-            focusInvalid: false,
+            focusInvalid: true,
             rules: {
-                name:{
+                innerCode:{
                     required: true
-                }
+                },
+                meterNum:{
+                    required: true
+                },
+                meterAddress:{
+                    required: true
+                },
             },
             messages: {
-                name:{
-                    required: "请输入用户名"
-                }
+                innerCode:{
+                    required: "请输入单位编号"
+                },
+                meterNum:{
+                    required: "请输入水表表号"
+                },
+                meterAddress:{
+                    required: "请输入表计地址"
+                },
             },
             highlight: function (e) {
                 $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
