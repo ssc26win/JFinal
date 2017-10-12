@@ -140,15 +140,21 @@
     $('#validation-form').validate({
       errorElement: 'div',
       errorClass: 'help-block',
-      focusInvalid: false,
+      focusInvalid: true,
       rules: {
           innerCode:{
             required: true
-          }
+          },
+          waterIndex:{
+            required: true
+          },
       },
       messages: {
           innerCode:{
             required: "请输入单位编号"
+          },
+          waterIndex:{
+            required: "请输入年用水指标"
           }
       },
       highlight: function (e) {
