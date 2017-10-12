@@ -56,7 +56,7 @@
               <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
               <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
               <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
-              <jc:button className="btn btn-success" id="btn-pubilsh" textName="发布"/>
+              <jc:button className="btn btn-success" id="btn-publishData" textName="发布"/>
             </div>
           </div>
           <!-- PAGE CONTENT BEGINS -->
@@ -100,10 +100,10 @@
       mtype: "GET",
       datatype: "json",
       colModel: [
-        { label: '标题', name: 'title', width: 100, sortable:false},
-        { label: '内容', name: 'content', width: 150, sortable:false},
-        { label: '图片地址', name: 'img_url', width: 100, sortable:false},
-        { label: '发布状态', name: 'status', width: 100,sortable:false},
+        { label: '标题', name: 'title', width: 150, sortable:false},
+        { label: '内容', name: 'content', width: 350, sortable:false},
+        /*{ label: '图片地址', name: 'img_url', width: 100, sortable:false},*/
+        { label: '发布状态', name: 'statusName', width: 100,sortable:false},
         { label: '创建时间', name: 'create_time', width: 100, sortable:false}
       ],
       viewrecords: true,
@@ -148,6 +148,9 @@
     });
     $("#btn-deleteData").click(function(){
       deleteData();
+    });
+    $("#btn-publishData").click(function(){
+      publishData();
     });
     $("#btn-edit").click(function(){//添加页面
       var rid = getOneSelectedRows();
@@ -234,6 +237,35 @@
     };
     layer.confirm("确认删除记录？",function(){
       $.post("${context_path}/basic/ad/delete", submitData,function(data) {
+        if (data.code == 0) {
+          layer.msg("操作成功", {
+            icon: 1,
+            time: 1000 //1秒关闭（如果不配置，默认是3秒）
+          },function(){
+            reloadGrid();
+          });
+        }  else{
+          layer.alert("操作失败");
+        }
+      },"json");
+    });
+  }
+
+  function publishData(){
+    var grid = $("#grid-table");
+    var selectedIDs = grid.getGridParam("selarrrow");
+    if(selectedIDs.length != 1) {
+      layer.msg("请选择一个记录", {
+        icon: 2,
+        time: 1000 //2秒关闭（如果不配置，默认是3秒）
+      });
+      return;
+    }
+    var submitData = {
+      "id" : selectedIDs[0]
+    };
+    layer.confirm("确认发布记录？",function(){
+      $.post("${context_path}/basic/ad/publish", submitData,function(data) {
         if (data.code == 0) {
           layer.msg("操作成功", {
             icon: 1,

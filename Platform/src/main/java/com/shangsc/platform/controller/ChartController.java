@@ -8,10 +8,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.MapState;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
-import com.shangsc.platform.model.ActualData;
-import com.shangsc.platform.model.Company;
-import com.shangsc.platform.model.WaterIndex;
-import com.shangsc.platform.model.WaterMeter;
+import com.shangsc.platform.model.*;
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -267,5 +264,15 @@ public class ChartController extends Controller {
         if (moth.add(this.THRESHOLD).compareTo(monthActTotal) < 0) {
             count.addAndGet(1);
         }
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/chart"})
+    public void getNewsMsg() {
+        Ad ad = Ad.dao.findFirst("select * from t_ad where status=1");
+        JSONObject obj = new JSONObject();
+        obj.put("title", ad.getTitle());
+        obj.put("content", ad.getContent());
+        this.renderJson(obj);
     }
 }

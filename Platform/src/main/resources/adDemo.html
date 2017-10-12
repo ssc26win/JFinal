@@ -1,46 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- saved from url=(0144)http://www.17sucai.com/preview/1/2013-05-05/%E5%8F%B3%E4%B8%8B%E8%A7%92%E6%B5%AE%E5%8A%A8%E6%8F%90%E7%A4%BA%E5%BC%B9%E5%87%BA%E6%A1%86/demo.html -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title>jquery浮动层制作右下角float浮动提示框向上滑动提示</title>
+    <meta name="description" content="jquery浮动层提示框制作右下角float div提示框向上滑动提示，类似MSN/QQ、阿里旺旺的浮动层提示框特效。jquery下载。">
 </head>
-<body bgcolor="#F7F7F7">
-<!--图片漂浮广告代码开始-->
-<div id="float_ad" style="position:absolute">
-    <!--链接地址--><a href="http://www.dabaoku.com" _fcksavedurl="/" target="_blank">
-    <!--
-        &lt;!&ndash;图片地址&ndash;&gt;<img src="http://www.dabaoku.com/images/logo.gif" _fcksavedurl="http://www.dabaoku.com/images/logo.gif" border="0">
-    -->
-    <table>
-        <tr><td rowspan="3"><img src="http://www.dabaoku.com/images/logo.gif" _fcksavedurl="http://www.dabaoku.com/images/logo.gif" border="0"></td></tr>
-        <tr><td><h4>标题</h4></td></tr>
-        <tr><td>内容</td></tr>
-    </table>
-</a>
-</div>
-<script>
-    var x = 50,y = 60
-    var xin = true, yin = true
-    var step = 1
-    var delay = 10
-    var obj=document.getElementById("float_ad")
-    function float_ad() {
-        var L=T=0
-        var R= document.body.clientWidth-obj.offsetWidth
-        var B = document.body.clientHeight-obj.offsetHeight
-        obj.style.left = x + document.body.scrollLeft
-        obj.style.top = y + document.body.scrollTop
-        x = x + step*(xin?1:-1)
-        if (x < L) { xin = true; x = L}
-        if (x > R){ xin = false; x = R}
-        y = y + step*(yin?1:-1)
-        if (y < T) { yin = true; y = T }
-        if (y > B) { yin = false; y = B }
-    }
-    var itl= setInterval("float_ad()", delay)
-    obj.onmouseover=function(){clearInterval(itl)}
-    obj.onmouseout=function(){itl=setInterval("float_ad()", delay)}
+
+<body>
+
+<style type="text/css">
+    *{margin:0;padding:0;list-style-type:none;}
+    a,img{border:0;}
+    body{font:12px/180% Arial,Lucida,Verdana,"宋体",Helvetica,sans-serif;color:#333;background:#fff;}
+    /* tipfloat */
+    .tipfloat,.tipfloat .close{background:url(tipright.png) no-repeat;}
+    .tipfloat{display:none;z-index:999;position:fixed;_position:absolute;right:0px;bottom:0;width:236px;height:196px;overflow:hidden;}
+    .tipfloat .tiphead{height:28px;line-height:28px;overflow:hidden;padding:0 5px;}
+    .tipfloat .tiphead strong{float:left;color:#fff;font-size:14px;}
+    .tipfloat .tiphead .close{display:block;float:right;margin:5px 0 0 0;width:18px;height:18px;line-height:999em;overflow:hidden;cursor:pointer;background-position:-236px 0;}
+    /* ranklist */
+    .ranklist{border:solid 1px #ddd;padding:10px 10px 0 10px;}
+    .ranklist li{height:16px;line-height:16px;overflow:hidden;position:relative;padding:0 70px 0 30px;margin:0 0 10px 0;vertical-align:bottom;}
+    .ranklist li em{background:url(http://www.jsfoot.com/css3/demo/2012-04-06/images/mun.gif) no-repeat;width:20px;height:16px;overflow:hidden;display:block;position:absolute;left:0;top:0;text-align:center;font-style:normal;color:#333;}
+    .ranklist li em{background-position:0 -16px;}
+    .ranklist li.top em{background-position:0 0;color:#fff;}
+    .ranklist li .num{position:absolute;right:0;top:0;color:#999;}
+</style>
+<script type="text/javascript" src="jquery-1.4.2.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var titHeight=$(".tiphead").height();
+        $(".tipfloat").animate({height:"show"},400);
+        $(".close").click(function(){
+            $(".tipfloat").animate({height:titHeight-50},1000,function(){
+                $(".tipfloat").hide();
+            });
+        });
+    });
 </script>
-<!--图片漂浮广告代码结束-->
-</body>
-</html>
+
+
+<div class="tipfloat" style="display: block;">
+    <h2 class="tiphead"><strong>右下角浮动提示框</strong><span title="关闭" class="close">关闭</span></h2>
+    <div class="ranklist">
+        <ol>
+            <li class="top">
+                <em>03</em><p><a href="http://www.17sucai.com/" target="_blank">js横向二级导航菜单slide往下滑动动画效果js代码下载</a></p><span class="num">32万下载</span>
+            </li>
+            <li>
+                <em>04</em><p><a href="http://www.17sucai.com/" target="_blank">js导航菜单左侧竖纵向二级导航菜单可点击展开与收缩子菜单</a></p><span class="num">32万下载</span>
+            </li>
+
+            <li>
+                <em>05</em><p><a href="http://www.17sucai.com/" target="_blank">3D flash动画图片滚动,图标导航菜单3D flash动画滚动效果</a></p><span class="num">32万下载</span>
+            </li>
+            <li>
+                <em>06</em><p><a href="http://www.17sucai.com/" target="_blank">flash导航条制作鼠标滑过显示二级菜单目录</a></p><span class="num">32万下载</span>
+            </li>
+        </ol>
+    </div>
+</div>
+</body></html>

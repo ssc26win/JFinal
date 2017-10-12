@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
+import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
@@ -40,6 +41,12 @@ public class AdController extends BaseController {
             conditions.add(new Condition("inner_code", Operators.LIKE, keyword));
         }
         Page<Ad> pageInfo = Ad.dao.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
+        List<Ad> list = pageInfo.getList();
+        for (Ad ad:list) {
+            if (ad.getStatus() != null) {
+                ad.put("statusName", YesOrNo.getYesOrNoMap().get(String.valueOf(ad.getStatus())));
+            }
+        }
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
     }
 
@@ -74,6 +81,13 @@ public class AdController extends BaseController {
     public void delete(){
         String ids = this.getPara("ids");
         InvokeResult result = Ad.dao.deleteData(ids);
+        this.renderJson(result);
+    }
+
+    @RequiresPermissions(value={"/basic/ad"})
+    public void publish(){
+        Long id = this.getParaToLong("id");
+        InvokeResult result = Ad.dao.publish(id);
         this.renderJson(result);
     }
 

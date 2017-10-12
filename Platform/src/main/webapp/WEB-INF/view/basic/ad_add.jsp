@@ -63,7 +63,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
+                                                <%--<div class="form-group">
                                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="file_upload">图片:</label>
                                                     <div class="col-xs-12 col-sm-9">
                                                         <div class="clearfix">
@@ -79,7 +79,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>--%>
                                                 <div class="form-group">
                                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="status">是否发布:</label>
 
@@ -121,7 +121,7 @@
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
 <script type="text/javascript">
     jQuery(function($) {
-        $('#file_upload').uploadify({
+        /*$('#file_upload').uploadify({
             //校验数据
             'swf' : '${res_url}uploadify/uploadify.swf', //指定上传控件的主体文件，默认‘uploader.swf’
             'uploader' : '/basic/ad/uploadImg', //指定服务器端上传处理文件，默认‘upload.php’
@@ -143,7 +143,7 @@
             'onUploadError' : function(file, data, response) {//当上传返回错误时触发
                 $('#f_pics').append("<div class=\"pics_con\">" + data + "</div>");
             }
-        });
+        });*/
 
         var $validation = true;
 
@@ -156,22 +156,16 @@
                 title:{
                     required: true
                 },
-                imgUrl:{
-                    required: true
-                },
                 content:{
                     required: true
                 }
             },
             messages: {
                 title:{
-                    required: "软件名不能为空"
-                },
-                imgUrl:{
-                    required: "请上传文件包"
+                    required: "标题不能为空"
                 },
                 content:{
-                    required: "更新内容不能为空"
+                    required: "内容不能为空"
                 }
             },
             highlight: function (e) {
@@ -206,7 +200,7 @@
                     id:"${item.id}",
                     title:$("#title").val(),
                     content: $("#content").val(),
-                    imgUrl:$("#imgUrl").val(),
+                    //imgUrl:$("#imgUrl").val(),
                     status:$("#status").val()
                 };
                 $btn.addClass("disabled");

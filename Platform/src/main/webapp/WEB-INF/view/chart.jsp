@@ -10,6 +10,22 @@
     <script src="${res_url}js/charts/jquery.min.js"></script>
     <script src="${res_url}js/charts/highcharts.js"></script>
 </head>
+<style type="text/css">
+    .adbody{font:13px/180% Arial,Lucida,Verdana,"宋体",Helvetica,sans-serif;color:#333;background:#fff;}
+    /* tipfloat */
+    .tipfloat,.tipfloat .close{background:url('${res_url}img/tipright.png') no-repeat;}
+    .tipfloat{display:none;z-index:999;position:fixed;_position:absolute;right:0px;bottom:0;width:236px;height:196px;overflow:hidden;}
+    .tipfloat .tiphead{height:30px;line-height:30px;overflow:hidden;padding:0 5px;}
+    .tipfloat .tiphead strong{float:left;color:#fff;font-size:14px;}
+    .tipfloat .tiphead .close{display:block;float:right;margin:5px 0 0 0;width:18px;height:18px;line-height:999em;overflow:hidden;cursor:pointer;background-position:-236px 0;}
+    /* ranklist */
+    .ranklist{padding:10px 10px 10px 10px;}
+    .ranklist li{height:16px;line-height:16px;overflow:hidden;position:relative;padding:0 70px 0 30px;margin:0 0 10px 0;vertical-align:bottom;}
+    .ranklist li em{width:20px;height:16px;overflow:hidden;display:block;position:absolute;left:0;top:0;text-align:center;font-style:normal;color:#333;}
+    .ranklist li em{background-position:0 -16px;}
+    .ranklist li.top em{background-position:0 0;color:#fff;}
+    .ranklist li .num{position:absolute;right:0;top:0;color:#999;}
+</style>
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
@@ -40,6 +56,14 @@
                 </div>
                 <div class="col-xs-12">
                     <div id="containerSupplyM" style="width: 50%; height: 35%; margin: 0 auto"></div>
+                </div>
+            </div>
+            <div class="adbody" style="display: none;">
+                <div class="tipfloat" style="display: block;">
+                    <div class="tiphead"><strong id="adtitle"></strong><span title="关闭" class="close">关闭</span></div>
+                    <div class="ranklist">
+                        <p style="text-indent:2em;" id="adcontent"></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -440,7 +464,34 @@
             $('#containerSupplyM').highcharts(json);
         });
     });
-
+    $(function(){
+        var titHeight=$(".tiphead").height();
+        $(".tipfloat").animate({height:"show"}, 500);
+        $(".close").click(function(){
+            $(".tipfloat").animate({height:titHeight-50},1000,function(){
+                $(".tipfloat").hide();
+            });
+        });
+    });
+    function getMsgData(){
+        var submitData = {};
+        $.post("${context_path}/chart/getNewsMsg", submitData, function(data) {
+            var title = data.title;
+            var content = data.content;
+            if (title == "" || title == undefined || content == "" || content == undefined) {
+                $(".tipfloat").hide();
+            } else {
+                $("#adtitle").text(title);
+                $("#adtitle").attr("title", title);
+                $("#adcontent").text(content);
+                $("#adcontent").attr("title", content);
+                $(".adbody").show();
+            }
+        },"json");
+    }
+    $(function(){
+        getMsgData();
+    })
 </script>
 </body>
 </html>
