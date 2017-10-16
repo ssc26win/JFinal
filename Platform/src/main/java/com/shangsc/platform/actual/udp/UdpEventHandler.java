@@ -129,7 +129,7 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                     }
                 }
                 //记录消息来源
-                ActualLog.dao.save(null, ActualType.UDP, 10001, PropKit.get("config.host"), result, meterAddress, new Date());
+                ActualLog.dao.save(null, ActualType.UDP, Integer.parseInt(PropKit.get("config.udp.port")), PropKit.get("config.host"), result, meterAddress, new Date());
             }
         } catch (Exception e) {
             e.printStackTrace();
