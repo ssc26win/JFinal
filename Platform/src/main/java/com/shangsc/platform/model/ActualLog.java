@@ -1,7 +1,9 @@
 package com.shangsc.platform.model;
 
+import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseActualLog;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
@@ -12,31 +14,52 @@ import java.util.Date;
 public class ActualLog extends BaseActualLog<ActualLog> {
     public static final ActualLog dao = new ActualLog();
 
-    public InvokeResult save(Long id, String srcType, Integer port, String ip, String content, Date addTime) {
+    public InvokeResult save(Long id, String srcType, Integer port, String ip, String content, String address, Date addTime) {
         if (null != id && id > 0l) {
             ActualLog actualLog = this.findById(id);
             if (actualLog == null) {
                 return InvokeResult.failure("更新失败, 该记录不存在");
             }
-            setProp(actualLog, srcType, port, ip, content, addTime);
+            setProp(actualLog, srcType, port, ip, content, address, addTime);
             actualLog.update();
         } else {
             ActualLog actualLog = new ActualLog();
-            setProp(actualLog, srcType, port, ip, content, addTime);
+            setProp(actualLog, srcType, port, ip, content, address, addTime);
             actualLog.save();
         }
         return InvokeResult.success();
     }
 
-    private void setProp(ActualLog actualLog, String srcType, Integer port, String ip, String content, Date addTime) {
+    private void setProp(ActualLog actualLog, String srcType, Integer port, String ip, String content, String address, Date addTime) {
         actualLog.setSrcType(srcType);
         actualLog.setPort(port);
         actualLog.setIp(ip);
+        actualLog.setAddress(address);
         actualLog.setContent(content);
         if (addTime == null) {
             actualLog.setAddTime(new Date());
         } else {
             actualLog.setAddTime(addTime);
         }
+    }
+
+    public Page<ActualLog> getLogPage(int page, int rows, String keyword, String srcType, String orderbyStr) {
+        String select="select c.*";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_log c ");
+        sqlExceptSelect.append(" where 1=1 ");
+        if (StringUtils.isNotEmpty(keyword)) {
+            keyword = StringUtils.trim(keyword);
+            if (StringUtils.isNotEmpty(keyword)) {
+                sqlExceptSelect.append(" and (c.port like '%" + keyword + "%' or c.address like '%" + keyword
+                        + "%' or c.content like '%" + keyword + "%') ");
+            }
+        }
+        if (StringUtils.isNotEmpty(srcType)) {
+            sqlExceptSelect.append(" and c.src_type='" + srcType + "' ");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 }

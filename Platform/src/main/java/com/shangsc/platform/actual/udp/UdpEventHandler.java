@@ -49,8 +49,6 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
         String chkStr = ConversionUtil.hex16Str2String(ConversionUtil.bytes2Hex16Str(buffer.array()));
         //e.getChannel().write(e.getMessage());
         if (StringUtils.isNotEmpty(chkStr) && chkStr.indexOf(ActualType.UDP_PRFIX) >= 0) {
-            //记录消息来源
-            ActualLog.dao.save(null, ActualType.UDP, 10001, PropKit.get("config.host"), result, new Date());
 
             recordMsg(result);
 
@@ -130,6 +128,8 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                         System.out.println("log not exist meter_address :" + meterAddress);
                     }
                 }
+                //记录消息来源
+                ActualLog.dao.save(null, ActualType.UDP, 10001, PropKit.get("config.host"), result, meterAddress, new Date());
             }
         } catch (Exception e) {
             e.printStackTrace();

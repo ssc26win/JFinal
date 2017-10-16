@@ -49,6 +49,14 @@ public abstract class BaseActualLog<M extends BaseActualLog<M>> extends BaseMode
 		return get("content");
 	}
 
+	public void setAddress(String address) {
+		set("address", address);
+	}
+
+	public String getAddress() {
+		return get("address");
+	}
+
 	public void setAddTime(java.util.Date addTime) {
 		set("add_time", addTime);
 	}

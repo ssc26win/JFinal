@@ -32,18 +32,10 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lineNum">路别</label>
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterAddress">表计地址</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" id="lineNum" name="lineNum" value="${item.lineNum}" class="col-xs-12 col-sm-6">
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meter_address">表计地址</label>
-                <div class="col-xs-12 col-sm-9">
-                  <div class="clearfix">
-                    <input type="text" id="meter_address" name="meter_address" value="${item.meter_address}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="meterAddress" name="meterAddress" value="${item.meter_address}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
@@ -57,15 +49,6 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="alarm_0">告警</label>
-                <div class="col-xs-12 col-sm-9">
-                  <div class="clearfix">
-                    <input type="radio" name="alarm" id="alarm_0" value="0" ${item.alarm eq 0?'checked':'' }/>否
-                    <input type="radio" name="alarm" id="alarm_1" value="1" ${item.alarm eq 1?'checked':'' }/>是
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="netWater">净用水量</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
@@ -74,10 +57,10 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="state">状态</label>
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="sumWater">总用水量</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" id="state" name="state" value="${item.state}" class="col-xs-12 col-sm-6">
+                    <input type="number" id="sumWater" name="sumWater" value="${item.sumWater}" class="col-xs-12 col-sm-6">
                   </div>
                 </div>
               </div>
@@ -126,13 +109,13 @@
       errorClass: 'help-block',
       focusInvalid: false,
       rules: {
-        name:{
+        meterAddress:{
           required: true
-        }
+        },
       },
       messages: {
-        name:{
-          required: "请输入用户名"
+        meterAddress:{
+          required: "请输入表计地址"
         }
       },
       highlight: function (e) {

@@ -41,8 +41,6 @@ public class TcpServerHandler extends SimpleChannelHandler {
         System.out.println("ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
 
         if (StringUtils.isNotEmpty(result) && result.startsWith(ActualType.TCP_PRFIX) && result.endsWith(ActualType.TCP_SUFFIX)) {
-            // 记录消息来源
-            ActualLog.dao.save(null, ActualType.TCP, Integer.parseInt(PropKit.get("config.tcp.port")), PropKit.get("config.host"), result, new Date());
             if (TcpData.login_data_length == result.length()) {
                 String response = ConversionUtil.tcpLoginResp(result, "login");
                 //e.getChannel().write(response);
@@ -139,6 +137,8 @@ public class TcpServerHandler extends SimpleChannelHandler {
                 } else {
                     System.out.println("log not exist meter_address :" + meterAddress);
                 }
+                // 记录消息来源
+                ActualLog.dao.save(null, ActualType.TCP, Integer.parseInt(PropKit.get("config.tcp.port")), PropKit.get("config.host"), result, meterAddress, new Date());
             }
         } catch (Exception e) {
             e.printStackTrace();

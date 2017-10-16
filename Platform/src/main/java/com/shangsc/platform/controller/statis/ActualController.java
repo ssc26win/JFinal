@@ -12,6 +12,7 @@ import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.util.CodeNumUtil;
 import com.shangsc.platform.util.ToolDateTime;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -85,8 +86,14 @@ public class ActualController extends BaseController {
         String innerCode = this.getPara("innerCode");
         String meter_address = this.getPara("meter_address");
         String alarm = this.getPara("alarm");
-        BigDecimal netWater = CodeNumUtil.getBigDecimal(this.getPara("netWater"), 2);
-        BigDecimal sumWater = CodeNumUtil.getBigDecimal(this.getPara("sumWater"), 2);
+        BigDecimal netWater = new BigDecimal("0.00");
+        if (StringUtils.isNotEmpty(this.getPara("netWater"))) {
+            netWater = CodeNumUtil.getBigDecimal(this.getPara("netWater"), 2);
+        }
+        BigDecimal sumWater = new BigDecimal("0.00");
+        if (StringUtils.isNotEmpty(this.getPara("sumWater"))) {
+            sumWater = CodeNumUtil.getBigDecimal(this.getPara("sumWater"), 2);
+        }
         Integer state = this.getParaToInt("state");
         String voltage = this.getPara("voltage");
         Date writeTime = null;

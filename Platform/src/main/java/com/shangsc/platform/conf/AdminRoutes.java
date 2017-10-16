@@ -50,6 +50,7 @@ public class AdminRoutes extends Routes{
 		add("/basic/ad", AdController.class, "/WEB-INF/view/basic");
 
 		add("/statis/actual", ActualController.class, "/WEB-INF/view/statis");
+		add("/statis/actuallog", ActuallogController.class, "/WEB-INF/view/statis");
 
         add("/statis/readnum", ReadnumStatisController.class, "/WEB-INF/view/statis");
         add("/statis/daily", DailyStatisController.class, "/WEB-INF/view/statis");

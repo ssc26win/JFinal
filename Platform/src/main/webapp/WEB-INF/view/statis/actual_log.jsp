@@ -30,19 +30,26 @@
             <div class="widget-body">
               <div class="widget-main">
                 <div class="row">
-                  <div class="col-xs-12 col-sm-8">
-                    <div class="input-group">
-                          <span class="input-group-addon">
-                              <i class="ace-icon fa fa-check"></i>
-                          </span>
-                          <input type="text" id="name" name="name" class="form-control search-query" placeholder="请输入关键字" />
-                          <span class="input-group-btn">
-                              <button type="button" id="btn_search" class="btn btn-purple btn-sm">
-                                <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
-                                搜索
-                              </button>
-                          </span>
-                    </div>
+                  <div class="col-sm-12">
+                    <form id="exportForm">
+                      <div class="input-group">
+                        <input type="text" id="name" name="name" class="search-query" style="height: 34px;width: 400px;" placeholder="请输入关键字" />
+                        <select id="srcType" name="srcType" style="height: 34px;width: 159px;margin-left: 5px;">
+                          <option value="">请选择协议类型</option>
+                          <option value="tcp">tcp</option>
+                          <option value="udp">udp</option>
+                        </select>
+                        <span class="" style="margin-left: 10px;margin-bottom: 5px;">
+                            <button type="button" id="btn_search" class="btn btn-purple btn-sm">
+                              <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+                              搜索
+                            </button>
+                            <button type="button" id="btn-copy" class="btn btn-success btn-sm" style="margin-left:10px;">
+                              复制
+                            </button>
+                        </span>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -50,13 +57,6 @@
           </div>
         </div>
         <div class="col-xs-12">
-          <div class="row-fluid" style="margin-bottom: 5px;">
-            <div class="span12 control-group">
-              <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
-              <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
-              <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
-            </div>
-          </div>
           <!-- PAGE CONTENT BEGINS -->
           <table id="grid-table"></table>
 
@@ -94,21 +94,17 @@
     });
 
     $("#grid-table").jqGrid({
-      url:'${context_path}/statis/actual/getListData',
+      url:'${context_path}/statis/actuallog/getListData',
       mtype: "GET",
       datatype: "json",
       colModel: [
-        { label: '单位名称', name: 'companyName', width: 120, sortable:false},
-        { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
-        { label: '路别', name: 'line_num', width: 100, sortable:false},
-        { label: '表计地址', name: 'meter_address', width: 100,sortable:false},
-        { label: '水源类型', name: 'watersTypeName', width: 45, sortable:false},
-       /* { label: '告警', name: 'alarm', width: 45, sortable:false},*/
-        { label: '净用水量（立方米）', name: 'net_water', width: 100, sortable:true},
-        { label: '累计用水量（立方米）', name: 'sum_water', width: 100, sortable:true},
-        { label: '当前状态', name: 'stateName', width: 50, sortable:false},
-        { label: '抄表时间', name: 'write_time', width: 100, sortable:true},
-        { label: '电池电压（伏特v）', name: 'voltage', width: 100, sortable:true}
+        { label: '协议类型', name: 'src_type', width: 60, sortable:false},
+        { label: '端口', name: 'port', width: 60, sortable:false},
+        { label: 'IP', name: 'ip', width: 100, sortable:false},
+        { label: '上传内容', name: 'content', width: 500,sortable:false},
+        { label: '表计地址', name: 'address', width: 80, sortable:false},
+        { label: '采集时间', name: 'add_time', width: 120, sortable:true},
+        { label: '操作', name: 'operate', width: 60, sortable:false}
       ],
       viewrecords: true,
       height: 560,
@@ -134,26 +130,14 @@
     $("#btn_search").click(function(){
       //此处可以添加对查询数据的合法验证
       var name = $("#name").val();
+      var srcType = $("#srcType").val();
       $("#grid-table").jqGrid('setGridParam',{
         datatype:'json',
-        postData:{'name':name}, //发送数据
+        postData:{'name':name,'srcType':srcType}, //发送数据
         page:1
       }).trigger("reloadGrid"); //重新载入
     });
-    $("#btn-add").click(function(){//添加页面
-      parent.layer.open({
-        title:'添加新记录',
-        type: 2,
-        area: ['770px', '580px'],
-        fix: false, //不固定
-        maxmin: true,
-        content: '${context_path}/statis/actual/add'
-      });
-    });
-    $("#btn-deleteData").click(function(){
-      deleteData();
-    });
-    $("#btn-edit").click(function(){//添加页面
+    $("#btn-copy").click(function(){//添加页面
       var rid = getOneSelectedRows();
       if(rid == -1){
         layer.msg("请选择一个记录", {
@@ -167,12 +151,12 @@
         });
       }else {
         parent.layer.open({
-          title:'修改记录信息',
+          title:'采集记录信息',
           type: 2,
-          area: ['770px', '580px'],
+          area: ['770px', '380px'],
           fix: false, //不固定
           maxmin: true,
-          content: '${context_path}/statis/actual/add?id='+rid
+          content: '${context_path}/statis/actuallog/showContent?id='+rid
         });
       }
     });
@@ -222,34 +206,6 @@
         return "-2";
       }
     }
-  }
-
-  function deleteData(){
-    var rid = getOneSelectedRows();
-    if(rid == -1) {
-      layer.msg("请选择一个记录", {
-        icon: 2,
-        time: 1000 //2秒关闭（如果不配置，默认是3秒）
-      });
-      return;
-    }
-    var submitData = {
-      "ids" : getSelectedRows()
-    };
-    layer.confirm("确认删除记录？", function(){
-      $.post("${context_path}/statis/actual/delete", submitData,function(data) {
-        if (data.code == 0) {
-          layer.msg("操作成功", {
-            icon: 1,
-            time: 1000 //1秒关闭（如果不配置，默认是3秒）
-          },function(){
-            reloadGrid();
-          });
-        }  else{
-          layer.alert("操作失败");
-        }
-      },"json");
-    });
   }
 
   function reloadGrid(){
