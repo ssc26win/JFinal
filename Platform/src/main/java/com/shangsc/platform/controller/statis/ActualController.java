@@ -84,7 +84,7 @@ public class ActualController extends BaseController {
     public void save(){
         Long id = this.getParaToLong("id");
         String innerCode = this.getPara("innerCode");
-        String meter_address = this.getPara("meter_address");
+        String meter_address = this.getPara("meterAddress");
         String alarm = this.getPara("alarm");
         BigDecimal netWater = new BigDecimal("0.00");
         if (StringUtils.isNotEmpty(this.getPara("netWater"))) {
