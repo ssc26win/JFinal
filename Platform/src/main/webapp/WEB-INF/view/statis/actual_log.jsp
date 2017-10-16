@@ -98,13 +98,12 @@
       mtype: "GET",
       datatype: "json",
       colModel: [
-        { label: '协议类型', name: 'src_type', width: 60, sortable:false},
-        { label: '端口', name: 'port', width: 60, sortable:false},
-        { label: 'IP', name: 'ip', width: 100, sortable:false},
+        { label: '协议类型', name: 'src_type', width: 50, sortable:false},
+        { label: '端口', name: 'port', width: 50, sortable:false},
+        { label: 'IP', name: 'ip', width: 60, sortable:false},
         { label: '上传内容', name: 'content', width: 500,sortable:false},
         { label: '表计地址', name: 'address', width: 80, sortable:false},
-        { label: '采集时间', name: 'add_time', width: 120, sortable:true},
-        { label: '操作', name: 'operate', width: 60, sortable:false}
+        { label: '采集时间', name: 'add_time', width: 120, sortable:true}
       ],
       viewrecords: true,
       height: 560,
