@@ -108,7 +108,7 @@
                 data: [
                     //{name:'远传水表总数量' + '(' + total + ')', y:total,url:'${context_path}/basic/meter'},
                     {name:'正常表数量' + '(' + normalTotal + ')', y:normalTotal,url:'${context_path}/basic/meter/normal'},
-                    {name:'异常表数量' + '(' + exptionTotal + ')', y:exptionTotal,url:'${context_path}/basic/meter/exption'},
+                    {name:'备用表数量' + '(' + exptionTotal + ')', y:exptionTotal,url:'${context_path}/basic/meter/exption'},
                 ]
             }];
 
