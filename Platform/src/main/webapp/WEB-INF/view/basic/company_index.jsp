@@ -33,6 +33,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <form id="exportForm" action="${context_path}/basic/company/export" method="post">
+                                            <input type="hidden" id="flagType" name="flagType" value="${flag}"/>
                                             <div class="input-group">
                                                     <input type="text" id="name" name="name" class="search-query" style="height: 34px;width: 400px;" placeholder="请输入关键字" />
                                                     <select id="company_type" name="company_type" style="height: 34px;width: 159px;margin-left: 5px;">

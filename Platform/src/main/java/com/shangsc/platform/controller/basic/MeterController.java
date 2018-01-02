@@ -6,6 +6,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 import com.shangsc.platform.code.DictCode;
+import com.shangsc.platform.code.ExportType;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
@@ -130,11 +131,19 @@ public class MeterController extends BaseController {
     @RequiresPermissions(value = {"/basic/meter"})
     public void export() {
         String keyword = this.getPara("name");
+        String flagType = this.getPara("flagType");
         Set<Condition> conditions = new HashSet<Condition>();
         if (CommonUtils.isNotEmpty(keyword)) {
             conditions.add(new Condition("name", Operators.LIKE, keyword));
         }
-        Page<WaterMeter> pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        Page<WaterMeter> pageInfo = new Page<>();
+        if (ExportType.METER_NORMAL.equals(flagType)) {
+            pageInfo = WaterMeter.me.getNormalMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        } else if (ExportType.METER_WARN.equals(flagType)) {
+            pageInfo = WaterMeter.me.getExceptionWaterMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        } else {
+            pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        }
         List<WaterMeter> list = pageInfo.getList();
         setVoProp(list);
         WaterMeterExportService service = new WaterMeterExportService();

@@ -49,7 +49,14 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return num>0?true:false;
     }
 
-    public InvokeResult save(Long id, String innerCode, String lineNum, String meterNum,String meterAddress, BigDecimal times,
+    public boolean hasExistAddress(String meterAddress){
+        Set<Condition> conditions = new HashSet<Condition>();
+        conditions.add(new Condition("meter_address", Operators.EQ, meterAddress));
+        long num = this.getCount(conditions);
+        return num>0?true:false;
+    }
+
+    public InvokeResult save(Long id, String innerCode, String lineNum, String meterNum, String meterAddress, BigDecimal times,
                             Integer watersType, String meterAttr, Integer chargeType, String billingCycle, Date registDate) {
         if (!Company.me.hasExistCompany(innerCode)) {
             return InvokeResult.failure("公司编号不存在");
@@ -147,6 +154,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
                         "' or twm.meter_address='" + keyword + "' or tc.name like '%" + keyword + "%') ");
             }
         }
+        sqlExceptSelect.append(" GROUP BY twm.meter_address ");
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
         }
@@ -167,6 +175,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
                         "' or twm.meter_address='" + keyword + "' or tc.name like '%" + keyword + "%') ");
             }
         }
+        sqlExceptSelect.append(" GROUP BY twm.meter_address ");
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
         }

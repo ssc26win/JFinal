@@ -33,6 +33,7 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-8">
                                         <form id="exportForm" action="${context_path}/basic/meter/export" method="post">
+                                            <input type="hidden" id="flagType" name="flagType" value="${flag}"/>
                                             <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="ace-icon fa fa-check"></i>

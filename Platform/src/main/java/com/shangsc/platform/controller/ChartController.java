@@ -200,10 +200,10 @@ public class ChartController extends Controller {
         List<String> day = new ArrayList<String>();
         for (Record record : records) {
             sumWater.add(record.get("sumWater"));
-            day.add( record.get("DAY").toString());
+            day.add( record.get("month").toString());
         }
         obj.put("sumWater", sumWater);
-        obj.put("day", day);
+        obj.put("month", day);
         this.renderJson(obj);
     }
 

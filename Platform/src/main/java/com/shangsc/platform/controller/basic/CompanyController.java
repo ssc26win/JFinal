@@ -6,6 +6,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
 import com.shangsc.platform.code.DictCode;
+import com.shangsc.platform.code.ExportType;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
@@ -196,8 +197,18 @@ public class CompanyController extends BaseController {
     public void export() {
         CompanyExportService service = new CompanyExportService();
         String keyword = this.getPara("name");
-        String companyType=this.getPara("companyType");
-        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr(), companyType);
+        String companyType = this.getPara("companyType");
+        String flagType = this.getPara("flagType");
+        Page<Company> pageInfo = new Page<>();
+        if (ExportType.COMPANY_NORMAL.equals(flagType)) {
+            pageInfo = Company.me.getNormalCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        } else if (ExportType.COMPANY_SUPPLY.equals(flagType)) {
+            pageInfo = Company.me.getSupplyCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        } else if (ExportType.COMPANY_WARN.equals(flagType)) {
+            pageInfo = Company.me.getWarnCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        } else {
+            pageInfo = Company.me.getCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr(), companyType);
+        }
         List<Company> companies = pageInfo.getList();
         if (CommonUtils.isNotEmpty(companies)) {
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);

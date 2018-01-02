@@ -61,6 +61,13 @@
                     </div>
                 </div>
                 <div class="col-xs-12" style="margin-bottom: 5px;">
+                    <div class="row-fluid" style="margin-bottom: 5px;">
+                        <div class="span12 control-group">
+                            <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
+                            <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
+                            <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
+                        </div>
+                    </div>
                     <!-- PAGE CONTENT BEGINS -->
                     <table id="grid-table"></table>
 
@@ -154,7 +161,72 @@
         $("#btn-exportData").click(function(){
             $("#exportForm").submit();
         });
+        $("#btn-add").click(function(){//添加页面
+            parent.layer.open({
+                title:'添加新记录',
+                type: 2,
+                area: ['770px', '580px'],
+                fix: false, //不固定
+                maxmin: true,
+                content: '${context_path}/statis/actual/add'
+            });
+        });
+        $("#btn-deleteData").click(function(){
+            deleteData();
+        });
+        $("#btn-edit").click(function(){//添加页面
+            var rid = getOneSelectedRows();
+            if(rid == -1){
+                layer.msg("请选择一个记录", {
+                    icon: 2,
+                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                });
+            }else if(rid == -2 ){
+                layer.msg("只能选择一个记录", {
+                    icon: 2,
+                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                });
+            }else {
+                parent.layer.open({
+                    title:'修改记录信息',
+                    type: 2,
+                    area: ['770px', '580px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: '${context_path}/statis/actual/add?id='+rid
+                });
+            }
+        });
     });
+
+    function deleteData(){
+        var rid = getOneSelectedRows();
+        if(rid == -1) {
+            layer.msg("请选择一个记录", {
+                icon: 2,
+                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+            });
+            return;
+        }
+        var submitData = {
+            "ids" : getSelectedRows()
+        };
+        layer.confirm("确认删除记录？", function(){
+            $.post("${context_path}/statis/actual/delete", submitData,function(data) {
+                if (data.code == 0) {
+                    layer.msg("操作成功", {
+                        icon: 1,
+                        time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                    },function(){
+                        reloadGrid();
+                    });
+                }  else{
+                    layer.alert("操作失败");
+                }
+            },"json");
+        });
+    }
+
     //replace icons with FontAwesome icons like above
     function updatePagerIcons(table) {
         var replacement =

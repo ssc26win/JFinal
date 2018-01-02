@@ -49,6 +49,9 @@ public class ActualController extends BaseController {
                 }
                 //co.put("alarm", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAlarm())));
                 // 正常 异常（24小时内没有数据传回来时是异常） 停用（一天传回来数没有增量是停用）
+                if (co.getNetWater().compareTo(new BigDecimal(0.00)) <= 0) {
+                    co.setState(Integer.parseInt(ActualState.STOP));
+                }
                 if (co.getWriteTime() != null) {
                     long target = now.getTime() - co.getWriteTime().getTime();
                     if (target > dayTime) {
@@ -56,9 +59,6 @@ public class ActualController extends BaseController {
                     }
                 } else {
                     co.setState(Integer.parseInt(ActualState.EXCEPTION));
-                }
-                if (co.getNetWater().compareTo(new BigDecimal(0.00)) <= 0) {
-                    co.setState(Integer.parseInt(ActualState.STOP));
                 }
                 co.put("stateName", stateMap.get(String.valueOf(co.getState())));
                 list.set(i, co);

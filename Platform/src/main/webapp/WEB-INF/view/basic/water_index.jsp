@@ -119,7 +119,7 @@
                 { label: '九月', name: 'september', width: 55, sortable:true},
                 { label: '十月', name: 'october', width: 55, sortable:true},
                 { label: '十一月', name: 'november', width: 55, sortable:true},
-                { label: '十一月', name: 'december', width: 55, sortable:true}
+                { label: '十二月', name: 'december', width: 55, sortable:true}
             ],
             viewrecords: true,
             height: 560,

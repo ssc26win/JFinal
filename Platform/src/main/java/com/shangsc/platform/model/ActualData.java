@@ -325,9 +325,9 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public List<Record> getSupplyMonthActualData( ) {
-		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+		String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
 				" where inner_code in (select inner_code from t_company where company_type=2)" +
-				" GROUP BY date_format(t.write_time, '%Y-%m-%d')";
+				" GROUP BY date_format(t.write_time, '%Y-%m')";
 		return Db.find(sql);
 	}
 
