@@ -35,7 +35,15 @@ public class ActualController extends BaseController {
     @RequiresPermissions(value={"/statis/actual"})
     public void getListData() {
         String keyword=this.getPara("name");
-        Page<ActualData> pageInfo = ActualData.me.getActualDataPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        String status=this.getPara("status", "-1");
+        Page<ActualData> pageInfo = new Page<>();
+        if (ActualState.Actual_List().contains(status)) {
+            pageInfo = ActualData.me.getActualDataPageByStatus(getPage(), this.getRows(), keyword, this.getOrderbyStr(), status);
+        } else if (ActualState.DISABLE.equals(status)) {
+            pageInfo = ActualData.me.getActualDataPageByDisable(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        } else {
+            pageInfo = ActualData.me.getActualDataPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        }
         List<ActualData> list = pageInfo.getList();
         Map<String, String> stateMap = ActualState.getMap();
         long dayTime = 24 * 60 * 60 * 1000;
@@ -49,7 +57,7 @@ public class ActualController extends BaseController {
                 }
                 //co.put("alarm", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAlarm())));
                 // 正常 异常（24小时内没有数据传回来时是异常） 停用（一天传回来数没有增量是停用）
-                if (co.getNetWater().compareTo(new BigDecimal(0.00)) <= 0) {
+                if (co.getNetWater() != null && co.getNetWater().compareTo(new BigDecimal(0.00)) <= 0) {
                     co.setState(Integer.parseInt(ActualState.STOP));
                 }
                 if (co.getWriteTime() != null) {
@@ -59,6 +67,9 @@ public class ActualController extends BaseController {
                     }
                 } else {
                     co.setState(Integer.parseInt(ActualState.EXCEPTION));
+                }
+                if (co.getId() == null) {
+                    co.setState(Integer.parseInt(ActualState.DISABLE));
                 }
                 co.put("stateName", stateMap.get(String.valueOf(co.getState())));
                 list.set(i, co);

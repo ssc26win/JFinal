@@ -76,6 +76,8 @@
             total = data.total;
             normalTotal = data.normalTotal;
             exptionTotal = data.exptionTotal;
+            stopTotal = data.stopTotal;
+            disableTotal = data.disableTotal;
             var chart1 = {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -107,8 +109,10 @@
                 name: '水表数量（%）',
                 data: [
                     //{name:'远传水表总数量' + '(' + total + ')', y:total,url:'${context_path}/basic/meter'},
-                    {name:'正常表数量' + '(' + normalTotal + ')', y:normalTotal,url:'${context_path}/basic/meter/normal'},
-                    {name:'备用表数量' + '(' + exptionTotal + ')', y:exptionTotal,url:'${context_path}/basic/meter/exption'},
+                    {name:'正常表' + '(' + normalTotal + ')', y:normalTotal,url:'${context_path}/basic/meter/normal'},
+                    {name:'停用表' + '(' + stopTotal + ')', y:stopTotal,url:'${context_path}/basic/meter/stop'},
+                    {name:'备用表' + '(' + exptionTotal + ')', y:exptionTotal,url:'${context_path}/basic/meter/exption'},
+                    {name:'未启用表' + '(' + disableTotal + ')', y:disableTotal,url:'${context_path}/basic/meter/disable'},
                 ]
             }];
 

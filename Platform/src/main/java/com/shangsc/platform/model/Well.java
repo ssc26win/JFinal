@@ -2,6 +2,7 @@ package com.shangsc.platform.model;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.model.Condition;
@@ -41,6 +42,7 @@ public class Well extends BaseWell<Well> {
 		this.paginate(page, rows, select, sqlExceptSelect.toString());
 		return this.paginate(page, rows, select, sqlExceptSelect.toString());
 	}
+
 	/**
 	 * 水表编号是否已存在
 	 * @param wellNum
@@ -53,6 +55,25 @@ public class Well extends BaseWell<Well> {
 		return num>0?true:false;
 	}
 
+    /**
+     * 水表编号是否已存在
+     * @param wellNum
+     * @return
+     */
+    public boolean hasExistWellNum(Long id, String wellNum){
+        StringBuffer sqlSelect = new StringBuffer("select count(1) as existCount from t_well where 1=1 ");
+        sqlSelect.append(" and well_num='" + wellNum + "'");
+        if (id != null) {
+            sqlSelect.append(" and id<>" + id + "");
+        }
+        Record record = Db.findFirst(sqlSelect.toString());
+        if (record != null) {
+            return record.getLong("existCount") == 1L;
+        } else {
+            return false;
+        }
+    }
+
 	public InvokeResult save(Long id, String innerCode,	String name, String wellNum,
 							 String village, String address, BigDecimal wellDepth, BigDecimal groundDepth, String year, Integer oneselfWell,
 							 BigDecimal innerDiameter, String material,	String application,	Integer electromechanics, Integer calculateWater,
@@ -60,9 +81,12 @@ public class Well extends BaseWell<Well> {
 							 String nameCode, String watersType, String useEfficiency, String method, Integer licence,
 							 String licenceCode, BigDecimal waterWithdrawals) {
 		if (!Company.me.hasExistCompany(innerCode)) {
-			return InvokeResult.failure("公司编号不存在");
+			return InvokeResult.failure("保存失败, 公司编号不存在");
 		}
-		if (null != id && id > 0l) {
+        if (this.hasExistWellNum(id, wellNum)) {
+            return InvokeResult.failure("保存失败, 水井编号已存在");
+        }
+		if (null != id && id > 0L) {
 			Well well = this.findById(id);
 			if (well == null) {
 				return InvokeResult.failure("更新失败, 该水井不存在");
@@ -72,16 +96,12 @@ public class Well extends BaseWell<Well> {
 					groundType,	nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
 			well.update();
 		} else {
-			if (this.hasExist(wellNum)) {
-				return InvokeResult.failure("水井编号已存在");
-			} else {
-				Well well = new Well();
-				well = setProp(well, innerCode, name, wellNum, village, address, wellDepth, groundDepth, year, oneselfWell,
-						innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
-						groundType,	nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
-				well.save();
-				Company.me.updateWellNum(innerCode, true);
-			}
+            Well well = new Well();
+            well = setProp(well, innerCode, name, wellNum, village, address, wellDepth, groundDepth, year, oneselfWell,
+                    innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
+                    groundType,	nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
+            well.save();
+            Company.me.updateWellNum(innerCode, true);
 		}
 		return InvokeResult.success();
 	}
@@ -156,11 +176,12 @@ public class Well extends BaseWell<Well> {
         for (int i = 0; i < maps.size(); i++) {
             Map<Integer, String> map = maps.get(i);
             Well well = new Well();
-            if (StringUtils.isEmpty(map.get(0)) || hasExist(map.get(0))) {
+            String wellNum = StringUtils.trim(map.get(0));
+            if (StringUtils.isEmpty(wellNum) || hasExistWellNum(null, wellNum)) {
                 continue;
             }
-            if (StringUtils.isNotEmpty(map.get(0))) {
-                well.setWellNum(map.get(0));
+            if (StringUtils.isNotEmpty(wellNum)) {
+                well.setWellNum(wellNum);
             }
             if (StringUtils.isNotEmpty(map.get(1))) {
                 well.setName(map.get(1));

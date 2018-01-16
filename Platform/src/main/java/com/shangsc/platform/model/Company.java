@@ -87,6 +87,34 @@ public class Company extends BaseCompany<Company> {
         return num>0?true:false;
     }
 
+    public boolean hasExistName(Long id, String name){
+        StringBuffer sqlSelect = new StringBuffer("select count(1) as existCount from t_company where 1=1 ");
+        sqlSelect.append(" and name='" + name + "'");
+        if (id != null) {
+            sqlSelect.append(" and id<>" + id + "");
+        }
+        Record record = Db.findFirst(sqlSelect.toString());
+        if (record != null) {
+            return record.getLong("existCount") == 1L;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean hasExistCode(Long id, String innerCode){
+        StringBuffer sqlSelect = new StringBuffer("select count(1) as existCount from t_company where 1=1 ");
+        sqlSelect.append(" and inner_code='" + innerCode + "'");
+        if (id != null) {
+            sqlSelect.append(" and id<>" + id + "");
+        }
+        Record record = Db.findFirst(sqlSelect.toString());
+        if (record != null) {
+            return record.getLong("existCount") == 1L;
+        } else {
+            return false;
+        }
+    }
+
     public InvokeResult deleteData(String idStrs) {
         List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
         for (int i = 0; i < ids.size(); i++) {
@@ -100,7 +128,15 @@ public class Company extends BaseCompany<Company> {
                              String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
                              Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createDate,
                              BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type) {
-        if (null != id && id > 0l) {
+        if (hasExistCode(id, innerCode)) {
+            return InvokeResult.failure("保存失败，单位编号已存在");
+        }
+
+        if (hasExistName(id, name)) {
+            return InvokeResult.failure("保存失败，单位名称已存在");
+        }
+
+        if (null != id && id > 0L) {
             Company company = this.findById(id);
             if (company == null) {
                 return InvokeResult.failure("更新失败单位, 该单位不存在");
@@ -111,16 +147,12 @@ public class Company extends BaseCompany<Company> {
                     self_free_price, company_type);
             company.update();
         } else {
-            if(this.hasExist(name, innerCode)){
-                return InvokeResult.failure("单位名称已存在");
-            } else {
-                Company company = new Company();
-                company = setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
-                        gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
-                        remotemeterCount, unitType, longitude, latitude, createDate, self_well_price, surface_price,
-                        self_free_price, company_type);
-                company.save();
-            }
+            Company company = new Company();
+            company = setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
+                    gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
+                    remotemeterCount, unitType, longitude, latitude, createDate, self_well_price, surface_price,
+                    self_free_price, company_type);
+            company.save();
         }
         return InvokeResult.success();
     }

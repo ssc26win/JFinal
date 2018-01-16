@@ -66,21 +66,84 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getActualDataPage(int page, int rows, String keyword, String orderbyStr) {
 		//select * from (select * from t_actual_data order by write_time desc) a group by a.meter_address order by write_time desc
-		String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county,twm.line_num,twm.waters_type ";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from (select * from t_actual_data order by write_time desc)  tad left join " +
-				" t_company tc on tad.inner_code=tc.inner_code left join t_water_meter twm on tad.meter_address=twm.meter_address");
-
+		//String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county,twm.line_num,twm.waters_type ";
+		//StringBuffer sqlExceptSelect = new StringBuffer(" from (select * from t_actual_data order by write_time desc)  tad left join " +
+		//		" t_company tc on tad.inner_code=tc.inner_code left join t_water_meter twm on tad.meter_address=twm.meter_address");
+        //
+		//sqlExceptSelect.append(" where 1=1");
+		//if (StringUtils.isNotEmpty(keyword)) {
+		//	sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
+		//			+ "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ");
+		//}
+		//sqlExceptSelect.append(" group by tad.meter_address ");
+		//if (StringUtils.isNotEmpty(orderbyStr)) {
+		//	sqlExceptSelect.append(orderbyStr);
+		//}
+		String select = "select * ";
+		StringBuffer sqlExceptSelect = new StringBuffer("from (" +
+				"select tad.*,tc.name as companyName,tc.water_unit,tc.county,twm.line_num,twm.waters_type   from (select * from t_actual_data order by write_time desc)  tad " +
+				"left join  t_company tc on tad.inner_code=tc.inner_code " +
+				"left join t_water_meter twm on tad.meter_address=twm.meter_address where 1=1 group by tad.meter_address " +
+				"union all (SELECT tad.id,tc.inner_code,tm.meter_address,tad.alarm,tad.net_water,tad.sum_water,tad.state," +
+				"tad.write_time,tad.voltage,companyName,tc.water_unit,tc.county,tm.line_num,tm.waters_type FROM t_water_meter tm " +
+				"left join (select name as companyName,water_unit,county,inner_code from t_company) tc on tm.inner_code=tc.inner_code " +
+				"left join t_actual_data tad on tad.meter_address=tm.meter_address " +
+				"where tm.meter_address not in (select meter_address from t_actual_data))) alld");
 		sqlExceptSelect.append(" where 1=1");
 		if (StringUtils.isNotEmpty(keyword)) {
-			sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
-					+ "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ");
+			sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
+					+ "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
 		}
-		sqlExceptSelect.append(" group by tad.meter_address ");
-		orderbyStr = " order by tad.write_time desc ";
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
 		}
-		this.paginate(page, rows, select, sqlExceptSelect.toString());
+		return this.paginate(page, rows, select, sqlExceptSelect.toString());
+	}
+
+	public Page<ActualData> getActualDataPageByDisable(int page, int rows, String keyword, String orderbyStr) {
+		String select = "select * ";
+		StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT tad.id,tc.inner_code,tm.meter_address,tad.alarm,tad.net_water,tad.sum_water,tad.state," +
+				"tad.write_time,tad.voltage,companyName,tc.water_unit,tc.county,tm.line_num,tm.waters_type FROM t_water_meter tm " +
+				"left join (select name as companyName,water_unit,county,inner_code from t_company) tc on tm.inner_code=tc.inner_code " +
+				"left join t_actual_data tad on tad.meter_address=tm.meter_address " +
+				"where tm.meter_address not in (select meter_address from t_actual_data)) alld ");
+		sqlExceptSelect.append(" where 1=1");
+		if (StringUtils.isNotEmpty(keyword)) {
+			sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
+					+ "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
+		}
+		if (StringUtils.isNotEmpty(orderbyStr)) {
+			sqlExceptSelect.append(orderbyStr);
+		}
+		return this.paginate(page, rows, select, sqlExceptSelect.toString());
+	}
+
+
+	public Page<ActualData> getActualDataPageByStatus(int page, int rows, String keyword, String orderbyStr, String status) {
+		//select * from (select * from t_actual_data order by write_time desc) a group by a.meter_address order by write_time desc
+		String select = "select * ";
+		StringBuffer sqlExceptSelect =	new StringBuffer("from (" +
+				"select al.*," +
+				"(case" +
+				"  when (unix_timestamp(NOW())-unix_timestamp(al.write_time))>86400 then 1" +
+				"  when net_water<=0 then 2" +
+				"  else 0" +
+				"  end) as stats" +
+				" from " +
+				"(select tad.*,tc.name as companyName,tc.water_unit,tc.county,twm.line_num,twm.waters_type from " +
+				"(select * from t_actual_data order by write_time desc)  tad " +
+				"left join  t_company tc on tad.inner_code=tc.inner_code " +
+				"left join t_water_meter twm on tad.meter_address=twm.meter_address where 1=1 group by tad.meter_address) al) alld ");
+		sqlExceptSelect.append(" where 1=1");
+		sqlExceptSelect.append(" and alld.stats = " + status);
+		if (StringUtils.isNotEmpty(keyword)) {
+			sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
+					+ "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
+		}
+		sqlExceptSelect.append(" group by alld.meter_address ");
+		if (StringUtils.isNotEmpty(orderbyStr)) {
+			sqlExceptSelect.append(orderbyStr);
+		}
 		return this.paginate(page, rows, select, sqlExceptSelect.toString());
 	}
 
@@ -276,14 +339,33 @@ public class ActualData extends BaseActualData<ActualData> {
 		return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
 	}
 
-	public List<Record> getTodayActualDataPage() {
+	public List<Record> getNormalMeter() {
 		Date date = new Date();
 		String now = ToolDateTime.getDateStr(date);
 		String nowBefore = ToolDateTime.getYesterdayStr(date);
 		StringBuffer sqlExceptSelect = new StringBuffer("select t.* from t_actual_data t where 1=1");
+		sqlExceptSelect.append(" and t.net_water > 0");
 		sqlExceptSelect.append(" and t.write_time >='" + nowBefore + "'");
 		sqlExceptSelect.append(" and t.write_time <='" + now + "'");
 		sqlExceptSelect.append(" GROUP BY t.meter_address");
+		return Db.find(sqlExceptSelect.toString());
+	}
+
+	public List<Record> getStopMeter() {
+		Date date = new Date();
+		String now = ToolDateTime.getDateStr(date);
+		String nowBefore = ToolDateTime.getYesterdayStr(date);
+		StringBuffer sqlExceptSelect = new StringBuffer("select t.* from t_actual_data t where 1=1");
+		sqlExceptSelect.append(" and t.net_water <= 0");
+		sqlExceptSelect.append(" and t.write_time >='" + nowBefore + "'");
+		sqlExceptSelect.append(" and t.write_time <='" + now + "'");
+		sqlExceptSelect.append(" GROUP BY t.meter_address");
+		return Db.find(sqlExceptSelect.toString());
+	}
+
+	public List<Record> getDisableMeter() {
+		StringBuffer sqlExceptSelect = new StringBuffer("select * from t_water_meter where meter_address not in (select meter_address from t_actual_data) ");
+		sqlExceptSelect.append(" GROUP BY meter_address");
 		return Db.find(sqlExceptSelect.toString());
 	}
 
@@ -335,6 +417,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		return ActualData.me.findFirst("select t.* from t_actual_data t where 1=1 and t.meter_address='" + meter_address + "' order by t.write_time desc limit 1");
 	}
 
+	@Deprecated
 	private String normalMeterConditionSql(){
 		Date date = new Date();
 		String nowBefore = ToolDateTime.getYesterdayStr(date);
@@ -346,6 +429,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		return exceptionMeterSql.toString();
 	}
 
+	@Deprecated
 	public Set<String> getNormalAddress() {
 		Set<String> address = new HashSet<>();
 		String normalMeterSql = normalMeterConditionSql();

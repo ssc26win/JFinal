@@ -17,7 +17,7 @@ public class Ad extends BaseAd<Ad> {
 	public static final Ad dao = new Ad();
 
 	public InvokeResult save(Long id, String title, String content, String imgUrl, Integer status, String userName) {
-		if (null != id && id > 0l) {
+		if (null != id && id > 0L) {
 			Ad ad = this.findById(id);
 			if (ad == null) {
 				return InvokeResult.failure("更新广告失败, 该广告不存在");

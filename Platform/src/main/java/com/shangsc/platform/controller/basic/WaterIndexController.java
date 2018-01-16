@@ -17,6 +17,7 @@ import com.shangsc.platform.export.WaterIndexExportService;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.WaterIndex;
 import com.shangsc.platform.util.CodeNumUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -59,7 +60,7 @@ public class WaterIndexController extends BaseController {
     @RequiresPermissions(value={"/basic/waterindex"})
     public void save(){
         Long id = this.getParaToLong("id");
-        String innerCode = this.getPara("innerCode");
+        String innerCode = StringUtils.trim(this.getPara("innerCode"));
         Integer watersType = this.getParaToInt("watersType");
         BigDecimal waterIndex =  CodeNumUtil.getBigDecimal(this.getPara("waterIndex"), 2);
         BigDecimal january = CodeNumUtil.getBigDecimal(this.getPara("january"), 2);

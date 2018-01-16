@@ -35,8 +35,15 @@
                           <span class="input-group-addon">
                               <i class="ace-icon fa fa-check"></i>
                           </span>
-                          <input type="text" id="name" name="name" class="form-control search-query" placeholder="请输入关键字" />
-                          <span class="input-group-btn">
+                            <input type="text" id="name" name="name" class="search-query" style="height: 34px;width: 400px;" placeholder="请输入关键字" />
+                            <select id="status" name="status" style="height: 34px;width: 159px;margin-left: 5px;">
+                              <option value="-1" selected>请选择表状态</option>
+                              <option value="0">正常</option>
+                              <option value="1">异常</option>
+                              <option value="2">停用</option>
+                              <option value="3">未启用</option>
+                            </select>
+                          <span class="" style="margin-left: 10px;margin-bottom: 5px;">
                               <button type="button" id="btn_search" class="btn btn-purple btn-sm">
                                 <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                 搜索
@@ -133,10 +140,11 @@
     });
     $("#btn_search").click(function(){
       //此处可以添加对查询数据的合法验证
+      var status = $("#status").val();
       var name = $("#name").val();
       $("#grid-table").jqGrid('setGridParam',{
         datatype:'json',
-        postData:{'name':name}, //发送数据
+        postData:{'name':name,'status':status}, //发送数据
         page:1
       }).trigger("reloadGrid"); //重新载入
     });

@@ -2,6 +2,7 @@ package com.shangsc.platform.model;
 
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
@@ -33,13 +34,31 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 		return num>0?true:false;
 	}
 
+	public boolean hasExist(Long id, String innerCode){
+		StringBuffer sqlSelect = new StringBuffer("select count(1) as existCount from t_water_index where 1=1 ");
+		sqlSelect.append(" and inner_code='" + innerCode + "'");
+		if (id != null) {
+			sqlSelect.append(" and id<>" + id + "");
+		}
+		Record record = Db.findFirst(sqlSelect.toString());
+		if (record != null) {
+			return record.getLong("existCount") == 1L;
+		} else {
+			return false;
+		}
+	}
+
 	public InvokeResult save(Long id, String innerCode, Integer watersType, BigDecimal waterIndex, BigDecimal january,
 							 BigDecimal february, BigDecimal march, BigDecimal april, BigDecimal may, BigDecimal june, BigDecimal july,
 							 BigDecimal august, BigDecimal september, BigDecimal october, BigDecimal november, BigDecimal december) {
 		if (!Company.me.hasExistCompany(innerCode)) {
-			return InvokeResult.failure("公司编号不存在");
+			return InvokeResult.failure("保存失败, 公司编号不存在");
 		}
-		if (null != id && id > 0l) {
+		//一个单位可能存在多个指标
+		//if (this.hasExist(id, innerCode)) {
+		//	return InvokeResult.failure("该公司用水指标已存在");
+		//}
+		if (null != id && id > 0L) {
 			WaterIndex index = this.findById(id);
 			if (index == null) {
 				return InvokeResult.failure("更新失败, 该单位用水指标不存在");
@@ -47,15 +66,12 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 			index = setProp(index, innerCode, watersType, waterIndex, january, february, march, april,
 					may, june, july, august, september, october, november, december);
 			index.update();
-		} else { //一个单位可能存在多个指标
-			//if (this.hasExist(innerCode)) {
-			//	return InvokeResult.failure("单位名称或编号已存在");
-			//} else {
-				WaterIndex index = new WaterIndex();
-				index = setProp(index, innerCode, watersType, waterIndex, january, february, march, april,
-						may, june, july, august, september, october, november, december);
-				index.save();
-			//}
+		} else {
+			WaterIndex index = new WaterIndex();
+			index = setProp(index, innerCode, watersType, waterIndex, january, february, march, april,
+					may, june, july, august, september, october, november, december);
+			index.save();
+
 		}
 		return InvokeResult.success();
 	}

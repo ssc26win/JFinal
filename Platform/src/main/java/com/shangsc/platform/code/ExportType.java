@@ -12,6 +12,8 @@ public class ExportType {
     public static final String COMPANY_SUPPLY = "Supply";
 
     public static final String METER_NORMAL = "Normal";
-    public static final String METER_WARN = "Exception";
+    public static final String METER_STOP = "Stop";
+    public static final String METER_EXCEPTION = "Exception";
+    public static final String METER_DISABLE = "Disable";
 
 }

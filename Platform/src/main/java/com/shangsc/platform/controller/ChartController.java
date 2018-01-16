@@ -64,9 +64,15 @@ public class ChartController extends Controller {
         int total = waterMeters.size();
         object.put("total", total);
         // 异常水表数量24小时之内都会接收到数据 否则就异常
-        int today = ActualData.me.getTodayActualDataPage().size();//正常水表
-        object.put("normalTotal", today);
-        object.put("exptionTotal", (total >= today) ? (total - today) : 0);
+        int normalTotal = ActualData.me.getNormalMeter().size();//正常水表
+        int stopTotal = ActualData.me.getStopMeter().size();//停用水表
+        int disableTotal = ActualData.me.getDisableMeter().size();//未启用水表
+
+        object.put("normalTotal", normalTotal);
+        object.put("stopTotal", stopTotal);
+        object.put("disableTotal", disableTotal);
+        object.put("exptionTotal", total-normalTotal-stopTotal-disableTotal);//异常水表
+
         this.renderJson(object.toJSONString());
     }
 
@@ -261,7 +267,7 @@ public class ChartController extends Controller {
         if (null == moth) {
             moth = new BigDecimal(0);
         }
-        if (moth.add(this.THRESHOLD).compareTo(monthActTotal) < 0) {
+        if (moth.add(THRESHOLD).compareTo(monthActTotal) < 0) {
             count.addAndGet(1);
         }
     }

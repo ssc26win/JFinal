@@ -18,6 +18,7 @@ import com.shangsc.platform.export.WellExportService;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.Well;
 import com.shangsc.platform.util.CodeNumUtil;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -61,18 +62,27 @@ public class WellController extends BaseController {
     public void save(){
         Long id = this.getParaToLong("id");
         String name = this.getPara("name");
-        String wellNum = this.getPara("wellNum");
+        String wellNum = StringUtils.trim(this.getPara("wellNum"));
         String innerCode = this.getPara("innerCode");
 
         String village = this.getPara("village");
         String address = this.getPara("address");
-        BigDecimal wellDepth = CodeNumUtil.getBigDecimal(this.getPara("wellDepth"), 2);
-        BigDecimal groundDepth = CodeNumUtil.getBigDecimal(this.getPara("groundDepth"), 2);
-
+        BigDecimal wellDepth = null;
+        if (StringUtils.isNotEmpty(this.getPara("wellDepth"))) {
+            wellDepth = CodeNumUtil.getBigDecimal(this.getPara("wellDepth"), 2);
+        }
+        BigDecimal groundDepth = null;
+        if (StringUtils.isNotEmpty(this.getPara("groundDepth"))) {
+            groundDepth = CodeNumUtil.getBigDecimal(this.getPara("groundDepth"), 2);
+        }
         String year = this.getPara("year");
 
         Integer oneselfWell = this.getParaToInt("oneselfWell");
-        BigDecimal innerDiameter = CodeNumUtil.getBigDecimal(this.getPara("innerDiameter"), 2);
+
+        BigDecimal innerDiameter = null;
+        if (StringUtils.isNotEmpty(this.getPara("innerDiameter"))) {
+            innerDiameter = CodeNumUtil.getBigDecimal(this.getPara("innerDiameter"), 2);
+        }
 
         String material = this.getPara("material");
         String application = this.getPara("application");
@@ -95,7 +105,10 @@ public class WellController extends BaseController {
         Integer licence = this.getParaToInt("licence");
         String licenceCode = this.getPara("licenceCode");
 
-        BigDecimal waterWithdrawals = CodeNumUtil.getBigDecimal(this.getPara("waterWithdrawals"), 2);
+        BigDecimal waterWithdrawals = null;
+        if (StringUtils.isNotEmpty(this.getPara("waterWithdrawals"))) {
+            waterWithdrawals = CodeNumUtil.getBigDecimal(this.getPara("waterWithdrawals"), 2);
+        }
 
         InvokeResult result = Well.me.save(id, innerCode, name, wellNum, village, address, wellDepth, groundDepth, year,oneselfWell,
                 innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,

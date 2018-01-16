@@ -57,6 +57,20 @@ public class MeterController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
+    public void stop() {
+        this.setAttr("flag", "Stop");
+        render("meter_index.jsp");
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/basic/meter"})
+    public void disable() {
+        this.setAttr("flag", "Disable");
+        render("meter_index.jsp");
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/basic/meter"})
     public void getListData() {
         String keyword = this.getPara("name");
         Page<WaterMeter> pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
@@ -70,6 +84,26 @@ public class MeterController extends BaseController {
     public void getExceptionListData() {
         String keyword = this.getPara("name");
         Page<WaterMeter> pageInfo = WaterMeter.me.getExceptionWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        List<WaterMeter> list = pageInfo.getList();
+        setVoProp(list);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/basic/meter"})
+    public void getStopListData() {
+        String keyword = this.getPara("name");
+        Page<WaterMeter> pageInfo = WaterMeter.me.getStopMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        List<WaterMeter> list = pageInfo.getList();
+        setVoProp(list);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/basic/meter"})
+    public void getDisableListData() {
+        String keyword = this.getPara("name");
+        Page<WaterMeter> pageInfo = WaterMeter.me.getDisableWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<WaterMeter> list = pageInfo.getList();
         setVoProp(list);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
@@ -100,8 +134,8 @@ public class MeterController extends BaseController {
         Long id = this.getParaToLong("id");
         String innerCode = this.getPara("innerCode");
         String lineNum = this.getPara("lineNum");
-        String meterNum = this.getPara("meterNum");
-        String meterAddress = this.getPara("meterAddress");
+        String meterNum = StringUtils.trim(this.getPara("meterNum"));
+        String meterAddress = StringUtils.trim(this.getPara("meterAddress"));
         BigDecimal times = new BigDecimal("1");
         if (StringUtils.isNotEmpty(this.getPara("times"))) {
             times = new BigDecimal(StringUtils.trim(this.getPara("times")));
@@ -139,8 +173,12 @@ public class MeterController extends BaseController {
         Page<WaterMeter> pageInfo = new Page<>();
         if (ExportType.METER_NORMAL.equals(flagType)) {
             pageInfo = WaterMeter.me.getNormalMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
-        } else if (ExportType.METER_WARN.equals(flagType)) {
+        } else if (ExportType.METER_STOP.equals(flagType)) {
+            pageInfo = WaterMeter.me.getStopMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        } else if (ExportType.METER_EXCEPTION.equals(flagType)) {
             pageInfo = WaterMeter.me.getExceptionWaterMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        } else if (ExportType.METER_DISABLE.equals(flagType)) {
+            pageInfo = WaterMeter.me.getDisableWaterMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
         } else {
             pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
         }
