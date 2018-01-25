@@ -39,6 +39,7 @@ public class ReadnumStatisController extends BaseController {
             street = Integer.parseInt(streetStr);
         }
         String meterAttr = this.getPara("meterAttr");
+        String meterAddress = this.getPara("meterAddress");
         Integer watersType = null;
         if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
@@ -53,7 +54,7 @@ public class ReadnumStatisController extends BaseController {
             e.printStackTrace();
         }
         Page<ActualData> pageInfo = ActualData.me.getReadnumStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr);
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
@@ -80,6 +81,7 @@ public class ReadnumStatisController extends BaseController {
             street = Integer.parseInt(streetStr);
         }
         String meterAttr = this.getPara("meterAttr");
+        String meterAddress = this.getPara("meterAddress");
         Integer watersType = null;
         if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
@@ -94,7 +96,7 @@ public class ReadnumStatisController extends BaseController {
             e.printStackTrace();
         }
         Page<ActualData> pageInfo = ActualData.me.getReadnumStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr);
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);

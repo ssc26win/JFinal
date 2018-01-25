@@ -43,7 +43,6 @@ public class TcpServerHandler extends SimpleChannelHandler {
         if (StringUtils.isNotEmpty(result) && result.startsWith(ActualType.TCP_PRFIX) && result.endsWith(ActualType.TCP_SUFFIX)) {
             if (TcpData.login_data_length == result.length()) {
                 String response = ConversionUtil.tcpLoginResp(result, "login");
-                //e.getChannel().write(response);
                 buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
                 e.getChannel().write(buffer);
             }
@@ -51,7 +50,6 @@ public class TcpServerHandler extends SimpleChannelHandler {
                 recordMsg(result);
                 recordDB(result, false);
                 String response = ConversionUtil.receiveDataResp(result);
-                //e.getChannel().write(response);
                 buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
                 e.getChannel().write(buffer);
             }
@@ -59,7 +57,6 @@ public class TcpServerHandler extends SimpleChannelHandler {
                 recordMsg(result);
                 recordDB(result, true);
                 String response = ConversionUtil.getTcpMultChkStr(result);
-                //e.getChannel().write(response);
                 buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
                 e.getChannel().write(buffer);
             }

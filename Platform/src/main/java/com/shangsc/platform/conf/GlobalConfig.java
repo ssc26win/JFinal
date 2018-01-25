@@ -49,6 +49,7 @@ public class GlobalConfig extends JFinalConfig {
 	/**
 	 * 配置常量
 	 */
+	@Override
 	public void configConstant(Constants me) {
 		// 加载少量必要配置，随后可用PropKit.get(...)获取值
 		PropKit.use("config.properties");
@@ -61,6 +62,7 @@ public class GlobalConfig extends JFinalConfig {
 	/**
 	 * 配置路由
 	 */
+	@Override
 	public void configRoute(Routes me) {
 		me.add(new AdminRoutes());
 		me.add(new FrontRoutes());
@@ -84,6 +86,7 @@ public class GlobalConfig extends JFinalConfig {
 	/**
 	 * 配置插件
 	 */
+	@Override
 	public void configPlugin(Plugins me) {
 		DruidPlugin druidPlugin = createDruidPlugin();
 		me.add(druidPlugin);
@@ -107,6 +110,7 @@ public class GlobalConfig extends JFinalConfig {
 	/**
 	 * 配置全局拦截器
 	 */
+	@Override
 	public void configInterceptor(Interceptors me) {
 		me.addGlobalActionInterceptor(new SysLogInterceptor());
 		me.addGlobalActionInterceptor(new AuthorityInterceptor());
@@ -120,6 +124,7 @@ public class GlobalConfig extends JFinalConfig {
 	/**
 	 * 配置处理器
 	 */
+	@Override
 	public void configHandler(Handlers me) {
 		DruidStatViewHandler dvh =  new DruidStatViewHandler("/druid",new IDruidStatViewAuth(){
 		    public boolean isPermitted(HttpServletRequest request) {

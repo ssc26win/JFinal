@@ -40,6 +40,7 @@
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option value="">请选择水源类型</option></select>
                                                 <input type="text" id="meterAttr" name="meterAttr" class="" placeholder="请输入水表属性" style="margin-left: 5px;"/>
+                                                <input type="text" id="meterAddress" name="meterAddress" class="" placeholder="请输入表计地址" style="margin-left: 5px;"/>
                                                 <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
                                                     <option value="">所属乡镇或街道</option>
                                                 </select>
@@ -151,10 +152,11 @@
             var watersType = $("#watersType").val();
             var street = $("#street").val();
             var meterAttr = $("#meterAttr").val();
+            var meterAddress = $("#meterAddress").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',
                 postData:{'name':name,'innerCode':innerCode,'startTime':startTime,'endTime':endTime,'watersType':watersType,
-                        'street':street,'meterAttr':meterAttr}, //发送数据
+                        'street':street,'meterAttr':meterAttr,'meterAddress':meterAddress}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });

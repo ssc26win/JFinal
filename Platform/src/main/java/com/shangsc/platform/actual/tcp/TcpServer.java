@@ -20,8 +20,7 @@ public class TcpServer {
 
     public TcpServer(int port) {
         System.out.println("tcp server started, listening on port:" + port);
-        ServerBootstrap sb = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(),
-                Executors.newCachedThreadPool()));
+        ServerBootstrap sb = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool()));
         sb.setPipelineFactory(new ChannelPipelineFactory() {
             @Override
             public ChannelPipeline getPipeline() throws Exception {
@@ -31,15 +30,7 @@ public class TcpServer {
         //获取InetSocketAdress对象的InetAddress;
         InetSocketAddress address = new InetSocketAddress(PropKit.get("config.host"), port);
 
-        System.out.println(address.getHostName());
-        System.out.println(address.getPort());
-
         InetAddress add = address.getAddress();
         sb.bind(new InetSocketAddress(add, port));
-    }
-
-    public static void main(String[] args) {
-        PropKit.use("config.properties");
-        new TcpServer(Integer.parseInt(PropKit.get("config.tcp.port")));
     }
 }
