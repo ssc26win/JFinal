@@ -192,8 +192,11 @@ public class ActualData extends BaseActualData<ActualData> {
 			sqlExceptSelect.append(" and tm.waters_type=" + watersType);
 		}
 		sqlExceptSelect.append(" group by twm.write_time ");
+
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
+		} else {
+			sqlExceptSelect.append(" order by twm.write_time desc ");
 		}
 		return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
 	}
