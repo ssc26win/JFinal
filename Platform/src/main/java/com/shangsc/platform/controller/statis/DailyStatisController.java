@@ -7,6 +7,7 @@ import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.DailyExportService;
 import com.shangsc.platform.model.ActualData;
@@ -58,8 +59,8 @@ public class DailyStatisController extends BaseController {
         Date startTime = null;
         Date endTime = null;
         try {
-            startTime = this.getParaToDate("startTime");
-            endTime = this.getParaToDate("endTime");
+            startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
             if (startTime == null) {
                 startTime = ToolDateTime.getDateTodayStart();
                 endTime = ToolDateTime.getTomorrowStart();

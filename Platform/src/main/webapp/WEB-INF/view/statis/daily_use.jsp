@@ -102,7 +102,7 @@
         var startTime = '${startTime}';
         var endTime = '${endTime}';
         var type = '${type}';
-        if((startTime!=undefined&&startTime!=null) && (endTime!=undefined&&endTime!=null)){
+        if((startTime!=undefined&&startTime!=null&&startTime!='') && (endTime!=undefined&&endTime!=null&&endTime!='')){
             var startTime = $("#startTime").val(startTime);
             var endTime = $("#endTime").val(endTime);
             url= '${context_path}/statis/daily/getListData?startTime=${startTime}&endTime=${endTime}';
@@ -122,7 +122,7 @@
                 { label: '水表编号', name: 'meter_num', width: 100,sortable:false},
                 { label: '表计地址', name: 'meter_address', width: 100,sortable:false},
                 { label: '水表属性', name: 'meter_attr', width: 45, sortable:false},
-                { label: '查询日期', name: 'searchDay', width: 100, sortable:true},
+                /*{ label: '查询日期', name: 'write_time', width: 100, sortable:true},*/
                 { label: '日用水量（立方米）', name: 'net_water', width: 120, sortable:true},
                 { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
             ],
@@ -151,15 +151,13 @@
             //此处可以添加对查询数据的合法验证
             var name = $("#name").val();
             var innerCode = $("#innerCode").val();
-            var startTime = $("#startTime").val();
-            var endTime = $("#endTime").val();
+            var startTime2 = $("#startTime").val();
+            var endTime2 = $("#endTime").val();
             var street = $("#street").val();
             var meterAttr = $("#meterAttr").val();
             var watersType = $("#watersType").val();
-            $("#grid-table").jqGrid('setGridParam',{
-                datatype:'json',
-                postData:{'name':name,'innerCode':innerCode,'startTime':startTime,'endTime':endTime,
-                    'street':street,'watersType':watersType,'meterAttr':meterAttr}, //发送数据
+            $("#grid-table").jqGrid('setGridParam',{datatype:'json',
+                postData:{'name':name,'street':street,'watersType':watersType,'meterAttr':meterAttr,'startTime':startTime2,'endTime':endTime2}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });

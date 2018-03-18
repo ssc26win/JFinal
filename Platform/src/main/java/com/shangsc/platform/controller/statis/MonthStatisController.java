@@ -13,6 +13,8 @@ import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +59,11 @@ public class MonthStatisController extends BaseController {
         try {
             startTime = this.getParaToDate("startTime");
             endTime = this.getParaToDate("endTime");
+            if (endTime!=null) {
+                Calendar cale = Calendar.getInstance();
+                cale.set(Calendar.DAY_OF_MONTH, 0);//设置为1号,当前日期既为本月第一天
+                endTime = cale.getTime();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
