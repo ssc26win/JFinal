@@ -38,6 +38,7 @@
                                                 <input type="text" id="startTime" name="startTime" value="" class="form_date"/>~<input type="text" id="endTime" name="endTime" value="" class="form_date"/>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
+                                                <input type="text" id="meterAddress" name="meterAddress" class="" placeholder="请输入表计地址" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option value="">请选择水源类型</option></select>
                                                 <input type="text" id="meterAttr" name="meterAttr" class="" placeholder="请输入水表属性" style="margin-left: 5px;"/>
                                                 <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
@@ -121,8 +122,8 @@
                 { label: '路别', name: 'line_num', width: 100, sortable:false},
                 { label: '水表编号', name: 'meter_num', width: 100,sortable:false},
                 { label: '表计地址', name: 'meter_address', width: 100,sortable:false},
-                { label: '水表属性', name: 'meter_attr', width: 45, sortable:false},
-                /*{ label: '查询日期', name: 'write_time', width: 100, sortable:true},*/
+                { label: '水表属性', name: 'meter_attr', width: 100, sortable:false},
+                { label: '查询日期', name: 'todays', width: 100, sortable:true},
                 { label: '日用水量（立方米）', name: 'net_water', width: 120, sortable:true},
                 { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
             ],
@@ -155,9 +156,11 @@
             var endTime2 = $("#endTime").val();
             var street = $("#street").val();
             var meterAttr = $("#meterAttr").val();
+            var meterAddress = $("#meterAddress").val();
             var watersType = $("#watersType").val();
             $("#grid-table").jqGrid('setGridParam',{datatype:'json',
-                postData:{'name':name,'street':street,'watersType':watersType,'meterAttr':meterAttr,'startTime':startTime2,'endTime':endTime2}, //发送数据
+                postData:{'name':name,'innerCode': innerCode,'street':street,'watersType':watersType,
+                    'meterAttr':meterAttr,'meterAddress':meterAddress,'startTime':startTime2,'endTime':endTime2}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });

@@ -5,6 +5,7 @@ import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.MonthExportService;
 import com.shangsc.platform.model.ActualData;
@@ -13,7 +14,6 @@ import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +43,7 @@ public class MonthStatisController extends BaseController {
     public void getListData() {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
+        String meterAddress = this.getPara("meterAddress");
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {
             String streetStr = StringUtils.trim(this.getPara("street"));
@@ -57,11 +58,15 @@ public class MonthStatisController extends BaseController {
         Date startTime = null;
         Date endTime = null;
         try {
-            startTime = this.getParaToDate("startTime");
-            endTime = this.getParaToDate("endTime");
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.parseDate(this.getPara("startTime") + "-01 00:00:00", ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.parseDate(this.getPara("endTime") + "-01 23:59:59", ToolDateTime.pattern_ymd_hms);
+            }
             if (endTime!=null) {
                 Calendar cale = Calendar.getInstance();
-                cale.set(Calendar.DAY_OF_MONTH, 0);//设置为1号,当前日期既为本月第一天
+                cale.set(Calendar.DAY_OF_MONTH, 0);//设置为1号,当前日期既为本月最后一天
                 endTime = cale.getTime();
             }
         } catch (Exception e) {
@@ -69,7 +74,7 @@ public class MonthStatisController extends BaseController {
         }
         String type = this.getPara("type");
         Page<ActualData> pageInfo = ActualData.me.getMonthStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr, type);
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress, type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
@@ -95,6 +100,7 @@ public class MonthStatisController extends BaseController {
     public void exportData() {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
+        String meterAddress = this.getPara("meterAddress");
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {
             String streetStr = StringUtils.trim(this.getPara("street"));
@@ -109,14 +115,23 @@ public class MonthStatisController extends BaseController {
         Date startTime = null;
         Date endTime = null;
         try {
-            startTime = this.getParaToDate("startTime");
-            endTime = this.getParaToDate("endTime");
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.parseDate(this.getPara("startTime") + "-01 00:00:00", ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.parseDate(this.getPara("endTime") + "-01 23:59:59", ToolDateTime.pattern_ymd_hms);
+            }
+            if (endTime!=null) {
+                Calendar cale = Calendar.getInstance();
+                cale.set(Calendar.DAY_OF_MONTH, 0);//设置为1号,当前日期既为本月最后一天
+                endTime = cale.getTime();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         String type = this.getPara("type");
         Page<ActualData> pageInfo = ActualData.me.getMonthStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr, type);
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress,type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);

@@ -1,6 +1,6 @@
 package com.shangsc.platform.export;
 
-import com.shangsc.platform.model.ActualData;
+import com.jfinal.plugin.activerecord.Record;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public class DailyExportService extends ExportBaseService{
                 "表计地址",
                 "单位地址",
      */
-    public String export(List<ActualData> list) {
+    public String export(List<Record> list) {
         super.logger.info("导出日用水量信息开始");
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[]{
@@ -44,20 +44,20 @@ public class DailyExportService extends ExportBaseService{
 
         logger.info("导出日用水量信息导出条数为:{}", list.size());
         List<Object[]> objects = new ArrayList<Object[]>();
-        for (ActualData actualData : list) {
+        for (Record actualData : list) {
             if (actualData.get("dailyNum") == null) {
-                actualData.put("dailyNum", 0);
+                actualData.set("dailyNum", 0);
             }
             Object[] obj = new Object[]{
                     actualData.get("water_unit"),
-                    actualData.getInnerCode(),
+                    actualData.get("inner_code"),
                     actualData.get("name"),
                     actualData.get("line_num"),
                     actualData.get("meter_num"),
                     actualData.get("watersTypeName"),
                     actualData.get("dailyNum"),
                     actualData.get("meter_attr"),
-                    actualData.getMeterAddress(),
+                    actualData.get("meter_address"),
                     actualData.get("address")
             };
             objects.add(obj);

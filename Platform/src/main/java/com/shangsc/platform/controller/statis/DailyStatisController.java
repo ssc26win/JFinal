@@ -2,6 +2,7 @@ package com.shangsc.platform.controller.statis;
 
 import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
@@ -45,6 +46,62 @@ public class DailyStatisController extends BaseController {
     public void getListData() {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
+        String meterAddress = this.getPara("meterAddress");
+        Integer street = null;
+        if (StringUtils.isNotEmpty(this.getPara("street"))) {
+            String streetStr = StringUtils.trim(this.getPara("street"));
+            street = Integer.parseInt(streetStr);
+        }
+        String meterAttr = this.getPara("meterAttr");
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+            }
+            if (startTime == null) {
+                startTime = ToolDateTime.getDateTodayStart();
+                endTime = ToolDateTime.getTomorrowStart();
+            }
+            if (endTime == null || (endTime!=null && endTime.compareTo(startTime) <=0)) {
+                endTime = ToolDateTime.getTomorrow(startTime);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String type = this.getPara("type");
+        Page<Record> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress,type);
+        List<Record> list = pageInfo.getList();
+        if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
+            for (int i = 0; i < list.size(); i++) {
+                Record co = list.get(i);
+                if (co.get("waters_type") != null) {
+                    co.set("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                }
+                co.set("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
+                        + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
+                co.set("searchDay", ToolDateTime.format(new Date(), "yyyy-MM-dd"));
+                list.set(i, co);
+            }
+        }
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
+    }
+
+    @RequiresPermissions(value={"/statis/daily"})
+    public void exportData() {
+        String name = this.getPara("name");
+        String innerCode = this.getPara("innerCode");
+        String meterAddress = this.getPara("meterAddress");
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {
             String streetStr = StringUtils.trim(this.getPara("street"));
@@ -72,64 +129,15 @@ public class DailyStatisController extends BaseController {
             e.printStackTrace();
         }
         String type = this.getPara("type");
-        Page<ActualData> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr, type);
-        List<ActualData> list = pageInfo.getList();
+        Page<Record> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress,type);
+        List<Record> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
-                ActualData co = list.get(i);
+                Record co = list.get(i);
                 if (co.get("waters_type") != null) {
-                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
-                }
-                co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
-                        + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
-                co.put("searchDay", ToolDateTime.format(new Date(), "yyyy-MM-dd"));
-                list.set(i, co);
-            }
-        }
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
-    }
-
-    @RequiresPermissions(value={"/statis/daily"})
-    public void exportData() {
-        String name = this.getPara("name");
-        String innerCode = this.getPara("innerCode");
-        Integer street = null;
-        if (StringUtils.isNotEmpty(this.getPara("street"))) {
-            String streetStr = StringUtils.trim(this.getPara("street"));
-            street = Integer.parseInt(streetStr);
-        }
-        String meterAttr = this.getPara("meterAttr");
-        String type = this.getPara("type");
-        Integer watersType = null;
-        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
-            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
-            watersType = Integer.parseInt(watersTypeStr);
-        }
-        Date startTime = null;
-        Date endTime = null;
-        try {
-            startTime = this.getParaToDate("startTime");
-            endTime = this.getParaToDate("endTime");
-            if (startTime == null && endTime == null) {
-                Date today = new Date(ToolDateTime.format(new Date(), "yyyy-MM-dd"));
-                startTime = today;
-                today.setDate(startTime.getDay() + 1);
-                endTime = today;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        Page<ActualData> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr, type);
-        List<ActualData> list = pageInfo.getList();
-        if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
-            for (int i = 0; i < list.size(); i++) {
-                ActualData co = list.get(i);
-                if (co.get("waters_type") != null) {
-                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                    co.set("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
                 }
                 list.set(i, co);
             }

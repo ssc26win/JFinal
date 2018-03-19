@@ -38,6 +38,7 @@
                                                 <input type="text" id="startTime" name="startTime" class="form_month"/>~<input type="text" id="endTime" name="endTime" class="form_month"/>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
+                                                <input type="text" id="meterAddress" name="meterAddress" class="" placeholder="请输入表计地址" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px;height: 34px;"><option value="">请选择水源类型</option></select>
                                                 <input type="text" id="meterAttr" name="meterAttr" class="" placeholder="请输入水表属性" style="margin-left: 5px;"/>
                                                 <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
@@ -120,9 +121,9 @@
                 { label: '路别', name: 'line_num', width: 100, sortable:false},
                 { label: '水表编号', name: 'meter_num', width: 100,sortable:false},
                 { label: '表计地址', name: 'meter_address', width: 100,sortable:false},
-                { label: '水表属性', name: 'meter_attr', width: 45, sortable:false},
-                /*{ label: '查询月份', name: 'searchMonth', width: 100, sortable:true},*/
-                { label: '月用水量（立方米）', name: 'net_water', width: 120, sortable:true},
+                { label: '水表属性', name: 'meter_attr', width: 100, sortable:false},
+                { label: '查询月份', name: 'months', width: 100, sortable:true},
+                { label: '月用水量（立方米）', name: 'monthTotal', width: 120, sortable:true},
                 { label: '计费周期', name: 'billing_cycle', width: 80, sortable:false},
                 { label: '单位地址', name: 'addressMap', width: 100,sortable:false}
             ],
@@ -155,11 +156,12 @@
             var endTime2 = $("#endTime").val();
             var street = $("#street").val();
             var meterAttr = $("#meterAttr").val();
+            var meterAddress = $("#meterAddress").val();
             var watersType = $("#watersType").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',
                 postData:{'name':name,'innerCode':innerCode,'startTime':startTime2,'endTime':endTime2,'street':street
-                    ,'watersType':watersType,'meterAttr':meterAttr}, //发送数据
+                    ,'watersType':watersType,'meterAttr':meterAttr,'meterAddress':meterAddress}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });

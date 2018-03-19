@@ -41,6 +41,7 @@ public class YearStatisController extends BaseController {
             year = Integer.parseInt(yearStr);
         }
         String meterAttr = this.getPara("meterAttr");
+        String meterAddress = this.getPara("meterAddress");
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {
             String streetStr = StringUtils.trim(this.getPara("street"));
@@ -52,7 +53,7 @@ public class YearStatisController extends BaseController {
             watersType = Integer.parseInt(watersTypeStr);
         }
         Page<ActualData> pageInfo = ActualData.me.getYearStatis(getPage(), getRows(), getOrderbyStr(),
-                year, name, innerCode, street, watersType, meterAttr);
+                year, name, innerCode, street, watersType, meterAttr, meterAddress);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
@@ -88,6 +89,7 @@ public class YearStatisController extends BaseController {
             year = Integer.parseInt(yearStr);
         }
         String meterAttr = this.getPara("meterAttr");
+        String meterAddress = this.getPara("meterAddress");
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {
             String streetStr = StringUtils.trim(this.getPara("street"));
@@ -99,7 +101,7 @@ public class YearStatisController extends BaseController {
             watersType = Integer.parseInt(watersTypeStr);
         }
         Page<ActualData> pageInfo = ActualData.me.getYearStatis(getPage(), getRows(), getOrderbyStr(),
-                year, name, innerCode, street, watersType, meterAttr);
+                year, name, innerCode, street, watersType, meterAttr, meterAddress);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
