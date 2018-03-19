@@ -2,6 +2,7 @@ package com.shangsc.platform.controller.statis;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.code.DictCode;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
@@ -14,7 +15,6 @@ import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +33,8 @@ public class MonthStatisController extends BaseController {
         String time = this.getPara("time");
 
         if (StringUtils.isNotBlank(time)) {
-            this.setAttr("startTime", time + "-01");
-            this.setAttr("endTime", time + "-31");
+            this.setAttr("startTime", time);
+            this.setAttr("endTime", time);
         }
         render("month_use.jsp");
     }
@@ -62,12 +62,10 @@ public class MonthStatisController extends BaseController {
                 startTime = DateUtils.parseDate(this.getPara("startTime") + "-01 00:00:00", ToolDateTime.pattern_ymd_hms);
             }
             if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
-                endTime = DateUtils.parseDate(this.getPara("endTime") + "-01 23:59:59", ToolDateTime.pattern_ymd_hms);
+                endTime = DateUtils.parseDate(this.getPara("endTime") + "-01 00:00:00", ToolDateTime.pattern_ymd_hms);
             }
             if (endTime!=null) {
-                Calendar cale = Calendar.getInstance();
-                cale.set(Calendar.DAY_OF_MONTH, 0);//设置为1号,当前日期既为本月最后一天
-                endTime = cale.getTime();
+                endTime = DateUtils.addMonth(endTime, 1);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,16 +78,23 @@ public class MonthStatisController extends BaseController {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
-                String netWaterNum = "0";
-                if (co.get("netWaterNum") != null) {
-                    netWaterNum = co.get("netWaterNum").toString();
+                String monthTotal = "0";
+                if (co.get("monthTotal") != null) {
+                    monthTotal = co.get("monthTotal").toString();
                 }
+                co.put("monthTotal", monthTotal);
                 if (co.get("waters_type") != null) {
-                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                    String watersTypeStr = co.get("waters_type").toString();
+                    if (mapWatersType.get(watersTypeStr) != null) {
+                        co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
+                    }
+                } else {
+                    co.put("watersTypeName","");
                 }
-                co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
-                        + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
-                co.put("searchMonth", ToolDateTime.format(new Date(), "yyyy-MM"));
+                if (co.get("address") != null) {
+                    co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
+                            + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
+                }
                 list.set(i, co);
             }
         }
@@ -119,26 +124,34 @@ public class MonthStatisController extends BaseController {
                 startTime = DateUtils.parseDate(this.getPara("startTime") + "-01 00:00:00", ToolDateTime.pattern_ymd_hms);
             }
             if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
-                endTime = DateUtils.parseDate(this.getPara("endTime") + "-01 23:59:59", ToolDateTime.pattern_ymd_hms);
+                endTime = DateUtils.parseDate(this.getPara("endTime") + "-01 00:00:00", ToolDateTime.pattern_ymd_hms);
             }
             if (endTime!=null) {
-                Calendar cale = Calendar.getInstance();
-                cale.set(Calendar.DAY_OF_MONTH, 0);//设置为1号,当前日期既为本月最后一天
-                endTime = cale.getTime();
+                endTime = DateUtils.addMonth(endTime, 1);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         String type = this.getPara("type");
-        Page<ActualData> pageInfo = ActualData.me.getMonthStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress,type);
+        Page<ActualData> pageInfo = ActualData.me.getMonthStatis(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(),
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress, type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
+                String monthTotal = "0";
+                if (co.get("monthTotal") != null) {
+                    monthTotal = co.get("monthTotal").toString();
+                }
+                co.put("monthTotal", monthTotal);
                 if (co.get("waters_type") != null) {
-                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                    String watersTypeStr = co.get("waters_type").toString();
+                    if (mapWatersType.get(watersTypeStr) != null) {
+                        co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
+                    }
+                } else {
+                    co.put("watersTypeName","");
                 }
                 list.set(i, co);
             }

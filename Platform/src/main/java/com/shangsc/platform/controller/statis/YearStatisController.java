@@ -2,6 +2,7 @@ package com.shangsc.platform.controller.statis;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.code.DictCode;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
@@ -10,11 +11,9 @@ import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.YearExportService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
-import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -59,20 +58,23 @@ public class YearStatisController extends BaseController {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
-                String netWaterNum = "0";
-                if (co.get("netWaterNum") != null) {
-                    netWaterNum = co.get("netWaterNum").toString();
+                String yearTotal = "0";
+                if (co.get("yearTotal") != null) {
+                    yearTotal = co.get("yearTotal").toString();
                 }
-                if (year != null && year > 0) {
-                    co.put("yearStr", year + " 年");
-                } else {
-                    co.put("yearStr", ToolDateTime.format(new Date(), "yyyy") + " 年");
-                }
+                co.put("yearTotal", yearTotal);
                 if (co.get("waters_type") != null) {
-                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                    String watersTypeStr = co.get("waters_type").toString();
+                    if (mapWatersType.get(watersTypeStr) != null) {
+                        co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
+                    }
+                } else {
+                    co.put("watersTypeName","");
                 }
-                co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
-                        + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
+                if (co.get("address") != null) {
+                    co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
+                            + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
+                }
                 list.set(i, co);
             }
         }
@@ -100,20 +102,25 @@ public class YearStatisController extends BaseController {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
             watersType = Integer.parseInt(watersTypeStr);
         }
-        Page<ActualData> pageInfo = ActualData.me.getYearStatis(getPage(), getRows(), getOrderbyStr(),
+        Page<ActualData> pageInfo = ActualData.me.getYearStatis(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(),
                 year, name, innerCode, street, watersType, meterAttr, meterAddress);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
-                if (co.get("waters_type") != null) {
-                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                String yearTotal = "0";
+                if (co.get("yearTotal") != null) {
+                    yearTotal = co.get("yearTotal").toString();
                 }
-                if (year != null && year > 0) {
-                    co.put("yearStr", year + " 年");
+                co.put("yearTotal", yearTotal);
+                if (co.get("waters_type") != null) {
+                    String watersTypeStr = co.get("waters_type").toString();
+                    if (mapWatersType.get(watersTypeStr) != null) {
+                        co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
+                    }
                 } else {
-                    co.put("yearStr", ToolDateTime.format(new Date(), "yyyy") + " 年");
+                    co.put("watersTypeName","");
                 }
                 list.set(i, co);
             }

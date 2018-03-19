@@ -201,8 +201,8 @@ public class ActualData extends BaseActualData<ActualData> {
 		return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
 	}
 
-	public Page<Record> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-										   String name, String innerCode, Integer street, Integer watersType, String meterAttr, String meterAddress,String type) {
+	public Page<ActualData> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
+										   String name, String innerCode, Integer street, Integer watersType, String meterAttr, String meterAddress, String type) {
 		/*select tad.*,
 		tc.name,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.billing_cycle,
@@ -217,7 +217,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		and tad.write_time >= '2018-03-18 00:00:00' and tad.write_time < '2019-01-01 00:00:00'
 		group by tad.meter_address,date_format(tad.write_time, '%Y-%m-%d')
 		order by todays desc,tad.meter_address desc*/
-		String select=" select tc.name,tc.address,tc.water_unit,tc.county,tc.company_type," +
+		String select=" select tad.net_water,tc.name,tc.inner_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
 				"twm.waters_type,twm.meter_attr,twm.meter_address,twm.meter_num,twm.line_num,twm.billing_cycle," +
 				"date_format(tad.write_time, '%Y-%m-%d') as todays ";
 		StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
@@ -255,7 +255,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		if (StringUtils.isNotEmpty(meterAddress)) {
 			meterAddress = StringUtils.trim(meterAddress);
 			if (StringUtils.isNotEmpty(meterAddress)) {
-				sqlExceptSelect.append(" and tad.meterAddress = '" + meterAddress + "'");
+				sqlExceptSelect.append(" and tad.meter_address = '" + meterAddress + "'");
 			}
 		}
 
@@ -278,11 +278,12 @@ public class ActualData extends BaseActualData<ActualData> {
 		System.out.println(select);
 		System.out.println(sqlExceptSelect.toString());
 		System.out.println("---");
-		return Db.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+		return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
 	}
 
 	public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-										   String name, String innerCode, Integer street, Integer watersType, String meterAttr, String meterAddress, String type) {
+										   String name, String innerCode, Integer street, Integer watersType, String meterAttr,
+                                           String meterAddress, String type) {
 		/*select tad.*,
 		tc.name,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,
@@ -333,32 +334,34 @@ public class ActualData extends BaseActualData<ActualData> {
 			sqlExceptSelect.append(" and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "'");
 		}
 		if (endTime != null) {
-			sqlExceptSelect.append(" and tad.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss")  + "'");
+			sqlExceptSelect.append(" and tad.write_time < '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss")  + "'");
 		}
-		if (StringUtils.isNotEmpty(meterAddress)) {
-			meterAddress = StringUtils.trim(meterAddress);
-			if (StringUtils.isNotEmpty(meterAddress)) {
-				sqlExceptSelect.append(" and tad.meterAddress = '" + meterAddress + "'");
-			}
-		}
+        if (StringUtils.isNotEmpty(meterAddress)) {
+            meterAddress = StringUtils.trim(meterAddress);
+            if (StringUtils.isNotEmpty(meterAddress)) {
+                sqlExceptSelect.append(" and tad.meter_address = '" + meterAddress + "' ");
+            }
+        }
 
 		if (StringUtils.isNotEmpty(meterAttr)) {
 			meterAttr = StringUtils.trim(meterAttr);
 			if (StringUtils.isNotEmpty(meterAttr)) {
-				sqlExceptSelect.append(" and twm.meter_attr like '%" + meterAttr + "%'");
+				sqlExceptSelect.append(" and twm.meter_attr like '%" + meterAttr + "%' ");
 			}
 		}
 		if (watersType != null) {
 			sqlExceptSelect.append(" and twm.waters_type=" + watersType);
 		}
-		sqlExceptSelect.append(" group by tad.meter_address,date_format(tad.write_time, '%Y-%m-%d') ");
+		sqlExceptSelect.append(" group by tad.meter_address,date_format(tad.write_time, '%Y-%m') ");
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
 		} else {
-			sqlExceptSelect.append("order by todays desc,tad.meter_address desc");
+			sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m') desc,tad.meter_address desc ");
 		}
-		System.out.println(select);
-		System.out.println(sqlExceptSelect.toString());
+        System.out.println("---");
+        System.out.println(select);
+        System.out.println(sqlExceptSelect.toString());
+        System.out.println("---");
 		return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
 	}
 
@@ -407,12 +410,12 @@ public class ActualData extends BaseActualData<ActualData> {
 			sqlExceptSelect.append(" and tad.write_time >= '" +  yearStart + "'");
 			sqlExceptSelect.append(" and tad.write_time < '" +  yearEnd + "'");
 		}
-		if (StringUtils.isNotEmpty(meterAddress)) {
-			meterAddress = StringUtils.trim(meterAddress);
-			if (StringUtils.isNotEmpty(meterAddress)) {
-				sqlExceptSelect.append(" and tad.meterAddress = '" + meterAddress + "'");
-			}
-		}
+        if (StringUtils.isNotEmpty(meterAddress)) {
+            meterAddress = StringUtils.trim(meterAddress);
+            if (StringUtils.isNotEmpty(meterAddress)) {
+                sqlExceptSelect.append(" and tad.meter_address = '" + meterAddress + "'");
+            }
+        }
 
 		if (StringUtils.isNotEmpty(meterAttr)) {
 			meterAttr = StringUtils.trim(meterAttr);
@@ -423,11 +426,11 @@ public class ActualData extends BaseActualData<ActualData> {
 		if (watersType != null) {
 			sqlExceptSelect.append(" and twm.waters_type=" + watersType);
 		}
-		sqlExceptSelect.append(" group by tad.meter_address,date_format(tad.write_time, '%Y-%m-%d') ");
+		sqlExceptSelect.append(" group by tad.meter_address,date_format(tad.write_time, '%Y') ");
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
 		} else {
-			sqlExceptSelect.append("order by todays desc,tad.meter_address desc");
+			sqlExceptSelect.append("order by date_format(tad.write_time, '%Y') desc,tad.meter_address desc");
 		}
 		System.out.println(select);
 		System.out.println(sqlExceptSelect.toString());

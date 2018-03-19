@@ -2,6 +2,7 @@ package com.shangsc.platform.controller.statis;
 
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.code.DictCode;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
@@ -61,10 +62,17 @@ public class ReadnumStatisController extends BaseController {
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
                 if (co.get("waters_type") != null) {
-                    co.put("watersTypeName", String.valueOf(mapWatersType.get(co.get("waters_type"))));
+                    String watersTypeStr = co.get("waters_type").toString();
+                    if (mapWatersType.get(watersTypeStr) != null) {
+                        co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
+                    }
+                } else {
+                    co.put("watersTypeName","");
                 }
-                co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
-                        + co.get("inner_code") + "')\">" + co.get("address") + "</a>");
+                if (co.get("address") != null) {
+                    co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
+                            + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
+                }
                 list.set(i, co);
             }
         }
@@ -95,7 +103,7 @@ public class ReadnumStatisController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Page<ActualData> pageInfo = ActualData.me.getReadnumStatis(getPage(), getRows(), getOrderbyStr(),
+        Page<ActualData> pageInfo = ActualData.me.getReadnumStatis(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(),
                 startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {

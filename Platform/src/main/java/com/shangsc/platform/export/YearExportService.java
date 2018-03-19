@@ -39,14 +39,15 @@ public class YearExportService extends ExportBaseService {
                 "年用水量",
                 "水表属性",
                 "表计地址",
-                "单位地址"
+                "单位地址",
+                "查询时间"
         }));
 
         logger.info("导出年用水量信息导出条数为:{}", list.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
-            if (actualData.get("netWaterNum") == null) {
-                actualData.put("netWaterNum", 0);
+            if (actualData.get("yearTotal") == null) {
+                actualData.put("yearTotal", 0);
             }
             Object[] obj = new Object[]{
                     actualData.get("water_unit"),
@@ -55,10 +56,11 @@ public class YearExportService extends ExportBaseService {
                     actualData.get("line_num"),
                     actualData.get("meter_num"),
                     actualData.get("watersTypeName"),
-                    actualData.get("netWaterNum"),
+                    actualData.get("yearTotal"),
                     actualData.get("meter_attr"),
                     actualData.getMeterAddress(),
-                    actualData.get("address")
+                    actualData.get("address"),
+                    actualData.get("years")
             };
             objects.add(obj);
         }

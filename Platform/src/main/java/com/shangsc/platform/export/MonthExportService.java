@@ -40,14 +40,15 @@ public class MonthExportService extends ExportBaseService {
                 "水表属性",
                 "表计地址",
                 "计费周期",
-                "单位地址"
+                "单位地址",
+                "查询时间"
         }));
 
         logger.info("导出月用水量信息导出条数为:{}", list.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
-            if (actualData.get("netWaterNum") == null) {
-                actualData.put("netWaterNum", 0);
+            if (actualData.get("monthTotal") == null) {
+                actualData.put("monthTotal", 0);
             }
             Object[] obj = new Object[]{
                     actualData.get("water_unit"),
@@ -56,11 +57,12 @@ public class MonthExportService extends ExportBaseService {
                     actualData.get("line_num"),
                     actualData.get("meter_num"),
                     actualData.get("watersTypeName"),
-                    actualData.get("netWaterNum"),
+                    actualData.get("monthTotal"),
                     actualData.get("meter_attr"),
                     actualData.getMeterAddress(),
                     actualData.get("billing_cycle"),
-                    actualData.get("address")
+                    actualData.get("address"),
+                    actualData.get("months")
             };
             objects.add(obj);
         }

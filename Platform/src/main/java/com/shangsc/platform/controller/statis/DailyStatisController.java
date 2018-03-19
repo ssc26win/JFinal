@@ -2,8 +2,8 @@ package com.shangsc.platform.controller.statis;
 
 import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.DictCode;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
@@ -32,11 +32,10 @@ public class DailyStatisController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/statis/daily"})
     public void index() {
-
         String time = this.getPara("time");
         if (StringUtils.isNotBlank(time)) {
-            this.setAttr("startTime", time + " 00:00:00");
-            this.setAttr("endTime", time + " 23:59:59");
+            this.setAttr("startTime", time);
+            this.setAttr("endTime", time);
         }
         render("daily_use.jsp");
     }
@@ -67,30 +66,36 @@ public class DailyStatisController extends BaseController {
             if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
                 endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
             }
-            if (startTime == null) {
+            /*if (startTime == null) {
                 startTime = ToolDateTime.getDateTodayStart();
                 endTime = ToolDateTime.getTomorrowStart();
             }
             if (endTime == null || (endTime!=null && endTime.compareTo(startTime) <=0)) {
                 endTime = ToolDateTime.getTomorrow(startTime);
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
         String type = this.getPara("type");
-        Page<Record> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
+        Page<ActualData> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
                 startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress,type);
-        List<Record> list = pageInfo.getList();
+        List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
-                Record co = list.get(i);
+                ActualData co = list.get(i);
                 if (co.get("waters_type") != null) {
-                    co.set("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                    String watersTypeStr = co.get("waters_type").toString();
+                    if (mapWatersType.get(watersTypeStr) != null) {
+                        co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
+                    }
+                } else {
+                    co.put("watersTypeName","");
                 }
-                co.set("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
-                        + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
-                co.set("searchDay", ToolDateTime.format(new Date(), "yyyy-MM-dd"));
+                if (co.get("address") != null) {
+                    co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
+                            + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
+                }
                 list.set(i, co);
             }
         }
@@ -116,28 +121,30 @@ public class DailyStatisController extends BaseController {
         Date startTime = null;
         Date endTime = null;
         try {
-            startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
-            endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
-            if (startTime == null) {
-                startTime = ToolDateTime.getDateTodayStart();
-                endTime = ToolDateTime.getTomorrowStart();
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
             }
-            if (endTime == null || (endTime!=null && endTime.compareTo(startTime) <=0)) {
-                endTime = ToolDateTime.getTomorrow(startTime);
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         String type = this.getPara("type");
-        Page<Record> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
+        Page<ActualData> pageInfo = ActualData.me.getDailyStatis(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(),
                 startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress,type);
-        List<Record> list = pageInfo.getList();
+        List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             for (int i = 0; i < list.size(); i++) {
-                Record co = list.get(i);
+                ActualData co = list.get(i);
                 if (co.get("waters_type") != null) {
-                    co.set("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                    String watersTypeStr = co.get("waters_type").toString();
+                    if (mapWatersType.get(watersTypeStr) != null) {
+                        co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
+                    }
+                } else {
+                    co.put("watersTypeName","");
                 }
                 list.set(i, co);
             }
