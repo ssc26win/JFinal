@@ -26,8 +26,14 @@ public class YearExportService extends ExportBaseService {
                 "表计地址",
                 "单位地址",
      */
-    public String export(List<ActualData> list,int year) {
-        super.logger.info("导出月用水量信息开始");
+    public String export(List<ActualData> list, String type) {
+        String fName = "";
+        if ("1".equals(type)) {
+            fName = "年用水量";
+        } else {
+            fName = "年供水量";
+        }
+        super.logger.info("导出" + fName + "信息开始");
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[]{
                 "所属节水办",
@@ -36,14 +42,14 @@ public class YearExportService extends ExportBaseService {
                 "路别",
                 "水表编号",
                 "水源类型",
-                "年用水量",
+                fName,
                 "水表属性",
                 "表计地址",
                 "单位地址",
                 "查询时间"
         }));
 
-        logger.info("导出年用水量信息导出条数为:{}", list.size());
+        logger.info("导出" + fName + "信息导出条数为:{}", list.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
             if (actualData.get("yearTotal") == null) {
@@ -65,7 +71,7 @@ public class YearExportService extends ExportBaseService {
             objects.add(obj);
         }
 
-        super.logger.info("导出年用水量信息结束");
-        return super.export(FILE_NAME, listHeader, objects);
+        super.logger.info("导出" + fName + "信息结束");
+        return super.export(fName + "信息导出", listHeader, objects);
     }
 }

@@ -36,14 +36,18 @@
                                             <div class="input-group">
                                                 日期时间:
                                                 <input type="text" id="startTime" name="startTime" class="form_month"/>~<input type="text" id="endTime" name="endTime" class="form_month"/>
+                                                <select id="type" name="type" style="margin-left: 5px;width: 159px;height: 34px;"><option value="">请选择单位类型</option>
+                                                    <option value="1">用水单位</option>
+                                                    <option value="2">供水单位</option>
+                                                </select>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <input type="text" id="meterAddress" name="meterAddress" class="" placeholder="请输入表计地址" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px;height: 34px;"><option value="">请选择水源类型</option></select>
                                                 <input type="text" id="meterAttr" name="meterAttr" class="" placeholder="请输入水表属性" style="margin-left: 5px;"/>
-                                                <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                <%--<select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
                                                     <option value="">所属乡镇或街道</option>
-                                                </select>
+                                                </select>--%>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="btn_search" class="btn btn-purple btn-sm">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
@@ -107,6 +111,7 @@
             var endTime = $("#endTime").val(endTime);
             url= '${context_path}/statis/month/getListData?startTime=${startTime}&endTime=${endTime}';
             if (type != '' && type != undefined) {
+                $("#type").val(type);
                 url = url + '&type=${type}';
             }
         }
@@ -158,10 +163,11 @@
             var meterAttr = $("#meterAttr").val();
             var meterAddress = $("#meterAddress").val();
             var watersType = $("#watersType").val();
+            var type2 = $("#type").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',
                 postData:{'name':name,'innerCode':innerCode,'startTime':startTime2,'endTime':endTime2,'street':street
-                    ,'watersType':watersType,'meterAttr':meterAttr,'meterAddress':meterAddress}, //发送数据
+                    ,'watersType':watersType,'meterAttr':meterAttr,'meterAddress':meterAddress,'type':type2}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });
@@ -226,10 +232,10 @@
             for(var i = 0;i<watersType.length;i++) {
                 $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
             }
-            var street = data.Street;
+            /*var street = data.Street;
             for(var i = 0;i<street.length;i++) {
                 $("#street").append("<option value='" + street[i].value + "'>"+street[i].name+"</option>");
-            }
+            }*/
         },"json");
     }
     $(function(){

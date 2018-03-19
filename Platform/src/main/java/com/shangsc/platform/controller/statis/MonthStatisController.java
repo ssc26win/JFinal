@@ -29,12 +29,14 @@ public class MonthStatisController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/month"})
     public void index() {
-
         String time = this.getPara("time");
-
         if (StringUtils.isNotBlank(time)) {
             this.setAttr("startTime", time);
             this.setAttr("endTime", time);
+        }
+        String type = this.getPara("type");
+        if (StringUtils.isNotEmpty(type)) {
+            this.setAttr("type", type);
         }
         render("month_use.jsp");
     }
@@ -157,13 +159,7 @@ public class MonthStatisController extends BaseController {
             }
         }
         MonthExportService service = new MonthExportService();
-        int month = 0;
-        if (startTime == null) {
-            month = ToolDateTime.getDate().getMonth();
-        } else {
-            month = startTime.getMonth();
-        }
-        String path = service.export(list, month);
+        String path = service.export(list, type);
         renderFile(new File(path));
     }
 }

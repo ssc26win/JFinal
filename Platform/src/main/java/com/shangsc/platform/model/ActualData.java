@@ -366,7 +366,8 @@ public class ActualData extends BaseActualData<ActualData> {
 	}
 
 	public Page<ActualData> getYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year,String name,
-										  String innerCode, Integer street, Integer watersType, String meterAttr, String meterAddress) {
+										  String innerCode, Integer street, Integer watersType, String meterAttr,
+                                          String meterAddress, String type) {
 		/*select
 		tc.inner_code,tc.name,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address,
@@ -403,6 +404,12 @@ public class ActualData extends BaseActualData<ActualData> {
 				sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "'");
 			}
 		}
+        if (StringUtils.isNotEmpty(type)) {
+            type = StringUtils.trim(type);
+            if (StringUtils.isNotEmpty(type)) {
+                sqlExceptSelect.append(" and tc.company_type=" + type + " ");
+            }
+        }
 
 		if (year != null && year > 0) {
 			String yearStart = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year) + "-01-01 00:00:00"));

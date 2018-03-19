@@ -6,7 +6,6 @@ import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
-import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.YearExportService;
 import com.shangsc.platform.model.ActualData;
@@ -51,8 +50,9 @@ public class YearStatisController extends BaseController {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
             watersType = Integer.parseInt(watersTypeStr);
         }
+        String type = this.getPara("type");
         Page<ActualData> pageInfo = ActualData.me.getYearStatis(getPage(), getRows(), getOrderbyStr(),
-                year, name, innerCode, street, watersType, meterAttr, meterAddress);
+                year, name, innerCode, street, watersType, meterAttr, meterAddress, type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
@@ -102,8 +102,9 @@ public class YearStatisController extends BaseController {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
             watersType = Integer.parseInt(watersTypeStr);
         }
+        String type = this.getPara("type");
         Page<ActualData> pageInfo = ActualData.me.getYearStatis(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(),
-                year, name, innerCode, street, watersType, meterAttr, meterAddress);
+                year, name, innerCode, street, watersType, meterAttr, meterAddress, type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
@@ -126,7 +127,7 @@ public class YearStatisController extends BaseController {
             }
         }
         YearExportService service = new YearExportService();
-        String path = service.export(list, DateUtils.getThisMonth());
+        String path = service.export(list, type);
         renderFile(new File(path));
     }
 }

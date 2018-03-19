@@ -37,6 +37,10 @@ public class DailyStatisController extends BaseController {
             this.setAttr("startTime", time);
             this.setAttr("endTime", time);
         }
+        String type = this.getPara("type");
+        if (StringUtils.isNotEmpty(type)) {
+            this.setAttr("type", type);
+        }
         render("daily_use.jsp");
     }
 
@@ -66,19 +70,12 @@ public class DailyStatisController extends BaseController {
             if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
                 endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
             }
-            /*if (startTime == null) {
-                startTime = ToolDateTime.getDateTodayStart();
-                endTime = ToolDateTime.getTomorrowStart();
-            }
-            if (endTime == null || (endTime!=null && endTime.compareTo(startTime) <=0)) {
-                endTime = ToolDateTime.getTomorrow(startTime);
-            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
         String type = this.getPara("type");
         Page<ActualData> pageInfo = ActualData.me.getDailyStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress,type);
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress, type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
@@ -132,7 +129,7 @@ public class DailyStatisController extends BaseController {
         }
         String type = this.getPara("type");
         Page<ActualData> pageInfo = ActualData.me.getDailyStatis(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress,type);
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress, type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
@@ -150,7 +147,7 @@ public class DailyStatisController extends BaseController {
             }
         }
         DailyExportService service = new DailyExportService();
-        String path = service.export(list);
+        String path = service.export(list, type);
         renderFile(new File(path));
     }
 }
