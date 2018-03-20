@@ -27,10 +27,10 @@ public class MonthExportService extends ExportBaseService {
      */
     public String export(List<ActualData> list, String type) {
         String fName = "";
-        if ("1".equals(type)) {
-            fName = "月用水量";
-        } else {
+        if ("2".equals(type)) {
             fName = "月供水量";
+        } else {
+            fName = "月用水量";
         }
         super.logger.info("导出" + fName + "信息开始");
         List<String> listHeader = new ArrayList<String>();

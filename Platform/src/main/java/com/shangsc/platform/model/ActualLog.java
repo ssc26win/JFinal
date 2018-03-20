@@ -59,6 +59,8 @@ public class ActualLog extends BaseActualLog<ActualLog> {
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
+        } else {
+            sqlExceptSelect.append(" order by c.id desc ");
         }
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
