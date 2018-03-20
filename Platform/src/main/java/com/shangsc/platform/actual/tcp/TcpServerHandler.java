@@ -15,6 +15,8 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -30,15 +32,22 @@ import java.util.Date;
  * @Desc
  */
 public class TcpServerHandler extends SimpleChannelHandler {
+
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private void log(String msg) {
+        logger.info(msg);
+    }
+
+
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         ChannelBuffer buffer = (ChannelBuffer) e.getMessage();
 
-        System.out.println("received " + buffer.readableBytes() + " bytes [" + buffer.toString() + "]");
+        log("received " + buffer.readableBytes() + " bytes [" + buffer.toString() + "]");
 
         String result = ConversionUtil.bytes2Hex16Str(buffer.array());
 
-        System.out.println("ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
+        log("ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
 
         if (StringUtils.isNotEmpty(result) && result.startsWith(ActualType.TCP_PRFIX) && result.endsWith(ActualType.TCP_SUFFIX)) {
             if (TcpData.login_data_length == result.length()) {
@@ -132,7 +141,7 @@ public class TcpServerHandler extends SimpleChannelHandler {
                     }
                     ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
                 } else {
-                    System.out.println("log not exist meter_address :" + meterAddress);
+                    log("log not exist meter_address :" + meterAddress);
                 }
                 // 记录消息来源
                 ActualLog.dao.save(null, ActualType.TCP, Integer.parseInt(PropKit.get("config.tcp.port")), PropKit.get("config.host"), result, meterAddress, new Date());

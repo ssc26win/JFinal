@@ -14,6 +14,8 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -30,8 +32,9 @@ import java.util.Date;
  */
 public class UdpEventHandler extends SimpleChannelUpstreamHandler {
 
-    private void log(Object msg) {
-        System.out.println(msg);
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private void log(String msg) {
+        logger.info(msg);
     }
 
     @Override
@@ -125,7 +128,7 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                             ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, voltage, writeTime);
                         }
                     } else {
-                        System.out.println("log not exist meter_address :" + meterAddress);
+                        log("log not exist meter_address :" + meterAddress);
                     }
                 }
                 //记录消息来源

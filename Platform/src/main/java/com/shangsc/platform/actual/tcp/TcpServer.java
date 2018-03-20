@@ -6,6 +6,8 @@ import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -18,8 +20,10 @@ import java.util.concurrent.Executors;
  */
 public class TcpServer {
 
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public TcpServer(int port) {
-        System.out.println("tcp server started, listening on port:" + port);
+        logger.info("tcp server started, listening on port:" + port);
         ServerBootstrap sb = new ServerBootstrap(new NioServerSocketChannelFactory(Executors.newCachedThreadPool(), Executors.newCachedThreadPool()));
         sb.setPipelineFactory(new ChannelPipelineFactory() {
             @Override

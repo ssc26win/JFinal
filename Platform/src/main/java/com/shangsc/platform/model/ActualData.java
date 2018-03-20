@@ -282,10 +282,10 @@ public class ActualData extends BaseActualData<ActualData> {
 		} else {
 			sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m-%d') desc,tad.meter_address desc ");
 		}
-		System.out.println("---");
-		System.out.println(select);
-		System.out.println(sqlExceptSelect.toString());
-		System.out.println("---");
+		logger.info("--- 日用水量sql开始 ---");
+		logger.info(select);
+		logger.info(sqlExceptSelect.toString());
+		logger.info("--- 日用水量sql结束 ---");
 		return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
 	}
 
@@ -366,10 +366,10 @@ public class ActualData extends BaseActualData<ActualData> {
 		} else {
 			sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m') desc,tad.meter_address desc ");
 		}
-        System.out.println("---");
-        System.out.println(select);
-        System.out.println(sqlExceptSelect.toString());
-        System.out.println("---");
+		logger.info("--- 月用水量sql开始 ---");
+		logger.info(select);
+		logger.info(sqlExceptSelect.toString());
+		logger.info("--- 月用水量sql结束 ---");
 		return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
 	}
 
@@ -447,8 +447,10 @@ public class ActualData extends BaseActualData<ActualData> {
 		} else {
 			sqlExceptSelect.append("order by date_format(tad.write_time, '%Y') desc,tad.meter_address desc");
 		}
-		System.out.println(select);
-		System.out.println(sqlExceptSelect.toString());
+		logger.info("--- 年用水量sql开始 ---");
+		logger.info(select);
+		logger.info(sqlExceptSelect.toString());
+		logger.info("--- 年用水量sql结束 ---");
 		return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
 	}
 

@@ -3,6 +3,8 @@ package com.shangsc.platform.actual;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.IPlugin;
 import com.shangsc.platform.actual.udp.UdpServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @Author ssc
@@ -12,9 +14,11 @@ import com.shangsc.platform.actual.udp.UdpServer;
  */
 public class ActualUdpPlugin implements IPlugin {
 
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
     public boolean start() {
-        System.out.println("......Udp plugin start......");
+        logger.info("......Udp plugin start......");
         new Thread(new Runnable() {
             @Override
             public void run() {

@@ -204,6 +204,6 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
 					may, june, july, august, september, october, november, december);
 			lists.add(index);
 		}
-		WaterIndex.me.saveBatch(lists, lists.size());
+		WaterIndex.saveBatch(lists, lists.size());
 	}
 }

@@ -8,6 +8,8 @@ import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.DatagramChannelFactory;
 import org.jboss.netty.channel.socket.nio.NioDatagramChannelFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
@@ -21,6 +23,9 @@ public class UdpServer {
 
     private ConnectionlessBootstrap udpBootstrap;
 
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+
     public UdpServer(int port) {
         DatagramChannelFactory channelFactory = new NioDatagramChannelFactory();
         udpBootstrap = new ConnectionlessBootstrap(channelFactory);
@@ -31,7 +36,7 @@ public class UdpServer {
             }
         });
         udpBootstrap.bind(new InetSocketAddress(PropKit.get("config.host"), port));
-        System.out.println("udp server started, listening on port:" + port);
+        logger.info("udp server started, listening on port:" + port);
     }
 
     public static void main(String[] args) {

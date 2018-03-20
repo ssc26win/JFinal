@@ -2,6 +2,8 @@ package com.shangsc.platform.actual.util;
 
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 
@@ -12,6 +14,9 @@ import java.math.BigDecimal;
  * @Desc
  */
 public class ConversionUtil {
+
+    public static final Logger logger = LoggerFactory.getLogger(ConversionUtil.class);
+
     /**
      * @Title:bytes2HexString
      * @Description:字节数组转16进制字符串
@@ -228,9 +233,9 @@ public class ConversionUtil {
         String meterAddress = result.substring(10, 20);
         String middle = meterAddress + AFN + SEQ + FN;
         String chkStr = getTcpCheckStr(to2StrArray(middle));
-        System.out.println(type + " check code : " + middle + " return : " + chkStr);
+        logger.info(type + " check code : " + middle + " return : " + chkStr);
         String resp = Tcp_startStr +  middle + chkStr + END;
-        System.out.println(type + " resp result : " + resp);
+        logger.info(type + " resp result : " + resp);
         return resp;
     }
 
@@ -288,7 +293,7 @@ public class ConversionUtil {
         char[] chars = numSrc.toCharArray();
         String totalStr = String.valueOf(chars[6]) + String.valueOf(chars[7]) + String.valueOf(chars[4]) + String.valueOf(chars[5])
                 + String.valueOf(chars[2]) + String.valueOf(chars[3]) + String.valueOf(chars[0]) + String.valueOf(chars[1]);
-        System.out.println(totalStr);
+        logger.info(totalStr);
         Long total = Long.parseLong(totalStr, 16);
         return String.valueOf(total);
     }
@@ -303,14 +308,14 @@ public class ConversionUtil {
 
     public static BigDecimal getTcpMultRecordSumWater(String result) {
         String lastRecord = result.substring(result.length() - 40, result.length());
-        System.out.println("Multi last record:" + lastRecord);
+        logger.info("Multi last record:" + lastRecord);
         //String sumNumStr = result.substring(26 + 8 * 2, 26 + 12 * 2);
         String sumNumStr = lastRecord.substring(8, 16);
-        System.out.println("Multi sumNumStr:" + sumNumStr);
+        logger.info("Multi sumNumStr:" + sumNumStr);
         String respDataSum = tcpStupidBCD(sumNumStr);
         //String pointNumStr = result.substring(26 + 12 * 2, 26 + 16 * 2);
         String pointNumStr = lastRecord.substring(16, 24);
-        System.out.println("Multi pointNumStr:" + pointNumStr);
+        logger.info("Multi pointNumStr:" + pointNumStr);
         String respDataPoint = tcpStupidBCD(pointNumStr);
         BigDecimal all = CodeNumUtil.getBigDecimal(respDataSum + "." + respDataPoint, 2);
         return all;
