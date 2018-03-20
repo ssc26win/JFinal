@@ -10,6 +10,8 @@ import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseActualData;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -21,6 +23,7 @@ import java.util.*;
 public class ActualData extends BaseActualData<ActualData> {
 
 	public static final ActualData me = new ActualData();//status : 正常 异常 停用
+	public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public InvokeResult save(Long id, String innerCode, String meter_address,
 							 String alarm, BigDecimal netWater, BigDecimal sumWater, Integer state, String voltage, Date writeTime) {
@@ -39,7 +42,7 @@ public class ActualData extends BaseActualData<ActualData> {
 				actualData.save();
 			}
 		} else {
-			System.out.println("错误数据-net_water:" + netWater + ",sum_water:" + sumWater);
+			logger.info("错误数据-net_water:" + netWater + ",sum_water:" + sumWater);
 		}
 		return InvokeResult.success();
 	}
