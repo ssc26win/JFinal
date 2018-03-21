@@ -36,7 +36,7 @@ public abstract class ExportBaseService {
         for (int i = 0; i < listHeader.size(); i++) {
             Cell cell = rowHead.createCell(i);
             cell.setCellValue(listHeader.get(i));
-            sheet.setColumnWidth(i, 20 * 256);
+            sheet.setColumnWidth(i, 30 * 256);
         }
         // 表头样式
         ToolPoi.setHeadStyle(wb, rowHead.cellIterator());
