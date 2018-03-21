@@ -1,7 +1,9 @@
 package com.shangsc.platform.export;
 
 import com.shangsc.platform.util.ToolPoi;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -25,7 +27,7 @@ public abstract class ExportBaseService {
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-    public String export(String filename, List<String> listHeader, List<Object[]> objects) {
+    public String export(String filename, List<String> listHeader, List<Object[]> objects, Set<Integer> isNumTypeColSet) {
         SXSSFWorkbook wb = new SXSSFWorkbook();
         Sheet sheet = wb.createSheet(filename);
 
@@ -59,7 +61,6 @@ public abstract class ExportBaseService {
         red.cloneStyleFrom(style);
         red.setFillForegroundColor(new XSSFColor(new java.awt.Color(243, 123, 83)));
 
-
         // 处理数据
         for (int i = 0; i < objects.size(); i++) {
             Object[] obj = objects.get(i);
@@ -68,7 +69,12 @@ public abstract class ExportBaseService {
             for (int j = 0; j < obj.length; j++) {
                 Cell cell = row.createCell(j);
                 cell.setCellStyle(style);
-                cell.setCellValue(ObjectUtils.toString(obj[j]));
+                if (CollectionUtils.isNotEmpty(isNumTypeColSet) && isNumTypeColSet.contains(j+1)) {
+                    cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+                    cell.setCellValue(Double.parseDouble(ObjectUtils.toString(obj[j])));
+                } else {
+                    cell.setCellValue(ObjectUtils.toString(obj[j]));
+                }
             }
 
         }

@@ -2,9 +2,7 @@ package com.shangsc.platform.export;
 
 import com.shangsc.platform.model.WaterIndex;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * WaterIndex
@@ -67,7 +65,22 @@ public class WaterIndexExportService extends ExportBaseService{
             objects.add(obj);
         }
 
+        Set<Integer> isNumTypeColSet = new HashSet<Integer>();
+        isNumTypeColSet.add(5);
+        isNumTypeColSet.add(6);
+        isNumTypeColSet.add(7);
+        isNumTypeColSet.add(8);
+        isNumTypeColSet.add(9);
+        isNumTypeColSet.add(10);
+        isNumTypeColSet.add(11);
+        isNumTypeColSet.add(12);
+        isNumTypeColSet.add(13);
+        isNumTypeColSet.add(14);
+        isNumTypeColSet.add(15);
+        isNumTypeColSet.add(16);
+        isNumTypeColSet.add(17);
+
         super.logger.info("导出单位用水指标信息结束");
-        return super.export(FILE_NAME, listHeader, objects);
+        return super.export(FILE_NAME, listHeader, objects, isNumTypeColSet);
     }
 }

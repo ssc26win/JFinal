@@ -2,9 +2,7 @@ package com.shangsc.platform.export;
 
 import com.shangsc.platform.model.Well;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author ssc
@@ -22,7 +20,7 @@ public class WellExportService extends ExportBaseService {
       所在水资源三级区名称及编码	水源类型	主要取水用途及效益	取水量确定方法	是否已办理取水许可证	取水许可证编号	年许可取水量(万立方米)
      */
     public String export(List<Well> wells) {
-
+        super.logger.info("导出水井信息结束");
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[]{
                 "水井编号",
@@ -93,6 +91,11 @@ public class WellExportService extends ExportBaseService {
             };
             objects.add(obj);
         }
-        return super.export(FILE_NAME, listHeader, objects);
+
+        Set<Integer> isNumTypeColSet = new HashSet<Integer>();
+        isNumTypeColSet.add(30);
+
+        super.logger.info("导出水井信息结束");
+        return super.export(FILE_NAME, listHeader, objects, isNumTypeColSet);
     }
 }

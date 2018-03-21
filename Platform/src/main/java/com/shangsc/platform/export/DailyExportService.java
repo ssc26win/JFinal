@@ -2,9 +2,7 @@ package com.shangsc.platform.export;
 
 import com.shangsc.platform.model.ActualData;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author ssc
@@ -69,7 +67,10 @@ public class DailyExportService extends ExportBaseService{
             objects.add(obj);
         }
 
+        Set<Integer> isNumTypeColSet = new HashSet<Integer>();
+        isNumTypeColSet.add(7);
+
         super.logger.info("导出" + fName + "信息结束");
-        return super.export(fName + "信息导出", listHeader, objects);
+        return super.export(fName + "信息导出", listHeader, objects, isNumTypeColSet);
     }
 }

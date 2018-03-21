@@ -6,12 +6,12 @@ import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.util.CodeNumUtil;
-import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -85,7 +85,8 @@ public class ActualController extends BaseController {
     public void add() {
         Integer id = this.getParaToInt("id");
         if(id!=null){
-            this.setAttr("item", ActualData.me.findById(id));
+            ActualData byId = ActualData.me.findById(id);
+            this.setAttr("item", byId);
         }
         this.setAttr("id", id);
         render("actual_add.jsp");
@@ -109,7 +110,7 @@ public class ActualController extends BaseController {
         String voltage = this.getPara("voltage");
         Date writeTime = null;
         try {
-            writeTime = ToolDateTime.parse(this.getPara("writeTime"));
+            writeTime = DateUtils.parseDate(this.getPara("writeTime"));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -3,9 +3,7 @@ package com.shangsc.platform.export;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.util.ToolDateTime;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 用水单位信息导出类
@@ -83,7 +81,12 @@ public class CompanyExportService extends ExportBaseService {
             objects.add(obj);
         }
 
+        Set<Integer> isNumTypeColSet = new HashSet<Integer>();
+        isNumTypeColSet.add(21);
+        isNumTypeColSet.add(22);
+        isNumTypeColSet.add(23);
+
         super.logger.info("导出单位信息结束");
-        return super.export(FILE_NAME, listHeader, objects);
+        return super.export(FILE_NAME, listHeader, objects , isNumTypeColSet);
     }
 }

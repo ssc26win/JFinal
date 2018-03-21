@@ -2,9 +2,7 @@ package com.shangsc.platform.export;
 
 import com.shangsc.platform.model.ActualData;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author ssc
@@ -65,7 +63,10 @@ public class ReadNumExportService extends ExportBaseService{
             objects.add(obj);
         }
 
+        Set<Integer> isNumTypeColSet = new HashSet<Integer>();
+        isNumTypeColSet.add(7);
+
         super.logger.info("导出读数查询信息结束");
-        return super.export(FILE_NAME, listHeader, objects);
+        return super.export(FILE_NAME, listHeader, objects, isNumTypeColSet);
     }
 }

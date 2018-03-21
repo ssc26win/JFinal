@@ -3,9 +3,7 @@ package com.shangsc.platform.export;
 import com.shangsc.platform.model.WaterMeter;
 import com.shangsc.platform.util.ToolDateTime;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * 水表信息导出
@@ -19,7 +17,7 @@ public class WaterMeterExportService extends ExportBaseService {
 
 
     public String export(List<WaterMeter> waterMeters) {
-
+        super.logger.info("导出水表信息开始");
         List<String> listHeader = new ArrayList<String>();
         listHeader.addAll(Arrays.asList(new String[] {
                 "单位编号",
@@ -66,6 +64,11 @@ public class WaterMeterExportService extends ExportBaseService {
             };
             objects.add(obj);
         }
-        return super.export(FILE_NAME, listHeader, objects);
+
+        Set<Integer> isNumTypeColSet = new HashSet<Integer>();
+
+
+        super.logger.info("导出水表信息结束");
+        return super.export(FILE_NAME, listHeader, objects, isNumTypeColSet);
     }
 }
