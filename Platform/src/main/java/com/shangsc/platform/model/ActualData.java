@@ -53,8 +53,10 @@ public class ActualData extends BaseActualData<ActualData> {
 		actualData.setMeterAddress(meter_address);
 		actualData.setAlarm(alarm);
 		actualData.setNetWater(netWater);
-		actualData.setState(state);
-        actualData.setSumWater(sumWater);
+		if (state != null) {
+			actualData.setState(state);
+		}
+		actualData.setSumWater(sumWater);
 		if (writeTime == null) {
 			actualData.setWriteTime(new Date());
 		} else {

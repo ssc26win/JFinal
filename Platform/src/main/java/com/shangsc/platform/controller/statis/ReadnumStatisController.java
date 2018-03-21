@@ -6,10 +6,12 @@ import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.ReadNumExportService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -49,8 +51,12 @@ public class ReadnumStatisController extends BaseController {
         Date startTime = null;
         Date endTime = null;
         try {
-            startTime = this.getParaToDate("startTime");
-            endTime = this.getParaToDate("endTime");
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime"), ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime"), ToolDateTime.pattern_ymd_hms);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,8 +104,12 @@ public class ReadnumStatisController extends BaseController {
         Date startTime = null;
         Date endTime = null;
         try {
-            startTime = this.getParaToDate("startTime");
-            endTime = this.getParaToDate("endTime");
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime"), ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime"), ToolDateTime.pattern_ymd_hms);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
