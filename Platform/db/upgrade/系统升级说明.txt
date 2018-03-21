@@ -1,4 +1,4 @@
-
+http://blog.csdn.net/congju/article/details/52423863 (备份mysql)
 
 1~6点 9~16点 18~23点 这几个时间段没有水表上传数据，建议在这个时间段更新系统
 
