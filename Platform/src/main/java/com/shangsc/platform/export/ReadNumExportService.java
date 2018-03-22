@@ -53,7 +53,7 @@ public class ReadNumExportService extends ExportBaseService{
                     actualData.get("line_num"),
                     actualData.get("meter_num"),
                     actualData.get("watersTypeName"),
-                    actualData.getNetWater(),
+                    actualData.getSumWater(),
                     actualData.get("meter_attr"),
                     actualData.getMeterAddress(),
                     actualData.getWriteTime(),

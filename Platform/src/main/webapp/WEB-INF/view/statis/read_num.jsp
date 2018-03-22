@@ -119,7 +119,7 @@
                 { label: '水源类型', name: 'watersTypeName', width: 60, sortable:false},
                 { label: '水表属性', name: 'meter_attr', width: 80, sortable:false},
                 { label: '查询时间', name: 'write_time', width: 100, sortable:true},
-                { label: '水表读数（立方米）', name: 'net_water', width: 90, sortable:true},
+                { label: '水表读数（立方米）', name: 'sum_water', width: 90, sortable:true},
                 { label: '单位地址', name: 'addressMap', width: 150,sortable:false}
             ],
             viewrecords: true,
