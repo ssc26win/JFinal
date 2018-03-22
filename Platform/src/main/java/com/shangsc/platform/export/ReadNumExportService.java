@@ -19,7 +19,7 @@ public class ReadNumExportService extends ExportBaseService{
      "路别",
      "水表编号",
      "水源类型",
-     "日用水量",
+     "水表读数",
      "水表属性",
      "表计地址",
      "单位地址",
