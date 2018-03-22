@@ -76,6 +76,7 @@ public abstract class ExportBaseService {
                     if (StringUtils.isNotEmpty(colVal)) {
                         cell.setCellValue(Double.parseDouble(colVal));
                     } else {
+                        cell.setCellValue(Double.parseDouble("0"));
                         logger.info("column value empty!");
                     }
                 } else {
