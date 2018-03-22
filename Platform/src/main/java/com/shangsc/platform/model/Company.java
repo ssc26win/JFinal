@@ -126,7 +126,7 @@ public class Company extends BaseCompany<Company> {
     public InvokeResult save(Long id, String name, String innerCode, String waterUnit, String county, Integer street, String streetSrc,
                              String address, Integer customerType, Integer waterUseType, String gbIndustry, String mainIndustry,
                              String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
-                             Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createDate,
+                             Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createTime,
                              BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type) {
         if (hasExistCode(id, innerCode)) {
             return InvokeResult.failure("保存失败，单位编号已存在");
@@ -143,14 +143,14 @@ public class Company extends BaseCompany<Company> {
             }
             company = setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                     gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
-                    remotemeterCount, unitType, longitude, latitude, createDate, self_well_price, surface_price,
+                    remotemeterCount, unitType, longitude, latitude, createTime, self_well_price, surface_price,
                     self_free_price, company_type);
             company.update();
         } else {
             Company company = new Company();
             company = setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                     gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
-                    remotemeterCount, unitType, longitude, latitude, createDate, self_well_price, surface_price,
+                    remotemeterCount, unitType, longitude, latitude, createTime, self_well_price, surface_price,
                     self_free_price, company_type);
             company.save();
         }
@@ -160,7 +160,7 @@ public class Company extends BaseCompany<Company> {
     private Company setProp(Company company, String name, String innerCode, String waterUnit, String county, Integer street, String streetSrc,
                             String address, Integer customerType, Integer waterUseType, String gbIndustry, String mainIndustry,
                             String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
-                            Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createDate,
+                            Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createTime,
                             BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type) {
         company.setName(name);
         company.setInnerCode(innerCode);
@@ -184,10 +184,10 @@ public class Company extends BaseCompany<Company> {
         company.setLongitude(longitude);
         company.setLatitude(latitude);
         company.setCompanyType(company_type);
-        if (createDate == null) {
+        if (createTime == null) {
             company.setCreateTime(new Date());
         } else {
-            company.setCreateTime(createDate);
+            company.setCreateTime(createTime);
         }
         company.setSelfWellPrice(self_well_price);
         company.setSurfacePrice(surface_price);

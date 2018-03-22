@@ -3,6 +3,7 @@ package com.shangsc.platform.export;
 import com.shangsc.platform.util.ToolPoi;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -71,7 +72,12 @@ public abstract class ExportBaseService {
                 cell.setCellStyle(style);
                 if (CollectionUtils.isNotEmpty(isNumTypeColSet) && isNumTypeColSet.contains(j+1)) {
                     cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
-                    cell.setCellValue(Double.parseDouble(ObjectUtils.toString(obj[j])));
+                    String colVal = ObjectUtils.toString(obj[j]);
+                    if (StringUtils.isNotEmpty(colVal)) {
+                        cell.setCellValue(Double.parseDouble(colVal));
+                    } else {
+                        logger.info("column value empty!");
+                    }
                 } else {
                     cell.setCellValue(ObjectUtils.toString(obj[j]));
                 }

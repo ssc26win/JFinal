@@ -71,7 +71,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label" for="customerType">注册时间:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" id="createTime" name="createTime" value="${item.createTime}" class="form-control form_date">
+                                    <input type="text" id="createTime" name="createTime" value="${item.createTime}" class="form-control form_datetime">
                                 </div>
                                 <label class="col-sm-2 control-label" for="streetSrc">原乡镇或街道:</label>
                                 <div class="col-sm-4">

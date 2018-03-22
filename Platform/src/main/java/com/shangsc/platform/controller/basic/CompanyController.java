@@ -160,7 +160,12 @@ public class CompanyController extends BaseController {
         Integer remotemeterCount = this.getParaToInt("remotemeterCount");
         Integer unitType = this.getParaToInt("unitType");
         String position = this.getPara("position");
-        Date createDate = this.getParaToDate("createDate");
+
+        Date createTime = null;
+        if (StringUtils.isNotEmpty(this.getPara("createTime"))) {
+            createTime = DateUtils.parseDate(this.getPara("createTime"));
+        }
+
         BigDecimal longitude = null;
         BigDecimal latitude = null;
         if (StringUtils.isNotEmpty(position)) {
@@ -181,7 +186,7 @@ public class CompanyController extends BaseController {
         }
         InvokeResult result = Company.me.save(id, name, innerCode, waterUnit, county, street, streetSrc, address,
                 customerType, waterUseType, gbIndustry, mainIndustry, contact, phone, postalCode, department,
-                wellCount, firstWatermeterCount, remotemeterCount, unitType, longitude, latitude, createDate,
+                wellCount, firstWatermeterCount, remotemeterCount, unitType, longitude, latitude, createTime,
                 self_well_price, surface_price, self_free_price, company_type);
         this.renderJson(result);
     }

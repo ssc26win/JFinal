@@ -21,7 +21,6 @@ import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.WaterMeterExportService;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.WaterMeter;
-import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -145,10 +144,8 @@ public class MeterController extends BaseController {
         Integer chargeType = this.getParaToInt("chargeType");
         String billingCycle = this.getPara("billingCycle");
         Date registDate = null;
-        try {
-            registDate = ToolDateTime.parse(this.getPara("registDate"));
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (StringUtils.isNotEmpty(this.getPara("registDate"))) {
+            registDate = DateUtils.parseDate(this.getPara("registDate"));
         }
         InvokeResult result = WaterMeter.me.save(id, innerCode, lineNum, meterNum, meterAddress, times,
                 watersType, meterAttr, chargeType, billingCycle, registDate);

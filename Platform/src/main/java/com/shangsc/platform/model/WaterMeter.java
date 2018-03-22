@@ -117,9 +117,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         meter.setChargeType(chargeType);
         meter.setBillingCycle(billingCycle);
         if (registDate == null) {
-            meter.setRegistDate(ToolDateTime.getDate());
+            meter.setRegistDate(new Date());
         } else {
-            me.setRegistDate(registDate);
+            meter.setRegistDate(registDate);
         }
         return meter;
     }

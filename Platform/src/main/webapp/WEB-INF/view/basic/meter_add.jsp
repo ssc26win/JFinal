@@ -104,7 +104,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="registDate">注册日期</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="registDate" name="registDate" value="${item.registDate}" class="col-xs-12 col-sm-6 form_date">
+                                        <input type="text" id="registDate" name="registDate" value="${item.registDate}" class="col-xs-12 col-sm-6 form_datetime">
                                     </div>
                                 </div>
                             </div>

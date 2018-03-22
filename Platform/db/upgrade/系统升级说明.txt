@@ -11,7 +11,7 @@ vim /etc/crontab
 
 每天1:30执行
 
-30 1 * * * /usr/local/mysql/mysqldb-backup/mysql_backup.sh
+0 2 * * * root /usr/local/mysql/mysqldb-backup/mysql_backup.sh
 
 service crond restart
 
