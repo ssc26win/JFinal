@@ -107,11 +107,11 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                 String voltage = "";
                 Date writeTime = new Date();
                 BigDecimal times = new BigDecimal("1");
-                if (sumWater.compareTo(new BigDecimal(0.00)) > 0 || addWater.compareTo(new BigDecimal(0.00)) > 0) {
-                    ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
-                    boolean timesReduce = true;
+                if (sumWater != null && sumWater.intValue() >= 0 && sumWater.intValue() <= 99999999) {
                     WaterMeter meter = WaterMeter.me.findByMeterAddress(meterAddress);
                     if (meter != null) {
+                        ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
+                        boolean timesReduce = true;
                         innerCode = meter.getInnerCode();
                         times = meter.getTimes();
                         sumWater = times.multiply(sumWater);
@@ -120,9 +120,9 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                         } else {
                             addWater = sumWater;
                         }
-                        if (data!= null) {
+                        if (data != null) {
                             addWater = sumWater.subtract(data.getSumWater());
-                            timesReduce = (writeTime.getTime() - data.getWriteTime().getTime()) > 1000*60*1;
+                            timesReduce = (writeTime.getTime() - data.getWriteTime().getTime()) > 1000 * 60 * 1;
                         }
                         if (timesReduce) {
                             ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, voltage, writeTime);
@@ -130,9 +130,11 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                     } else {
                         log("log not exist meter_address :" + meterAddress);
                     }
+                } else {
+                    logger.info("错误数据-sum_water:" + sumWater +"（meterAddress:" + meterAddress +"）");
                 }
                 //记录消息来源
-                ActualLog.dao.save(null, ActualType.UDP, Integer.parseInt(PropKit.get("config.udp.port")), PropKit.get("config.host"), result, meterAddress, new Date());
+                ActualLog.dao.save(null, ActualType.UDP, Integer.parseInt(PropKit.get("config.udp.port")), PropKit.get("config.host"), result, meterAddress, writeTime);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,5 +147,9 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
         System.out.println(ConversionUtil.getUdpMeterAddress(test));
         System.out.println(ConversionUtil.getUdpMeterSum(test));
         System.out.println(ConversionUtil.getUdpMeterAdd(test));
+        BigDecimal sumWater = new BigDecimal("011");
+        if (sumWater != null && sumWater.intValue() >= 0 && sumWater.intValue() <= 99999999) {
+            System.out.println("ok");
+        }
     }
 }

@@ -27,22 +27,17 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public InvokeResult save(Long id, String innerCode, String meter_address,
 							 String alarm, BigDecimal netWater, BigDecimal sumWater, Integer state, String voltage, Date writeTime) {
-		//解析数据大于等于1000000或小于0时不录入数据库，保留上传日志。与上一次差值为负数时不录入数据库，保留上传日志
-		if (netWater!= null && netWater.intValue() < 1000000 && netWater.intValue() >=0) {
-			if (null != id && id > 0l) {
-				ActualData actualData = this.findById(id);
-				if (actualData == null) {
-					return InvokeResult.failure("更新失败, 该记录不存在");
-				}
-				actualData = setProp(actualData, innerCode, meter_address, alarm, netWater, sumWater, state, voltage, writeTime);
-				actualData.update();
-			} else {
-				ActualData actualData = new ActualData();
-				actualData = setProp(actualData, innerCode, meter_address, alarm, netWater, sumWater, state, voltage, writeTime);
-				actualData.save();
+		if (null != id && id > 0l) {
+			ActualData actualData = this.findById(id);
+			if (actualData == null) {
+				return InvokeResult.failure("更新失败, 该记录不存在");
 			}
+			actualData = setProp(actualData, innerCode, meter_address, alarm, netWater, sumWater, state, voltage, writeTime);
+			actualData.update();
 		} else {
-			logger.info("错误数据-net_water:" + netWater + ",sum_water:" + sumWater);
+			ActualData actualData = new ActualData();
+			actualData = setProp(actualData, innerCode, meter_address, alarm, netWater, sumWater, state, voltage, writeTime);
+			actualData.save();
 		}
 		return InvokeResult.success();
 	}

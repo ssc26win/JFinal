@@ -125,23 +125,27 @@ public class TcpServerHandler extends SimpleChannelHandler {
                     meterAddress = ConversionUtil.getTcpMeterAddress(result);
                     sumWater = ConversionUtil.getTcpSumNum(result);
                 }
-                WaterMeter meter = WaterMeter.me.findByMeterAddress(meterAddress);
-                if (meter != null) {
-                    ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
-                    if (data != null && data.getSumWater().compareTo(sumWater) > 0) {
-                        state = Integer.parseInt(ActualState.EXCEPTION);
-                    }
-                    innerCode = meter.getInnerCode();
-                    times = meter.getTimes();
-                    sumWater = times.multiply(sumWater);
-                    if (data != null) {
-                        addWater = sumWater.subtract(data.getSumWater());
+                if (sumWater != null && sumWater.intValue() >= 0 && sumWater.intValue() <= 99999999) { // 表一共就6个位 两位小数 传回来的值不乘倍数之前 大于99999999的 肯定是无效的
+                    WaterMeter meter = WaterMeter.me.findByMeterAddress(meterAddress);
+                    if (meter != null) {
+                        ActualData data = ActualData.me.getLastMeterAddress(meterAddress);
+                        if (data != null && data.getSumWater().compareTo(sumWater) > 0) {
+                            state = Integer.parseInt(ActualState.EXCEPTION);
+                        }
+                        innerCode = meter.getInnerCode();
+                        times = meter.getTimes();
+                        sumWater = times.multiply(sumWater);
+                        if (data != null) {
+                            addWater = sumWater.subtract(data.getSumWater());
+                        } else {
+                            addWater = sumWater;
+                        }
+                        ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
                     } else {
-                        addWater = sumWater;
+                        log("log not exist meter_address :" + meterAddress);
                     }
-                    ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
                 } else {
-                    log("log not exist meter_address :" + meterAddress);
+                    logger.info("错误数据-sum_water:" + sumWater + "（meterAddress:" + meterAddress + "）");
                 }
                 // 记录消息来源
                 ActualLog.dao.save(null, ActualType.TCP, Integer.parseInt(PropKit.get("config.tcp.port")), PropKit.get("config.host"), result, meterAddress, new Date());
