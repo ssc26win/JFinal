@@ -3,24 +3,27 @@ package com.shangsc.platform.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
-import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.MapState;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
+import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.model.*;
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by Administrator on 2017/8/26.
  */
-public class ChartController extends Controller {
+public class ChartController extends BaseController {
     // 预警閥值
     private static final BigDecimal THRESHOLD = new BigDecimal("2");
 
@@ -216,6 +219,8 @@ public class ChartController extends Controller {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value={"/chart"})
     public void baiduMap() {
+        //TODO 处理地图上单位
+        Company.me.setGlobalInnerCode(getInnerCode());
         List<Record> records = new ArrayList<>();
         JSONArray array = new JSONArray();
         String type = this.getPara("type");

@@ -25,9 +25,15 @@ public class ActualData extends BaseActualData<ActualData> {
 	public static final ActualData me = new ActualData();//status : 正常 异常 停用
 	public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	public String globalInnerCode;
+
+	public void setGlobalInnerCode(String globalInnerCode) {
+		this.globalInnerCode = globalInnerCode;
+	}
+
 	public InvokeResult save(Long id, String innerCode, String meter_address,
 							 String alarm, BigDecimal netWater, BigDecimal sumWater, Integer state, String voltage, Date writeTime) {
-		if (null != id && id > 0l) {
+		if (null != id && id > 0L) {
 			ActualData actualData = this.findById(id);
 			if (actualData == null) {
 				return InvokeResult.failure("更新失败, 该记录不存在");
@@ -99,6 +105,9 @@ public class ActualData extends BaseActualData<ActualData> {
 			sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
 					+ "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
 		}
+		if (StringUtils.isNotEmpty(globalInnerCode)) {
+			sqlExceptSelect.append(" and alld.inner_code='" + StringUtils.trim(globalInnerCode) + "'");
+		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
 		}
@@ -116,6 +125,9 @@ public class ActualData extends BaseActualData<ActualData> {
 		if (StringUtils.isNotEmpty(keyword)) {
 			sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
 					+ "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
+		}
+		if (StringUtils.isNotEmpty(globalInnerCode)) {
+			sqlExceptSelect.append(" and alld.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
 		}
 		if (StringUtils.isNotEmpty(orderbyStr)) {
 			sqlExceptSelect.append(orderbyStr);
@@ -144,6 +156,9 @@ public class ActualData extends BaseActualData<ActualData> {
 		if (StringUtils.isNotEmpty(keyword)) {
 			sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
 					+ "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
+		}
+		if (StringUtils.isNotEmpty(globalInnerCode)) {
+			sqlExceptSelect.append(" and alld.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
 		}
 		sqlExceptSelect.append(" group by alld.meter_address ");
 		if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -192,6 +207,9 @@ public class ActualData extends BaseActualData<ActualData> {
 			if (StringUtils.isNotEmpty(innerCode)) {
 				sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
 			}
+		}
+		if (StringUtils.isNotEmpty(globalInnerCode)) {
+			sqlExceptSelect.append(" and twm.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
 		}
 		if (watersType != null) {
 			sqlExceptSelect.append(" and tm.waters_type=" + watersType);
@@ -250,7 +268,9 @@ public class ActualData extends BaseActualData<ActualData> {
 				sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "' ");
 			}
 		}
-
+		if (StringUtils.isNotEmpty(globalInnerCode)) {
+			sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+		}
 		if (startTime != null) {
 			sqlExceptSelect.append(" and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' ");
 		}
@@ -334,6 +354,9 @@ public class ActualData extends BaseActualData<ActualData> {
 				sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "'");
 			}
 		}
+		if (StringUtils.isNotEmpty(globalInnerCode)) {
+			sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+		}
 
 		if (startTime != null) {
 			sqlExceptSelect.append(" and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "'");
@@ -408,6 +431,9 @@ public class ActualData extends BaseActualData<ActualData> {
 			if (StringUtils.isNotEmpty(innerCode)) {
 				sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "'");
 			}
+		}
+		if (StringUtils.isNotEmpty(globalInnerCode)) {
+			sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
 		}
         if (StringUtils.isNotEmpty(type)) {
             type = StringUtils.trim(type);

@@ -36,6 +36,8 @@ import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.mail.MailPlugin;
 import com.shangsc.platform.model.SysUser;
 import com.shangsc.platform.model._MappingKit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,6 +47,11 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalConfig extends JFinalConfig {
 
 	public static final int EXPORT_SUM = 65535; //excel office 2003 支持最大行数
+
+	public final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private void log(String msg) {
+		logger.info(msg);
+	}
 
 	/**
 	 * 配置常量
@@ -70,8 +77,7 @@ public class GlobalConfig extends JFinalConfig {
 	}
 
 	public static C3p0Plugin createC3p0Plugin() {
-		return new C3p0Plugin(PropKit.get("jdbcUrl"), PropKit.get("user"),
-				PropKit.get("password"));
+		return new C3p0Plugin(PropKit.get("jdbcUrl"), PropKit.get("user"), PropKit.get("password"));
 	}
 
 	public static DruidPlugin createDruidPlugin() {
@@ -127,8 +133,9 @@ public class GlobalConfig extends JFinalConfig {
 	@Override
 	public void configHandler(Handlers me) {
 		DruidStatViewHandler dvh =  new DruidStatViewHandler("/druid",new IDruidStatViewAuth(){
-		    public boolean isPermitted(HttpServletRequest request) {
-		        SysUser sysUser= IWebUtils.getCurrentSysUser(request);
+		    @Override
+			public boolean isPermitted(HttpServletRequest request) {
+		        SysUser sysUser = IWebUtils.getCurrentSysUser(request);
 		        return (sysUser != null && sysUser.getStr("name").equals("admin"));
 		      }
 		  });
@@ -146,7 +153,7 @@ public class GlobalConfig extends JFinalConfig {
             new ActualUdpPlugin().start();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Udp server start failed");
+            log("Udp server start failed");
         }
 	}
 
@@ -155,7 +162,7 @@ public class GlobalConfig extends JFinalConfig {
             new ActualTcpPlugin().start();
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Udp server start failed");
+            log("Udp server start failed");
         }
     }
 }

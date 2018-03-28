@@ -34,6 +34,7 @@ public class ActualController extends BaseController {
 
     @RequiresPermissions(value={"/statis/actual"})
     public void getListData() {
+        ActualData.me.setGlobalInnerCode(getInnerCode());
         String keyword=this.getPara("name");
         String status=this.getPara("status", "-1");
         Page<ActualData> pageInfo = new Page<>();

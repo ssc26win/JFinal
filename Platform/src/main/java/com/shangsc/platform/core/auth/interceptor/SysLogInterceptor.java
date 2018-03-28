@@ -15,15 +15,15 @@
  */
 package com.shangsc.platform.core.auth.interceptor;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
+import com.jfinal.aop.Interceptor;
+import com.jfinal.aop.Invocation;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.model.SysLog;
 import com.shangsc.platform.model.SysUser;
-import com.jfinal.aop.Interceptor;
-import com.jfinal.aop.Invocation;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 /**
  * 日志拦截器
@@ -31,6 +31,7 @@ import com.jfinal.aop.Invocation;
  */
 public class SysLogInterceptor implements Interceptor {
 	
+	@Override
 	public void intercept(Invocation inv) {
 		String from=inv.getController().getRequest().getHeader("Referer");
 		String ip= CommonUtils.getIP(inv.getController().getRequest());
@@ -44,7 +45,7 @@ public class SysLogInterceptor implements Interceptor {
 			inv.invoke();
 			SysLog.dao.saveSysLog(uid, ip, from, inv.getActionKey(), className, methodName, startTime, 0,"");
 		}catch(RuntimeException e){
-			SysLog.dao.saveSysLog(uid, ip, from, inv.getActionKey(), className, methodName, startTime, -1,getExceptionAllinformation(e));
+			SysLog.dao.saveSysLog(uid, ip, from, inv.getActionKey(), className, methodName, startTime, -1, getExceptionAllinformation(e));
 		}
 	}
 	 /**

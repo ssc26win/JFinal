@@ -26,6 +26,7 @@ import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.MyDigestUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseSysUser;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -87,7 +88,6 @@ public class SysUser extends BaseSysUser<SysUser>
 	 * @return
 	 */
 	public List<SysUser> getSysUserList(int uid){
-		
 		return this.paginate(1, 20, "select *", "from sys_user ",uid).getList();
 	}
 	
@@ -167,11 +167,14 @@ public class SysUser extends BaseSysUser<SysUser>
 		conditions.add(new Condition("email",Operators.EQ,email));
 		return this.get(conditions);
 	}
-	public InvokeResult save(Integer id,String username,String password,String des,String phone,String email){
+	public InvokeResult save(Integer id,String username,String password,String des,String phone,String email, String innerCode) {
 		if(null!=id){
 			SysUser sysUser=this.findById(id);
-			sysUser.set("des", des).set("phone", phone).set("email", email).update();
-		}else {
+			sysUser.set("des", des).set("phone", phone).set("email", email).set("inner_code", innerCode);update();
+		}else{
+			if(!Company.me.hasExistCode(null, innerCode)){
+				return InvokeResult.failure("公司编码不存在");
+			}
 			if(this.hasExist(username)){
 				return InvokeResult.failure("用户名已存在");
 			}
@@ -181,7 +184,9 @@ public class SysUser extends BaseSysUser<SysUser>
 			if(this.hasExistEmail(email)){
 				return InvokeResult.failure("邮箱已存在");
 			}
-			if(StrKit.isBlank(password))password="123456";
+			if(StrKit.isBlank(password)) {
+				password="123456";
+			}
 			SysUser sysUser=new SysUser();
 			sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date()).set("des", des).set("phone", phone).set("email", email).save();
 
@@ -223,23 +228,30 @@ public class SysUser extends BaseSysUser<SysUser>
 		}
 		
 	}
-	public Page<SysUser> getSysUserPage(int page, int rows, String keyword,
-			String orderbyStr) {
+	public Page<SysUser> getSysUserPage(int page, int rows, String keyword, String innerCode, String orderbyStr) {
 		String select="select su.*, (select group_concat(name) as roleNames from sys_role where id in(select role_id from sys_user_role where user_id=su.id)) as roleNames";
-		StringBuffer sqlExceptSelect=new StringBuffer("from sys_user su");
+		StringBuffer sqlExceptSelect=new StringBuffer("from sys_user su where 1=1 ");
+		if (StringUtils.isNotEmpty(innerCode)) {
+			sqlExceptSelect.append(" and su.inner_code='" + innerCode + "'");
+		}
 		return this.paginate(page, rows, select, sqlExceptSelect.toString());
 	}
 
-    public InvokeResult regist(String username,String password,String phone,String email){
-        if(this.hasExist(username)){
+    public InvokeResult regist(String username,String password,String phone,String email,String innerCode){
+		if (!Company.me.hasExistCode(null, innerCode)) {
+			return InvokeResult.failure("公司编码不存在");
+		}
+        if (this.hasExist(username)) {
             return InvokeResult.failure("用户名已存在");
-        }else{
-            if(StrKit.isBlank(password))password="123456";
+        } else {
+            if (StrKit.isBlank(password)) {
+				password="123456";
+			}
             SysUser sysUser=new SysUser();
             sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date())
-                    .set("phone", phone).set("email", email).save();
+                    .set("phone", phone).set("email", email).set("inner_code", innerCode).save();
             List<String> sqlList=Lists.newArrayList();
-            for(String roleId : "57".split(",")){
+            for (String roleId : "57".split(",")) {
                 if(CommonUtils.isNotEmpty(roleId)){
                     sqlList.add("insert into sys_user_role (user_id,role_id) values ("+sysUser.getId()+","+Integer.valueOf(roleId)+")");
                 }

@@ -231,6 +231,14 @@
 
 											<form action="sys/">
 												<fieldset>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" id="innerCode" name="innerCode" class="form-control" placeholder="请输入所属公司编码" />
+															<i class="ace-icon fa fa-home"></i>
+														</span>
+													</label>
+
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<input type="email" id="remail" name="remail" class="form-control" placeholder="请输入邮箱" />
@@ -386,7 +394,7 @@
 				      	url:"${url}"
 				      };
 				      $btn.addClass("disabled");
-				      $.post("${context_path}/dologin", submitData, function(data) {
+				      $.post("${context_path}/doLogin", submitData, function(data) {
 								$btn.removeClass("disabled");
 								if (data.code == 0) {
 									window.top.location.href = "${context_path}/";
@@ -408,6 +416,12 @@
                     var $rusername = $('#rusername');
                     var $rpassword = $('#rpassword');
                     var $r2password = $('#r2password');
+					var $innerCode = $('#innerCode');
+					if (!$innerCode.val()) {
+						layer.alert('请输入所属公司编码！');
+						$innerCode.focus();
+						return false;
+					}
                     if (!$rphone.val()) {
                         layer.alert('请输入手机号！');
                         $rphone.focus();
@@ -441,8 +455,9 @@
                     var submitData = {
                         phone:$rphone.val(),
                         email:$remail.val(),
-                        username : $rusername.val(),
-                        password : $rpassword.val()
+                        username:$rusername.val(),
+                        password:$rpassword.val(),
+						innerCode:$innerCode.val()
                     };
                     $btn.addClass("disabled");
                     $.post("${context_path}/regist", submitData, function(data) {

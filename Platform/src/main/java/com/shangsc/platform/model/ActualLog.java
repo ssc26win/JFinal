@@ -14,6 +14,12 @@ import java.util.Date;
 public class ActualLog extends BaseActualLog<ActualLog> {
     public static final ActualLog dao = new ActualLog();
 
+    public String globalInnerCode;
+
+    public void setGlobalInnerCode(String globalInnerCode) {
+        this.globalInnerCode = globalInnerCode;
+    }
+
     public InvokeResult save(Long id, String srcType, Integer port, String ip, String content, String address, Date addTime) {
         if (null != id && id > 0l) {
             ActualLog actualLog = this.findById(id);
@@ -44,9 +50,13 @@ public class ActualLog extends BaseActualLog<ActualLog> {
     }
 
     public Page<ActualLog> getLogPage(int page, int rows, String keyword, String srcType, String orderbyStr) {
+
         String select="select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_log c ");
         sqlExceptSelect.append(" where 1=1 ");
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append("and c.address in (select meter_address from t_water_meter where inner_code='" + globalInnerCode + "') ");
+        }
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {

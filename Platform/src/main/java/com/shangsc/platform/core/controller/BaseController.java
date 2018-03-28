@@ -17,6 +17,8 @@ package com.shangsc.platform.core.controller;
 
 import com.jfinal.core.Controller;
 import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.IWebUtils;
+import com.shangsc.platform.model.SysUser;
 
 import java.util.LinkedHashMap;
 
@@ -36,7 +38,7 @@ public abstract class BaseController extends Controller {
 		String sord=this.getPara("sord");
 		String sidx=this.getPara("sidx");
 		LinkedHashMap<String,String> orderby=new LinkedHashMap<String,String>();
-		if(CommonUtils.isNotEmpty(sidx)){
+		if (CommonUtils.isNotEmpty(sidx)) {
 			orderby.put(sidx, sord);
 		}
 		return orderby;
@@ -68,9 +70,16 @@ public abstract class BaseController extends Controller {
 	 * @return
 	 */
 	protected int getRows(){
-		int rows=this.getParaToInt("rows", 10);
-		if(rows>1000)rows=1000;
+		int rows = this.getParaToInt("rows", 10);
+		if (rows > 1000) {
+			rows = 1000;
+		}
 		return rows;
+	}
+
+	public String getInnerCode() {
+		SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
+		return sysUser.getInnerCode();
 	}
 	
 }

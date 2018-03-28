@@ -20,6 +20,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
+import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.SysRole;
@@ -40,8 +41,9 @@ public class UserController extends BaseController {
 
 	@RequiresPermissions(value={"/sys/user"})
 	public void getListData() {
+		SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
 		String keyword=this.getPara("name");
-		Page<SysUser> pageInfo=SysUser.me.getSysUserPage(getPage(), this.getRows(),keyword,this.getOrderbyStr());
+		Page<SysUser> pageInfo=SysUser.me.getSysUserPage(getPage(), this.getRows(),keyword,sysUser.getInnerCode(),this.getOrderbyStr());
 		this.renderJson(JqGridModelUtils.toJqGridView(pageInfo)); 
 	}
 
@@ -73,7 +75,8 @@ public class UserController extends BaseController {
 		String email=this.getPara("email");
 		Integer id=this.getParaToInt("id");
 		String des=this.getPara("des");
-		InvokeResult result=SysUser.me.save(id, username, password, des,phone, email);
+		String innerCode=this.getPara("innerCode");
+		InvokeResult result=SysUser.me.save(id, username, password, des, phone, email, innerCode);
 		this.renderJson(result); 
 	}
 	

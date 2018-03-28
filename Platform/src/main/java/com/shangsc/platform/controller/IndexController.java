@@ -61,7 +61,7 @@ public class IndexController extends Controller {
 		render("login.jsp");
 	}
 	@Clear(AuthorityInterceptor.class)
-	public void dologin() {
+	public void doLogin() {
 		String imageCode=this.getPara("imageCode");
 		if(StrKit.notBlank(imageCode)){
 			String imageCodeSession=(String)this.getSessionAttr("imageCode");
@@ -145,7 +145,8 @@ public class IndexController extends Controller {
         String password=this.getPara("password");
         String phone=this.getPara("phone");
         String email=this.getPara("email");
-        InvokeResult result=SysUser.me.regist(username, password, phone, email);
+		String innerCode=this.getPara("innerCode");
+        InvokeResult result=SysUser.me.regist(username, password, phone, email, innerCode);
         SysUser sysUser=SysUser.me.getByName(username);
         IWebUtils.setCurrentLoginSysUser(this.getResponse(),this.getSession(),sysUser,0);
         this.renderJson(result);

@@ -27,6 +27,12 @@ public class Company extends BaseCompany<Company> {
 	public static final Company me = new Company();
     private static final long serialVersionUID = -1982696969221258167L;
 
+    public String globalInnerCode;
+
+    public void setGlobalInnerCode(String globalInnerCode) {
+        this.globalInnerCode = globalInnerCode;
+    }
+
     public boolean hasExistCompany(String inner_code){
         Set<Condition> conditions = new HashSet<Condition>();
         conditions.add(new Condition("inner_code", Operators.EQ, inner_code));

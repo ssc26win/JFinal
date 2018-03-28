@@ -27,7 +27,8 @@ import com.jfinal.kit.StrKit;
  * 权限拦截器
  */
 public class AuthorityInterceptor implements Interceptor {
-	
+
+	@Override
 	public void intercept(Invocation inv) {
 		RequiresPermissions requiresPermissions=inv.getMethod().getAnnotation(RequiresPermissions.class);
 		boolean hasPermissions=true; 
