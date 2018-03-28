@@ -220,9 +220,12 @@ public class Company extends BaseCompany<Company> {
 
     public List<Record> getCompanyAll(String innerCode) {
         String select="select * from t_company c left join (select sum(net_water) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
-                " on c.inner_code=tad.innerCode";
+                " on c.inner_code=tad.innerCode where 1=1 ";
         if (StringUtils.isNotEmpty(innerCode)) {
-            select = select + " where c.inner_code='" + innerCode + "'";
+            select = select + " and c.inner_code='" + innerCode + "'";
+        }
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            select = select + " and c.inner_code='" + globalInnerCode + "'";
         }
         return Db.find(select);
     }
