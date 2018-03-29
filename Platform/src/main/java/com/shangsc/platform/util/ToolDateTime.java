@@ -587,8 +587,8 @@ public abstract class ToolDateTime {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("month", calendar.get(Calendar.MONTH) + 1 + "");
-        map.put("month_str", MonthCode.getMap().get(calendar.get(Calendar.MONTH) + 1));
+		map.put(MonthCode.warn_month, calendar.get(Calendar.MONTH) + 1 + "");
+        map.put(MonthCode.warn_month_str, MonthCode.getMap().get(calendar.get(Calendar.MONTH) + 1));
 		if (CodeNumUtil.isOdd(calendar.get(Calendar.MONTH) + 1)) {
 			calendar.set(Calendar.HOUR_OF_DAY, 0);
 			calendar.set(Calendar.MINUTE, 0);
@@ -598,7 +598,7 @@ public abstract class ToolDateTime {
 			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
 			Date start = calendar.getTime();
 			String strStart = format(start, ToolDateTime.pattern_ymd_hms);
-			map.put("start", strStart);
+			map.put(MonthCode.warn_start_date, strStart);
 
 			int month=calendar.get(Calendar.MONTH)+1;
 			calendar.set(Calendar.MONTH, month);
@@ -610,7 +610,9 @@ public abstract class ToolDateTime {
 			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 			Date end = calendar.getTime();
 			String strEnd = format(end, ToolDateTime.pattern_ymd_hms);
-			map.put("end", strEnd);
+			map.put(MonthCode.warn_end_date, strEnd);
+			map.put(MonthCode.warn_target_month, String.valueOf(month));
+			map.put(MonthCode.warn_target_month_str, MonthCode.getMap().get(month + 1));
 		} else {
 			calendar.set(Calendar.HOUR_OF_DAY, 23);
 			calendar.set(Calendar.MINUTE, 59);
@@ -620,7 +622,7 @@ public abstract class ToolDateTime {
 			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 			Date end = calendar.getTime();
 			String strEnd = format(end, ToolDateTime.pattern_ymd_hms);
-			map.put("end", strEnd);
+			map.put(MonthCode.warn_end_date, strEnd);
 
 			int month=calendar.get(Calendar.MONTH);
 			calendar.set(Calendar.MONTH, month-1);
@@ -632,12 +634,12 @@ public abstract class ToolDateTime {
 			// 得到这个月的第一天
 			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
 			String strStart = format(start, ToolDateTime.pattern_ymd_hms);
-			map.put("start", strStart);
+			map.put(MonthCode.warn_start_date, strStart);
+			map.put(MonthCode.warn_target_month, String.valueOf(month - 1));
+			map.put(MonthCode.warn_target_month_str, MonthCode.getMap().get(month));
 		}
 		return map;
 	}
-
-
 
 	/**
 	 * 分割List
@@ -671,5 +673,4 @@ public abstract class ToolDateTime {
 		}
 		return listArray;
 	}
-
 }

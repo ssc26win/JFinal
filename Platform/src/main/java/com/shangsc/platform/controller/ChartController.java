@@ -219,7 +219,6 @@ public class ChartController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value={"/chart"})
     public void baiduMap() {
-        //TODO 处理地图上单位
         Company.me.setGlobalInnerCode(getInnerCode());
         List<Record> records = new ArrayList<>();
         JSONArray array = new JSONArray();

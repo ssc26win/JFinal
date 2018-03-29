@@ -5,6 +5,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.CompanyType;
 import com.shangsc.platform.code.DictCode;
+import com.shangsc.platform.code.MonthCode;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
@@ -302,10 +303,11 @@ public class Company extends BaseCompany<Company> {
     }
 
     public Page<Company> getWarnCompanyPage(int page, int rows, String keyword, String orderbyStr) {
+        Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(new Date());
         String select="select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
         sqlExceptSelect.append(" where company_type=1 ");
-        sqlExceptSelect.append(" and inner_code in (" + getWarnExceptionInnerCodeSql(new Date()) + ")");
+        sqlExceptSelect.append(" and inner_code in (" + getWarnExceptionInnerCodeSql(monthDateBetween) + ")");
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
@@ -316,12 +318,39 @@ public class Company extends BaseCompany<Company> {
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 
+    public Page<Company> getAlarmCompanyPage(int page, int rows, String keyword, String orderbyStr) {
+        Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(new Date());
+        //String start = monthDateBetween.get(MonthCode.warn_start_date);
+        //String end = monthDateBetween.get(MonthCode.warn_end_date);
+
+        //Integer month = Integer.parseInt(monthDateBetween.get(MonthCode.warn_month));
+        String month_str = monthDateBetween.get((MonthCode.warn_month_str));
+
+        //Integer month_target = Integer.parseInt(monthDateBetween.get(MonthCode.warn_target_month));
+        String month_target_str= monthDateBetween.get(MonthCode.warn_target_month_str);
+
+        String select="select c.*";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
+        sqlExceptSelect.append(" inner join (select " + month_str + "," + month_target_str + " from t_water_index) twi on twi.inner_code=c.inner_code ");
+
+        sqlExceptSelect.append(" where company_type=1 ");
+        sqlExceptSelect.append(" and inner_code in (" + getWarnExceptionInnerCodeSql(monthDateBetween) + ")");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+                    + "' or contact='" + StringUtils.trim(keyword) + "') ");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
 
     public Page<Company> getNormalCompanyPage(int page, int rows, String keyword, String orderbyStr) {
+        Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(new Date());
         String select="select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
         sqlExceptSelect.append(" where company_type=1");
-        sqlExceptSelect.append(" and inner_code not in (" + getWarnExceptionInnerCodeSql(new Date()) + ")");
+        sqlExceptSelect.append(" and inner_code not in (" + getWarnExceptionInnerCodeSql(monthDateBetween) + ")");
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
@@ -441,8 +470,7 @@ public class Company extends BaseCompany<Company> {
         return innerCodes;
     }
 
-    public String getWarnExceptionInnerCodeSql(Date date) {
-        Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(date);
+    public String getWarnExceptionInnerCodeSql(Map<String, String> monthDateBetween) {
         String start = monthDateBetween.get("start");
         String end = monthDateBetween.get("end");
         String month_str = monthDateBetween.get("month_str");
@@ -487,7 +515,7 @@ public class Company extends BaseCompany<Company> {
         if (null == moth) {
             moth = new BigDecimal(0);
         }
-        if (moth.add(this.THRESHOLD).compareTo(monthActTotal) < 0) {
+        if (moth.add(THRESHOLD).compareTo(monthActTotal) < 0) {
             warnInnerCodes.add(innerCode);
         }
     }

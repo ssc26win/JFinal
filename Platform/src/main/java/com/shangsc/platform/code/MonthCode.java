@@ -1,6 +1,9 @@
 package com.shangsc.platform.code;
 
+
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,6 +38,21 @@ public class MonthCode {
     public static final String october_str = "october";
     public static final String november_str = "november";
     public static final String december_str = "december";
+
+    public static final String warn_start_date = "start";
+    public static final String warn_end_date = "end";
+
+    public static final String warn_month = "month";
+    public static final String warn_month_str="month_str";
+
+    public static final String warn_target_month = "target_month";
+    public static final String warn_target_month_str="target_month_str";
+
+    public static List<String> monthStrList() {
+        List<String> monthStrList = Arrays.asList(january_str, february_str, march_str, april_str, may_str, june_str,
+                july_str, august_str, september_str, october_str, november_str, december_str);
+        return monthStrList;
+    }
 
     public static Map<Integer, String> getMap() {
         Map<Integer, String> map = new HashMap<Integer, String>();

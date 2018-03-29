@@ -52,6 +52,8 @@ public class AdminRoutes extends Routes{
 		add("/statis/actual", ActualController.class, "/WEB-INF/view/statis");
 		add("/statis/actuallog", ActuallogController.class, "/WEB-INF/view/statis");
 
+		add("/statis/alarm", AlarmController.class, "/WEB-INF/view/statis");
+
         add("/statis/readnum", ReadnumStatisController.class, "/WEB-INF/view/statis");
         add("/statis/daily", DailyStatisController.class, "/WEB-INF/view/statis");
         add("/statis/month", MonthStatisController.class, "/WEB-INF/view/statis");

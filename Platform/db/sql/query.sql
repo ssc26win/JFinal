@@ -33,3 +33,32 @@ date_format(tad.write_time, '%Y-%m') as months,sum(tad.net_water) as monthTotal
 
 
 select *,sum(net_water) from t_actual_data where 1=1 and write_time >= '2018-01-01 00:00:00' and write_time < '2018-04-01 00:00:00' and meter_address='201707000000914'
+
+
+
+
+select tad.*,
+		tc.name,tc.address,tc.water_unit,tc.county,tc.company_type,
+				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,
+				date_format(tad.write_time, '%Y-%m') as months,sum(tad.net_water) as monthTotal
+
+		from t_actual_data tad
+		inner join t_company  tc on tad.inner_code=tc.inner_code
+		inner join t_water_meter twm on tad.meter_address=twm.meter_address
+		where 1=1
+
+		and tc.name like '%潞洲水务有限公司%'
+		and tad.write_time >= '2018-02-01 00:00:00' and tad.write_time < '2019-01-01 00:00:00' and tad.meter_address = '201707000000936'
+		group by tad.inner_code,date_format(tad.write_time, '%Y-%m')
+		order by months desc,tad.inner_code desc
+
+
+
+select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad
+inner join (select waters_type,meter_address from t_water_meter) twm on twm.meter_address=tad.meter_address) allad
+
+where allad.write_time >='2018-03-01 00:00:00'
+and allad.write_time <'2018-04-30 23:59:59' group by allad.meter_address) t
+
+INNER join (select march,april,inner_code,waters_type from t_water_index) twi on twi.inner_code=t.inner_code
+where t.sumWater>(IFNULL(twi.march,0) + IFNULL(twi.april,0)) and t.waters_type=twi.waters_type
