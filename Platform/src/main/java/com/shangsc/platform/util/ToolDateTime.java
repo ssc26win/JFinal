@@ -611,7 +611,7 @@ public abstract class ToolDateTime {
 			Date end = calendar.getTime();
 			String strEnd = format(end, ToolDateTime.pattern_ymd_hms);
 			map.put(MonthCode.warn_end_date, strEnd);
-			map.put(MonthCode.warn_target_month, String.valueOf(month));
+			map.put(MonthCode.warn_target_month, String.valueOf(month + 1));
 			map.put(MonthCode.warn_target_month_str, MonthCode.getMap().get(month + 1));
 		} else {
 			calendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -630,12 +630,12 @@ public abstract class ToolDateTime {
 			calendar.set(Calendar.MINUTE, 0);
 			calendar.set(Calendar.SECOND, 0);
 			calendar.set(Calendar.MILLISECOND, 0);
-			Date start = calendar.getTime();
 			// 得到这个月的第一天
 			calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+			Date start = calendar.getTime();
 			String strStart = format(start, ToolDateTime.pattern_ymd_hms);
 			map.put(MonthCode.warn_start_date, strStart);
-			map.put(MonthCode.warn_target_month, String.valueOf(month - 1));
+			map.put(MonthCode.warn_target_month, String.valueOf(month));
 			map.put(MonthCode.warn_target_month_str, MonthCode.getMap().get(month));
 		}
 		return map;

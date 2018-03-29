@@ -318,7 +318,7 @@ public class Company extends BaseCompany<Company> {
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 
-    public Page<Company> getAlarmCompanyPage(int page, int rows, String keyword, String orderbyStr) {
+    public Page<Company> getAlarmCompany(int page, int rows, String keyword, String orderbyStr) {
         Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(new Date());
         //String start = monthDateBetween.get(MonthCode.warn_start_date);
         //String end = monthDateBetween.get(MonthCode.warn_end_date);
@@ -338,6 +338,37 @@ public class Company extends BaseCompany<Company> {
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
+
+    public Page<Company> getAlarmCompanyPage(int page, int rows, String keyword, String orderbyStr, Map<String, String> monthDateBetween) {
+        /**
+         select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.inner_code,tad.net_water,tad.meter_address,tad.write_time,twm.waters_type from t_actual_data tad
+         inner join (select waters_type,meter_address from t_water_meter) twm on twm.meter_address=tad.meter_address) allad
+         where allad.write_time >='2018-03-01 00:00:00' and allad.write_time <'2018-03-02 23:59:59' group by allad.inner_code) t
+
+         inner join (select march,april,inner_code,waters_type from t_water_index) twi on twi.inner_code=t.inner_code
+         inner join (select name,inner_code,address,water_unit,county,company_type from t_company) tc on tc.inner_code=t.inner_code
+         where  t.waters_type=twi.waters_type
+         */
+        String start = monthDateBetween.get(MonthCode.warn_start_date);
+        String end = monthDateBetween.get(MonthCode.warn_end_date);
+        String select="select * ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from (select allad.*,sum(allad.net_water) as sumWater from " +
+                " (select tad.inner_code,tad.net_water,tad.meter_address,tad.write_time,twm.waters_type from t_actual_data tad " +
+                " inner join (select waters_type,meter_address from t_water_meter) twm on twm.meter_address=tad.meter_address) allad ");
+        sqlExceptSelect.append(" where allad.write_time >='" + start + "' and allad.write_time <'" + end + "' group by allad.inner_code) t");
+        sqlExceptSelect.append(" inner join (select " + StringUtils.join(MonthCode.monthStrList(), ",")
+                + ",inner_code,waters_type from t_water_index) twi on twi.inner_code=t.inner_code ");
+
+        sqlExceptSelect.append(" inner join (select name,inner_code,address,water_unit,county,company_type from t_company) tc on tc.inner_code=t.inner_code ");
+        sqlExceptSelect.append(" where t.waters_type=twi.waters_type ");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (name like '%" + StringUtils.trim(keyword) + "%' or inner_code='" + StringUtils.trim(keyword) + "') ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
@@ -495,10 +526,10 @@ public class Company extends BaseCompany<Company> {
 
     public Set<String> getWarnExceptionInnerCode(Date date) {
         Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(date);
-        String start = monthDateBetween.get("start");
-        String end = monthDateBetween.get("end");
-        String month_str = monthDateBetween.get("month_str");
-        Integer month = Integer.parseInt(monthDateBetween.get("month"));
+        String start = monthDateBetween.get(MonthCode.warn_start_date);
+        String end = monthDateBetween.get(MonthCode.warn_end_date);
+        String month_str = monthDateBetween.get(MonthCode.warn_month_str);
+        Integer month = Integer.parseInt(monthDateBetween.get(MonthCode.warn_month));
         String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
                 " on twm.meter_address=tad.meter_address) allad where allad.write_time >='"+start+"' and allad.write_time <'"+end+"' group by allad.meter_address) t" +
                 " INNER join t_water_index twi on twi.inner_code=t.inner_code left join t_company c on c.inner_code=t.inner_code " +
