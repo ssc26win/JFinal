@@ -62,3 +62,16 @@ and allad.write_time <'2018-04-30 23:59:59' group by allad.meter_address) t
 
 INNER join (select march,april,inner_code,waters_type from t_water_index) twi on twi.inner_code=t.inner_code
 where t.sumWater>(IFNULL(twi.march,0) + IFNULL(twi.april,0)) and t.waters_type=twi.waters_type
+
+
+
+select * from (select allad.*,sum(allad.net_water) as sumWater, from (select tad.inner_code,tad.net_water,tad.meter_address,tad.write_time,twm.waters_type from t_actual_data tad
+inner join (select waters_type,meter_address from t_water_meter) twm on twm.meter_address=tad.meter_address) allad
+where allad.write_time >='2018-03-01 00:00:00' and allad.write_time <'2018-03-02 23:59:59' group by allad.inner_code) t
+
+inner join (select march,april,inner_code,waters_type from t_water_index) twi on twi.inner_code=t.inner_code
+inner join (select name,inner_code,address,water_unit,county,company_type from t_company) tc on tc.inner_code=t.inner_code
+where  t.waters_type=twi.waters_type
+
+
+select sum(net_water) as sumWater from t_actual_data  where write_time >='2018-03-01 00:00:00' and write_time <'2018-03-02 23:59:59' and inner_code='100002'
