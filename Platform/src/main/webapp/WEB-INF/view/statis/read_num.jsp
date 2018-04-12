@@ -36,6 +36,10 @@
                                             <div class="input-group">
                                                 日期时间:
                                                 <input type="text" id="startTime" name="startTime" class="form_datetime"/>~<input type="text" id="endTime" name="endTime" class="form_datetime"/>
+                                                <select id="type" name="type" style="margin-left: 5px;width: 159px;height: 34px;"><option value="" selected>请选择单位类型</option>
+                                                    <option value="1">用水单位</option>
+                                                    <option value="2">供水单位</option>
+                                                </select>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option value="">请选择水源类型</option></select>
@@ -153,10 +157,11 @@
             var street = $("#street").val();
             var meterAttr = $("#meterAttr").val();
             var meterAddress = $("#meterAddress").val();
+            var type2 = $("#type").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',
                 postData:{'name':name,'innerCode':innerCode,'startTime':startTime,'endTime':endTime,'watersType':watersType,
-                        'street':street,'meterAttr':meterAttr,'meterAddress':meterAddress}, //发送数据
+                        'street':street,'meterAttr':meterAttr,'meterAddress':meterAddress,'type':type2}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });

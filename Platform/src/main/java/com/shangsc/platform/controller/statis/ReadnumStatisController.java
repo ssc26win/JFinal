@@ -61,8 +61,9 @@ public class ReadnumStatisController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        String type = this.getPara("type");
         Page<ActualData> pageInfo = ActualData.me.getReadnumStatis(getPage(), getRows(), getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress);
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress, type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
@@ -115,8 +116,9 @@ public class ReadnumStatisController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        String type = this.getPara("type");
         Page<ActualData> pageInfo = ActualData.me.getReadnumStatis(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(),
-                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress);
+                startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress, type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);

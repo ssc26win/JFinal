@@ -154,7 +154,7 @@ public class ChartController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
-    public void getDilay() {
+    public void getDaily() {
         List<Record> records = ActualData.me.getDailyActualData();
         JSONObject obj = new JSONObject();
         JSONArray sumWater = new JSONArray();

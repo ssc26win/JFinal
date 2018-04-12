@@ -2,6 +2,7 @@ package com.shangsc.platform.util;
 
 import com.jfinal.log.Log;
 import com.shangsc.platform.code.MonthCode;
+import com.shangsc.platform.core.util.DateUtils;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -46,19 +47,34 @@ public abstract class ToolDateTime {
 		return false;
 	}
 
-	public static String getTodayStart() {
-		Date currentTime = new Date();
+	public static String getTodayStart(Date date) {
+		if (date == null) {
+			date = new Date();
+		}
 		SimpleDateFormat formatter = new SimpleDateFormat(pattern_ymd);
-		String dateString = formatter.format(currentTime);
+		String dateString = formatter.format(date);
 		return dateString + " 00:00:00";
 	}
 
-	public static Date getDateTodayStart() {
-		return ToolDateTime.parse(getTodayStart());
+	public static String getTodayEnd(Date date) {
+		if (date == null) {
+			date = new Date();
+		}
+		SimpleDateFormat formatter = new SimpleDateFormat(pattern_ymd);
+		String dateString = formatter.format(date);
+		return dateString + " 23:59:59";
+	}
+
+	public static Date getDateTodayStart(Date date) {
+		return ToolDateTime.parse(getTodayStart(date));
+	}
+
+	public static Date getDateTodayEnd(Date date) {
+		return ToolDateTime.parse(getTodayEnd(date));
 	}
 
 	public static Date getTomorrowStart() {
-		Date today = getDateTodayStart();
+		Date today = getDateTodayStart(new Date());
 		Calendar c = Calendar.getInstance();
 		c.setTime(today);
 		c.add(Calendar.DAY_OF_MONTH, 1);// 今天+1天
@@ -93,8 +109,12 @@ public abstract class ToolDateTime {
 		System.out.println(str1);
 		String str2 = ToolDateTime.format(getYesterday(new Date()), ToolDateTime.pattern_ymd_hms);
 		System.out.println(str2);
-		System.out.println(getMonthDate(new Date()));
+		System.out.println(getMonthDateStartAndEnd(new Date()));
 		System.out.println(get2MonthDateBetween(new Date()));
+
+
+		System.out.println(getBefore30DateTime());
+		System.out.println(getBefore12MonthDateTime());
 	}
 
 
@@ -143,7 +163,9 @@ public abstract class ToolDateTime {
 		try {
 			return new Timestamp(format.parse(date).getTime());
 		} catch (ParseException e) {
-			if(log.isErrorEnabled()) log.error("ToolDateTime.parse异常：date值" + date + "，pattern值" + pattern, e);
+			if(log.isErrorEnabled()) {
+				log.error("ToolDateTime.parse异常：date值" + date + "，pattern值" + pattern, e);
+			}
 			return null;
 		}
 	}
@@ -551,7 +573,7 @@ public abstract class ToolDateTime {
 	 * @param date
 	 * @return
 	 */
-	public static Map<String, Date> getMonthDate(Date date) {
+	public static Map<String, String> getMonthDateStartAndEnd(Date date) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -571,9 +593,9 @@ public abstract class ToolDateTime {
 		calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
 		Date end = calendar.getTime();
 
-		Map<String, Date> map = new HashMap<String, Date>();
-		map.put("start", start);
-		map.put("end", end);
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(MonthCode.warn_start_date, DateUtils.format(start, pattern_ymd_hms));
+		map.put(MonthCode.warn_end_date, DateUtils.format(end, pattern_ymd_hms));
 		return map;
 	}
 
@@ -641,6 +663,37 @@ public abstract class ToolDateTime {
 		return map;
 	}
 
+	public static Map<String, String> getBefore30DateTime() {
+		Map<String, String> target = new HashMap<>();
+		Date end = getDateTodayEnd(new Date());
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(end);
+		cal.add(Calendar.DATE, -30);
+		Date start = getDateTodayStart(cal.getTime());
+
+		target.put(MonthCode.warn_start_date, DateUtils.format(start, pattern_ymd_hms));
+
+		target.put(MonthCode.warn_end_date, DateUtils.format(end, pattern_ymd_hms));
+
+		return target;
+	}
+
+	public static Map<String, String> getBefore12MonthDateTime() {
+		Map<String, String> target = new HashMap<>();
+		Date end =  getDateTodayEnd(new Date());
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(end);
+		cal.add(Calendar.YEAR, -1);
+		Date start = getDateTodayStart(cal.getTime());
+
+		target.put(MonthCode.warn_start_date, DateUtils.format(start, pattern_ymd_hms));
+
+		target.put(MonthCode.warn_end_date, DateUtils.format(end, pattern_ymd_hms));
+		return target;
+	}
+
 	/**
 	 * 分割List
 	 *
@@ -656,7 +709,6 @@ public abstract class ToolDateTime {
 
 		List<List<T>> listArray = new ArrayList<List<T>>();// 创建list数组
 															// ,用来保存分割后的list
-
 		for (int i = 0; i < page; i++) { // 按照数组大小遍历
 			List<T> subList = new ArrayList<T>(); // 数组每一位放入一个分割后的list
 			for (int j = 0; j < listSize; j++) { // 遍历待分割的list

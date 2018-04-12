@@ -186,7 +186,7 @@
             $('#containerCompany').highcharts(json1);
         })
 
-        $.get("${context_path}/chart/getDilay", function (data) {
+        $.get("${context_path}/chart/getDaily", function (data) {
             var title = {
                 text: ''
             };

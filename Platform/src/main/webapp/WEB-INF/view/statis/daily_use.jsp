@@ -45,9 +45,9 @@
                                                 <input type="text" id="meterAddress" name="meterAddress" class="" placeholder="请输入表计地址" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option value="">请选择水源类型</option></select>
                                                 <input type="text" id="meterAttr" name="meterAttr" class="" placeholder="请输入水表属性" style="margin-left: 5px;"/>
-                                                <%--<select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
                                                     <option value="">所属乡镇或街道</option>
-                                                </select>--%>
+                                                </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="btn_search" class="btn btn-purple btn-sm">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
@@ -129,7 +129,7 @@
                 { label: '表计地址', name: 'meter_address', width: 100,sortable:false},
                 { label: '水表属性', name: 'meter_attr', width: 100, sortable:false},
                 { label: '查询日期', name: 'todays', width: 80, sortable:true},
-                { label: '日用水量（立方米）', name: 'net_water', width: 100, sortable:true},
+                { label: '日用水量（立方米）', name: 'absNetWater', width: 100, sortable:true},
                 { label: '单位地址', name: 'addressMap', width: 150,sortable:false}
             ],
             viewrecords: true,
@@ -232,10 +232,10 @@
             for(var i = 0;i<watersType.length;i++) {
                 $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
             }
-            /*var street = data.Street;
+            var street = data.Street;
             for(var i = 0;i<street.length;i++) {
                 $("#street").append("<option value='" + street[i].value + "'>"+street[i].name+"</option>");
-            }*/
+            }
         },"json");
     }
     $(function(){
