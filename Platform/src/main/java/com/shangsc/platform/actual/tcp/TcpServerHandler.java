@@ -2,6 +2,7 @@ package com.shangsc.platform.actual.tcp;
 
 import com.jfinal.kit.PropKit;
 import com.shangsc.platform.actual.util.ConversionUtil;
+import com.shangsc.platform.actual.util.TcpConvertUtil;
 import com.shangsc.platform.code.ActualState;
 import com.shangsc.platform.code.ActualType;
 import com.shangsc.platform.code.TcpData;
@@ -43,29 +44,29 @@ public class TcpServerHandler extends SimpleChannelHandler {
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         ChannelBuffer buffer = (ChannelBuffer) e.getMessage();
 
-        log("received " + buffer.readableBytes() + " bytes [" + buffer.toString() + "]");
+        log("TCP received " + buffer.readableBytes() + " bytes [" + buffer.toString() + "]");
 
         String result = ConversionUtil.bytes2Hex16Str(buffer.array());
 
-        log("ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
+        log("TCP ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
 
         if (StringUtils.isNotEmpty(result) && result.startsWith(ActualType.TCP_PRFIX) && result.endsWith(ActualType.TCP_SUFFIX)) {
             if (TcpData.login_data_length == result.length()) {
-                String response = ConversionUtil.tcpLoginResp(result, "login");
+                String response = TcpConvertUtil.tcpLoginResp(result, "login");
                 buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
                 e.getChannel().write(buffer);
             }
             if (result.length() == TcpData.upload_data_length) {
                 recordMsg(result);
                 recordDB(result, false);
-                String response = ConversionUtil.receiveDataResp(result);
+                String response = TcpConvertUtil.receiveDataResp(result);
                 buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
                 e.getChannel().write(buffer);
             }
             if (result.length() > TcpData.upload_data_length) {
                 recordMsg(result);
                 recordDB(result, true);
-                String response = ConversionUtil.getTcpMultChkStr(result);
+                String response = TcpConvertUtil.getTcpMultChkStr(result);
                 buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
                 e.getChannel().write(buffer);
             }
@@ -119,12 +120,17 @@ public class TcpServerHandler extends SimpleChannelHandler {
                 BigDecimal times = new BigDecimal("1");
                 String innerCode = "";
                 if (isMulti) {
-                    meterAddress = ConversionUtil.getTcpMultAddress(result);
-                    sumWater = ConversionUtil.getTcpMultRecordSumWater(result);
+                    meterAddress = TcpConvertUtil.getTcpMultAddress(result);
+                    sumWater = TcpConvertUtil.getTcpMultRecordSumWater(result);
                 } else {
-                    meterAddress = ConversionUtil.getTcpMeterAddress(result);
-                    sumWater = ConversionUtil.getTcpSumNum(result);
+                    meterAddress = TcpConvertUtil.getTcpMeterAddress(result);
+                    sumWater = TcpConvertUtil.getTcpSumNum(result);
                 }
+                if (sumWater == null) {
+                    logger.info("TCP 未知读数类型: {}", result);
+                    return;
+                }
+                logger.info("[TCP 最终获取表计地址: {} 读数为: {}]", meterAddress, sumWater.toString());
                 if (sumWater != null && sumWater.intValue() >= 0 && sumWater.intValue() <= 99999999) { // 表一共就6个位 两位小数 传回来的值不乘倍数之前 大于99999999的 肯定是无效的
                     WaterMeter meter = WaterMeter.me.findByMeterAddress(meterAddress);
                     if (meter != null) {
@@ -142,10 +148,10 @@ public class TcpServerHandler extends SimpleChannelHandler {
                         }
                         ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, "", new Date());
                     } else {
-                        log("log not exist meter_address :" + meterAddress);
+                        log("TCP log not exist meter_address :" + meterAddress);
                     }
                 } else {
-                    logger.info("错误数据-sum_water:" + sumWater + "（meterAddress:" + meterAddress + "）");
+                    logger.info("TCP 错误数据-sum_water:" + sumWater + "（meterAddress:" + meterAddress + "）");
                 }
                 // 记录消息来源
                 ActualLog.dao.save(null, ActualType.TCP, Integer.parseInt(PropKit.get("config.tcp.port")), PropKit.get("config.host"), result, meterAddress, new Date());
