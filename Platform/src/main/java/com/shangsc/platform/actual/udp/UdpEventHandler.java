@@ -2,6 +2,7 @@ package com.shangsc.platform.actual.udp;
 
 import com.jfinal.kit.PropKit;
 import com.shangsc.platform.actual.util.ConversionUtil;
+import com.shangsc.platform.actual.util.UdpConvertUtil;
 import com.shangsc.platform.code.ActualState;
 import com.shangsc.platform.code.ActualType;
 import com.shangsc.platform.model.ActualData;
@@ -39,15 +40,15 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
-        log("messageReceived");
+        log("UDP messageReceived");
         ChannelBuffer buffer = (ChannelBuffer)e.getMessage();
-        log("received " + buffer + " bytes [" + buffer.toString() + "]");
+        log("UDP received " + buffer + " bytes [" + buffer.toString() + "]");
 
         String result = ConversionUtil.bytes2Hex16Str(buffer.array());
 
-        log("ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
+        log("UDP ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
 
-        log("ConversionUtil.bytes2HexString 16进制字符串转字符串 " + ConversionUtil.hex16Str2String(ConversionUtil.bytes2Hex16Str(buffer.array())));
+        log("UDP ConversionUtil.bytes2HexString 16进制字符串转字符串 " + ConversionUtil.hex16Str2String(ConversionUtil.bytes2Hex16Str(buffer.array())));
 
         String chkStr = ConversionUtil.hex16Str2String(ConversionUtil.bytes2Hex16Str(buffer.array()));
         //e.getChannel().write(e.getMessage());
@@ -62,7 +63,7 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent e) throws Exception {
         e.getCause().printStackTrace();
-        log("exceptionCaught");
+        log("UDP exceptionCaught");
     }
 
     private synchronized void recordMsg(String msg) {
@@ -99,10 +100,29 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
     private synchronized void recordDB(String result) {
         try {
             if (StringUtils.isNotEmpty(result)) {
-                String meterAddress = ConversionUtil.getUdpMeterAddress(result);
+                String meterAddress = UdpConvertUtil.getUdpMeterAddress(result);
+                if (StringUtils.isEmpty(meterAddress)) {
+                    log("转换表计地址失败！");
+                    return;
+                }
+                BigDecimal sumWater = null;
+                BigDecimal addWater = new BigDecimal("0.00");
+
+                if (result.indexOf(UdpConvertUtil.UDP_T2C) > 0) {
+                    sumWater = UdpConvertUtil.getUdp2CMeterSum(result);
+                }
+                if (sumWater == null && UdpConvertUtil.isUdpCheckUn2C(result)) {
+                    sumWater = UdpConvertUtil.getUdpUn2CSum(result);
+                }
+                if (sumWater == null) {
+                    logger.info("UDP 未知读数类型: {}", result);
+                    return;
+                }
+
+                logger.info("[UDP 最终获取表计地址: {} 读数为: {}]", meterAddress, sumWater.toString());
+
                 String innerCode = "";
-                BigDecimal sumWater = ConversionUtil.getUdpMeterSum(result);
-                BigDecimal addWater = ConversionUtil.getUdpMeterAdd(result);
+
                 Integer state = Integer.parseInt(ActualState.NORMAL);
                 String voltage = "";
                 Date writeTime = new Date();
@@ -128,10 +148,10 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                             ActualData.me.save(null, innerCode, meterAddress, null, addWater, sumWater, state, voltage, writeTime);
                         }
                     } else {
-                        log("log not exist meter_address :" + meterAddress);
+                        log("UDP log not exist meter_address :" + meterAddress);
                     }
                 } else {
-                    logger.info("错误数据-sum_water:" + sumWater +"（meterAddress:" + meterAddress +"）");
+                    logger.info("UDP 错误数据-sum_water:" + sumWater +"（meterAddress:" + meterAddress +"）");
                 }
                 //记录消息来源
                 ActualLog.dao.save(null, ActualType.UDP, Integer.parseInt(PropKit.get("config.udp.port")), PropKit.get("config.host"), result, meterAddress, writeTime);
@@ -144,9 +164,9 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
     public static void main(String[] args) {
         String test = "4354524C3A26323031373037303030303030393231FEFEFE6810210900001700028116901F00000200002C000000002C0000000000000000005B16";
         System.out.println(test.length());
-        System.out.println(ConversionUtil.getUdpMeterAddress(test));
-        System.out.println(ConversionUtil.getUdpMeterSum(test));
-        System.out.println(ConversionUtil.getUdpMeterAdd(test));
+        System.out.println(UdpConvertUtil.getUdpMeterAddress(test));
+        System.out.println(UdpConvertUtil.getUdp2CMeterSum(test));
+        System.out.println(UdpConvertUtil.getUdp2CMeterAdd(test));
         BigDecimal sumWater = new BigDecimal("011");
         if (sumWater != null && sumWater.intValue() >= 0 && sumWater.intValue() <= 99999999) {
             System.out.println("ok");
