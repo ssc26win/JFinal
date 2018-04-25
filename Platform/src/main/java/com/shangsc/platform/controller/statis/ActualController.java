@@ -46,7 +46,7 @@ public class ActualController extends BaseController {
         }
         List<ActualData> list = pageInfo.getList();
         Map<String, String> stateMap = ActualState.getMap();
-        long dayTime = 24 * 60 * 60 * 1000;
+        long dayTime = 24 * 60 * 60 * 1000 * 2;
         Date now = new Date();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
