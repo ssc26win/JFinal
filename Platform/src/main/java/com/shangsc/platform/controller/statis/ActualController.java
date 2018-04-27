@@ -13,6 +13,7 @@ import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -46,7 +47,16 @@ public class ActualController extends BaseController {
         }
         List<ActualData> list = pageInfo.getList();
         Map<String, String> stateMap = ActualState.getMap();
-        long dayTime = 24 * 60 * 60 * 1000 * 2;
+        int exceptionTime = 24;
+        Map<String, Object> dictMap = DictData.dao.getDictMap(null, DictCode.ACTUAL_EXCEPTION_TIME_OUT);
+        if (dictMap.size() == 1) {
+            Object[] objects = dictMap.keySet().toArray();
+            String num = objects[0].toString();
+            if (NumberUtils.isDigits(num)) {
+                exceptionTime = Integer.parseInt(num);
+            }
+        }
+        long dayTime = exceptionTime * 60 * 60 * 1000;
         Date now = new Date();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
