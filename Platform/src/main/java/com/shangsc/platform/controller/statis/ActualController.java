@@ -38,15 +38,6 @@ public class ActualController extends BaseController {
         String keyword=this.getPara("name");
         String status=this.getPara("status", "-1");
         Page<ActualData> pageInfo = new Page<>();
-        if (ActualState.Actual_List().contains(status)) {
-            pageInfo = ActualData.me.getActualDataPageByStatus(getPage(), this.getRows(), keyword, this.getOrderbyStr(), status);
-        } else if (ActualState.DISABLE.equals(status)) {
-            pageInfo = ActualData.me.getActualDataPageByDisable(getPage(), this.getRows(), keyword, this.getOrderbyStr());
-        } else {
-            pageInfo = ActualData.me.getActualDataPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
-        }
-        List<ActualData> list = pageInfo.getList();
-        Map<String, String> stateMap = ActualState.getMap();
         int exceptionTime = 24;
         Map<String, Object> dictMap = DictData.dao.getDictMap(null, DictCode.ACTUAL_EXCEPTION_TIME_OUT);
         if (dictMap.size() == 1) {
@@ -56,6 +47,15 @@ public class ActualController extends BaseController {
                 exceptionTime = Integer.parseInt(num);
             }
         }
+        if (ActualState.Actual_List().contains(status)) {
+            pageInfo = ActualData.me.getActualDataPageByStatus(getPage(), this.getRows(), keyword, this.getOrderbyStr(), status, exceptionTime);
+        } else if (ActualState.DISABLE.equals(status)) {
+            pageInfo = ActualData.me.getActualDataPageByDisable(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        } else {
+            pageInfo = ActualData.me.getActualDataPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        }
+        List<ActualData> list = pageInfo.getList();
+        Map<String, String> stateMap = ActualState.getMap();
         long dayTime = exceptionTime * 60 * 60 * 1000;
         Date now = new Date();
         if (CommonUtils.isNotEmpty(list)) {
