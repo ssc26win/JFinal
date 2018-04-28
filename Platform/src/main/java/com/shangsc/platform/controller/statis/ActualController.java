@@ -13,6 +13,7 @@ import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -38,8 +39,17 @@ public class ActualController extends BaseController {
         String keyword=this.getPara("name");
         String status=this.getPara("status", "-1");
         Page<ActualData> pageInfo = new Page<>();
+        int exceptionTime = 24;
+        Map<String, Object> dictMap = DictData.dao.getDictMap(null, DictCode.ACTUAL_EXCEPTION_TIME_OUT);
+        if (dictMap.size() == 1) {
+            Object[] objects = dictMap.keySet().toArray();
+            String num = objects[0].toString();
+            if (NumberUtils.isDigits(num)) {
+                exceptionTime = Integer.parseInt(num);
+            }
+        }
         if (ActualState.Actual_List().contains(status)) {
-            pageInfo = ActualData.me.getActualDataPageByStatus(getPage(), this.getRows(), keyword, this.getOrderbyStr(), status);
+            pageInfo = ActualData.me.getActualDataPageByStatus(getPage(), this.getRows(), keyword, this.getOrderbyStr(), status, exceptionTime);
         } else if (ActualState.DISABLE.equals(status)) {
             pageInfo = ActualData.me.getActualDataPageByDisable(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         } else {
@@ -47,7 +57,7 @@ public class ActualController extends BaseController {
         }
         List<ActualData> list = pageInfo.getList();
         Map<String, String> stateMap = ActualState.getMap();
-        long dayTime = 24 * 60 * 60 * 1000;
+        long dayTime = exceptionTime * 60 * 60 * 1000;
         Date now = new Date();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);

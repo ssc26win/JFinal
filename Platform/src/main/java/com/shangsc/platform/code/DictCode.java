@@ -24,6 +24,7 @@ public class DictCode {
     public static final String GeomorphicType="GeomorphicType";
     public static final String GroundType="GroundType";
 
+    public static final String ACTUAL_EXCEPTION_TIME_OUT="ActualExceptionTimeOut";
 
     public static String getCompanyUse() {
         List<String> list = new ArrayList<>();
