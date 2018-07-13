@@ -78,8 +78,8 @@ public class TcpServerHandler extends SimpleChannelHandler {
                 buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
                 e.getChannel().write(buffer);
             }
+            // e.getChannel().close();
         }
-        e.getChannel().close();
     }
 
     @Override
