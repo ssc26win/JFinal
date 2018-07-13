@@ -12,6 +12,7 @@ import com.shangsc.platform.model.WaterMeter;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.buffer.ChannelBuffer;
+import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
@@ -51,9 +52,16 @@ public class TcpServerHandler extends SimpleChannelHandler {
         log("TCP ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
 
         if (StringUtils.isNotEmpty(result) && result.startsWith(ActualType.TCP_PRFIX) && result.endsWith(ActualType.TCP_SUFFIX)) {
+            //if (TcpData.login_data_length == result.length()) {
+            //    String response = TcpConvertUtil.tcpLoginResp(result, "login");
+            //    buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
+            //    e.getChannel().write(buffer);
+            //}
             if (TcpData.login_data_length == result.length()) {
-                String response = TcpConvertUtil.tcpLoginResp(result, "login");
-                buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
+                //String response = ConversionUtil.tcpLoginResp(result, "login");
+                String response = "594E2B49503D3131342E3131352E3133362E323136594E2B504F52543D3130303030594E2B534C454550454E3D30";
+                ChannelBuffer bufferTemp = ChannelBuffers.copiedBuffer(ConversionUtil.toStringHex(response).getBytes());
+                buffer = bufferTemp;
                 e.getChannel().write(buffer);
             }
             if (result.length() == TcpData.upload_data_length) {
@@ -71,6 +79,7 @@ public class TcpServerHandler extends SimpleChannelHandler {
                 e.getChannel().write(buffer);
             }
         }
+        e.getChannel().close();
     }
 
     @Override
