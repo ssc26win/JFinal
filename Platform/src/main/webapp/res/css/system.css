@@ -1,2 +1,18 @@
 .common-tip-append {
 }
+
+.search {
+    left: 0;
+    position: relative;
+}
+
+#auto_div {
+    display: none;
+    border: 1px #74c0f9 solid;
+    background: #FFF;
+    position: absolute;
+    top: 24px;
+    left: 0;
+    color: #323232;
+    z-index: 9999;
+}

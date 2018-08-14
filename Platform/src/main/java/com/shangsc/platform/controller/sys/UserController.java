@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2011-2016, Eason Pan(pylxyhome@vip.qq.com).
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +17,7 @@ package com.shangsc.platform.controller.sys;
 
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
@@ -25,81 +26,94 @@ import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.SysRole;
 import com.shangsc.platform.model.SysUser;
+import com.shangsc.platform.vo.SysUserVo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 系统用户管理.
+ *
  * @author ssc
  */
 public class UserController extends BaseController {
-	
-	@RequiresPermissions(value={"/sys/user"}) 
-	public void index() {
-		render("user_index.jsp");
-	}
 
-	@RequiresPermissions(value={"/sys/user"})
-	public void getListData() {
-		SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
-		String keyword=this.getPara("name");
-		Page<SysUser> pageInfo=SysUser.me.getSysUserPage(getPage(), this.getRows(),keyword,sysUser.getInnerCode(),this.getOrderbyStr());
-		this.renderJson(JqGridModelUtils.toJqGridView(pageInfo)); 
-	}
+    @RequiresPermissions(value = {"/sys/user"})
+    public void index() {
+        render("user_index.jsp");
+    }
 
-	@RequiresPermissions(value={"/sys/user"})
-	public void setVisible(){
-		Integer visible=this.getParaToInt("visible");
-		String ids=this.getPara("ids");
-		InvokeResult result=SysUser.me.setVisible(ids, visible);
-		this.renderJson(result);
-	}
+    @RequiresPermissions(value = {"/sys/user"})
+    public void getListData() {
+        SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
+        String keyword = this.getPara("name");
+        Page<SysUser> pageInfo = SysUser.me.getSysUserPage(getPage(), this.getRows(), keyword, sysUser.getInnerCode(), this.getOrderbyStr());
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+    }
 
-	@RequiresPermissions(value={"/sys/user"})
-	public void add() {
-		Integer id=this.getParaToInt("id");
-		if(id!=null){
-			this.setAttr("item", SysUser.me.findById(id));
-		}
-		List<SysRole> list=SysRole.me.getSysRoleNamelist();
-		this.setAttr("roleList", list);
-		this.setAttr("id", id);
-		render("user_add.jsp");
-	}
-	
-	@RequiresPermissions(value={"/sys/user"})
-	public void save(){
-		String username=this.getPara("name");
-		String password=this.getPara("password");
-		String phone=this.getPara("phone");
-		String email=this.getPara("email");
-		Integer id=this.getParaToInt("id");
-		String des=this.getPara("des");
-		String innerCode=this.getPara("innerCode");
-		InvokeResult result=SysUser.me.save(id, username, password, des, phone, email, innerCode);
-		this.renderJson(result); 
-	}
-	
-	
-	@RequiresPermissions(value={"/sys/user"})
-	public void userRoleSetting() {
-		Integer uid=this.getParaToInt("uid");
-		this.setAttr("item", SysUser.me.findById(uid));
-		InvokeResult result=SysRole.me.getRoleZtreeViewList(uid);
-		this.setAttr("jsonTree", result);
-		render("user_role_setting.jsp");
-	}
-	
-	
-	@RequiresPermissions(value={"/sys/user"})
-	@Before(Tx.class)
-	public void saveUserRoles(){
-		Integer uid=this.getParaToInt("id");
-		String roleIds=this.getPara("roleIds");
-		InvokeResult result=SysUser.me.changeUserRoles(uid, roleIds);
-		this.renderJson(result);
-	}
+    @RequiresPermissions(value = {"/sys/user"})
+    public void setVisible() {
+        Integer visible = this.getParaToInt("visible");
+        String ids = this.getPara("ids");
+        InvokeResult result = SysUser.me.setVisible(ids, visible);
+        this.renderJson(result);
+    }
 
+    @RequiresPermissions(value = {"/sys/user"})
+    public void add() {
+        Integer id = this.getParaToInt("id");
+        if (id != null) {
+            this.setAttr("item", SysUser.me.findById(id));
+        }
+        List<SysRole> list = SysRole.me.getSysRoleNamelist();
+        this.setAttr("roleList", list);
+        this.setAttr("id", id);
+        render("user_add.jsp");
+    }
+
+    @RequiresPermissions(value = {"/sys/user"})
+    public void save() {
+        String username = this.getPara("name");
+        String password = this.getPara("password");
+        String phone = this.getPara("phone");
+        String email = this.getPara("email");
+        Integer id = this.getParaToInt("id");
+        String des = this.getPara("des");
+        String innerCode = this.getPara("innerCode");
+        InvokeResult result = SysUser.me.save(id, username, password, des, phone, email, innerCode);
+        this.renderJson(result);
+    }
+
+
+    @RequiresPermissions(value = {"/sys/user"})
+    public void userRoleSetting() {
+        Integer uid = this.getParaToInt("uid");
+        this.setAttr("item", SysUser.me.findById(uid));
+        InvokeResult result = SysRole.me.getRoleZtreeViewList(uid);
+        this.setAttr("jsonTree", result);
+        render("user_role_setting.jsp");
+    }
+
+
+    @RequiresPermissions(value = {"/sys/user"})
+    @Before(Tx.class)
+    public void saveUserRoles() {
+        Integer uid = this.getParaToInt("id");
+        String roleIds = this.getPara("roleIds");
+        InvokeResult result = SysUser.me.changeUserRoles(uid, roleIds);
+        this.renderJson(result);
+    }
+
+    @RequiresPermissions(value = {"/sys/user"})
+    public void getMsgReceivers() {
+        List<Record> list = SysUser.me.getSysUserList();
+        List<SysUserVo> users = new ArrayList<>();
+        for (Record record : list) {
+            SysUserVo vo = new SysUserVo(record.getInt("id"), record.getStr("name"), record.getStr("companyName"));
+            users.add(vo);
+        }
+        this.renderJson(list);
+    }
 }
 
 

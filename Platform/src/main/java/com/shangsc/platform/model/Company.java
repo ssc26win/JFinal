@@ -25,7 +25,7 @@ import java.util.*;
  */
 @SuppressWarnings("serial")
 public class Company extends BaseCompany<Company> {
-	public static final Company me = new Company();
+    public static final Company me = new Company();
     private static final long serialVersionUID = -1982696969221258167L;
 
     public String globalInnerCode;
@@ -34,11 +34,11 @@ public class Company extends BaseCompany<Company> {
         this.globalInnerCode = globalInnerCode;
     }
 
-    public boolean hasExistCompany(String inner_code){
+    public boolean hasExistCompany(String inner_code) {
         Set<Condition> conditions = new HashSet<Condition>();
         conditions.add(new Condition("inner_code", Operators.EQ, inner_code));
         long num = Company.me.getCount(conditions);
-        return num>0?true:false;
+        return num > 0 ? true : false;
     }
 
     public Company findByInnerCode(String inner_code) {
@@ -86,15 +86,15 @@ public class Company extends BaseCompany<Company> {
         }
     }
 
-    public boolean hasExist(String name, String innerCode){
+    public boolean hasExist(String name, String innerCode) {
         Set<Condition> conditions = new HashSet<Condition>();
         conditions.add(new Condition("name", Operators.EQ, name));
         conditions.add(new Condition("inner_code", Operators.EQ, innerCode));
         long num = this.getCount(conditions);
-        return num>0?true:false;
+        return num > 0 ? true : false;
     }
 
-    public boolean hasExistName(Long id, String name){
+    public boolean hasExistName(Long id, String name) {
         StringBuffer sqlSelect = new StringBuffer("select count(1) as existCount from t_company where 1=1 ");
         sqlSelect.append(" and name='" + name + "'");
         if (id != null) {
@@ -108,7 +108,7 @@ public class Company extends BaseCompany<Company> {
         }
     }
 
-    public boolean hasExistCode(Long id, String innerCode){
+    public boolean hasExistCode(Long id, String innerCode) {
         StringBuffer sqlSelect = new StringBuffer("select count(1) as existCount from t_company where 1=1 ");
         sqlSelect.append(" and inner_code='" + innerCode + "'");
         if (id != null) {
@@ -133,7 +133,7 @@ public class Company extends BaseCompany<Company> {
     public InvokeResult save(Long id, String name, String innerCode, String waterUnit, String county, Integer street, String streetSrc,
                              String address, Integer customerType, Integer waterUseType, String gbIndustry, String mainIndustry,
                              String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
-                             Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createTime,
+                             Integer remotemeterCount, Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createTime,
                              BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type) {
         if (hasExistCode(id, innerCode)) {
             return InvokeResult.failure("保存失败，单位编号已存在");
@@ -167,7 +167,7 @@ public class Company extends BaseCompany<Company> {
     private Company setProp(Company company, String name, String innerCode, String waterUnit, String county, Integer street, String streetSrc,
                             String address, Integer customerType, Integer waterUseType, String gbIndustry, String mainIndustry,
                             String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
-                            Integer remotemeterCount,Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createTime,
+                            Integer remotemeterCount, Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createTime,
                             BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type) {
         company.setName(name);
         company.setInnerCode(innerCode);
@@ -203,7 +203,7 @@ public class Company extends BaseCompany<Company> {
     }
 
     public Page<Company> getCompanyPage(int page, int rows, String keyword, String orderbyStr, String companyType) {
-        String select="select c.*, (select count(net_water) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum";
+        String select = "select c.*, (select count(net_water) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
         sqlExceptSelect.append(" where 1=1 ");
         if (StringUtils.isNotEmpty(keyword)) {
@@ -220,7 +220,7 @@ public class Company extends BaseCompany<Company> {
     }
 
     public List<Record> getCompanyAll(String innerCode) {
-        String select="select * from t_company c left join (select sum(net_water) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
+        String select = "select * from t_company c left join (select sum(net_water) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
                 " on c.inner_code=tad.innerCode where 1=1 ";
         if (StringUtils.isNotEmpty(innerCode)) {
             select = select + " and c.inner_code='" + innerCode + "'";
@@ -232,7 +232,7 @@ public class Company extends BaseCompany<Company> {
     }
 
     public List<Record> getCompanyByType(String type) {
-        String select="select * from t_company c left join (select sum(net_water) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
+        String select = "select * from t_company c left join (select sum(net_water) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
                 " on c.inner_code=tad.innerCode";
         if ("1".equals(type)) {
             String innerCodes = getWarnInnerCodes();
@@ -249,7 +249,7 @@ public class Company extends BaseCompany<Company> {
     @Deprecated
     public Map<String, Object> getCompanyMap() {
         List<Company> allList = this.getAllList();
-        Map<String , Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
         for (Company company : allList) {
             map.put(company.getInnerCode(), company.getName());
         }
@@ -304,7 +304,7 @@ public class Company extends BaseCompany<Company> {
 
     public Page<Company> getWarnCompanyPage(int page, int rows, String keyword, String orderbyStr) {
         Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(new Date());
-        String select="select c.*";
+        String select = "select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
         sqlExceptSelect.append(" where company_type=1 ");
         sqlExceptSelect.append(" and inner_code in (" + getWarnExceptionInnerCodeSql(monthDateBetween) + ")");
@@ -327,9 +327,9 @@ public class Company extends BaseCompany<Company> {
         String month_str = monthDateBetween.get((MonthCode.warn_month_str));
 
         //Integer month_target = Integer.parseInt(monthDateBetween.get(MonthCode.warn_target_month));
-        String month_target_str= monthDateBetween.get(MonthCode.warn_target_month_str);
+        String month_target_str = monthDateBetween.get(MonthCode.warn_target_month_str);
 
-        String select="select c.*";
+        String select = "select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
         sqlExceptSelect.append(" inner join (select " + month_str + "," + month_target_str + " from t_water_index) twi on twi.inner_code=c.inner_code ");
 
@@ -357,7 +357,7 @@ public class Company extends BaseCompany<Company> {
          */
         String start = monthDateBetween.get(MonthCode.warn_start_date);
         String end = monthDateBetween.get(MonthCode.warn_end_date);
-        String select="select * ";
+        String select = "select * ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from (select allad.*,sum(allad.net_water) as sumWater from " +
                 " (select tad.inner_code,tad.net_water,tad.meter_address,tad.write_time,twm.waters_type from t_actual_data tad " +
                 " inner join (select waters_type,meter_address from t_water_meter) twm on twm.meter_address=tad.meter_address) allad ");
@@ -378,7 +378,7 @@ public class Company extends BaseCompany<Company> {
 
     public Page<Company> getNormalCompanyPage(int page, int rows, String keyword, String orderbyStr) {
         Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(new Date());
-        String select="select c.*";
+        String select = "select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
         sqlExceptSelect.append(" where company_type=1");
         sqlExceptSelect.append(" and inner_code not in (" + getWarnExceptionInnerCodeSql(monthDateBetween) + ")");
@@ -393,7 +393,7 @@ public class Company extends BaseCompany<Company> {
     }
 
     public Page<Company> getOtherCompanyPage(int page, int rows, String keyword, String orderbyStr) {
-        String select="select c.*";
+        String select = "select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c");
         sqlExceptSelect.append(" where company_type=1 and c.inner_code not in (select DISTINCT inner_code from t_actual_data tad )");
         if (StringUtils.isNotEmpty(keyword)) {
@@ -407,7 +407,7 @@ public class Company extends BaseCompany<Company> {
     }
 
     public Page<Company> getSupplyCompanyPage(int page, int rows, String keyword, String orderbyStr) {
-        String select="select c.*";
+        String select = "select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c");
         sqlExceptSelect.append(" where company_type=2 ");
         if (StringUtils.isNotEmpty(keyword)) {
@@ -421,7 +421,7 @@ public class Company extends BaseCompany<Company> {
     }
 
     public Integer getSupplyCompanyCount() {
-       return Integer.parseInt(this.find("select count(*) as sumCount from t_company where company_type=2").get(0).get("sumCount").toString());
+        return Integer.parseInt(this.find("select count(*) as sumCount from t_company where company_type=2").get(0).get("sumCount").toString());
     }
 
 
@@ -491,8 +491,8 @@ public class Company extends BaseCompany<Company> {
 
         }
         String innerCodes = "";
-        StringBuilder sb= new StringBuilder();
-        for (String innerCode:warnInnerCodes) {
+        StringBuilder sb = new StringBuilder();
+        for (String innerCode : warnInnerCodes) {
             sb.append("'").append(innerCode).append("'").append(",");
         }
         if (StringUtils.isNotEmpty(sb.toString())) {
@@ -507,7 +507,7 @@ public class Company extends BaseCompany<Company> {
         String month_str = monthDateBetween.get("month_str");
         Integer month = Integer.parseInt(monthDateBetween.get("month"));
         String sql = "select t.inner_code from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
-                " on twm.meter_address=tad.meter_address) allad where allad.write_time >='"+start+"' and allad.write_time <'"+end+"' group by allad.meter_address) t" +
+                " on twm.meter_address=tad.meter_address) allad where allad.write_time >='" + start + "' and allad.write_time <'" + end + "' group by allad.meter_address) t" +
                 " INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
         return sql;
     }
@@ -519,7 +519,7 @@ public class Company extends BaseCompany<Company> {
         String month_str = monthDateBetween.get("month_str");
         Integer month = Integer.parseInt(monthDateBetween.get("month"));
         String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
-                " on twm.meter_address=tad.meter_address) allad where allad.write_time >='"+start+"' and allad.write_time <'"+end+"' group by allad.meter_address) t" +
+                " on twm.meter_address=tad.meter_address) allad where allad.write_time >='" + start + "' and allad.write_time <'" + end + "' group by allad.meter_address) t" +
                 " INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
         return sql;
     }
@@ -531,12 +531,12 @@ public class Company extends BaseCompany<Company> {
         String month_str = monthDateBetween.get(MonthCode.warn_month_str);
         Integer month = Integer.parseInt(monthDateBetween.get(MonthCode.warn_month));
         String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
-                " on twm.meter_address=tad.meter_address) allad where allad.write_time >='"+start+"' and allad.write_time <'"+end+"' group by allad.meter_address) t" +
+                " on twm.meter_address=tad.meter_address) allad where allad.write_time >='" + start + "' and allad.write_time <'" + end + "' group by allad.meter_address) t" +
                 " INNER join t_water_index twi on twi.inner_code=t.inner_code left join t_company c on c.inner_code=t.inner_code " +
                 "where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
         List<Record> records = Db.find(sql);
         Set<String> set = new HashSet<>();
-        for (Record record:records) {
+        for (Record record : records) {
             set.add(record.get("inner_code").toString());
         }
         return set;
@@ -680,6 +680,26 @@ public class Company extends BaseCompany<Company> {
                     company_type);
             lists.add(company);
         }
-        Company.me.saveBatch(lists, lists.size());
+        saveBatch(lists, lists.size());
+    }
+
+    public Map<String, String> loadNameList() {
+        String sql = "select name,inner_code from t_company";
+        List<Company> companies = this.find(sql);
+        Map<String, String> names = new HashMap<>();
+        for (Company company : companies) {
+            names.put(company.getName(), company.getInnerCode());
+        }
+        return names;
+    }
+
+    public Map<String, String> searchNameList(String name) {
+        String sql = "select name,inner_code from t_company where name like '%" + name + "%'";
+        List<Company> companies = this.find(sql);
+        Map<String, String> names = new HashMap<>();
+        for (Company company : companies) {
+            names.put(company.getName(), company.getInnerCode());
+        }
+        return names;
     }
 }

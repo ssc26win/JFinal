@@ -105,4 +105,12 @@ public abstract class BaseSysUser<M extends BaseSysUser<M>> extends BaseModel<M>
 		return get("wx_account");
 	}
 
+	public void setWxMemo(String wxMemo) {
+		set("wx_memo", wxMemo);
+	}
+
+	public String getWxMemo() {
+		return get("wx_memo");
+	}
+
 }

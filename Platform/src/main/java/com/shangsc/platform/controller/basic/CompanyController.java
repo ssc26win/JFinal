@@ -1,5 +1,6 @@
 package com.shangsc.platform.controller.basic;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.google.common.collect.Maps;
 import com.jfinal.aop.Clear;
 import com.jfinal.kit.PropKit;
@@ -21,12 +22,11 @@ import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author ssc
@@ -36,10 +36,11 @@ import java.util.Map;
  */
 public class CompanyController extends BaseController {
 
-    @RequiresPermissions(value={"/basic/company"})
+    @RequiresPermissions(value = {"/basic/company"})
     public void index() {
         render("company_index.jsp");
     }
+
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void position() {
@@ -47,24 +48,28 @@ public class CompanyController extends BaseController {
         this.setAttr("position", this.getPara("position"));
         render("company_map.jsp");
     }
+
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void normal() {
         this.setAttr("flag", "Normal");
         render("company_index.jsp");
     }
+
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void warn() {
         this.setAttr("flag", "Warn");
         render("company_index.jsp");
     }
+
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void other() {
         this.setAttr("flag", "Other");
         render("company_index.jsp");
     }
+
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void supply() {
@@ -73,71 +78,75 @@ public class CompanyController extends BaseController {
     }
 
     @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value={"/basic/company"})
+    @RequiresPermissions(value = {"/basic/company"})
     public void getListData() {
-        String keyword=this.getPara("name");
-        String companyType=this.getPara("companyType");
+        String keyword = this.getPara("name");
+        String companyType = this.getPara("companyType");
         Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), companyType);
         List<Company> companies = pageInfo.getList();
         setVoProp(companies);
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
     }
 
     @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value={"/basic/company"})
+    @RequiresPermissions(value = {"/basic/company"})
     public void getNormalListData() {
-        String keyword=this.getPara("name");
+        String keyword = this.getPara("name");
         Page<Company> pageInfo = Company.me.getNormalCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
         setVoProp(companies);
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
     }
 
-    @RequiresPermissions(value={"/basic/company"})
+    @RequiresPermissions(value = {"/basic/company"})
     public void getWarnListData() {
-        String keyword=this.getPara("name");
+        String keyword = this.getPara("name");
         Page<Company> pageInfo = Company.me.getWarnCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
         setVoProp(companies);
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
     }
 
     @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value={"/basic/company"})
+    @RequiresPermissions(value = {"/basic/company"})
     public void getOtherListData() {
-        String keyword=this.getPara("name");
+        String keyword = this.getPara("name");
         Page<Company> pageInfo = Company.me.getOtherCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
         setVoProp(companies);
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
     }
 
     @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value={"/basic/company"})
+    @RequiresPermissions(value = {"/basic/company"})
     public void getSupplyListData() {
-        String keyword=this.getPara("name");
+        String keyword = this.getPara("name");
         Page<Company> pageInfo = Company.me.getSupplyCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
         setVoProp(companies);
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies)  );
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
     }
 
-    @RequiresPermissions(value={"/basic/company"})
+    @RequiresPermissions(value = {"/basic/company"})
     public void add() {
         Integer id = this.getParaToInt("id");
-        if(id!=null){
+        if (id != null) {
             Company company = Company.me.findById(id);
             this.setAttr("item", company);
-            if(company.getLongitude() != null && company.getLatitude() != null) {
+            if (company.getLongitude() != null && company.getLatitude() != null) {
                 this.setAttr("position", company.getLongitude() + "," + company.getLatitude());
             }
         }
         this.setAttr("id", id);
+        Map<String, String> nameList = Company.me.loadNameList();
+        Set<String> names = nameList.keySet();
+        this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
+        this.setAttr("names", JSONUtils.toJSONString(names));
         render("company_add.jsp");
     }
 
-    @RequiresPermissions(value={"/basic/company"})
-    public void save(){
+    @RequiresPermissions(value = {"/basic/company"})
+    public void save() {
         Long id = this.getParaToLong("id");
         String innerCode = StringUtils.trim(this.getPara("innerCode"));
         String name = this.getPara("name");
@@ -165,12 +174,16 @@ public class CompanyController extends BaseController {
         if (StringUtils.isNotEmpty(this.getPara("createTime"))) {
             createTime = DateUtils.parseDate(this.getPara("createTime"));
         }
-
         BigDecimal longitude = null;
         BigDecimal latitude = null;
         if (StringUtils.isNotEmpty(position)) {
-            longitude = CodeNumUtil.getBigDecimal(position.split(",")[0], 6);
-            latitude = CodeNumUtil.getBigDecimal(position.split(",")[1], 6);
+            String[] split = position.split(",");
+            if (NumberUtils.isNumber(split[0]) && NumberUtils.isNumber(split[1])) {
+                longitude = CodeNumUtil.getBigDecimal(split[0], 6);
+                latitude = CodeNumUtil.getBigDecimal(split[1], 6);
+            } else {
+                this.renderJson(InvokeResult.failure("单位地图位置格式错误"));
+            }
         }
         BigDecimal self_well_price = null;
         if (StringUtils.isNotEmpty(this.getPara("self_well_price"))) {
@@ -191,8 +204,8 @@ public class CompanyController extends BaseController {
         this.renderJson(result);
     }
 
-    @RequiresPermissions(value={"/basic/company"})
-    public void delete(){
+    @RequiresPermissions(value = {"/basic/company"})
+    public void delete() {
         String ids = this.getPara("ids");
         InvokeResult result = Company.me.deleteData(ids);
         this.renderJson(result);
@@ -241,7 +254,7 @@ public class CompanyController extends BaseController {
         renderFile(new File(path));
     }
 
-    private void setVoProp(List<Company> companies){
+    private void setVoProp(List<Company> companies) {
         if (CommonUtils.isNotEmpty(companies)) {
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
             Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
@@ -270,7 +283,7 @@ public class CompanyController extends BaseController {
         }
     }
 
-    @RequiresPermissions(value={"/basic/company"})
+    @RequiresPermissions(value = {"/basic/company"})
     public void importPage() {
         this.setAttr("uploadUrl", "company");
         render("import_data.jsp");
@@ -283,14 +296,14 @@ public class CompanyController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/company"})
     public void uploadImportData() {
-        String dataStr= DateUtils.format(new Date(), "yyyyMMddHHmm");
+        String dataStr = DateUtils.format(new Date(), "yyyyMMddHHmm");
         List<UploadFile> flist = this.getFiles("/temp", 1024 * 1024 * 50);
-        Map<String,Object> data= Maps.newHashMap();
-        if(flist.size()>0){
-            UploadFile uf=flist.get(0);
-            String status_url= PropKit.get("uploadCompanyPath");
-            String fileUrl=dataStr+"/"+uf.getFileName();
-            String newFile=status_url+fileUrl;
+        Map<String, Object> data = Maps.newHashMap();
+        if (flist.size() > 0) {
+            UploadFile uf = flist.get(0);
+            String status_url = PropKit.get("uploadCompanyPath");
+            String fileUrl = dataStr + "/" + uf.getFileName();
+            String newFile = status_url + fileUrl;
             FileUtils.mkdir(newFile, false);
             FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);
             data.put("fileName", uf.getFileName());
@@ -313,4 +326,28 @@ public class CompanyController extends BaseController {
         this.renderJson(InvokeResult.success());
     }
 
+
+    @RequiresPermissions(value = {"/basic/company"})
+    public void loadNameList() {
+        Map<String, String> nameList = Company.me.loadNameList();
+        Map<String, Object> result = new HashMap<>();
+        Set<String> names = nameList.keySet();
+        result.put("nameCodeMap", nameList);
+        result.put("names", names);
+        renderJson(result);
+    }
+
+    @RequiresPermissions(value = {"/basic/company"})
+    public void searchNameList() {
+        String name = this.getPara("name");
+        Map<String, String> nameList = Company.me.searchNameList(name);
+        Map<String, Object> result = new HashMap<>();
+        Set<String> names = new HashSet<>();
+        for (String innercode : nameList.keySet()) {
+            names.add(nameList.get(innercode));
+        }
+        result.put("nameCodeMap", nameList);
+        result.put("names", names);
+        renderJson(result);
+    }
 }

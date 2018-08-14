@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.core.cache.CacheClearUtils;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
@@ -261,4 +262,9 @@ public class SysUser extends BaseSysUser<SysUser>
         }
         return InvokeResult.success();
     }
+
+	public List<Record> getSysUserList() {
+		List<Record> list = Db.find("select id,name,tc.name as companyName from sys_user susr left join t_company tc on tc.inner_code = susr.inner_code");
+		return list;
+	}
 }

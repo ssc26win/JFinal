@@ -27,8 +27,10 @@
                             <input name="id" type="hidden" value="${id}"/>
                             <div class="form-group" style="margin-top: 15px;">
                                 <label class="col-sm-2 control-label" for="name">单位名称:</label>
-                                <div class="col-sm-4 common-tip-append">
-                                    <input type="text" id="name" name="name" value="${item.name}" class="form-control">
+                                <div class="col-sm-4 common-tip-append search">
+                                    <input type="text" id="name" name="name" value="${item.name}" class="form-control" autocomplete="off" >
+                                    <div id="auto_div" style="z-index: 9999;">
+                                    </div>
                                 </div>
                                 <label class="col-sm-2 control-label" for="innerCode">单位编号:</label>
                                 <div class="col-sm-4 common-tip-append">
@@ -51,9 +53,9 @@
                                     <input type="text" id="address" name="address" value="${item.address}" class="form-control">
                                 </div>
                                 <label class="col-sm-2 control-label" for="position"><a href="#" title="点击获取" style="text-decoration: none" onclick="getPosition();">
-                                    <b>位置</b></a>信息:</label>
+                                    <b title="手动输入位置必须“英文,隔开经纬度”">位置</b></a>信息:</label>
                                 <div class="col-sm-4">
-                                    <input type="text" id="position" name="position" value="${position}" readonly class="form-control">
+                                    <input type="text" id="position" name="position" value="${position}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -184,6 +186,7 @@
     </div><!-- /.main-container-inner -->
 </div><!-- /.main-container -->
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
+<jsp:include page="/WEB-INF/view/common/search_cpyname.jsp" flush="true" />
 <script type="text/javascript">
     function setPosition(obj){
         alert(obj);
