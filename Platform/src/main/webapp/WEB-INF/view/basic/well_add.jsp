@@ -189,10 +189,9 @@
     </div><!-- /.main-container-inner -->
 </div><!-- /.main-container -->
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
+<jsp:include page="/WEB-INF/view/common/search_cpyname.jsp" flush="true" />
 <script type="text/javascript">
-
     jQuery(function($) {
-
         var $validation = true;
         $('#validation-form').validate({
             errorElement: 'div',

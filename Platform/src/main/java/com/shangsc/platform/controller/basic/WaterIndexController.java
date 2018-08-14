@@ -1,5 +1,6 @@
 package com.shangsc.platform.controller.basic;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.google.common.collect.Maps;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
@@ -14,6 +15,7 @@ import com.shangsc.platform.core.util.FileUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.WaterIndexExportService;
+import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.WaterIndex;
 import com.shangsc.platform.util.CodeNumUtil;
@@ -24,6 +26,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author ssc
@@ -54,6 +57,10 @@ public class WaterIndexController extends BaseController {
             this.setAttr("item", WaterIndex.me.findById(id));
         }
         this.setAttr("id", id);
+        Map<String, String> nameList = Company.me.loadNameList();
+        Set<String> names = nameList.keySet();
+        this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
+        this.setAttr("names", JSONUtils.toJSONString(names));
         render("water_index_add.jsp");
     }
 
