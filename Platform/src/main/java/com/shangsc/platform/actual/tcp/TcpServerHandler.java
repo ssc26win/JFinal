@@ -36,6 +36,7 @@ import java.util.Date;
 public class TcpServerHandler extends SimpleChannelHandler {
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private void log(String msg) {
         logger.info(msg);
     }
@@ -64,14 +65,14 @@ public class TcpServerHandler extends SimpleChannelHandler {
                 buffer = bufferTemp;
                 e.getChannel().write(buffer);
             }
-            if (result.length() == TcpData.upload_data_length) {
+            if (result.length() == TcpData.upload_data_length_1 || result.length() == TcpData.upload_data_length_2) {
                 recordMsg(result);
                 recordDB(result, false);
                 String response = TcpConvertUtil.receiveDataResp(result);
                 buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
                 e.getChannel().write(buffer);
             }
-            if (result.length() > TcpData.upload_data_length) {
+            if (result.length() > TcpData.upload_data_length_1 || result.length() > TcpData.upload_data_length_2) {
                 recordMsg(result);
                 recordDB(result, true);
                 String response = TcpConvertUtil.getTcpMultChkStr(result);
@@ -110,7 +111,7 @@ public class TcpServerHandler extends SimpleChannelHandler {
             }
         } else {
             try {
-                FileWriter fw = new FileWriter(path + fileName,true);
+                FileWriter fw = new FileWriter(path + fileName, true);
                 fw.write(ToolDateTime.format(new Date(), ToolDateTime.pattern_ymd_hms) + ":" + msg + "\r\n");
                 fw.flush();
             } catch (IOException e) {
