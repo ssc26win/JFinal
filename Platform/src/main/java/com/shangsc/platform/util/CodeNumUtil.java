@@ -15,11 +15,12 @@ public class CodeNumUtil {
 
     /**
      * 是奇数
+     *
      * @param a
      * @return
      */
     public static boolean isOdd(int a) {
-        if(a%2 == 1){
+        if (a % 2 == 1) {
             return true;
         }
         return false;
@@ -35,7 +36,7 @@ public class CodeNumUtil {
     public static String genInnerCode(int i) {
         NumberFormat format = NumberFormat.getInstance();
         format.setMinimumIntegerDigits(8);
-        String result = COMPANY_CODE_PREFIX  + format.format(i).replace(",", "");
+        String result = COMPANY_CODE_PREFIX + format.format(i).replace(",", "");
         return result;
     }
 

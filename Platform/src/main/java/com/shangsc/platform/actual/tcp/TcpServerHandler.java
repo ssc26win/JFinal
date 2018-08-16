@@ -67,18 +67,18 @@ public class TcpServerHandler extends SimpleChannelHandler {
         log("TCP ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
 
         if (StringUtils.isNotEmpty(result) && result.startsWith(ActualType.TCP_PRFIX) && result.endsWith(ActualType.TCP_SUFFIX)) {
-            //if (TcpData.login_data_length == result.length()) {
-            //    String response = TcpConvertUtil.tcpLoginResp(result, "login");
-            //    buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
-            //    e.getChannel().write(buffer);
-            //}
             if (TcpData.login_data_length == result.length()) {
-                //String response = ConversionUtil.tcpLoginResp(result, "login");
-                String response = "594E2B49503D3131342E3131352E3133362E323136594E2B504F52543D3130303030594E2B534C454550454E3D30";
-                ChannelBuffer bufferTemp = ChannelBuffers.copiedBuffer(ConversionUtil.toStringHex(response).getBytes());
-                buffer = bufferTemp;
+                String response = TcpConvertUtil.tcpLoginResp(result, "login");
+                buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
                 e.getChannel().write(buffer);
             }
+            //if (TcpData.login_data_length == result.length()) {
+            //    //String response = ConversionUtil.tcpLoginResp(result, "login");
+            //    String response = "594E2B49503D3131342E3131352E3133362E323136594E2B504F52543D3130303030594E2B534C454550454E3D30";
+            //    ChannelBuffer bufferTemp = ChannelBuffers.copiedBuffer(ConversionUtil.toStringHex(response).getBytes());
+            //    buffer = bufferTemp;
+            //    e.getChannel().write(buffer);
+            //}
             if (result.length() == TcpData.upload_data_length_1 || result.length() == TcpData.upload_data_length_2) {
                 recordMsg(result);
                 recordDB(result, false, clientIP);

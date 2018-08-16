@@ -1,31 +1,37 @@
 /**
  * Copyright (c) 2011-2016, Eason Pan(pylxyhome@vip.qq.com).
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.shangsc.platform.conf;
+package com.shangsc.front.config;
 
 import com.jfinal.config.Routes;
-/**
- * APP端Routes配置
- * @author ssc
- *
- */
-public class ApiRoutes extends Routes{
+import com.shangsc.front.wxapp.controller.LawRecordController;
+import com.shangsc.front.wxapp.controller.LoginController;
+import com.shangsc.front.wxapp.controller.MsgController;
 
-	@Override
-	public void config() {
-		
-	}
+/**
+ * 微信APP端Routes配置
+ *
+ * @author ssc
+ */
+public class WxApiRoutes extends Routes {
+
+    @Override
+    public void config() {
+        add("/app/log", LoginController.class);
+        add("/app/msg", MsgController.class);
+        add("/app/law", LawRecordController.class);
+    }
 
 }

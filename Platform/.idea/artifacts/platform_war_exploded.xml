@@ -29,6 +29,16 @@
           <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml-schemas:3.16" />
           <element id="library" level="project" name="Maven: org.apache.xmlbeans:xmlbeans:2.6.0" />
           <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
+          <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.2.32" />
+          <element id="library" level="project" name="Maven: cn.fsdev:jfinal-mail-plugin:2.2.1" />
+          <element id="library" level="project" name="Maven: javax.mail:mail:1.4.4" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
+          <element id="library" level="project" name="Maven: io.netty:netty:3.9.0.Final" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-simple:1.7.21" />
+          <element id="library" level="project" name="Maven: javax.validation:validation-api:2.0.0.Final" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.0" />
         </element>
       </element>
       <element id="directory" name="META-INF">
