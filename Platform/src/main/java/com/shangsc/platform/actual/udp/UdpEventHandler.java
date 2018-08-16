@@ -23,6 +23,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.util.Date;
 
 /**
@@ -34,14 +36,28 @@ import java.util.Date;
 public class UdpEventHandler extends SimpleChannelUpstreamHandler {
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private void log(String msg) {
         logger.info(msg);
     }
 
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
+        String clientIP = "";
+        try {
+            if (ctx.getChannel() != null && ctx.getChannel().getRemoteAddress() != null) {
+                clientIP = ctx.getChannel().getRemoteAddress().toString();
+            }
+            if (StringUtils.isEmpty(clientIP)) {
+                InetSocketAddress remoteAddress = (InetSocketAddress) e.getRemoteAddress();
+                clientIP = remoteAddress.toString();
+            }
+            log("UDP received IP:" + clientIP);
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        }
         log("UDP messageReceived");
-        ChannelBuffer buffer = (ChannelBuffer)e.getMessage();
+        ChannelBuffer buffer = (ChannelBuffer) e.getMessage();
         log("UDP received " + buffer + " bytes [" + buffer.toString() + "]");
 
         String result = ConversionUtil.bytes2Hex16Str(buffer.array());
@@ -56,7 +72,7 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
 
             recordMsg(result);
 
-            recordDB(result);
+            recordDB(result, clientIP);
         }
     }
 
@@ -88,7 +104,7 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
             }
         } else {
             try {
-                FileWriter fw = new FileWriter(path + fileName,true);
+                FileWriter fw = new FileWriter(path + fileName, true);
                 fw.write(ToolDateTime.format(new Date(), ToolDateTime.pattern_ymd_hms) + ":" + msg + "\r\n");
                 fw.flush();
             } catch (IOException e) {
@@ -97,7 +113,7 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
         }
     }
 
-    private synchronized void recordDB(String result) {
+    private synchronized void recordDB(String result, String clientIP) {
         try {
             if (StringUtils.isNotEmpty(result)) {
                 String meterAddress = UdpConvertUtil.getUdpMeterAddress(result);
@@ -151,10 +167,10 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
                         log("UDP log not exist meter_address :" + meterAddress);
                     }
                 } else {
-                    logger.info("UDP 错误数据-sum_water:" + sumWater +"（meterAddress:" + meterAddress +"）");
+                    logger.info("UDP 错误数据-sum_water:" + sumWater + "（meterAddress:" + meterAddress + "）");
                 }
                 //记录消息来源
-                ActualLog.dao.save(null, ActualType.UDP, Integer.parseInt(PropKit.get("config.udp.port")), PropKit.get("config.host"), result, meterAddress, writeTime);
+                ActualLog.dao.save(null, ActualType.UDP, Integer.parseInt(PropKit.get("config.udp.port")), clientIP, result, meterAddress, writeTime);
             }
         } catch (Exception e) {
             e.printStackTrace();
