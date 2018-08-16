@@ -25,6 +25,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.net.InetSocketAddress;
 import java.util.Date;
 
 /**
@@ -45,6 +46,19 @@ public class TcpServerHandler extends SimpleChannelHandler {
     @Override
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         ChannelBuffer buffer = (ChannelBuffer) e.getMessage();
+        String clientIP = "";
+        try {
+            if (ctx.getChannel() != null && ctx.getChannel().getRemoteAddress() != null) {
+                clientIP = ctx.getChannel().getRemoteAddress().toString();
+            }
+            if (StringUtils.isEmpty(clientIP)) {
+                InetSocketAddress remoteAddress = (InetSocketAddress) e.getRemoteAddress();
+                clientIP = remoteAddress.toString();
+            }
+            log("TCP received IP:" + clientIP);
+        } catch (Exception ee) {
+            ee.printStackTrace();
+        }
 
         log("TCP received " + buffer.readableBytes() + " bytes [" + buffer.toString() + "]");
 
@@ -67,14 +81,14 @@ public class TcpServerHandler extends SimpleChannelHandler {
             }
             if (result.length() == TcpData.upload_data_length_1 || result.length() == TcpData.upload_data_length_2) {
                 recordMsg(result);
-                recordDB(result, false);
+                recordDB(result, false, clientIP);
                 String response = TcpConvertUtil.receiveDataResp(result);
                 buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
                 e.getChannel().write(buffer);
             }
             if (result.length() > TcpData.upload_data_length_1 || result.length() > TcpData.upload_data_length_2) {
                 recordMsg(result);
-                recordDB(result, true);
+                recordDB(result, true, clientIP);
                 String response = TcpConvertUtil.getTcpMultChkStr(result);
                 buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
                 e.getChannel().write(buffer);
@@ -120,7 +134,7 @@ public class TcpServerHandler extends SimpleChannelHandler {
         }
     }
 
-    private synchronized void recordDB(String result, boolean isMulti) {
+    private synchronized void recordDB(String result, boolean isMulti, String clientIP) {
         try {
             if (StringUtils.isNotEmpty(result)) {
                 String meterAddress = "";
@@ -164,7 +178,7 @@ public class TcpServerHandler extends SimpleChannelHandler {
                     logger.info("TCP 错误数据-sum_water:" + sumWater + "（meterAddress:" + meterAddress + "）");
                 }
                 // 记录消息来源
-                ActualLog.dao.save(null, ActualType.TCP, Integer.parseInt(PropKit.get("config.tcp.port")), PropKit.get("config.host"), result, meterAddress, new Date());
+                ActualLog.dao.save(null, ActualType.TCP, Integer.parseInt(PropKit.get("config.tcp.port")), clientIP, result, meterAddress, new Date());
             }
         } catch (Exception e) {
             e.printStackTrace();

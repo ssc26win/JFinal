@@ -2,3 +2,5 @@
 /log
 /.settings
 .DS_Store
+.idea
+platform.iml
