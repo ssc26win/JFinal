@@ -25,65 +25,72 @@
 							<!-- PAGE CONTENT BEGINS -->
 								<!-- PAGE CONTENT BEGINS -->
 							<form class="form-horizontal" id="validation-form" method="post">
-												<input name="id" type="hidden" value="${id}"/>
-													<div class="form-group">
-														<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="name">用户名</label>
-														<div class="col-xs-12 col-sm-9">
-															<div class="clearfix">
-													            <input type="text"  name="name" ${id ne null?'readonly':'' } value="${item.name}" class="col-xs-12 col-sm-6">
-															</div>
-														</div>
-													</div>
-													<c:if test="${id eq null }">
-													<div class="form-group">
-														<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="password">密码</label>
-														<div class="col-xs-12 col-sm-9">
-															<div class="clearfix">
-													            <input type="text" name="password" class="col-xs-12 col-sm-6">
-															</div>
-														</div>
-													</div>
-													</c:if>
-												
-													<div class="form-group">
-														<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="des">描述</label>
-														<div class="col-xs-12 col-sm-9">
-															<div class="clearfix">
-													            <input type="text"  name="des" value="${item.des}" class="col-xs-12 col-sm-6">
-															</div>
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="phone">手机号</label>
-														<div class="col-xs-12 col-sm-9">
-															<div class="clearfix">
-													            <input type="text"  name="phone" value="${item.phone}" class="col-xs-12 col-sm-6">
-															</div>
-														</div>
-													</div>
-													<div class="form-group">
-														<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="email">邮箱</label>
-														<div class="col-xs-12 col-sm-9">
-															<div class="clearfix">
-													            <input type="text" name="email" value="${item.email}" class="col-xs-12 col-sm-6">
-															</div>
-														</div>
-													</div>
-													
-													<div class="clearfix form-actions" align="center">
-														<div class="col-md-offset-3 col-md-9">
-															<button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">
-																<i class="ace-icon fa fa-check bigger-110"></i>
-																提交
-															</button>
-															&nbsp; &nbsp; &nbsp;
-															<button class="btn" type="reset">
-												<i class="ace-icon fa fa-undo bigger-110"></i>
-												重置
-											</button>
-														</div>
-													</div>
-												</form>
+									<input name="id" type="hidden" value="${id}"/>
+										<div class="form-group">
+											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="name">用户名</label>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<input type="text" id="name" name="name" ${id ne null?'readonly':'' } value="${item.name}" class="col-xs-12 col-sm-8">
+												</div>
+											</div>
+										</div>
+										<c:if test="${id eq null }">
+										<div class="form-group">
+											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="password">密码</label>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<input type="text" id="password" name="password" class="col-xs-12 col-sm-8">
+												</div>
+											</div>
+										</div>
+										</c:if>
+										<div class="form-group">
+											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="companyName">单位名称</label>
+											<div class="col-xs-12 col-sm-9 search">
+												<div class="clearfix">
+													<input type="text" id="companyName" name="companyName" value="${item.companyName}" class="col-xs-12 col-sm-8 cnwth" autocomplete="off" >
+												</div>
+												<div id="auto_div"></div>
+												<input type="hidden" id="innerCode" name="innerCode" value="${item.innerCode}">
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="des">描述</label>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<input type="text" id="des" name="des" value="${item.des}" class="col-xs-12 col-sm-8">
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="phone">手机号</label>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<input type="text" id="phone" name="phone" value="${item.phone}" class="col-xs-12 col-sm-8">
+												</div>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="email">邮箱</label>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<input type="text" id="email" name="email" value="${item.email}" class="col-xs-12 col-sm-8">
+												</div>
+											</div>
+										</div>
+
+										<div class="clearfix form-actions" align="center">
+											<div class="col-md-offset-3 col-md-9">
+												<button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">
+													<i class="ace-icon fa fa-check bigger-110"></i>
+													提交
+												</button>
+												&nbsp; &nbsp; &nbsp;
+												<button class="btn" type="reset">
+												<i class="ace-icon fa fa-undo bigger-110"></i>重置</button>
+											</div>
+										</div>
+							</form>
 						</div><!-- /.col -->
 					</div><!-- /.row -->
 					</div><!-- /.page-content -->
@@ -91,7 +98,8 @@
 			</div><!-- /.main-container-inner -->
 		</div><!-- /.main-container -->
 		<jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
-	<script type="text/javascript">
+		<jsp:include page="/WEB-INF/view/common/search_cpyname.jsp" flush="true" />
+		<script type="text/javascript">
 		
 			jQuery(function($) {
 				

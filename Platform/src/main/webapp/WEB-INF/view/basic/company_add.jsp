@@ -27,10 +27,8 @@
                             <input name="id" type="hidden" value="${id}"/>
                             <div class="form-group" style="margin-top: 15px;">
                                 <label class="col-sm-2 control-label" for="name">单位名称:</label>
-                                <div class="col-sm-4 common-tip-append search">
+                                <div class="col-sm-4 common-tip-append">
                                     <input type="text" id="name" name="name" value="${item.name}" class="form-control" autocomplete="off" >
-                                    <div id="auto_div" style="z-index: 9999;">
-                                    </div>
                                 </div>
                                 <label class="col-sm-2 control-label" for="innerCode">单位编号:</label>
                                 <div class="col-sm-4 common-tip-append">
@@ -186,7 +184,6 @@
     </div><!-- /.main-container-inner -->
 </div><!-- /.main-container -->
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
-<jsp:include page="/WEB-INF/view/common/search_cpyname.jsp" flush="true" />
 <script type="text/javascript">
     function setPosition(obj){
         alert(obj);

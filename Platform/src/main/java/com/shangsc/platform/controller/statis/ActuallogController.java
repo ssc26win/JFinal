@@ -17,26 +17,27 @@ import java.util.List;
  */
 public class ActuallogController extends BaseController {
 
-    @RequiresPermissions(value={"/statis/actuallog"})
+    @RequiresPermissions(value = {"/statis/actuallog"})
     public void index() {
         render("actual_log.jsp");
     }
 
     @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value={"/statis/actuallog"})
+    @RequiresPermissions(value = {"/statis/actuallog"})
     public void getListData() {
         ActualLog.dao.setGlobalInnerCode(getInnerCode());
         String keyword = this.getPara("name");
         String srcType = this.getPara("srcType");
         Page<ActualLog> pageInfo = ActualLog.dao.getLogPage(getPage(), this.getRows(), keyword, srcType, this.getOrderbyStr());
         List<ActualLog> logs = pageInfo.getList();
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, logs)  );
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, logs));
     }
+
     @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value={"/statis/actuallog"})
+    @RequiresPermissions(value = {"/statis/actuallog"})
     public void showContent() {
         Integer id = this.getParaToInt("id");
-        if(id!=null){
+        if (id != null) {
             this.setAttr("item", ActualLog.dao.findById(id));
         }
         this.setAttr("id", id);

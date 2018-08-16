@@ -34,9 +34,12 @@
                     }
                     //记录新的高亮节点索引
                     highlightindex = $(this).attr("id");
-                    $(this).css("background-color", "#ebebeb");
+                    $(this).css("background-color", "#FFE4B5");
                 });
                 newDivNode.mouseout(function () {
+                    if ($("#companyName").val() == "") {
+                        $("#innerCode").val("");
+                    }
                     $(this).css("background-color", "white");
                 });
                 //鼠标点击文字上屏
@@ -47,6 +50,7 @@
                     //文本框中的内容变成高亮节点的内容
                     $("#" + search).val(comText);
                     $("#innerCode").val(name_code[comText]);
+                    $("#companyName").focus();
                 })
                 if (searchList.length > 0) {    //如果返回值有内容就显示出来
                     autoNode.show();
@@ -59,6 +63,9 @@
         }
         //点击页面隐藏自动补全提示框
         document.onclick = function (e) {
+            if ($("#companyName").val() == "") {
+                $("#innerCode").val("");
+            }
             var e = e ? e : window.event;
             var tar = e.srcElement || e.target;
             if (tar.id != search) {
@@ -69,15 +76,17 @@
         }
     }
     $(function () {
-        old_value = $("#name").val();
-        $("#name").focus(function () {
-            if ($("#name").val() == "") {
-                AutoComplete("auto_div", "name", name_list);
+        old_value = $("#companyName").val();
+        $("#companyName").focus(function () {
+            if ($("#companyName").val() == "") {
+                AutoComplete("auto_div", "companyName", name_list);
             }
         });
-        $("#name").keyup(function () {
-            AutoComplete("auto_div", "name", name_list);
+        $("#companyName").keyup(function () {
+            AutoComplete("auto_div", "companyName", name_list);
         });
+        $("#auto_div").css("width" , $(".cnwth").css("width"));
+
     });
 
 </script>

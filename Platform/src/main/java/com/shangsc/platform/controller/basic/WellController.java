@@ -42,7 +42,7 @@ public class WellController extends BaseController {
         render("well_index.jsp");
     }
 
-    @RequiresPermissions(value={"/basic/well"})
+    @RequiresPermissions(value = {"/basic/well"})
     public void getListData() {
         String keyword = this.getPara("name");
         Page<Well> pageInfo = Well.me.getWellPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
@@ -51,22 +51,32 @@ public class WellController extends BaseController {
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
-    @RequiresPermissions(value={"/basic/well"})
+    @RequiresPermissions(value = {"/basic/well"})
     public void add() {
         Integer id = this.getParaToInt("id");
-        if (id!=null) {
-            this.setAttr("item", Well.me.findById(id));
+        String innerCode = "";
+        if (id != null) {
+            Well byId = Well.me.findById(id);
+            this.setAttr("item", byId);
+            innerCode = byId.getInnerCode();
         }
         this.setAttr("id", id);
         Map<String, String> nameList = Company.me.loadNameList();
+        if (StringUtils.isNotEmpty(innerCode)) {
+            for (String cName : nameList.keySet()) {
+                if (innerCode.equals(nameList.get(cName))) {
+                    this.setAttr("companyName", cName);
+                }
+            }
+        }
         Set<String> names = nameList.keySet();
         this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
         this.setAttr("names", JSONUtils.toJSONString(names));
         render("well_add.jsp");
     }
 
-    @RequiresPermissions(value={"/basic/well"})
-    public void save(){
+    @RequiresPermissions(value = {"/basic/well"})
+    public void save() {
         Long id = this.getParaToLong("id");
         String name = this.getPara("name");
         String wellNum = StringUtils.trim(this.getPara("wellNum"));
@@ -117,14 +127,14 @@ public class WellController extends BaseController {
             waterWithdrawals = CodeNumUtil.getBigDecimal(this.getPara("waterWithdrawals"), 2);
         }
 
-        InvokeResult result = Well.me.save(id, innerCode, name, wellNum, village, address, wellDepth, groundDepth, year,oneselfWell,
+        InvokeResult result = Well.me.save(id, innerCode, name, wellNum, village, address, wellDepth, groundDepth, year, oneselfWell,
                 innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
-                groundType,	nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
+                groundType, nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
         this.renderJson(result);
     }
 
-    @RequiresPermissions(value={"/basic/well"})
-    public void delete(){
+    @RequiresPermissions(value = {"/basic/well"})
+    public void delete() {
         String ids = this.getPara("ids");
         InvokeResult result = Well.me.deleteData(ids);
         this.renderJson(result);
@@ -181,7 +191,7 @@ public class WellController extends BaseController {
         }
     }
 
-    @RequiresPermissions(value={"/basic/well"})
+    @RequiresPermissions(value = {"/basic/well"})
     public void importPage() {
         this.setAttr("uploadUrl", "well");
         render("import_data.jsp");
@@ -194,14 +204,14 @@ public class WellController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/well"})
     public void uploadImportData() {
-        String dataStr= DateUtils.format(new Date(), "yyyyMMddHHmm");
+        String dataStr = DateUtils.format(new Date(), "yyyyMMddHHmm");
         List<UploadFile> flist = this.getFiles("/temp", 1024 * 1024 * 50);
-        Map<String,Object> data= Maps.newHashMap();
-        if(flist.size()>0){
-            UploadFile uf=flist.get(0);
-            String status_url= PropKit.get("uploadWellPath");
-            String fileUrl=dataStr+"/"+uf.getFileName();
-            String newFile=status_url+fileUrl;
+        Map<String, Object> data = Maps.newHashMap();
+        if (flist.size() > 0) {
+            UploadFile uf = flist.get(0);
+            String status_url = PropKit.get("uploadWellPath");
+            String fileUrl = dataStr + "/" + uf.getFileName();
+            String newFile = status_url + fileUrl;
             FileUtils.mkdir(newFile, false);
             FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);
             data.put("fileName", uf.getFileName());

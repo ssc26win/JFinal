@@ -15,6 +15,7 @@
  */
 package com.shangsc.platform.controller;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
@@ -27,12 +28,15 @@ import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.util.MyDigestUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.mail.MailKit;
+import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.SysLoginRecord;
 import com.shangsc.platform.model.SysUser;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 首页、登陆、登出
@@ -58,6 +62,10 @@ public class IndexController extends Controller {
 		if (StringUtils.isNotEmpty(this.getPara("email"))) {
 			this.setAttr("email", this.getPara("email"));
 		}
+		Map<String, String> nameList = Company.me.loadNameList();
+		Set<String> names = nameList.keySet();
+		this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
+		this.setAttr("names", JSONUtils.toJSONString(names));
 		render("login.jsp");
 	}
 	@Clear(AuthorityInterceptor.class)

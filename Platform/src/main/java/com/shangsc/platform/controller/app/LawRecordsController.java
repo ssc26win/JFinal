@@ -13,6 +13,6 @@ public class LawRecordsController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/law"})
     public void index() {
-        render("law_records.jsp");
+        render("law_.jsp");
     }
 }

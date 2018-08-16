@@ -27,9 +27,11 @@
                         <form class="form-horizontal" id="validation-form" method="post">
                             <input name="id" type="hidden" value="${id}"/>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label" for="innerCode">单位编号:</label>
-                                <div class="col-sm-3 common-tip-append">
-                                    <input type="text" id="innerCode" name="innerCode" value="${item.innerCode}" class="form-control">
+                                <label class="col-sm-3 control-label" for="companyName">单位名称:</label>
+                                <div class="col-sm-3 common-tip-append search">
+                                    <input type="text" id="companyName" name="companyName" value="${companyName}" class="form-control cnwth" autocomplete="off">
+                                    <div id="auto_div"></div>
+                                    <input type="hidden" id="innerCode" name="innerCode" value="${item.innerCode}" class="form-control">
                                 </div>
                                 <label class="col-sm-3 control-label" for="wellNum">水井编号:</label>
                                 <div class="col-sm-3 common-tip-append">
@@ -198,6 +200,9 @@
             errorClass: 'help-block',
             focusInvalid: true,
             rules: {
+                companyName:{
+                    required: true
+                },
                 innerCode:{
                     required: true
                 },
@@ -206,6 +211,9 @@
                 },
             },
             messages: {
+                companyName:{
+                    required: "请输入单位名称"
+                },
                 innerCode:{
                     required: "请输入单位编号"
                 },

@@ -15,6 +15,7 @@
  */
 package com.shangsc.platform.controller.sys;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -24,12 +25,16 @@ import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.SysRole;
 import com.shangsc.platform.model.SysUser;
 import com.shangsc.platform.vo.SysUserVo;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 系统用户管理.
@@ -62,12 +67,28 @@ public class UserController extends BaseController {
     @RequiresPermissions(value = {"/sys/user"})
     public void add() {
         Integer id = this.getParaToInt("id");
+        String innerCode = "";
         if (id != null) {
-            this.setAttr("item", SysUser.me.findById(id));
+            SysUser byId = SysUser.me.findById(id);
+            this.setAttr("item", byId);
+            innerCode = byId.getInnerCode();
         }
         List<SysRole> list = SysRole.me.getSysRoleNamelist();
         this.setAttr("roleList", list);
         this.setAttr("id", id);
+
+        Map<String, String> nameList = Company.me.loadNameList();
+        if (StringUtils.isNotEmpty(innerCode)) {
+            for (String cName : nameList.keySet()) {
+                if (innerCode.equals(nameList.get(cName))) {
+                    this.setAttr("companyName", cName);
+                }
+            }
+        }
+        Set<String> names = nameList.keySet();
+        this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
+        this.setAttr("names", JSONUtils.toJSONString(names));
+
         render("user_add.jsp");
     }
 

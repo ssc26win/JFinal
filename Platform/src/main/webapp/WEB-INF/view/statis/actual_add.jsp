@@ -22,20 +22,28 @@
             <!-- PAGE CONTENT BEGINS -->
             <!-- PAGE CONTENT BEGINS -->
             <form class="form-horizontal" id="validation-form" method="post">
-              <input name="id" type="hidden" value="${id}"/>
+              <input name="id" type="hidden" value="${item.id}"/>
               <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号</label>
+                <%--<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
                     <input type="text" id="innerCode" name="innerCode" ${id ne null?'readonly':'' } value="${item.innerCode}" class="col-xs-12 col-sm-6">
                   </div>
-                </div>
+                </div>--%>
+                  <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="companyName">单位名称</label>
+                  <div class="col-xs-12 col-sm-9 search">
+                    <div class="clearfix">
+                      <input type="text" id="companyName" name="companyName" value="${companyName}" ${id ne null?'readonly':'' } class="col-xs-12 col-sm-8 cnwth" autocomplete="off" >
+                    </div>
+                    <div id="auto_div"></div>
+                    <input type="hidden" id="innerCode" name="innerCode" value="${item.innerCode}" ${id ne null?'readonly':'' } >
+                  </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterAddress">表计地址</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" id="meterAddress" name="meterAddress" value="${item.meter_address}" class="col-xs-12 col-sm-6">
+                    <input type="text" id="meterAddress" name="meterAddress" value="${item.meter_address}" class="col-xs-12 col-sm-8">
                   </div>
                 </div>
               </div>
@@ -44,7 +52,7 @@
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
                     <input type="hidden" id="watersTypeInput" name="watersTypeInput" value="${item.watersType}" />
-                    <select id="watersType" name="watersType" class="col-xs-12 col-sm-6"></select>
+                    <select id="watersType" name="watersType" class="col-xs-12 col-sm-8"></select>
                   </div>
                 </div>
               </div>
@@ -52,7 +60,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="netWater">净用水量</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="number" id="netWater" name="netWater" value="${item.netWater}" class="col-xs-12 col-sm-6">
+                    <input type="number" id="netWater" name="netWater" value="${item.netWater}" class="col-xs-12 col-sm-8">
                   </div>
                 </div>
               </div>
@@ -60,7 +68,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="sumWater">总用水量</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="number" id="sumWater" name="sumWater" value="${item.sumWater}" class="col-xs-12 col-sm-6">
+                    <input type="number" id="sumWater" name="sumWater" value="${item.sumWater}" class="col-xs-12 col-sm-8">
                   </div>
                 </div>
               </div>
@@ -68,7 +76,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="voltage">电池电压（伏特v）</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="number" id="voltage" name="voltage" value="${item.voltage}" class="col-xs-12 col-sm-6">
+                    <input type="number" id="voltage" name="voltage" value="${item.voltage}" class="col-xs-12 col-sm-8">
                   </div>
                 </div>
               </div>
@@ -76,7 +84,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="writeTime">抄表时间</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" id="writeTime" name="writeTime" value="${item.writeTime}" class="col-xs-12 col-sm-6 form_datetime">
+                    <input type="text" id="writeTime" name="writeTime" value="${item.writeTime}" class="col-xs-12 col-sm-8 form_datetime">
                   </div>
                 </div>
               </div>
@@ -101,6 +109,7 @@
   </div><!-- /.main-container-inner -->
 </div><!-- /.main-container -->
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
+<jsp:include page="/WEB-INF/view/common/search_cpyname.jsp" flush="true" />
 <script type="text/javascript">
   jQuery(function($) {
     var $validation = true;
@@ -109,11 +118,17 @@
       errorClass: 'help-block',
       focusInvalid: false,
       rules: {
+        companyName:{
+          required: true
+        },
         meterAddress:{
           required: true
         },
       },
       messages: {
+        companyName:{
+          required: "请输入单位名称"
+        },
         meterAddress:{
           required: "请输入表计地址"
         }

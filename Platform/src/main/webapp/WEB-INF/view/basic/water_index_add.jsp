@@ -27,18 +27,26 @@
             <form class="form-horizontal" id="validation-form" method="post">
               <input name="id" type="hidden" value="${id}"/>
               <div class="form-group" style="margin-top:15px;">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号:</label>
+                <%--<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号:</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
                     <input type="text" id="innerCode" name="innerCode" value="${item.innerCode}" class="col-xs-12 col-sm-6">
                   </div>
-                </div>
+                </div>--%>
+                  <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="companyName">单位名称</label>
+                  <div class="col-xs-12 col-sm-9 search">
+                    <div class="clearfix">
+                      <input type="text" id="companyName" name="companyName" value="${companyName}" class="col-xs-12 col-sm-8 cnwth" autocomplete="off" >
+                    </div>
+                    <div id="auto_div"></div>
+                    <input type="hidden" id="innerCode" name="innerCode" value="${item.innerCode}">
+                  </div>
               </div>
               <div class="form-group">
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="watersType">水源类型:</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <select id="watersType" name="watersType" class="col-xs-12 col-sm-6"></select>
+                    <select id="watersType" name="watersType" class="col-xs-12 col-sm-8"></select>
                     <input type="hidden" id="watersTypeInput" name="watersTypeInput" value="${item.watersType}">
                   </div>
                 </div>
@@ -47,7 +55,7 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterIndex">年用水指标(立方米):</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="number" id="waterIndex" name="waterIndex" value="${item.waterIndex}" class="col-xs-12 col-sm-6">
+                    <input type="number" id="waterIndex" name="waterIndex" value="${item.waterIndex}" class="col-xs-12 col-sm-8">
                   </div>
                 </div>
               </div>
@@ -143,6 +151,9 @@
       errorClass: 'help-block',
       focusInvalid: true,
       rules: {
+          companyName:{
+            required: true
+          },
           innerCode:{
             required: true
           },
@@ -154,6 +165,9 @@
           },
       },
       messages: {
+          companyName:{
+            required: "请输入单位名称"
+          },
           innerCode:{
             required: "请输入单位编号"
           },

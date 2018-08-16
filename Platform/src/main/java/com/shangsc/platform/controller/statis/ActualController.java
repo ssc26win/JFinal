@@ -31,16 +31,16 @@ import java.util.Set;
  */
 public class ActualController extends BaseController {
 
-    @RequiresPermissions(value={"/statis/actual"})
+    @RequiresPermissions(value = {"/statis/actual"})
     public void index() {
         render("actual_data.jsp");
     }
 
-    @RequiresPermissions(value={"/statis/actual"})
+    @RequiresPermissions(value = {"/statis/actual"})
     public void getListData() {
         ActualData.me.setGlobalInnerCode(getInnerCode());
-        String keyword=this.getPara("name");
-        String status=this.getPara("status", "-1");
+        String keyword = this.getPara("name");
+        String status = this.getPara("status", "-1");
         Page<ActualData> pageInfo = new Page<>();
         int exceptionTime = 24;
         Map<String, Object> dictMap = DictData.dao.getDictMap(null, DictCode.ACTUAL_EXCEPTION_TIME_OUT);
@@ -98,23 +98,32 @@ public class ActualController extends BaseController {
     /**
      * 实时数据接口
      */
-    @RequiresPermissions(value={"/statis/actual"})
+    @RequiresPermissions(value = {"/statis/actual"})
     public void add() {
         Integer id = this.getParaToInt("id");
-        if(id!=null){
+        String innerCode = "";
+        if (id != null) {
             ActualData byId = ActualData.me.findById(id);
             this.setAttr("item", byId);
+            innerCode = byId.getInnerCode();
         }
         this.setAttr("id", id);
         Map<String, String> nameList = Company.me.loadNameList();
+        if (StringUtils.isNotEmpty(innerCode)) {
+            for (String cName : nameList.keySet()) {
+                if (innerCode.equals(nameList.get(cName))) {
+                    this.setAttr("companyName", cName);
+                }
+            }
+        }
         Set<String> names = nameList.keySet();
         this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
         this.setAttr("names", JSONUtils.toJSONString(names));
         render("actual_add.jsp");
     }
 
-    @RequiresPermissions(value={"/statis/actual"})
-    public void save(){
+    @RequiresPermissions(value = {"/statis/actual"})
+    public void save() {
         Long id = this.getParaToLong("id");
         String innerCode = this.getPara("innerCode");
         String meter_address = this.getPara("meterAddress");
@@ -140,8 +149,8 @@ public class ActualController extends BaseController {
         this.renderJson(result);
     }
 
-    @RequiresPermissions(value={"/basic/actual"})
-    public void delete(){
+    @RequiresPermissions(value = {"/basic/actual"})
+    public void delete() {
         String ids = this.getPara("ids");
         InvokeResult result = ActualData.me.deleteData(ids);
         this.renderJson(result);

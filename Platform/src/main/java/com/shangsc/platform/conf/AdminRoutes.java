@@ -50,9 +50,9 @@ public class AdminRoutes extends Routes {
         add("/basic/well", WellController.class, "/WEB-INF/view/basic");
         add("/basic/waterindex", WaterIndexController.class, "/WEB-INF/view/basic");
 
-        add("/basic/ad", AdController.class, "/WEB-INF/view/basic");
-        add("/basic/msg", MessageController.class, "/WEB-INF/view/basic");
-        add("/basic/law", LawRecordsController.class, "/WEB-INF/view/basic");
+        add("/basic/ad", AdController.class, "/WEB-INF/view/msgs");
+        add("/basic/msg", MessageController.class, "/WEB-INF/view/msgs");
+        add("/basic/law", LawRecordsController.class, "/WEB-INF/view/msgs");
 
         add("/statis/actual", ActualController.class, "/WEB-INF/view/statis");
         add("/statis/actuallog", ActuallogController.class, "/WEB-INF/view/statis");

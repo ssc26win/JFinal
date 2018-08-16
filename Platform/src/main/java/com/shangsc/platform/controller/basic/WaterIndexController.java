@@ -41,35 +41,45 @@ public class WaterIndexController extends BaseController {
         render("water_index.jsp");
     }
 
-    @RequiresPermissions(value={"/basic/waterindex"})
+    @RequiresPermissions(value = {"/basic/waterindex"})
     public void getListData() {
-        String keyword=this.getPara("name");
+        String keyword = this.getPara("name");
         Page<WaterIndex> pageInfo = WaterIndex.me.getWaterIndexPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<WaterIndex> list = pageInfo.getList();
         setVoProp(list);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
-    @RequiresPermissions(value={"/basic/waterindex"})
+    @RequiresPermissions(value = {"/basic/waterindex"})
     public void add() {
         Integer id = this.getParaToInt("id");
-        if(id!=null){
-            this.setAttr("item", WaterIndex.me.findById(id));
+        String innerCode = "";
+        if (id != null) {
+            WaterIndex byId = WaterIndex.me.findById(id);
+            this.setAttr("item", byId);
+            innerCode = byId.getInnerCode();
         }
         this.setAttr("id", id);
         Map<String, String> nameList = Company.me.loadNameList();
+        if (StringUtils.isNotEmpty(innerCode)) {
+            for (String cName : nameList.keySet()) {
+                if (innerCode.equals(nameList.get(cName))) {
+                    this.setAttr("companyName", cName);
+                }
+            }
+        }
         Set<String> names = nameList.keySet();
         this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
         this.setAttr("names", JSONUtils.toJSONString(names));
         render("water_index_add.jsp");
     }
 
-    @RequiresPermissions(value={"/basic/waterindex"})
-    public void save(){
+    @RequiresPermissions(value = {"/basic/waterindex"})
+    public void save() {
         Long id = this.getParaToLong("id");
         String innerCode = StringUtils.trim(this.getPara("innerCode"));
         Integer watersType = this.getParaToInt("watersType");
-        BigDecimal waterIndex =  CodeNumUtil.getBigDecimal(this.getPara("waterIndex"), 2);
+        BigDecimal waterIndex = CodeNumUtil.getBigDecimal(this.getPara("waterIndex"), 2);
         BigDecimal january = CodeNumUtil.getBigDecimal(this.getPara("january"), 2);
         BigDecimal february = CodeNumUtil.getBigDecimal(this.getPara("february"), 2);
         BigDecimal march = CodeNumUtil.getBigDecimal(this.getPara("march"), 2);
@@ -104,8 +114,8 @@ public class WaterIndexController extends BaseController {
         this.renderJson(result);
     }
 
-    @RequiresPermissions(value={"/basic/waterindex"})
-    public void delete(){
+    @RequiresPermissions(value = {"/basic/waterindex"})
+    public void delete() {
         String ids = this.getPara("ids");
         InvokeResult result = WaterIndex.me.deleteData(ids);
         this.renderJson(result);
@@ -113,7 +123,7 @@ public class WaterIndexController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/waterindex"})
     public void export() {
-        String keyword=this.getPara("name");
+        String keyword = this.getPara("name");
         Page<WaterIndex> pageInfo = WaterIndex.me.getWaterIndexPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
         List<WaterIndex> list = pageInfo.getList();
         setVoProp(list);
@@ -122,7 +132,7 @@ public class WaterIndexController extends BaseController {
         renderFile(new File(path));
     }
 
-    @RequiresPermissions(value={"/basic/waterindex"})
+    @RequiresPermissions(value = {"/basic/waterindex"})
     public void importPage() {
         this.setAttr("uploadUrl", "waterindex");
         render("import_data.jsp");
@@ -135,14 +145,14 @@ public class WaterIndexController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/waterindex"})
     public void uploadImportData() {
-        String dataStr= DateUtils.format(new Date(), "yyyyMMddHHmm");
+        String dataStr = DateUtils.format(new Date(), "yyyyMMddHHmm");
         List<UploadFile> flist = this.getFiles("/temp", 1024 * 1024 * 50);
-        Map<String,Object> data= Maps.newHashMap();
-        if(flist.size()>0){
-            UploadFile uf=flist.get(0);
-            String status_url= PropKit.get("uploadWaterIndexPath");
-            String fileUrl=dataStr+"/"+uf.getFileName();
-            String newFile=status_url+fileUrl;
+        Map<String, Object> data = Maps.newHashMap();
+        if (flist.size() > 0) {
+            UploadFile uf = flist.get(0);
+            String status_url = PropKit.get("uploadWaterIndexPath");
+            String fileUrl = dataStr + "/" + uf.getFileName();
+            String newFile = status_url + fileUrl;
             FileUtils.mkdir(newFile, false);
             FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);
             data.put("fileName", uf.getFileName());

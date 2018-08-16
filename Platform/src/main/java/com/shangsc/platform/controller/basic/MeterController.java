@@ -123,11 +123,21 @@ public class MeterController extends BaseController {
     @RequiresPermissions(value = {"/basic/meter"})
     public void add() {
         Integer id = this.getParaToInt("id");
+        String innerCode = "";
         if (id != null) {
-            this.setAttr("item", WaterMeter.me.findById(id));
+            WaterMeter byId = WaterMeter.me.findById(id);
+            this.setAttr("item", byId);
+            innerCode = byId.getInnerCode();
         }
         this.setAttr("id", id);
         Map<String, String> nameList = Company.me.loadNameList();
+        if (StringUtils.isNotEmpty(innerCode)) {
+            for (String cName : nameList.keySet()) {
+                if (innerCode.equals(nameList.get(cName))) {
+                    this.setAttr("companyName", cName);
+                }
+            }
+        }
         Set<String> names = nameList.keySet();
         this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
         this.setAttr("names", JSONUtils.toJSONString(names));

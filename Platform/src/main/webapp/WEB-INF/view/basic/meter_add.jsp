@@ -27,26 +27,26 @@
                         <form class="form-horizontal" id="validation-form" method="post">
                             <input name="id" type="hidden" value="${id}"/>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号</label>
+                                <%--<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
                                         <input type="text" id="innerCode" name="innerCode" value="${item.innerCode}" class="col-xs-12 col-sm-6">
                                     </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lineNum">路别</label>
-                                <div class="col-xs-12 col-sm-9">
+                                </div>--%>
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="companyName">单位名称</label>
+                                <div class="col-xs-12 col-sm-9 search">
                                     <div class="clearfix">
-                                        <input type="text" id="lineNum" name="lineNum" value="${item.lineNum}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="companyName" name="companyName" value="${companyName}" class="col-xs-12 col-sm-8 cnwth" autocomplete="off" >
                                     </div>
+                                    <div id="auto_div"></div>
+                                    <input type="hidden" id="innerCode" name="innerCode" value="${item.innerCode}">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterNum">水表表号</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="meterNum" name="meterNum" value="${item.meterNum}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="meterNum" name="meterNum" value="${item.meterNum}" class="col-xs-12 col-sm-8">
                                     </div>
                                 </div>
                             </div>
@@ -54,7 +54,15 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterAddress">表记地址</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="meterAddress" name="meterAddress" value="${item.meterAddress}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="meterAddress" name="meterAddress" value="${item.meterAddress}" class="col-xs-12 col-sm-8">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="lineNum">水表路别</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="text" id="lineNum" name="lineNum" value="${item.lineNum}" class="col-xs-12 col-sm-8">
                                     </div>
                                 </div>
                             </div>
@@ -62,7 +70,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="times">读数倍数</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="number" id="times" name="times" value="${item.times}" class="col-xs-12 col-sm-6">
+                                        <input type="number" id="times" name="times" value="${item.times}" class="col-xs-12 col-sm-8">
                                     </div>
                                 </div>
                             </div>
@@ -71,7 +79,7 @@
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
                                         <input type="hidden" id="watersTypeInput" name="watersTypeInput" value="${item.watersType}" />
-                                        <select id="watersType" name="watersType" class="col-xs-12 col-sm-6"></select>
+                                        <select id="watersType" name="watersType" class="col-xs-12 col-sm-8"></select>
                                     </div>
                                 </div>
                             </div>
@@ -79,7 +87,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterAttr">水表属性</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="meterAttr"  name="meterAttr" value="${item.meterAttr}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="meterAttr"  name="meterAttr" value="${item.meterAttr}" class="col-xs-12 col-sm-8">
                                     </div>
                                 </div>
                             </div>
@@ -88,7 +96,7 @@
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
                                         <input type="hidden" id="chargeTypeInput" name="chargeTypeInput" value="${item.chargeType}" />
-                                        <select id="chargeType" name="chargeType" value="${item.chargeType}" class="col-xs-12 col-sm-6" ></select>
+                                        <select id="chargeType" name="chargeType" value="${item.chargeType}" class="col-xs-12 col-sm-8" ></select>
                                     </div>
                                 </div>
                             </div>
@@ -96,7 +104,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="billingCycle">计费周期</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="billingCycle" name="billingCycle" value="${item.billingCycle}" class="col-xs-12 col-sm-6">
+                                        <input type="text" id="billingCycle" name="billingCycle" value="${item.billingCycle}" class="col-xs-12 col-sm-8">
                                     </div>
                                 </div>
                             </div>
@@ -104,7 +112,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="registDate">注册日期</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="registDate" name="registDate" value="${item.registDate}" class="col-xs-12 col-sm-6 form_datetime">
+                                        <input type="text" id="registDate" name="registDate" value="${item.registDate}" class="col-xs-12 col-sm-8 form_datetime">
                                     </div>
                                 </div>
                             </div>
@@ -140,6 +148,9 @@
             errorClass: 'help-block',
             focusInvalid: true,
             rules: {
+                companyName:{
+                    required: true
+                },
                 innerCode:{
                     required: true
                 },
@@ -151,6 +162,9 @@
                 },
             },
             messages: {
+                companyName:{
+                    required: "请输入单位名称"
+                },
                 innerCode:{
                     required: "请输入单位编号"
                 },

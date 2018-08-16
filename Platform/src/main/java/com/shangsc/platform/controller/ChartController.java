@@ -282,9 +282,11 @@ public class ChartController extends BaseController {
     @RequiresPermissions(value = {"/chart"})
     public void getNewsMsg() {
         Ad ad = Ad.dao.findFirst("select * from t_ad where status=1");
-        JSONObject obj = new JSONObject();
-        obj.put("title", ad.getTitle());
-        obj.put("content", ad.getContent());
-        this.renderJson(obj);
+        if (ad != null) {
+            JSONObject obj = new JSONObject();
+            obj.put("title", ad.getTitle());
+            obj.put("content", ad.getContent());
+            this.renderJson(obj);
+        }
     }
 }
