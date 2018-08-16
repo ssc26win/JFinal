@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -13,7 +14,8 @@ import java.math.BigDecimal;
  * @Date 2018/4/23 17:30
  * @Desc 用途：
  */
-public class TcpConvertUtil {
+public class TcpConvertUtil implements Serializable {
+    private static final long serialVersionUID = -8522245588226692136L;
 
     public static final Logger logger = LoggerFactory.getLogger(TcpConvertUtil.class);
 

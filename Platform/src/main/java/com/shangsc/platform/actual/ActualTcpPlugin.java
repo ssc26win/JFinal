@@ -6,12 +6,16 @@ import com.shangsc.platform.actual.tcp.TcpServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
+
 /**
  * @Author ssc
  * @Date 2017/9/8 14:28
  * @Desc 用途：
  */
-public class ActualTcpPlugin implements IPlugin {
+public class ActualTcpPlugin implements IPlugin, Serializable {
+
+    private static final long serialVersionUID = 8019538719754921547L;
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 

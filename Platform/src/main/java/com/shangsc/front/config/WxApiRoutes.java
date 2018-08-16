@@ -29,9 +29,9 @@ public class WxApiRoutes extends Routes {
 
     @Override
     public void config() {
-        add("/app/log", LoginController.class);
-        add("/app/msg", MsgController.class);
-        add("/app/law", LawRecordController.class);
+        add("/wxapp/log", LoginController.class);
+        add("/wxapp/msg", MsgController.class);
+        add("/wxapp/law", LawRecordController.class);
     }
 
 }

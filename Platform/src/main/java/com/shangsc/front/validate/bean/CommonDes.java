@@ -1,9 +1,9 @@
-package com.shangsc.front.wxapp.validate.bean;
+package com.shangsc.front.validate.bean;
 
-import com.shangsc.front.wxapp.util.JsonUtil;
-import com.shangsc.front.wxapp.validate.error.BasicErrorCode;
-import com.shangsc.front.wxapp.validate.exception.BaseException;
-import com.shangsc.front.wxapp.validate.exception.UnknownException;
+import com.shangsc.front.util.JsonUtil;
+import com.shangsc.front.validate.error.BasicErrorCode;
+import com.shangsc.front.validate.exception.BaseException;
+import com.shangsc.front.validate.exception.UnknownException;
 
 import java.io.Serializable;
 

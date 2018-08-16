@@ -1,4 +1,4 @@
-package com.shangsc.front.wxapp.util;
+package com.shangsc.front.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -17,9 +17,6 @@ import java.util.Map;
  * @Desc 用途：
  */
 public final class JsonUtil {
-
-    //log print
-    Logger logger = LoggerFactory.getLogger(JsonUtil.class);
 
     // Thread safe
     private static ObjectMapper mapper = new ObjectMapper();

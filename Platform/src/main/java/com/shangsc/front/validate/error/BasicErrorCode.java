@@ -1,4 +1,4 @@
-package com.shangsc.front.wxapp.validate.error;
+package com.shangsc.front.validate.error;
 
 import java.util.Map;
 import java.util.TreeMap;

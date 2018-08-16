@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,9 @@ import java.util.List;
  * @Date 2018/4/23 17:31
  * @Desc 用途：
  */
-public class UdpConvertUtil {
+public class UdpConvertUtil implements Serializable {
+
+    private static final long serialVersionUID = 3707926429576259646L;
 
     private static final Logger logger = LoggerFactory.getLogger(UdpConvertUtil.class);
 

@@ -11,6 +11,7 @@ import org.jboss.netty.channel.socket.nio.NioDatagramChannelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 
 /**
@@ -19,7 +20,9 @@ import java.net.InetSocketAddress;
  * @Version 1.0.0
  * @Desc
  */
-public class UdpServer {
+public class UdpServer implements Serializable {
+
+    private static final long serialVersionUID = -5983524691463968149L;
 
     private ConnectionlessBootstrap udpBootstrap;
 

@@ -9,6 +9,7 @@ import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
@@ -19,7 +20,9 @@ import java.util.concurrent.Executors;
  * @Version 1.0.0
  * @Desc
  */
-public class TcpServer {
+public class TcpServer implements Serializable {
+
+    private static final long serialVersionUID = 5133891152236489986L;
 
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 

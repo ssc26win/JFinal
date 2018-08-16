@@ -1,6 +1,6 @@
-package com.shangsc.front.wxapp.validate.bean;
+package com.shangsc.front.validate.bean;
 
-import com.shangsc.front.wxapp.util.JsonUtil;
+import com.shangsc.front.util.JsonUtil;
 
 /**
  * @Author ssc

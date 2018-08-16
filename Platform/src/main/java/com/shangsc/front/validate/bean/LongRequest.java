@@ -1,4 +1,4 @@
-package com.shangsc.front.wxapp.validate.bean;
+package com.shangsc.front.validate.bean;
 
 import javax.validation.constraints.Min;
 

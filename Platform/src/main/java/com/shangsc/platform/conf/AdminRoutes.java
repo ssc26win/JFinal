@@ -20,7 +20,10 @@ import com.shangsc.platform.controller.ChartController;
 import com.shangsc.platform.controller.ImageController;
 import com.shangsc.platform.controller.IndexController;
 import com.shangsc.platform.controller.app.AppVersionController;
+import com.shangsc.platform.controller.app.LawRecordsController;
 import com.shangsc.platform.controller.basic.*;
+import com.shangsc.platform.controller.msgs.AdController;
+import com.shangsc.platform.controller.msgs.MessageController;
 import com.shangsc.platform.controller.statis.*;
 import com.shangsc.platform.controller.sys.*;
 
@@ -48,6 +51,8 @@ public class AdminRoutes extends Routes {
         add("/basic/waterindex", WaterIndexController.class, "/WEB-INF/view/basic");
 
         add("/basic/ad", AdController.class, "/WEB-INF/view/basic");
+        add("/basic/msg", MessageController.class, "/WEB-INF/view/basic");
+        add("/basic/law", LawRecordsController.class, "/WEB-INF/view/basic");
 
         add("/statis/actual", ActualController.class, "/WEB-INF/view/statis");
         add("/statis/actuallog", ActuallogController.class, "/WEB-INF/view/statis");

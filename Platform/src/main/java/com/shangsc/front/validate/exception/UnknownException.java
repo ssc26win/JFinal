@@ -1,7 +1,7 @@
-package com.shangsc.front.wxapp.validate.exception;
+package com.shangsc.front.validate.exception;
 
-import com.shangsc.front.wxapp.validate.error.BasicErrorCode;
-import com.shangsc.front.wxapp.validate.error.ErrorCode;
+import com.shangsc.front.validate.error.BasicErrorCode;
+import com.shangsc.front.validate.error.ErrorCode;
 
 /**
  * @Author ssc

@@ -4,13 +4,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
+
 /**
  * @Author ssc
  * @Date 2017/9/9 18:48
  * @Version 1.0.0
  * @Desc
  */
-public class ConversionUtil {
+public class ConversionUtil implements Serializable {
+
+    private static final long serialVersionUID = 3317925812253374406L;
 
     public static final Logger logger = LoggerFactory.getLogger(ConversionUtil.class);
 
