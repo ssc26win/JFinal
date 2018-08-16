@@ -26,7 +26,7 @@ public class LoginController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     public void doLogin() {
-        
+
         renderJson(JsonUtil.obj2Json(new CommonDes()));
     }
 }

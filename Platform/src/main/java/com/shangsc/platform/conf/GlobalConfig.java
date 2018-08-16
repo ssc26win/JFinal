@@ -41,11 +41,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Serializable;
 
 /**
  * API引导式配置
  */
-public class GlobalConfig extends JFinalConfig {
+public class GlobalConfig extends JFinalConfig implements Serializable {
+
+    private static final long serialVersionUID = 853477578384441419L;
 
     public static final int EXPORT_SUM = 65535; //excel office 2003 支持最大行数
 
