@@ -20,6 +20,8 @@ public class TcpConvertUtil implements Serializable {
     public static final Logger logger = LoggerFactory.getLogger(TcpConvertUtil.class);
 
     public static final String Tcp_startStr = "6809006800";
+    //public static final String Tcp_RESP_LOGIN = "00";
+    //public static final String Tcp_RESP_DATA = "4B";
     private static final String AFN = "00";
     private static final String SEQ = "60";
     private static final String FN = "01";
@@ -30,7 +32,7 @@ public class TcpConvertUtil implements Serializable {
     public static String tcpLoginResp(String result, String type) {
         String meterAddress = result.substring(10, 20);
         String middle = meterAddress + AFN + SEQ + FN;
-        String chkStr = getTcpCheckStr(to2StrArray(middle));
+        String chkStr = getTcpCheckStr(to2StrArray(middle)).toUpperCase();
         logger.info(type + " check code : " + middle + " return : " + chkStr);
         String resp = Tcp_startStr + middle + chkStr + END;
         logger.info(type + " resp result : " + resp);
@@ -92,11 +94,21 @@ public class TcpConvertUtil implements Serializable {
         String respData = tcpStupidBCD(sumNumStr);
         String pointData = getTcpPointNum(result);
         BigDecimal all = CodeNumUtil.getBigDecimal(respData + "." + pointData, 2);
+        if (result.length() == TcpData.upload_data_length_2) {
+            all = all.multiply(new BigDecimal(100));
+        }
         return all;
     }
 
     public static String getTcpPointNum(String result) {
-        String upload_data = result.substring(26, 26 + 64);
+        String upload_data = "";
+        if (result.length() == TcpData.upload_data_length_1) {
+            upload_data = result.substring(26, 26 + 64);
+        } else if (result.length() == TcpData.upload_data_length_2) {
+            upload_data = result.substring(26 + 12, 26 + 12 + 64);
+        } else {
+            logger.warn("getTcpSumNum() 未知类型 result={}", result);
+        }
         String pointNumStr = upload_data.substring(24, 32);
         return tcpStupidBCD(pointNumStr);
     }
@@ -175,9 +187,29 @@ public class TcpConvertUtil implements Serializable {
             "5B000000009C0200000000" +
             "000000000000000000000000000000CB2900E316";
 
+
+    public static final String upload_data_1 = "682D0068CA17071600070D7004489EC75970FF030000000000000000A737000847C859280B0400000000000000008736004016";
+
+    public static final String upload_data_2 = "682F0068CA18061500180D7007239178563412046D735B00000000DB2400000000000000000000000000000000000000B629007E16";
+
+
     public static void main(String[] args) {
         System.out.println(aa);
-        System.out.println(getTcpMultRecordSumWater(aa));
+       // System.out.println(getTcpMultRecordSumWater(aa));
+        //receiveDataResp(aa);
+
+        tcpLoginResp(upload_data_1, "login");
+        //
+        //tcpLoginResp(upload_data_2, "login");
+
+        getTcpMultChkStr(aa);
+
+
+        System.out.println(bb);
+
+        getTcpMultChkStr(bb);
+
+        System.out.println(getTcpSumNum("682F0068CA18061500150D700723917856341204BEAE3800000000603A000000000000000000000000000000000000002F2A00F916"));
 
     }
 

@@ -67,8 +67,9 @@ public class TcpServerHandler extends SimpleChannelHandler {
         log("TCP ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
 
         if (StringUtils.isNotEmpty(result) && result.startsWith(ActualType.TCP_PRFIX) && result.endsWith(ActualType.TCP_SUFFIX)) {
+            String response = "";
             if (TcpData.login_data_length == result.length()) {
-                String response = TcpConvertUtil.tcpLoginResp(result, "login");
+                response = TcpConvertUtil.tcpLoginResp(result, "login");
                 buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
                 e.getChannel().write(buffer);
             }
@@ -81,17 +82,18 @@ public class TcpServerHandler extends SimpleChannelHandler {
             //}
             if (result.length() == TcpData.upload_data_length_1 || result.length() == TcpData.upload_data_length_2) {
                 recordMsg(result);
+            } else if (result.length() == TcpData.upload_data_length_1 || result.length() == TcpData.upload_data_length_2) {
+                //recordMsg(result);
                 recordDB(result, false, clientIP);
-                String response = TcpConvertUtil.receiveDataResp(result);
-                buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
-                e.getChannel().write(buffer);
-            }
-            if (result.length() > TcpData.upload_data_length_1 || result.length() > TcpData.upload_data_length_2) {
-                recordMsg(result);
+                response = TcpConvertUtil.receiveDataResp(result);
+                ChannelBuffer channelBuffer = ChannelBuffers.copiedBuffer(ConversionUtil.hexString2Bytes(response));
+                e.getChannel().write(channelBuffer);
+            } else if (result.length() > TcpData.upload_data_length_1 || result.length() > TcpData.upload_data_length_2) {
+                //recordMsg(result);
                 recordDB(result, true, clientIP);
-                String response = TcpConvertUtil.getTcpMultChkStr(result);
-                buffer.setBytes(0, ConversionUtil.hexString2Bytes(response));
-                e.getChannel().write(buffer);
+                response = TcpConvertUtil.getTcpMultChkStr(result);
+                ChannelBuffer channelBuffer = ChannelBuffers.copiedBuffer(ConversionUtil.hexString2Bytes(response));
+                e.getChannel().write(channelBuffer);
             }
             // e.getChannel().close();
         }
