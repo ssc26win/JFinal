@@ -70,7 +70,7 @@ public class UdpEventHandler extends SimpleChannelUpstreamHandler {
         //e.getChannel().write(e.getMessage());
         if (StringUtils.isNotEmpty(chkStr) && chkStr.indexOf(ActualType.UDP_PRFIX) >= 0) {
 
-            recordMsg(result);
+            //recordMsg(result);
 
             recordDB(result, clientIP);
         }
