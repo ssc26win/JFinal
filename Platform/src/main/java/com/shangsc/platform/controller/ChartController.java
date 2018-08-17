@@ -25,6 +25,7 @@ public class ChartController extends Controller {
     private static final BigDecimal THRESHOLD = new BigDecimal("2");
 
     private AtomicInteger count = new AtomicInteger(0);
+
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
     public void company() {
@@ -39,7 +40,7 @@ public class ChartController extends Controller {
         if (CollectionUtils.isNotEmpty(warnOrExceptionCompanies)) {
             warnOrExceptionCount = warnOrExceptionCompanies.size();
         }
-        int normalTotal = total-warnOrExceptionCount-supplyCount;
+        int normalTotal = total - warnOrExceptionCount - supplyCount;
 
         object.put("warnTotal", warnOrExceptionCount); //预警总数
 
@@ -47,7 +48,7 @@ public class ChartController extends Controller {
 
         object.put("supplyTotal", supplyCount);
 
-        int month = new Date().getMonth()+1;
+        int month = new Date().getMonth() + 1;
 
         if (CodeNumUtil.isOdd(month)) {
             object.put("warnTitle", "预警");
@@ -56,6 +57,7 @@ public class ChartController extends Controller {
         }
         this.renderJson(object.toJSONString());
     }
+
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
     public void index() {
@@ -64,14 +66,32 @@ public class ChartController extends Controller {
         int total = waterMeters.size();
         object.put("total", total);
         // 异常水表数量24小时之内都会接收到数据 否则就异常
+        List<Record> normalMeter = ActualData.me.getNormalMeter();
+        Set<String> normalMeterSets = new HashSet<>();
+        for (Record record : normalMeter) {
+            String meter_address = record.getStr("meter_address");
+            if (StringUtils.isNotEmpty(meter_address)) {
+                normalMeterSets.add(meter_address);
+            }
+        }
         int normalTotal = ActualData.me.getNormalMeter().size();//正常水表
-        int stopTotal = ActualData.me.getStopMeter().size();//停用水表
+
+        List<Record> stopMeter = ActualData.me.getStopMeter();
+        Set<String> stopMeterSets = new HashSet<>();
+        for (Record record : stopMeter) {
+            String meter_address = record.getStr("meter_address");
+            if (StringUtils.isNotEmpty(meter_address) && !normalMeterSets.contains(meter_address)) {
+                stopMeterSets.add(meter_address);
+            }
+        }
+        int stopTotal = stopMeterSets.size();//停用水表
+
         int disableTotal = ActualData.me.getDisableMeter().size();//未启用水表
 
         object.put("normalTotal", normalTotal);
         object.put("stopTotal", stopTotal);
         object.put("disableTotal", disableTotal);
-        object.put("exptionTotal", total-normalTotal-stopTotal-disableTotal);//异常水表
+        object.put("exptionTotal", total - normalTotal - stopTotal - disableTotal);//异常水表
 
         this.renderJson(object.toJSONString());
     }
@@ -142,9 +162,9 @@ public class ChartController extends Controller {
         }
         // 正常用水单位
         int normalTotal = Company.me.hasActual();
-        object.put("normalTotal", normalTotal-count.get());
+        object.put("normalTotal", normalTotal - count.get());
         object.put("warnTotal", count); //预警总数
-        object.put("otherTotal", total-normalTotal);
+        object.put("otherTotal", total - normalTotal);
         object.put("supplyTotal", Company.me.getSupplyCompanyCount());
         this.renderJson(object.toJSONString());
     }
@@ -158,7 +178,7 @@ public class ChartController extends Controller {
         List<String> day = new ArrayList<String>();
         for (Record record : records) {
             sumWater.add(record.get("sumWater"));
-            day.add( record.get("DAY").toString());
+            day.add(record.get("DAY").toString());
         }
         obj.put("sumWater", sumWater);
         obj.put("day", day);
@@ -174,7 +194,7 @@ public class ChartController extends Controller {
         List<String> month = new ArrayList<String>();
         for (Record record : records) {
             sumWater.add(record.get("sumWater"));
-            month.add( record.get("month").toString());
+            month.add(record.get("month").toString());
         }
         obj.put("sumWater", sumWater);
         obj.put("month", month);
@@ -190,7 +210,7 @@ public class ChartController extends Controller {
         List<String> day = new ArrayList<String>();
         for (Record record : records) {
             sumWater.add(record.get("sumWater"));
-            day.add( record.get("DAY").toString());
+            day.add(record.get("DAY").toString());
         }
         obj.put("sumWater", sumWater);
         obj.put("day", day);
@@ -206,7 +226,7 @@ public class ChartController extends Controller {
         List<String> day = new ArrayList<String>();
         for (Record record : records) {
             sumWater.add(record.get("sumWater"));
-            day.add( record.get("month").toString());
+            day.add(record.get("month").toString());
         }
         obj.put("sumWater", sumWater);
         obj.put("month", day);
@@ -214,7 +234,7 @@ public class ChartController extends Controller {
     }
 
     @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value={"/chart"})
+    @RequiresPermissions(value = {"/chart"})
     public void baiduMap() {
         List<Record> records = new ArrayList<>();
         JSONArray array = new JSONArray();
@@ -228,8 +248,8 @@ public class ChartController extends Controller {
         }
         Date date = new Date();
         Set<String> warnCodes = Company.me.getWarnExceptionInnerCode(date);
-        int month = new Date().getMonth()+1;
-        for (Record record:records) {
+        int month = new Date().getMonth() + 1;
+        for (Record record : records) {
             String innerCode = record.get("inner_code").toString();
             JSONObject object = new JSONObject();
             object.put("longitude", record.get("longitude"));
@@ -244,7 +264,7 @@ public class ChartController extends Controller {
                 }
             }
             object.put("name", record.get("name"));
-            if (record.get("waterUseNum")!=null) {
+            if (record.get("waterUseNum") != null) {
                 object.put("waterUseNum", record.get("waterUseNum"));
             } else {
                 object.put("waterUseNum", 0);
