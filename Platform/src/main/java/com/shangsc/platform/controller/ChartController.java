@@ -14,10 +14,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -69,8 +66,24 @@ public class ChartController extends BaseController {
         int total = waterMeters.size();
         object.put("total", total);
         // 异常水表数量24小时之内都会接收到数据 否则就异常
+        List<Record> normalMeter = ActualData.me.getNormalMeter();
+        Set<String> normalMeterSets = new HashSet<>();
+        for (Record record : normalMeter) {
+            String meter_address = record.getStr("meter_address");
+            if (StringUtils.isNotEmpty(meter_address)) {
+                normalMeterSets.add(meter_address);
+            }
+        }
         int normalTotal = ActualData.me.getNormalMeter().size();//正常水表
-        int stopTotal = ActualData.me.getStopMeter().size();//停用水表
+        List<Record> stopMeter = ActualData.me.getStopMeter();
+        Set<String> stopMeterSets = new HashSet<>();
+        for (Record record : stopMeter) {
+            String meter_address = record.getStr("meter_address");
+            if (StringUtils.isNotEmpty(meter_address) && !normalMeterSets.contains(meter_address)) {
+                stopMeterSets.add(meter_address);
+            }
+        }
+        int stopTotal = stopMeterSets.size();//停用水表
         int disableTotal = ActualData.me.getDisableMeter().size();//未启用水表
 
         object.put("normalTotal", normalTotal);

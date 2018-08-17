@@ -27,8 +27,7 @@ import java.util.Map.Entry;
 public abstract class BaseModel<M extends Model<M>> extends Model<M> {
 	
 	private static final long serialVersionUID = -8686483734298113781L;
-	private Logger logger = Logger.getLogger(getClass());  
-	
+
 	public List<M> getAllList() {
 		Page<M> page= this.getPage(1, Integer.MAX_VALUE);
 		return page.getList();

@@ -602,6 +602,8 @@ public class ActualData extends BaseActualData<ActualData> {
 		String now = ToolDateTime.getDateStr(date);
 		String nowBefore = ToolDateTime.getYesterdayStr(date);
 		StringBuffer sqlExceptSelect = new StringBuffer("select t.* from t_actual_data t where 1=1");
+		//sqlExceptSelect.append(" and t.meter_address not in (select meter_address from t_actual_data t2 where 1=1 and t2.net_water > 0" +
+		//		" and t2.write_time >='" + nowBefore + "'" + " and t2.write_time <='" + now + "'" + " GROUP BY t2.meter_address" + ")");
 		sqlExceptSelect.append(" and t.net_water <= 0");
 		sqlExceptSelect.append(" and t.write_time >='" + nowBefore + "'");
 		sqlExceptSelect.append(" and t.write_time <='" + now + "'");
