@@ -90,6 +90,9 @@ public class TcpConvertUtil {
         String respData = tcpStupidBCD(sumNumStr);
         String pointData = getTcpPointNum(result);
         BigDecimal all = CodeNumUtil.getBigDecimal(respData + "." + pointData, 2);
+        if (result.length() == TcpData.upload_data_length_2) {
+            all = all.multiply(new BigDecimal(100));
+        }
         return all;
     }
 
