@@ -9,7 +9,7 @@ C:\Users\Administrator.SUNNANNAN> mysql -uroot -proot yc_platform <D:\yc_platfor
 
 vim /etc/crontab
 
-每天1:30执行
+#每天1:30执行备份数据库
 
 0 2 * * * root /usr/local/mysql/mysqldb-backup/mysql_backup.sh
 
@@ -17,3 +17,12 @@ service crond restart
 
 
 mysql -uroot -proot yc_platform < /usr/local/mysql/mysqldb-backup/p_platform.dump
+
+
+
+#五分钟监控一次tomcat是否启动
+
+*/5 * * * * root /usr/local/tomcat7/monitor/tomcat_monitor_test.sh
+*/5 * * * * root /usr/local/tomcat7/monitor/tomcat_monitor_prod.sh
+
+service crond restart
