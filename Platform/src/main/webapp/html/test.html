@@ -1,0 +1,41 @@
+<script type="application/javascript">
+    $(window).keydown(function (event) {
+        if (window.event) {
+            var key = window.event.keyCode;
+            $("xx").addClass("xxx");
+        } else {
+            var key = event.which;
+        }
+        if (window.event.keyCode == 13) {
+            document.getElementById("Button").click();
+            return false;
+        }
+        if (key == 38) { /*向上按钮*/
+            index--;
+            if (index == 0) index = 4; //到顶了，
+        } else if (key == 40) {/*向下按钮*/
+            index++;
+            if (index == 5) index = 1; //到底了
+        }
+        var li = search_show.find("li:eq(" + index + ")");
+
+        li.css("background", "#E8F4FC").siblings().css("background", "");
+        type = li.attr("class");
+        document.onmousedown = function (event) {
+            if (key == 38) {//向上
+                $("xx").addClass("xxx");
+            }
+            if (key == 40) {//向下
+                $("xx").addClass("xxx");
+            }
+        }
+    });
+
+
+    $(".item").each(function(index, element) {
+        if($(this).hasClass("active")){
+            alert($(this).text());//当前激活item的内容
+        }
+    });
+
+</script>
