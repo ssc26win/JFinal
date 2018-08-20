@@ -16,9 +16,9 @@ StartTomcat=/usr/local/tomcat7/tomcat-test/bin/startup.sh
 WebUrl=http://47.94.196.59:8081/login
  
 # 日志输出
-GetPageInfo=/usr/local/tomcat7/monitor/logs/test_GetPageInfo.log
+GetPageInfo=/usr/local/tomcat7/monitor/logs/Test_GetPageInfo.log
 
-TomcatMonitorLog=/usr/local/tomcat7/monitor/logs/test_TomcatMonitor.log
+TomcatMonitorLog=/usr/local/tomcat7/monitor/logs/Test_TomcatMonitor.log
  
 Monitor()
 {

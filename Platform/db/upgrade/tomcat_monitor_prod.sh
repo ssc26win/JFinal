@@ -4,21 +4,21 @@
 # DEFINE
  
 # 获取tomcat PPID
-TomcatID=$(ps -ef |grep tomcat |grep -w 'tomcat-test'|grep -v 'grep'|awk '{print $2}')
+TomcatID=$(ps -ef |grep tomcat |grep -w 'apache-tomcat-7.0.52'|grep -v 'grep'|awk '{print $2}')
  
 # tomcat_startup
-StartTomcat=/usr/local/tomcat7/tomcat-test/bin/startup.sh
+StartTomcat=/usr/local/tomcat7/apache-tomcat-7.0.52/bin/startup.sh
  
  
-#TomcatCache=/usr/local/tomcat7/tomcat-test/
+#TomcatCache=/usr/local/tomcat7/apache-tomcat-7.0.52/
  
 # 定义要监控的页面地址
-WebUrl=http://47.94.196.59:8081/login
+WebUrl=http://47.94.196.59/login
  
 # 日志输出
-GetPageInfo=/usr/local/tomcat7/monitor/logs/test_GetPageInfo.log
+GetPageInfo=/usr/local/tomcat7/monitor/logs/Prod_GetPageInfo.log
 
-TomcatMonitorLog=/usr/local/tomcat7/monitor/logs/test_TomcatMonitor.log
+TomcatMonitorLog=/usr/local/tomcat7/monitor/logs/Prod_TomcatMonitor.log
  
 Monitor()
 {

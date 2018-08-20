@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3b34f371-a844-450d-ac85-bd2f1e2aa2e2" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/upgrade/tomcat_monitor_prod.sh" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/db/upgrade/tomcat_monitor_test.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/platform.iml" afterPath="$PROJECT_DIR$/platform.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/platform_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/platform_war_exploded.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/upgrade/系统升级说明.txt" afterPath="$PROJECT_DIR$/db/upgrade/系统升级说明.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/upgrade/tomcat_monitor_prod.sh" afterPath="$PROJECT_DIR$/db/upgrade/tomcat_monitor_prod.sh" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/db/upgrade/tomcat_monitor_test.sh" afterPath="$PROJECT_DIR$/db/upgrade/tomcat_monitor_test.sh" />
     </list>
     <ignored path="jcbase.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -90,7 +86,7 @@
         <entry file="file://$PROJECT_DIR$/db/upgrade/tomcat_monitor_test.sh">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
+              <caret line="23" column="1" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -99,8 +95,8 @@
       <file leaf-file-name="tomcat_monitor_prod.sh" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/db/upgrade/tomcat_monitor_prod.sh">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.45681062">
-              <caret line="25" column="23" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.58471763">
+              <caret line="32" column="42" selection-start-line="32" selection-start-column="24" selection-end-line="32" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -185,7 +181,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/basic/ad_index.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/basic/ad_add.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/com/shangsc/platform/controller/basic/AdController.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/statis/actual_data.jsp" />
@@ -236,6 +231,7 @@
         <option value="$PROJECT_DIR$/db/upgrade/tomcat_restart.sh" />
         <option value="$PROJECT_DIR$/db/upgrade/tomcat_monitor.sh" />
         <option value="$PROJECT_DIR$/db/upgrade/系统升级说明.txt" />
+        <option value="$PROJECT_DIR$/db/upgrade/tomcat_monitor_prod.sh" />
       </list>
     </option>
   </component>
@@ -1006,12 +1002,12 @@
       <workItem from="1534479137971" duration="4752000" />
       <workItem from="1534485203507" duration="7302000" />
       <workItem from="1534503154826" duration="713000" />
-      <workItem from="1534728581867" duration="4583000" />
+      <workItem from="1534728581867" duration="4865000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="108473000" />
+    <option name="totallyTimeSpent" value="108755000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="2578" height="1410" extended-state="6" />
@@ -1482,15 +1478,15 @@
     <entry file="file://$PROJECT_DIR$/db/upgrade/tomcat_monitor_test.sh">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
+          <caret line="23" column="1" selection-start-line="23" selection-start-column="1" selection-end-line="23" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/db/upgrade/tomcat_monitor_prod.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45681062">
-          <caret line="25" column="23" selection-start-line="25" selection-start-column="23" selection-end-line="25" selection-end-column="23" />
+        <state vertical-scroll-proportion="0.58471763">
+          <caret line="32" column="42" selection-start-line="32" selection-start-column="24" selection-end-line="32" selection-end-column="42" />
           <folding />
         </state>
       </provider>
