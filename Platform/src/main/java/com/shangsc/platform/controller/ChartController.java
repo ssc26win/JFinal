@@ -300,6 +300,8 @@ public class ChartController extends BaseController {
             obj.put("title", ad.getTitle());
             obj.put("content", ad.getContent());
             this.renderJson(obj);
+        } else {
+            renderJson(new Object());
         }
     }
 }

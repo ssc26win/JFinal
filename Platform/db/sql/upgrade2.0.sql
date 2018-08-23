@@ -61,11 +61,21 @@ CREATE TABLE `t_image` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='图片表';
 
+insert into `sys_res`(`name`, `seq`, `pid`, `type`, `iconCls`, `url`) values('App管理', 9, 0, 1, 'fa-android', '');
 insert into `sys_role_res`(`role_id`, `res_id`) values(1, 209);
-insert into `sys_res`(`name`, `seq`, `pid`, `type`, `iconCls`, `url`) values('App管理', 9, 0, 1, 'fa-android', '/app');
 
-
+insert into `sys_res`(`name`, `seq`, `pid`, `type`, `iconCls`, `url`) values('App版本', 1, 209, 1, 'fa-list', '/app');
 insert into `sys_role_res`(`role_id`, `res_id`) values(1, 210);
-insert into `sys_res`(`name`, `seq`, `pid`, `type`, `iconCls`, `url`) values('预警水表', 6, 0, 1, 'fa-alarm', '/alarm');
 
+insert into `sys_res`(`name`, `seq`, `pid`, `type`, `iconCls`, `url`) values('执法记录', 2, 209, 1, 'fa-list', '/app/law');
+insert into `sys_role_res`(`role_id`, `res_id`) values(1, 211);
+
+insert into `sys_res`(`name`, `seq`, `pid`, `type`, `iconCls`, `url`) values('消息管理', 10, 0, 1, 'fa-comments', '');
+insert into `sys_role_res`(`role_id`, `res_id`) values(1, 212);
+
+insert into `sys_res`(`name`, `seq`, `pid`, `type`, `iconCls`, `url`) values('发布消息', 1, 212, 1, 'fa-list', '/basic/msg');
+insert into `sys_role_res`(`role_id`, `res_id`) values(1, 213);
+
+update sys_res set pid=212 where id=205;
+update sys_res set seq=20 where id=1;
 

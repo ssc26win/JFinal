@@ -96,7 +96,7 @@
     });
 
     $("#grid-table").jqGrid({
-      url:'${context_path}/basic/ad/getListData',
+      url:'${context_path}/basic/msg/getListData',
       mtype: "GET",
       datatype: "json",
       colModel: [
@@ -104,7 +104,8 @@
         { label: '内容', name: 'content', width: 350, sortable:false},
         /*{ label: '图片地址', name: 'img_url', width: 100, sortable:false},*/
         { label: '发布状态', name: 'statusName', width: 100,sortable:false},
-        { label: '创建时间', name: 'create_time', width: 100, sortable:false}
+        { label: '创建时间', name: 'create_time', width: 100, sortable:false},
+        { label: '接收人', name: 'receiver', width: 350, sortable:false}
       ],
       viewrecords: true,
       height: 560,
@@ -138,12 +139,12 @@
     });
     $("#btn-add").click(function(){//添加页面
       parent.layer.open({
-        title:'添加广告',
+        title:'添加消息',
         type: 2,
         area: ['770px', '500px'],
         fix: false, //不固定
         maxmin: true,
-        content: '${context_path}/basic/ad/add'
+        content: '${context_path}/basic/msg/add'
       });
     });
     $("#btn-deleteData").click(function(){
@@ -166,12 +167,12 @@
         });
       }else {
         parent.layer.open({
-          title:'修改广告信息',
+          title:'修改消息',
           type: 2,
           area: ['770px', '500px'],
           fix: false, //不固定
           maxmin: true,
-          content: '${context_path}/basic/ad/add?id='+rid
+          content: '${context_path}/basic/msg/add?id='+rid
         });
       }
     });
@@ -236,7 +237,7 @@
       "ids" : getSelectedRows()
     };
     layer.confirm("确认删除记录？",function(){
-      $.post("${context_path}/basic/ad/delete", submitData,function(data) {
+      $.post("${context_path}/basic/msg/delete", submitData,function(data) {
         if (data.code == 0) {
           layer.msg("操作成功", {
             icon: 1,
@@ -265,7 +266,7 @@
       "id" : selectedIDs[0]
     };
     layer.confirm("确认发布记录？",function(){
-      $.post("${context_path}/basic/ad/publish", submitData,function(data) {
+      $.post("${context_path}/basic/msg/publish", submitData,function(data) {
         if (data.code == 0) {
           layer.msg("操作成功", {
             icon: 1,

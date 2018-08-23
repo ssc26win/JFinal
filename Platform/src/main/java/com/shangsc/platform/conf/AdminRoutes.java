@@ -43,6 +43,7 @@ public class AdminRoutes extends Routes {
         add("/sys/role", RoleController.class, "/WEB-INF/view/sys");
         add("/dict", DictController.class, "/WEB-INF/view/sys/dict");
         add("/app", AppVersionController.class, "/WEB-INF/view/app");
+        add("/app/law", LawRecordsController.class, "/WEB-INF/view/app");
         add("/image", ImageController.class, "/WEB-INF/view/image");
 
         add("/basic/company", CompanyController.class, "/WEB-INF/view/basic");
@@ -52,7 +53,6 @@ public class AdminRoutes extends Routes {
 
         add("/basic/ad", AdController.class, "/WEB-INF/view/msgs");
         add("/basic/msg", MessageController.class, "/WEB-INF/view/msgs");
-        add("/basic/law", LawRecordsController.class, "/WEB-INF/view/msgs");
 
         add("/statis/actual", ActualController.class, "/WEB-INF/view/statis");
         add("/statis/actuallog", ActuallogController.class, "/WEB-INF/view/statis");

@@ -34,6 +34,11 @@ public class _MappingKit {
 		arp.addMapping("t_water_index", "id", WaterIndex.class);
 		arp.addMapping("t_water_meter", "id", WaterMeter.class);
 		arp.addMapping("t_well", "id", Well.class);
+
+		arp.addMapping("t_law_record", "id", LawRecord.class);
+		arp.addMapping("t_message", "id", Message.class);
+		arp.addMapping("t_msg_receiver", "id", MsgReceiver.class);
+		arp.addMapping("t_image", "id", Image.class);
 	}
 }
 

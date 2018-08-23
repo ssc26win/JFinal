@@ -204,7 +204,7 @@
                     status:$("#status").val()
                 };
                 $btn.addClass("disabled");
-                $.post('/basic/ad/save', submitData,function(data) {
+                $.post('/basic/msg/save', submitData,function(data) {
                     $btn.removeClass("disabled");
                     if(data.code==0){
                         window.parent.reloadGrid(); //重新载入

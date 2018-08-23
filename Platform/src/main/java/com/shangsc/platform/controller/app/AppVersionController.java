@@ -22,7 +22,7 @@ public class AppVersionController extends BaseController {
     @RequiresPermissions(value = {"/app"})
     public void index() {
         this.setAttr("static_url", PropKit.get("static_url"));
-        render("index.jsp");
+        render("app_index.jsp");
     }
 
     @RequiresPermissions(value = {"/app"})

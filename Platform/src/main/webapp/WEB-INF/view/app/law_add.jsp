@@ -63,7 +63,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <%--<div class="form-group">
+                                                <div class="form-group">
                                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="file_upload">图片:</label>
                                                     <div class="col-xs-12 col-sm-9">
                                                         <div class="clearfix">
@@ -79,7 +79,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>--%>
+                                                </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="status">是否发布:</label>
 
@@ -200,11 +200,11 @@
                     id:"${item.id}",
                     title:$("#title").val(),
                     content: $("#content").val(),
-                    //imgUrl:$("#imgUrl").val(),
+                    imgUrl:$("#imgUrl").val(),
                     status:$("#status").val()
                 };
                 $btn.addClass("disabled");
-                $.post('/basic/ad/save', submitData,function(data) {
+                $.post('/app/law/save', submitData,function(data) {
                     $btn.removeClass("disabled");
                     if(data.code==0){
                         window.parent.reloadGrid(); //重新载入
