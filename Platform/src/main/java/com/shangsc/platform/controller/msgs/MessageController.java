@@ -11,7 +11,6 @@ import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.*;
 import com.shangsc.platform.core.view.InvokeResult;
-import com.shangsc.platform.model.Ad;
 import com.shangsc.platform.model.Message;
 import com.shangsc.platform.model.SysUser;
 
@@ -71,7 +70,7 @@ public class MessageController extends BaseController {
         String content = this.getPara("content");
         String imgUrl = this.getPara("imgUrl");
         Integer status = this.getParaToInt("status");
-        InvokeResult result = Ad.dao.save(id, title, content, imgUrl, status, sysUser.getName());
+        InvokeResult result = Message.dao.save(id, title, content, imgUrl, status, sysUser.getName(), new ArrayList<Long>());
         this.renderJson(result);
     }
 

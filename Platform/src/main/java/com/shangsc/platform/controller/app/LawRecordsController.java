@@ -11,9 +11,7 @@ import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.*;
 import com.shangsc.platform.core.view.InvokeResult;
-import com.shangsc.platform.model.Ad;
 import com.shangsc.platform.model.LawRecord;
-import com.shangsc.platform.model.Message;
 import com.shangsc.platform.model.SysUser;
 
 import java.io.File;

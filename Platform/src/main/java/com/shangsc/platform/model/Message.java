@@ -35,11 +35,11 @@ public class Message extends BaseMessage<Message> {
             }
             message.save();
         }
-        return com.shangsc.platform.core.view.InvokeResult.success();
+        return InvokeResult.success();
     }
 
     private void offPublishOther() {
-        Db.update("update t_ad set status=0 where 1=1");
+        Db.update("update t_message set status=0 where 1=1");
     }
 
     private Message setProp(Message message, String title, String content, String imgUrl, Integer status, String userName, List<Long> userIds) {

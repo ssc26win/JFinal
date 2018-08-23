@@ -16,6 +16,7 @@
 package com.shangsc.platform.model;
 
 import com.google.common.collect.Lists;
+import com.jfinal.kit.JsonKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -26,6 +27,7 @@ import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.MyDigestUtils;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.core.view.ZtreeView;
 import com.shangsc.platform.model.base.BaseSysUser;
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,7 +37,7 @@ import java.util.*;
 
 /**
  * @author ssc
- * 系统用户
+ *         系统用户
  */
 public class SysUser extends BaseSysUser<SysUser> {
     /**
@@ -61,11 +63,12 @@ public class SysUser extends BaseSysUser<SysUser> {
 
     /**
      * 用户登陆
-     * @author ssc
+     *
      * @param username
      * @param pwd
      * @return
      * @throws java.io.UnsupportedEncodingException
+     * @author ssc
      */
     public InvokeResult login(String username, String pwd, HttpServletResponse response, HttpSession session, String url) {
         Set<Condition> conditions = new HashSet<Condition>();
@@ -86,9 +89,10 @@ public class SysUser extends BaseSysUser<SysUser> {
 
     /**
      * 获取用户拥有的角色列表，最多查20个
-     * @author ssc
+     *
      * @param uid
      * @return
+     * @author ssc
      */
     public List<SysUser> getSysUserList(int uid) {
         return this.paginate(1, 20, "select *", "from sys_user ", uid).getList();
@@ -124,6 +128,7 @@ public class SysUser extends BaseSysUser<SysUser> {
 
     /**
      * 用户名是否已存在
+     *
      * @param name
      * @return
      */
@@ -136,6 +141,7 @@ public class SysUser extends BaseSysUser<SysUser> {
 
     /**
      * 手机号是否已存在
+     *
      * @param phone
      * @return
      */
@@ -148,6 +154,7 @@ public class SysUser extends BaseSysUser<SysUser> {
 
     /**
      * 邮箱是否已存在
+     *
      * @param email
      * @return
      */
@@ -206,6 +213,7 @@ public class SysUser extends BaseSysUser<SysUser> {
 
     /**
      * 修改用户角色
+     *
      * @param uid
      * @param roleIds
      * @return
@@ -225,6 +233,7 @@ public class SysUser extends BaseSysUser<SysUser> {
 
     /**
      * 密码修改
+     *
      * @param uid
      * @param newPwd
      * @return
@@ -278,5 +287,30 @@ public class SysUser extends BaseSysUser<SysUser> {
     public List<Record> getSysUserList() {
         List<Record> list = Db.find("select id,name,tc.name as companyName from sys_user susr left join t_company tc on tc.inner_code = susr.inner_code");
         return list;
+    }
+
+    public InvokeResult getUserZtreeViewList(Long msgId) {
+        List<Record> receivers = Db.find("select receiver_id from t_msg_receiver where msg_id=" + msgId);
+        List<Long> receiversIds = new ArrayList<>();
+        for (Record record : receivers) {
+            receiversIds.add(record.getLong("receiver_id"));
+        }
+        List<Record> list = Db.find("select id,name,tc.name as companyName from sys_user susr left join t_company tc on tc.inner_code = susr.inner_code");
+        List<ZtreeView> ztreeViews = new ArrayList<ZtreeView>();
+        ztreeViews.add(new ZtreeView(10000, null, "用户列表", true));
+        for (Record record : list) {
+            ZtreeView ztreeView = new ZtreeView();
+            ztreeView.setId(record.getInt("id"));
+            ztreeView.setName(record.getStr("name"));
+            ztreeView.setOpen(true);
+            ztreeView.setpId(10000);
+            if (receiversIds.contains(record.getLong("id"))) {
+                ztreeView.setChecked(true);
+            } else {
+                ztreeView.setChecked(false);
+            }
+            ztreeViews.add(ztreeView);
+        }
+        return InvokeResult.success(JsonKit.toJson(ztreeViews));
     }
 }
