@@ -46,6 +46,7 @@
                                     <div class="step-content pos-rel" id="step-container">
                                         <div class="step-pane active" id="step1">
                                             <form class="form-horizontal" id="validation-form" method="post">
+                                                <input id="id" name="id" type="hidden" value="${id}"/>
                                                 <div class="form-group">
                                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="title">标题:</label>
 
@@ -64,6 +65,15 @@
                                                     </div>
                                                 </div>
                                                 <%--<div class="form-group">
+                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" style="color:green;" for="receivers" id="bnt-grant"><b style="font-color:green;">接收人</b></label>
+                                                    <div class="col-xs-12 col-sm-9">
+                                                        <div class="clearfix">
+                                                            <input type="hidden" id="receiversIds" name="receiversIds">
+                                                            <textarea id="receivers" name="receivers" class="col-xs-12 col-sm-9" rows="4" cols="16">${item.receivers}</textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>--%>
+                                                <%--<div class="form-group">
                                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="file_upload">图片:</label>
                                                     <div class="col-xs-12 col-sm-9">
                                                         <div class="clearfix">
@@ -80,7 +90,7 @@
                                                         </div>
                                                     </div>
                                                 </div>--%>
-                                                <div class="form-group">
+                                                <%--<div class="form-group">
                                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="status">是否发布:</label>
 
                                                     <div class="col-xs-12 col-sm-9">
@@ -91,7 +101,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>--%>
                                                 <div class="clearfix form-actions" align="center">
                                                     <div class="col-md-offset-3 col-md-9">
                                                         <button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">
@@ -228,6 +238,20 @@
             }
         });
     });
+
+    <%--$("#bnt-grant").click(function(){--%>
+        <%--var msg_id = $("#id").val();--%>
+
+        <%--parent.layer.open({--%>
+            <%--title:'用户列表',--%>
+            <%--type: 2,--%>
+            <%--area: ['380px', '530px'],--%>
+            <%--fix: false, //不固定--%>
+            <%--maxmin: true,--%>
+            <%--content: '${context_path}/basic/msg/setReceiver?mid='+msg_id--%>
+        <%--});--%>
+
+    <%--});--%>
 
     function closeView(){
         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引

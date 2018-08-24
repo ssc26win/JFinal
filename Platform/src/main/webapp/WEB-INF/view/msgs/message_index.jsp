@@ -56,6 +56,7 @@
               <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
               <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
               <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
+              <jc:button className="btn" id="bnt-grant" textName="添加接收人"/>
               <jc:button className="btn btn-success" id="btn-publishData" textName="发布"/>
             </div>
           </div>
@@ -146,6 +147,30 @@
         maxmin: true,
         content: '${context_path}/basic/msg/add'
       });
+    });
+    $("#bnt-grant").click(function(){
+      var rid = getOneSelectedRows();
+      if(rid == -1){
+        layer.msg("请选择一个消息", {
+          icon: 2,
+          time: 1000 //2秒关闭（如果不配置，默认是3秒）
+        });
+      }else if(rid == -2 ){
+        layer.msg("只能选择一个消息", {
+          icon: 2,
+          time: 1000 //2秒关闭（如果不配置，默认是3秒）
+        });
+      }else {
+        var rowData = $("#grid-table").jqGrid('getRowData',rid);
+        parent.layer.open({
+          title:'给消息【'+rowData.name+'】分配接收人',
+          type: 2,
+          area: ['380px', '530px'],
+          fix: false, //不固定
+          maxmin: true,
+          content: '${context_path}/basic/msg/setReceiver?mid='+rid
+        });
+      }
     });
     $("#btn-deleteData").click(function(){
       deleteData();

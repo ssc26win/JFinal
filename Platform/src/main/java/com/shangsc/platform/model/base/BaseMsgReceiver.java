@@ -41,12 +41,20 @@ public abstract class BaseMsgReceiver<M extends BaseMsgReceiver<M>> extends Base
 		return get("memo");
 	}
 
-	public void setReceiverId(String receiverId) {
+	public void setReceiverId(Long receiverId) {
 		set("receiver_id", receiverId);
 	}
 
-	public String getReceiverId() {
+	public Long getReceiverId() {
 		return get("receiver_id");
+	}
+
+	public void setReceiverName(String receiverName) {
+		set("receiver_Name", receiverName);
+	}
+
+	public String getReceiverName() {
+		return get("receiver_Name");
 	}
 
 	public void setCreateTime(java.util.Date createTime) {

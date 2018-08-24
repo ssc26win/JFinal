@@ -63,6 +63,15 @@ public class MessageController extends BaseController {
     }
 
     @RequiresPermissions(value = {"/basic/msg"})
+    public void setReceiver() {
+        Integer id = this.getParaToInt("mid");
+        InvokeResult result = SysUser.me.getUserZtreeViewList(id);
+        this.setAttr("mid", id);
+        this.setAttr("jsonTree", result);
+        render("receivers_add.jsp");
+    }
+
+    @RequiresPermissions(value = {"/basic/msg"})
     public void save() {
         SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
         Long id = this.getParaToLong("id");

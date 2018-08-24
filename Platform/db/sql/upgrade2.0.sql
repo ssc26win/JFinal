@@ -31,7 +31,7 @@ CREATE TABLE `t_msg_receiver` (
   `msg_id` bigint(20) NOT NULL COMMENT '消息id',
   `status` tinyint(4) DEFAULT '0' COMMENT '状态: 0 未读 1 已读',
   `memo` varchar(500) DEFAULT NULL COMMENT '备注',
-  `receiver_id` varchar(50) DEFAULT NULL COMMENT '接收人',
+  `receiver_id` bigint(20) DEFAULT NULL COMMENT '接收人Id',
   `receiver_name` varchar(50) DEFAULT NULL COMMENT '接收人姓名',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',

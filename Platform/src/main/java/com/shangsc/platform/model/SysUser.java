@@ -289,13 +289,13 @@ public class SysUser extends BaseSysUser<SysUser> {
         return list;
     }
 
-    public InvokeResult getUserZtreeViewList(Long msgId) {
+    public InvokeResult getUserZtreeViewList(Integer msgId) {
         List<Record> receivers = Db.find("select receiver_id from t_msg_receiver where msg_id=" + msgId);
-        List<Long> receiversIds = new ArrayList<>();
+        List<Integer> receiversIds = new ArrayList<>();
         for (Record record : receivers) {
-            receiversIds.add(record.getLong("receiver_id"));
+            receiversIds.add(record.getInt("receiver_id"));
         }
-        List<Record> list = Db.find("select id,name,tc.name as companyName from sys_user susr left join t_company tc on tc.inner_code = susr.inner_code");
+        List<Record> list = Db.find("select susr.id as id,susr.name as name,tc.name as companyName from sys_user susr left join t_company tc on tc.inner_code = susr.inner_code");
         List<ZtreeView> ztreeViews = new ArrayList<ZtreeView>();
         ztreeViews.add(new ZtreeView(10000, null, "用户列表", true));
         for (Record record : list) {
@@ -304,7 +304,7 @@ public class SysUser extends BaseSysUser<SysUser> {
             ztreeView.setName(record.getStr("name"));
             ztreeView.setOpen(true);
             ztreeView.setpId(10000);
-            if (receiversIds.contains(record.getLong("id"))) {
+            if (receiversIds.contains(record.getInt("id"))) {
                 ztreeView.setChecked(true);
             } else {
                 ztreeView.setChecked(false);
