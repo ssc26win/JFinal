@@ -22,3 +22,17 @@
 .search_switch {
     background-color: #FFE4B5;
 }
+
+.fa-envelope-o .count {
+    display: none;
+    padding: 0.5px 3px;
+    background: #fd4824;
+    border-radius: 10px;
+    height: 10px;
+    line-height: 18px;
+    color: #fff;
+    font-size: 2px;
+    transform: translate(-50%, -50%);
+    position:relative;
+    top:-6px;
+}

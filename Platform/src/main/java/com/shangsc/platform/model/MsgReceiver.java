@@ -1,7 +1,9 @@
 package com.shangsc.platform.model;
 
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.YesOrNo;
+import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseMsgReceiver;
 import org.apache.commons.collections.CollectionUtils;
@@ -38,6 +40,9 @@ public class MsgReceiver extends BaseMsgReceiver<MsgReceiver> {
     public InvokeResult saveList(Long mid, List<Long> userIds) {
         if (null != mid && mid > 0L) {
             Message message = Message.dao.findById(mid);
+            if (message == null) {
+                InvokeResult.failure("请选择一条消息");
+            }
             List<MsgReceiver> msgReceivers = this.find("select * from t_msg_receiver where msg_id=" + mid);
             if (CollectionUtils.isNotEmpty(msgReceivers)) {
                 Db.update("delete from t_msg_receiver where msg_id=" + mid);
@@ -59,6 +64,7 @@ public class MsgReceiver extends BaseMsgReceiver<MsgReceiver> {
             msgReceiver.setReceiverName(usr.getName());
             msgReceiver.setCreateTime(new Date());
             msgReceiver.setUpdateTime(new Date());
+            list.add(msgReceiver);
         }
         return list;
     }
@@ -93,5 +99,32 @@ public class MsgReceiver extends BaseMsgReceiver<MsgReceiver> {
         String columns = "msg_id,status,memo,receiver_id,receiver_name,create_time,update_time";
         int[] result = Db.batch(sql, columns, modelOrRecordList, batchSize);
         return result;
+    }
+
+    public Long findUnReadCount(Integer uid) {
+        List<Record> records = Db.find("select count(1) as unReadCount from t_msg_receiver tmr inner join t_message tm on tm.id=tmr.msg_id" +
+                " where tm.status=1 and tmr.status=0 and tmr.receiver_id=?", uid);
+        if (CollectionUtils.isNotEmpty(records)) {
+            Record record = records.get(0);
+            return record.getLong("unReadCount");
+        }
+        return 0L;
+    }
+
+    public InvokeResult deleteData(String idStrs) {
+        List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
+        for (int i = 0; i < ids.size(); i++) {
+            this.deleteById(ids.get(i));
+        }
+        return InvokeResult.success();
+    }
+
+    public InvokeResult setReading(String idStrs) {
+        if (StringUtils.isNotEmpty(idStrs)) {
+            int update = Db.update("update t_msg_receiver set status=1 where id in (?)", idStrs);
+        } else {
+            int update = Db.update("update t_msg_receiver set status=1 where status=0");
+        }
+        return InvokeResult.success();
     }
 }

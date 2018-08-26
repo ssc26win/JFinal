@@ -219,7 +219,7 @@
                 "receiverIds": selectIds,
                 "mid": "${mid}"
             }
-            $.post("${context_path}/basic/setReceiver/save", submitData,
+            $.post("${context_path}/basic/msgreceiver/save", submitData,
                     function (data) {
                         $("#btn_saveOrder").removeAttr("disabled");
                         if (data.code == 0) {

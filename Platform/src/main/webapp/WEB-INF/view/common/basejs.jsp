@@ -447,4 +447,11 @@ String.prototype.trim = function() {
             })
         });
     });
+    /*$(function(){
+        var tempWih = $("#gbox_grid-table").width();
+
+        $(".gbox_grid-table").attr("width", "1786px");
+        $("#grid-table").attr("width",  "1786px");
+
+    })*/
 </script>

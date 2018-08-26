@@ -57,11 +57,9 @@
                 <div class="col-xs-12">
                     <div class="row-fluid" style="margin-bottom: 5px;">
                         <div class="span12 control-group">
-                            <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
-                            <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
+                            <jc:button className="btn btn-primary" id="btn-reading" textName="标为已读"/>
+                            <jc:button className="btn btn-info" id="btn-reading-all" textName="全部标为已读"/>
                             <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
-                            <jc:button className="btn" id="bnt-grant" textName="添加接收人"/>
-                            <jc:button className="btn btn-success" id="btn-publishData" textName="发布"/>
                         </div>
                     </div>
                     <!-- PAGE CONTENT BEGINS -->
@@ -104,19 +102,18 @@
         });
 
         $("#grid-table").jqGrid({
-            url: '${context_path}/basic/msg/getListData',
+            url: '${context_path}/basic/msgreceiver/getUnReadListData',
             mtype: "GET",
             datatype: "json",
             colModel: [
                 {label: '标题', name: 'title', width: 150, sortable: false},
                 {label: '内容', name: 'content', width: 350, sortable: false},
                 /*{ label: '图片地址', name: 'img_url', width: 100, sortable:false},*/
-                {label: '发布状态', name: 'statusName', width: 100, sortable: false},
-                {label: '创建时间', name: 'create_time', width: 100, sortable: false},
-                {label: '接收人', name: 'receiver', width: 350, sortable: false}
+                {label: '状态', name: 'statusName', width: 80, sortable: false},
+                {label: '创建时间', name: 'create_time', width: 150, sortable: false}
             ],
             viewrecords: true,
-            height: 560,
+            height: 300,
             rowNum: 20,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
@@ -145,68 +142,17 @@
                 page: 1
             }).trigger("reloadGrid"); //重新载入
         });
-        $("#btn-add").click(function () {//添加页面
-            parent.layer.open({
-                title: '添加消息',
-                type: 2,
-                area: ['770px', '500px'],
-                fix: false, //不固定
-                maxmin: true,
-                content: '${context_path}/basic/msg/add'
-            });
-        });
-        $("#bnt-grant").click(function () {
-            var rid = getOneSelectedRows();
-            if (rid == -1) {
-                layer.msg("请选择一个消息", {
-                    icon: 2,
-                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                });
-            } else if (rid == -2) {
-                layer.msg("只能选择一个消息", {
-                    icon: 2,
-                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                });
-            } else {
-                var rowData = $("#grid-table").jqGrid('getRowData', rid);
-                parent.layer.open({
-                    title: '给消息【' + rowData.title + '】分配接收人',
-                    type: 2,
-                    area: ['380px', '530px'],
-                    fix: false, //不固定
-                    maxmin: true,
-                    content: '${context_path}/basic/msg/setReceiver?mid=' + rid
-                });
-            }
-        });
         $("#btn-deleteData").click(function () {
             deleteData();
         });
         $("#btn-publishData").click(function () {
             publishData();
         });
-        $("#btn-edit").click(function () {//添加页面
-            var rid = getOneSelectedRows();
-            if (rid == -1) {
-                layer.msg("请选择一个记录", {
-                    icon: 2,
-                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                });
-            } else if (rid == -2) {
-                layer.msg("只能选择一个记录", {
-                    icon: 2,
-                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
-                });
-            } else {
-                parent.layer.open({
-                    title: '修改消息',
-                    type: 2,
-                    area: ['770px', '500px'],
-                    fix: false, //不固定
-                    maxmin: true,
-                    content: '${context_path}/basic/msg/add?id=' + rid
-                });
-            }
+        $("#btn-reading").click(function () {
+            setReading();
+        });
+        $("#btn-reading-all").click(function () {
+            setReading("all");
         });
     });
     //replace icons with FontAwesome icons like above
@@ -269,7 +215,7 @@
             "ids": getSelectedRows()
         };
         layer.confirm("确认删除记录？", function () {
-            $.post("${context_path}/basic/msg/delete", submitData, function (data) {
+            $.post("${context_path}/basic/msgreceiver/delete", submitData, function (data) {
                 if (data.code == 0) {
                     layer.msg("操作成功", {
                         icon: 1,
@@ -284,21 +230,23 @@
         });
     }
 
-    function publishData() {
-        var grid = $("#grid-table");
-        var selectedIDs = grid.getGridParam("selarrrow");
-        if (selectedIDs.length != 1) {
+    function setReading(all) {
+        var rid = getOneSelectedRows();
+        var submitData = {
+            "ids": getSelectedRows()
+        };
+        if (all == "all") {
+            submitData = {};
+        }
+        if (all != "all" && rid == -1) {
             layer.msg("请选择一个记录", {
                 icon: 2,
                 time: 1000 //2秒关闭（如果不配置，默认是3秒）
             });
             return;
         }
-        var submitData = {
-            "id": selectedIDs[0]
-        };
-        layer.confirm("确认发布记录？", function () {
-            $.post("${context_path}/basic/msg/publish", submitData, function (data) {
+        layer.confirm("确认标记为已读？", function () {
+            $.post("${context_path}/basic/msgreceiver/setReading", submitData, function (data) {
                 if (data.code == 0) {
                     layer.msg("操作成功", {
                         icon: 1,

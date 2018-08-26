@@ -81,18 +81,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="status">是否发布:</label>
-
-                                                    <div class="col-xs-12 col-sm-9">
-                                                        <div class="clearfix">
-                                                            <select name="status" id="status" class="span3">
-                                                                <option value="0" ${item.status eq 0?'selected':''}>否</option>
-                                                                <option value="1" ${item.status eq 1?'selected':''}>是</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <div class="clearfix form-actions" align="center">
                                                     <div class="col-md-offset-3 col-md-9">
                                                         <button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">

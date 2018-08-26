@@ -24,6 +24,7 @@ import com.shangsc.platform.controller.app.LawRecordsController;
 import com.shangsc.platform.controller.basic.*;
 import com.shangsc.platform.controller.msgs.AdController;
 import com.shangsc.platform.controller.msgs.MessageController;
+import com.shangsc.platform.controller.msgs.MsgReceiverController;
 import com.shangsc.platform.controller.statis.*;
 import com.shangsc.platform.controller.sys.*;
 
@@ -53,6 +54,7 @@ public class AdminRoutes extends Routes {
 
         add("/basic/ad", AdController.class, "/WEB-INF/view/msgs");
         add("/basic/msg", MessageController.class, "/WEB-INF/view/msgs");
+        add("/basic/msgreceiver", MsgReceiverController.class, "/WEB-INF/view/msgs");
 
         add("/statis/actual", ActualController.class, "/WEB-INF/view/statis");
         add("/statis/actuallog", ActuallogController.class, "/WEB-INF/view/statis");

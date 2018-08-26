@@ -50,11 +50,11 @@ public abstract class BaseMsgReceiver<M extends BaseMsgReceiver<M>> extends Base
 	}
 
 	public void setReceiverName(String receiverName) {
-		set("receiver_Name", receiverName);
+		set("receiver_name", receiverName);
 	}
 
 	public String getReceiverName() {
-		return get("receiver_Name");
+		return get("receiver_name");
 	}
 
 	public void setCreateTime(java.util.Date createTime) {

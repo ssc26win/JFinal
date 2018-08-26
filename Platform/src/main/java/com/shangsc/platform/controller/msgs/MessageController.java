@@ -1,17 +1,22 @@
 package com.shangsc.platform.controller.msgs;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
+import com.jfinal.aop.Clear;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
+import com.shangsc.platform.code.ReadOrNo;
 import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
+import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.*;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Message;
+import com.shangsc.platform.model.MsgReceiver;
 import com.shangsc.platform.model.SysUser;
 
 import java.io.File;
@@ -32,10 +37,10 @@ public class MessageController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/msg"})
     public void getListData() {
-        String keyword = this.getPara("innerCode");
+        String keyword = this.getPara("name");
         Set<Condition> conditions = new HashSet<Condition>();
         if (CommonUtils.isNotEmpty(keyword)) {
-            conditions.add(new Condition("inner_code", Operators.LIKE, keyword));
+            conditions.add(new Condition("title", Operators.LIKE, keyword));
         }
         Page<Message> pageInfo = Message.dao.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
         List<Message> list = pageInfo.getList();

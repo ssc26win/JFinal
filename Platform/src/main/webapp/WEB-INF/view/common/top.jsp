@@ -11,14 +11,13 @@
 	<ul class="nav ace-nav">
 		<!-- #section:basics/navbar.user_menu -->
 		<li class="light-blue">
-			<a data-toggle="dropdown" href="#" class="dropdown-toggle">
-				<!--  img class="nav-user-photo" src="${res_url}ace-1.3.3/assets/avatars/user.jpg" alt="Jason's Photo" /-->
-				<span class="user-info">
+			<a data-toggle="dropdown" href="#" class="dropdown-toggle" style="white-space: nowrap;" >
+				<%--<!--  img class="nav-user-photo" src="${res_url}ace-1.3.3/assets/avatars/user.jpg" alt="Jason's Photo" /-->--%>
+			<i class="ace-icon fa fa-caret-down" ></i>
+				<span class="user-info" style="white-space: nowrap; ">
 					<small>欢迎,</small>
 					${sessionScope.sysUser.name}
 				</span>
-
-				<i class="ace-icon fa fa-caret-down"></i>
 			</a>
 
 			<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
@@ -37,6 +36,34 @@
 				</li>
 			</ul>
 		</li>
+		<li class="light-blue">
+			<a href="#" onclick="getMsgList();">
+				<i class="fa fa-envelope-o" aria-hidden="true" style="margin-left: 10px;">
+					<span class="count" id="msgCount" style="display: inline;">0</span>
+				</i>
+			</a>
+		</li>
 	</ul>
 </div>
-				
+<script type="text/javascript">
+	window.jQuery || document.write("<script src='${res_url}ace-1.3.3/assets/js/jquery.js'>"+"<"+"/script>");
+</script>
+<script type="application/javascript">
+	$(function () {
+		var submitData = {};
+		$.post("${context_path}/basic/msgreceiver/msgCount", submitData, function(data) {
+			var count = data.msgCount;
+			$("#msgCount").text(count);
+		});
+	});
+    function getMsgList() {
+		parent.layer.open({
+			title:'查看消息',
+			type: 2,
+			area: ['980px', '560px'],
+			fix: false, //不固定
+			maxmin: true,
+			content: '${context_path}/basic/msgreceiver/myMsgList'
+		});
+	}
+</script>
