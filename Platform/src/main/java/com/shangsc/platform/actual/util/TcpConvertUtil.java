@@ -1,5 +1,6 @@
 package com.shangsc.platform.actual.util;
 
+import com.shangsc.platform.actual.tcp.TcpServerHandler;
 import com.shangsc.platform.code.TcpData;
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -44,7 +45,15 @@ public class TcpConvertUtil {
                 total = total + Long.valueOf(array[i], 16);
             }
         }
-        return Long.toHexString((total) % 256);
+        String result = Long.toHexString((total) % 256);
+        if (result.length() != 2) {
+            if (result.length() == 1) {
+                result = "0" + result;
+            } else if (result.length() > 2) {
+                result = result.substring(result.length() - 2, result.length());
+            }
+        }
+        return result;
     }
 
     public static String[] to2StrArray(String result) {
@@ -59,6 +68,26 @@ public class TcpConvertUtil {
             }
         }
         return demo;
+    }
+
+    public static boolean checkData(String result) {
+        boolean flag = false;
+        try {
+            logger.info("校验上报数据：" + result);
+            String endCHK = result.substring(result.length() - 4, result.length() - 2);
+            logger.info("校验数据区--校验字段：" + endCHK);
+            String data = result.substring(8, result.length() - 4);
+            logger.info("校验数据区--数据区域：" + data);
+            String aCase = TcpConvertUtil.getTcpCheckStr(TcpConvertUtil.to2StrArray(data)).toUpperCase();
+            logger.info("校验数据区--数据区域计算结果：" + aCase);
+            if (endCHK.equalsIgnoreCase(aCase)) {
+                flag =  true;
+            }
+            logger.info("校验数据区--最终结果：" + flag);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return flag;
     }
 
     public static String receiveDataResp(String result) {
@@ -192,22 +221,29 @@ public class TcpConvertUtil {
 
 
     public static void main(String[] args) {
-        System.out.println(aa);
-       // System.out.println(getTcpMultRecordSumWater(aa));
-        //receiveDataResp(aa);
-
-        tcpLoginResp(upload_data_1, "login");
+        //System.out.println(aa);
+        //// System.out.println(getTcpMultRecordSumWater(aa));
+        ////receiveDataResp(aa);
         //
-        //tcpLoginResp(upload_data_2, "login");
+        //tcpLoginResp(upload_data_1, "login");
+        ////
+        ////tcpLoginResp(upload_data_2, "login");
+        //
+        //getTcpMultChkStr(aa);
+        //
+        //
+        //System.out.println(bb);
+        //
+        //getTcpMultChkStr(bb);
 
-        getTcpMultChkStr(aa);
+       // System.out.println(getTcpSumNum("682F0068CA18061500150D700723917856341204BEAE3800000000603A000000000000000000000000000000000000002F2A00F916"));
 
+        checkData(aa);
 
-        System.out.println(bb);
+        checkData(bb);
 
-        getTcpMultChkStr(bb);
-
-        System.out.println(getTcpSumNum("682F0068CA18061500150D700723917856341204BEAE3800000000603A000000000000000000000000000000000000002F2A00F916"));
+        checkData(upload_data_1);
+        checkData(upload_data_2);
 
     }
 

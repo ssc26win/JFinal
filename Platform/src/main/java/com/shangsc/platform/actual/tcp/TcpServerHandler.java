@@ -66,6 +66,8 @@ public class TcpServerHandler extends SimpleChannelHandler {
 
         log("TCP ConversionUtil.bytes2HexString 字节数组转16进制字符串 " + result);
 
+        recordLog(result, clientIP);
+
         if (StringUtils.isNotEmpty(result) && result.startsWith(ActualType.TCP_PRFIX) && result.endsWith(ActualType.TCP_SUFFIX)) {
             String response = "";
             if (TcpData.login_data_length == result.length()) {
@@ -74,16 +76,22 @@ public class TcpServerHandler extends SimpleChannelHandler {
                 e.getChannel().write(buffer);
             } else if (result.length() == TcpData.upload_data_length_1 || result.length() == TcpData.upload_data_length_2) {
                 //recordMsg(result);
-                recordDB(result, false, clientIP);
-                response = TcpConvertUtil.receiveDataResp(result);
-                ChannelBuffer channelBuffer = ChannelBuffers.copiedBuffer(ConversionUtil.hexString2Bytes(response));
-                e.getChannel().write(channelBuffer);
+                boolean isFlag = TcpConvertUtil.checkData(result);
+                if (isFlag) {
+                    recordDB(result, false, clientIP);
+                    response = TcpConvertUtil.receiveDataResp(result);
+                    ChannelBuffer channelBuffer = ChannelBuffers.copiedBuffer(ConversionUtil.hexString2Bytes(response));
+                    e.getChannel().write(channelBuffer);
+                }
             } else if (result.length() > TcpData.upload_data_length_1 || result.length() > TcpData.upload_data_length_2) {
                 //recordMsg(result);
-                recordDB(result, true, clientIP);
-                response = TcpConvertUtil.getTcpMultChkStr(result);
-                ChannelBuffer channelBuffer = ChannelBuffers.copiedBuffer(ConversionUtil.hexString2Bytes(response));
-                e.getChannel().write(channelBuffer);
+                boolean isFlag = TcpConvertUtil.checkData(result);
+                if (isFlag) {
+                    recordDB(result, true, clientIP);
+                    response = TcpConvertUtil.getTcpMultChkStr(result);
+                    ChannelBuffer channelBuffer = ChannelBuffers.copiedBuffer(ConversionUtil.hexString2Bytes(response));
+                    e.getChannel().write(channelBuffer);
+                }
             }
         }
     }
@@ -128,17 +136,15 @@ public class TcpServerHandler extends SimpleChannelHandler {
     private synchronized void recordDB(String result, boolean isMulti, String clientIP) {
         try {
             if (StringUtils.isNotEmpty(result)) {
-                String meterAddress = "";
+                String meterAddress = TcpConvertUtil.getTcpMeterAddress(result);
                 BigDecimal sumWater = null;
                 BigDecimal addWater = new BigDecimal("0.00");
                 Integer state = Integer.parseInt(ActualState.NORMAL);
                 BigDecimal times = new BigDecimal("1");
                 String innerCode = "";
                 if (isMulti) {
-                    meterAddress = TcpConvertUtil.getTcpMultAddress(result);
                     sumWater = TcpConvertUtil.getTcpMultRecordSumWater(result);
                 } else {
-                    meterAddress = TcpConvertUtil.getTcpMeterAddress(result);
                     sumWater = TcpConvertUtil.getTcpSumNum(result);
                 }
                 if (sumWater == null) {
@@ -168,9 +174,22 @@ public class TcpServerHandler extends SimpleChannelHandler {
                 } else {
                     logger.info("TCP 错误数据-sum_water:" + sumWater + "（meterAddress:" + meterAddress + "）");
                 }
-                // 记录消息来源
-                ActualLog.dao.save(null, ActualType.TCP, Integer.parseInt(PropKit.get("config.tcp.port")), clientIP, result, meterAddress, new Date());
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 记录消息日志
+     *
+     * @param result
+     * @param clientIP
+     */
+    private synchronized void recordLog(String result, String clientIP) {
+        try {
+            String meterAddress = TcpConvertUtil.getTcpMeterAddress(result);
+            ActualLog.dao.save(null, ActualType.TCP, Integer.parseInt(PropKit.get("config.tcp.port")), clientIP, result, meterAddress, new Date());
         } catch (Exception e) {
             e.printStackTrace();
         }
