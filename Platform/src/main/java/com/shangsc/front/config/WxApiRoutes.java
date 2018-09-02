@@ -16,6 +16,7 @@
 package com.shangsc.front.config;
 
 import com.jfinal.config.Routes;
+import com.shangsc.front.wxapp.controller.ActualController;
 import com.shangsc.front.wxapp.controller.LawRecordController;
 import com.shangsc.front.wxapp.controller.LoginController;
 import com.shangsc.front.wxapp.controller.MsgController;
@@ -32,6 +33,7 @@ public class WxApiRoutes extends Routes {
         add("/wxapp/log", LoginController.class);
         add("/wxapp/msg", MsgController.class);
         add("/wxapp/law", LawRecordController.class);
+        add("/wxapp/actual", ActualController.class);
     }
 
 }
