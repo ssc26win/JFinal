@@ -3,10 +3,12 @@ package com.shangsc.front.wxapp.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
+import com.shangsc.front.validate.bean.CommonDes;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.model.ActualData;
+import com.shangsc.platform.model.Company;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
@@ -23,8 +25,18 @@ public class ActualController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     public void findLatestData() {
-
-        String innerCode = getPara("innerCode");
+        String companyName = getPara("companyName");
+        Company first = Company.me.findFirst("select * from t_company where name=?", companyName);
+        if (StringUtils.isNotEmpty(companyName) && first == null) {
+            CommonDes commonDes = new CommonDes();
+            commonDes.setCode(-1);
+            commonDes.setMessage("未找到单位名称！");
+            renderJson(commonDes);
+        }
+        String innerCode = "";
+        if (first != null) {
+            innerCode = first.getInnerCode();
+        }
         String meterAddress = getPara("meterAddress");
 
         StringBuffer sqlExceptSelect = new StringBuffer("select tad.*, tc.name as companyName from " +
@@ -48,10 +60,11 @@ public class ActualController extends BaseController {
 
         JSONArray array = new JSONArray();
         JSONObject result = new JSONObject();
-        String companyName = "";
 
         for (ActualData data : actualDatas) {
-            companyName = data.get("companyName");
+            if (StringUtils.isEmpty(companyName)) {
+                companyName = data.get("companyName");
+            }
             JSONObject object = new JSONObject();
             object.put("表计地址：", data.get("meter_address"));
             object.put("净用水量：", data.get("net_water"));
