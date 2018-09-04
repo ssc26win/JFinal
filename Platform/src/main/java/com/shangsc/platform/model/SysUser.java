@@ -217,6 +217,7 @@ public class SysUser extends BaseSysUser<SysUser>
 		SysUser sysUser=SysUser.me.findById(uid);
 		if(sysUser!=null){
 			sysUser.set("pwd", newPwd).update();
+			Db.update("update sys_login_record set login_err_times=0 where sys_uid=" + uid);
 			return InvokeResult.success();
 		}else{
 			return InvokeResult.failure(-2, "修改失败");

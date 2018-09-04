@@ -173,7 +173,8 @@ public class IndexController extends Controller {
         content.append("' target='_blank' ><b>点击</b>重置密码(30分钟内有效)</a>");
         this.setCookie("find_password_by_email", String.valueOf(System.currentTimeMillis()), 1000 * 60 * 30);
         try {
-            MailKit.send(email, null, subject, content.toString());
+            //MailKit.send(email, null, subject, content.toString());
+            MailKit.sendEmail465(subject, content.toString(), email);
         } catch (Exception e) {
 
         }

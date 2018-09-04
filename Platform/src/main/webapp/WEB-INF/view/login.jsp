@@ -482,6 +482,7 @@
 								window.top.location.href = "${context_path}/";
 							});
 						} else {
+							layer.close(index);
 							layer.alert(data.msg);
 						}
 					}, "json");

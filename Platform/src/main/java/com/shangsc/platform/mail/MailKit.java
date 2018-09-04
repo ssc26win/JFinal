@@ -1,11 +1,13 @@
 package com.shangsc.platform.mail;
 
+import com.jfplugin.mail.core.MimeMessageHelper;
 import com.shangsc.platform.mail.core.JavaMailSender;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 发送邮件工具
@@ -60,6 +62,49 @@ public class MailKit {
 	public static void send(String to,List<String> cc,String subject,String text){
 		mailPro.send(to, cc, subject, text);
 	}
+
+
+
+	public static String sendEmail465(String subject, String content, final String toEmailAddress) {
+
+		final String fromEmailAddress = "ssc23win@163.com";
+
+		// Properties properties = System.getProperties();// 获取系统属性
+		Properties props = System.getProperties();
+		props.setProperty("mail.smtp.host", "smtp.163.com"); // 设置邮件服务器
+		props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		props.setProperty("mail.smtp.socketFactory.fallback", "false");
+		props.setProperty("mail.transport.protocol", "smtp");
+		props.setProperty("mail.smtp.port", "465");
+		props.setProperty("mail.smtp.socketFactory.port", "465");
+		props.put("mail.smtp.auth", "true");// 发送服务器需要身份验证
+		final String username = "ssc23win@163.com";
+		final String password = "shichao1990";
+
+		Session session = Session.getDefaultInstance(props, new Authenticator() {
+			@Override
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+		MimeMessage msg = new MimeMessage(session);// 创建默认的 MimeMessage 对象
+		try {
+			MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(msg, "UTF-8");
+			mimeMessageHelper.setText(content, true);
+
+			msg.setFrom(new InternetAddress(fromEmailAddress));//设置发件
+			msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmailAddress));//设置收件
+			msg.setSubject(subject);
+			msg.setSentDate(new Date());
+			msg.saveChanges();
+			Transport.send(msg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "发送邮件成功";
+	}
+
 	
 	/**
 	 * 发送邮件
