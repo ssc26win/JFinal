@@ -242,6 +242,7 @@ public class SysUser extends BaseSysUser<SysUser> {
         // TODO Auto-generated method stub
         SysUser sysUser = SysUser.me.findById(uid);
         if (sysUser != null) {
+            Db.update("update sys_login_record set login_err_times=0 where sys_uid=" + uid);
             sysUser.set("pwd", newPwd).update();
             return InvokeResult.success();
         } else {
