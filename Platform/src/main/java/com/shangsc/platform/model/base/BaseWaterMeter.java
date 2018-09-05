@@ -105,4 +105,12 @@ public abstract class BaseWaterMeter<M extends BaseWaterMeter<M>> extends BaseMo
 		return get("memo");
 	}
 
+	public void setVender(String vender) {
+		set("vender", vender);
+	}
+
+	public String getVender() {
+		return get("vender");
+	}
+
 }

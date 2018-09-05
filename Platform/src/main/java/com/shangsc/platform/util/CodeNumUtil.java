@@ -1,5 +1,7 @@
 package com.shangsc.platform.util;
 
+import com.shangsc.platform.model.Company;
+
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 
@@ -11,7 +13,7 @@ import java.text.NumberFormat;
  */
 public class CodeNumUtil {
 
-    public static final String COMPANY_CODE_PREFIX = "0001";
+    public static final String COMPANY_CODE_PREFIX = "SJ";
 
     /**
      * 是奇数
@@ -33,10 +35,11 @@ public class CodeNumUtil {
         return b;
     }
 
-    public static String genInnerCode(int i) {
-        NumberFormat format = NumberFormat.getInstance();
-        format.setMinimumIntegerDigits(8);
-        String result = COMPANY_CODE_PREFIX + format.format(i).replace(",", "");
+    public static String genInnerCode() {
+        String result = COMPANY_CODE_PREFIX + get6Random();
+        while (Company.me.findByInnerCode(result) != null) {
+            result = COMPANY_CODE_PREFIX + get6Random();
+        }
         return result;
     }
 
@@ -45,9 +48,25 @@ public class CodeNumUtil {
         return result;
     }
 
+    public static String get6Random() {
+        String result = "";
+        while (result.length() < 6) {
+            String str = String.valueOf((int) (Math.random() * 10));
+            if (result.indexOf(str) == -1) {
+                result += str;
+            }
+            if (result.length() == 6) {
+                break;
+            }
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
-        System.out.println(genInnerCode(1));
+        long randomNum = System.currentTimeMillis();
+        System.out.println(genInnerCode());
         System.out.println(isOdd(2));
-        System.out.println(genInnerCode2(22332));
+        System.out.println(genInnerCode2(0));
+        System.out.println(get6Random());
     }
 }

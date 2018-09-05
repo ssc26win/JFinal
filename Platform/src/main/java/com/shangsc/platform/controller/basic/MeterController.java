@@ -1,10 +1,12 @@
 package com.shangsc.platform.controller.basic;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.jfinal.aop.Clear;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.template.ext.directive.Str;
 import com.jfinal.upload.UploadFile;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.ExportType;
@@ -163,8 +165,9 @@ public class MeterController extends BaseController {
         if (StringUtils.isNotEmpty(this.getPara("registDate"))) {
             registDate = DateUtils.parseDate(this.getPara("registDate"));
         }
+        String vender = this.getPara("vender");
         InvokeResult result = WaterMeter.me.save(id, innerCode, lineNum, meterNum, meterAddress, times,
-                watersType, meterAttr, chargeType, billingCycle, registDate);
+                watersType, meterAttr, chargeType, billingCycle, registDate, vender);
         this.renderJson(result);
     }
 
@@ -265,6 +268,14 @@ public class MeterController extends BaseController {
             e.printStackTrace();
         }
         this.renderJson(InvokeResult.success());
+    }
+
+    @RequiresPermissions(value = {"/basic/meter"})
+    public void findAddress() {
+        String innerCode = this.getPara("innerCode");
+        JSONObject result = new JSONObject();
+        result.put("data", WaterMeter.me.findAddressByInnerCode(innerCode));
+        this.renderJson(result);
     }
 
 }

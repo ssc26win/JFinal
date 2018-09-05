@@ -111,7 +111,7 @@
             colModel: [
                 { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
                 { label: '单位名称', name: 'name', width: 120, sortable:false},
-                { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
+                { label: '单位编号', name: 'real_code', width: 80, sortable:false},
                 { label: '所属区县', name: 'county', width: 80, sortable:false},
                 { label: '所属乡镇', name: 'streetName', width: 80, sortable:false},
                 { label: '原乡镇或街道', name: 'street_src', width: 80, sortable:false},

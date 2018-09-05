@@ -116,6 +116,14 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="vender">生产厂家</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="text" id="vender" name="vender" value="${item.vender}" class="col-xs-12 col-sm-8">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="clearfix form-actions" align="center">
                                 <div class="col-md-offset-3 col-md-9">
                                     <button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">

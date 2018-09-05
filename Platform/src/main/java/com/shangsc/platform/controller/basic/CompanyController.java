@@ -148,7 +148,9 @@ public class CompanyController extends BaseController {
     @RequiresPermissions(value = {"/basic/company"})
     public void save() {
         Long id = this.getParaToLong("id");
-        String innerCode = StringUtils.trim(this.getPara("innerCode"));
+
+        String innerCode = CodeNumUtil.genInnerCode();
+        String realCode = StringUtils.trim(this.getPara("realCode"));
         String name = this.getPara("name");
         String waterUnit = this.getPara("waterUnit");
         String county = this.getPara("county");
@@ -164,6 +166,7 @@ public class CompanyController extends BaseController {
         String phone = this.getPara("phone");
         String postalCode = this.getPara("postalCode");
         String department = this.getPara("department");
+        String memo = this.getPara("memo");
         Integer wellCount = this.getParaToInt("wellCount");
         Integer firstWatermeterCount = this.getParaToInt("firstWatermeterCount");
         Integer remotemeterCount = this.getParaToInt("remotemeterCount");
@@ -197,10 +200,10 @@ public class CompanyController extends BaseController {
         if (StringUtils.isNotEmpty(this.getPara("self_free_price"))) {
             self_free_price = CodeNumUtil.getBigDecimal(this.getPara("self_free_price"), 2);
         }
-        InvokeResult result = Company.me.save(id, name, innerCode, waterUnit, county, street, streetSrc, address,
+        InvokeResult result = Company.me.save(id, name, realCode, innerCode, waterUnit, county, street, streetSrc, address,
                 customerType, waterUseType, gbIndustry, mainIndustry, contact, phone, postalCode, department,
                 wellCount, firstWatermeterCount, remotemeterCount, unitType, longitude, latitude, createTime,
-                self_well_price, surface_price, self_free_price, company_type);
+                self_well_price, surface_price, self_free_price, company_type, memo);
         this.renderJson(result);
     }
 

@@ -9,6 +9,7 @@ alter table t_company modify column `inner_code` varchar(50) DEFAULT NULL COMMEN
 alter table t_company add column `memo` varchar(255) DEFAULT '' COMMENT '备注';
 
 alter table t_water_meter add column `memo` varchar(255) DEFAULT '' COMMENT '备注';
+alter table t_water_meter add column `vender` varchar(255) DEFAULT '' COMMENT '生产厂家';
 
 alter table app_version add column `wx_app_id` varchar(50) DEFAULT '' COMMENT '微信授权登录公钥';
 alter table app_version add column `wx_app_secret` varchar(100) DEFAULT '' COMMENT '微信授权登录私钥';

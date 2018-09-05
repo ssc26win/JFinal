@@ -39,7 +39,7 @@ public class ActualController extends BaseController {
         }
         String meterAddress = getPara("meterAddress");
 
-        StringBuffer sqlExceptSelect = new StringBuffer("select tad.*, tc.name as companyName from " +
+        StringBuffer sqlExceptSelect = new StringBuffer("select tad.*, tc.name as companyName,tc.real_code from " +
                 " (select * from t_actual_data order by id desc )" +
                 " tad left join t_company tc on " +
                 "tc.inner_code=tad.inner_code " +

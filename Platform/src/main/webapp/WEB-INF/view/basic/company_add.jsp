@@ -30,9 +30,9 @@
                                 <div class="col-sm-4 common-tip-append">
                                     <input type="text" id="name" name="name" value="${item.name}" class="form-control" autocomplete="off" >
                                 </div>
-                                <label class="col-sm-2 control-label" for="innerCode">单位编号:</label>
+                                <label class="col-sm-2 control-label" for="realCode">单位编号:</label>
                                 <div class="col-sm-4 common-tip-append">
-                                    <input type="text" id="innerCode" name="innerCode" value="${item.innerCode}" class="form-control">
+                                    <input type="text" id="realCode" name="realCode" value="${item.realCode}" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group" style="margin-top: 15px;">
@@ -159,8 +159,9 @@
                                         <option value="2">供水单位</option>
                                     </select>
                                 </div>
-                                <label class="col-sm-2 control-label" for="self_free_price"></label>
+                                <label class="col-sm-2 control-label" for="self_free_price">备注信息：</label>
                                 <div class="col-sm-4">
+                                    <input type="text" id="memo" name="memo" value="${item.memo}" class="form-control">
                                 </div>
                             </div>
                             <div class="clearfix form-actions" align="center">
@@ -229,7 +230,7 @@
                 name:{
                     required: true
                 },
-                innerCode:{
+                realCode:{
                     required: true
                 }
             },
@@ -237,7 +238,7 @@
                 name:{
                     required: "请输入单位名称"
                 },
-                innerCode:{
+                realCode:{
                     required: "请输入单位编号"
                 }
             },

@@ -77,7 +77,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
 	public Page<ActualData> getActualDataPage(int page, int rows, String keyword, String orderbyStr) {
 		//select * from (select * from t_actual_data order by write_time desc) a group by a.meter_address order by write_time desc
-		//String select = "select tad.*,tc.name as companyName,tc.water_unit,tc.county,twm.line_num,twm.waters_type ";
+		//String select = "select tad.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,twm.line_num,twm.waters_type ";
 		//StringBuffer sqlExceptSelect = new StringBuffer(" from (select * from t_actual_data order by write_time desc)  tad left join " +
 		//		" t_company tc on tad.inner_code=tc.inner_code left join t_water_meter twm on tad.meter_address=twm.meter_address");
         //
@@ -92,7 +92,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		//}
 		String select = "select * ";
 		StringBuffer sqlExceptSelect = new StringBuffer("from (" +
-				"select tad.*,tc.name as companyName,tc.water_unit,tc.county,twm.line_num,twm.waters_type   from (select * from t_actual_data order by write_time desc)  tad " +
+				"select tad.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,twm.line_num,twm.waters_type   from (select * from t_actual_data order by write_time desc)  tad " +
 				"left join  t_company tc on tad.inner_code=tc.inner_code " +
 				"left join t_water_meter twm on tad.meter_address=twm.meter_address where 1=1 group by tad.meter_address " +
 				"union all (SELECT tad.id,tc.inner_code,tm.meter_address,tad.alarm,tad.net_water,tad.sum_water,tad.state," +
@@ -147,7 +147,7 @@ public class ActualData extends BaseActualData<ActualData> {
 				"  else 0" +
 				"  end) as stats" +
 				" from " +
-				"(select tad.*,tc.name as companyName,tc.water_unit,tc.county,twm.line_num,twm.waters_type from " +
+				"(select tad.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,twm.line_num,twm.waters_type from " +
 				"(select * from t_actual_data order by write_time desc)  tad " +
 				"left join  t_company tc on tad.inner_code=tc.inner_code " +
 				"left join t_water_meter twm on tad.meter_address=twm.meter_address where 1=1 group by tad.meter_address) al) alld ");

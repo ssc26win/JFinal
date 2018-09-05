@@ -41,6 +41,22 @@ public class Company extends BaseCompany<Company> {
         return num > 0 ? true : false;
     }
 
+    public boolean hasExistByRealCode(String realCode) {
+        Set<Condition> conditions = new HashSet<Condition>();
+        conditions.add(new Condition("real_code", Operators.EQ, realCode));
+        long num = Company.me.getCount(conditions);
+        return num > 0 ? true : false;
+    }
+
+    public Company findByRealCode(String realCode) {
+        String sql = "select * from t_company where real_code='" + realCode + "'";
+        List<Company> companies = this.find(sql);
+        if (CollectionUtils.isNotEmpty(companies)) {
+            return companies.get(0);
+        }
+        return null;
+    }
+
     public Company findByInnerCode(String inner_code) {
         String sql = "select * from t_company where inner_code='" + inner_code + "'";
         List<Company> companies = this.find(sql);
@@ -48,6 +64,20 @@ public class Company extends BaseCompany<Company> {
             return companies.get(0);
         }
         return null;
+    }
+
+    public boolean hasExistInnerCode(Long id, String innerCode) {
+        StringBuffer sqlSelect = new StringBuffer("select count(1) as existCount from t_company where 1=1 ");
+        sqlSelect.append(" and inner_code='" + innerCode + "'");
+        if (id != null) {
+            sqlSelect.append(" and id<>" + id + "");
+        }
+        Record record = Db.findFirst(sqlSelect.toString());
+        if (record != null) {
+            return record.getLong("existCount") == 1L;
+        } else {
+            return false;
+        }
     }
 
     public void updateMeterNum(String innerCode, boolean flag) {
@@ -86,14 +116,6 @@ public class Company extends BaseCompany<Company> {
         }
     }
 
-    public boolean hasExist(String name, String innerCode) {
-        Set<Condition> conditions = new HashSet<Condition>();
-        conditions.add(new Condition("name", Operators.EQ, name));
-        conditions.add(new Condition("inner_code", Operators.EQ, innerCode));
-        long num = this.getCount(conditions);
-        return num > 0 ? true : false;
-    }
-
     public boolean hasExistName(Long id, String name) {
         StringBuffer sqlSelect = new StringBuffer("select count(1) as existCount from t_company where 1=1 ");
         sqlSelect.append(" and name='" + name + "'");
@@ -108,9 +130,9 @@ public class Company extends BaseCompany<Company> {
         }
     }
 
-    public boolean hasExistCode(Long id, String innerCode) {
+    public boolean hasExistRealCode(Long id, String realCode) {
         StringBuffer sqlSelect = new StringBuffer("select count(1) as existCount from t_company where 1=1 ");
-        sqlSelect.append(" and inner_code='" + innerCode + "'");
+        sqlSelect.append(" and real_code='" + realCode + "'");
         if (id != null) {
             sqlSelect.append(" and id<>" + id + "");
         }
@@ -130,12 +152,12 @@ public class Company extends BaseCompany<Company> {
         return InvokeResult.success();
     }
 
-    public InvokeResult save(Long id, String name, String innerCode, String waterUnit, String county, Integer street, String streetSrc,
+    public InvokeResult save(Long id, String name, String realCode, String innerCode, String waterUnit, String county, Integer street, String streetSrc,
                              String address, Integer customerType, Integer waterUseType, String gbIndustry, String mainIndustry,
                              String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
                              Integer remotemeterCount, Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createTime,
-                             BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type) {
-        if (hasExistCode(id, innerCode)) {
+                             BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type, String memo) {
+        if (hasExistRealCode(id, realCode)) {
             return InvokeResult.failure("保存失败，单位编号已存在");
         }
 
@@ -148,28 +170,29 @@ public class Company extends BaseCompany<Company> {
             if (company == null) {
                 return InvokeResult.failure("更新失败单位, 该单位不存在");
             }
-            company = setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
+            company = setProp(company, name, realCode, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                     gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
                     remotemeterCount, unitType, longitude, latitude, createTime, self_well_price, surface_price,
-                    self_free_price, company_type);
+                    self_free_price, company_type, memo);
             company.update();
         } else {
             Company company = new Company();
-            company = setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
+            company = setProp(company, name, realCode, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                     gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
                     remotemeterCount, unitType, longitude, latitude, createTime, self_well_price, surface_price,
-                    self_free_price, company_type);
+                    self_free_price, company_type, memo);
             company.save();
         }
         return InvokeResult.success();
     }
 
-    private Company setProp(Company company, String name, String innerCode, String waterUnit, String county, Integer street, String streetSrc,
+    private Company setProp(Company company, String name, String realCode, String innerCode, String waterUnit, String county, Integer street, String streetSrc,
                             String address, Integer customerType, Integer waterUseType, String gbIndustry, String mainIndustry,
                             String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
                             Integer remotemeterCount, Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createTime,
-                            BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type) {
+                            BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type, String memo) {
         company.setName(name);
+        company.setRealCode(realCode);
         company.setInnerCode(innerCode);
         company.setWaterUnit(waterUnit);
         company.setCounty(county);
@@ -199,6 +222,7 @@ public class Company extends BaseCompany<Company> {
         company.setSelfWellPrice(self_well_price);
         company.setSurfacePrice(surface_price);
         company.setSelfFreePrice(self_free_price);
+        company.setMemo(memo);
         return company;
     }
 
@@ -552,13 +576,13 @@ public class Company extends BaseCompany<Company> {
     }
 
     public static int[] saveBatch(List<Company> modelOrRecordList, int batchSize) {
-        String sql = "insert into t_company(inner_code,name,water_unit,county,street,street_src,address,customer_type,gb_industry," +
+        String sql = "insert into t_company(inner_code,real_code,name,water_unit,county,street,street_src,address,customer_type,gb_industry," +
                 "main_industry,water_use_type,contact,phone,postal_code,department,well_count,first_watermeter_count," +
-                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type)" +
-                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        String columns = "inner_code,name,water_unit,county,street,street_src,address,customer_type,gb_industry," +
+                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type,memo)" +
+                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String columns = "inner_code,real_code,name,water_unit,county,street,street_src,address,customer_type,gb_industry," +
                 "main_industry,water_use_type,contact,phone,postal_code,department,well_count,first_watermeter_count," +
-                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type";
+                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type,memo";
         int[] result = Db.batch(sql, columns, modelOrRecordList, batchSize);
         return result;
     }
@@ -572,11 +596,13 @@ public class Company extends BaseCompany<Company> {
             Company company = new Company();
             Integer company_type = CompanyType.COMPANY;
             Map<Integer, String> map = maps.get(i);
-            String innerCode = null;
+            String realCode = null;
             if (StringUtils.isNotEmpty(map.get(0))) {
-                innerCode = map.get(0).toString();
+                realCode = map.get(0).toString();
             }
-            if (StringUtils.isEmpty(innerCode) || hasExistCompany(innerCode)) {
+            String innerCode = CodeNumUtil.genInnerCode();
+
+            if (StringUtils.isEmpty(realCode) || hasExistByRealCode(realCode)) {
                 continue;
             }
             String name = null;
@@ -674,10 +700,14 @@ public class Company extends BaseCompany<Company> {
                 }
                 createDate = DateUtils.getDate(date, ToolDateTime.pattern_ymd);
             }
-            setProp(company, name, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
+            String memo = null;
+            if (StringUtils.isNotEmpty(map.get(19))) {
+                memo = map.get(19).toString();
+            }
+            setProp(company, name, realCode, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                     gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
                     remotemeterCount, unitType, null, null, createDate, self_well_price, surface_price, self_free_price,
-                    company_type);
+                    company_type, memo);
             lists.add(company);
         }
         saveBatch(lists, lists.size());

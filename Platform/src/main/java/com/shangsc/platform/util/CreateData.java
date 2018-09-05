@@ -22,7 +22,7 @@ public class CreateData {
         for (int i = 1; i <= 100; i++) {
             Company company = new Company();
             company.setName("公司-Test-" + i);
-            company.setInnerCode(CodeNumUtil.genInnerCode(i));
+            company.setInnerCode(CodeNumUtil.genInnerCode());
             company.setWaterUnit("通州区节水办");
             company.setCounty("通州区");
             company.setStreet(2);
@@ -54,7 +54,7 @@ public class CreateData {
         Date today = new Date();
         for (int i = 1; i <= 100; i++) {
             WaterMeter meter = new WaterMeter();
-            meter.setInnerCode(CodeNumUtil.genInnerCode(i));
+            meter.setInnerCode(CodeNumUtil.genInnerCode());
             meter.setMeterNum("Test0010" + i);
             meter.setMeterAddress(CodeNumUtil.genInnerCode2(i));
             meter.setMeterAttr("属性" + i);
@@ -72,7 +72,7 @@ public class CreateData {
         //100 公司
         for (int i = 1; i <= 100; i++) {
             WaterIndex index = new WaterIndex();
-            index.setInnerCode(CodeNumUtil.genInnerCode(i));
+            index.setInnerCode(CodeNumUtil.genInnerCode());
             index.setWaterIndex(new BigDecimal(200));
             index.setWatersType(2);
             index.setJanuary(new BigDecimal(new Random().nextInt(10)+1));
@@ -97,7 +97,7 @@ public class CreateData {
        // for (int i = 1; i <= 20; i++) {
             for (int j = 0; j < 100; j++) {
                 ActualData data = new ActualData();
-                data.setInnerCode(CodeNumUtil.genInnerCode(j));
+                data.setInnerCode(CodeNumUtil.genInnerCode());
                 data.setMeterAddress(CodeNumUtil.genInnerCode2(j));
                 data.setNetWater(new BigDecimal(new Random().nextInt(2)+1));
                 data.setState(1);

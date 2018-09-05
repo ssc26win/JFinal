@@ -43,11 +43,12 @@
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterAddress">表计地址</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
-                    <input type="text" id="meterAddress" name="meterAddress" value="${item.meter_address}" class="col-xs-12 col-sm-8">
+                    <input type="hidden" id="meterAddress" name="meterAddress" value="${item.meterAddress}" />
+                    <select id="meterAddressSelect" name="meterAddressSelect" class="col-xs-12 col-sm-8"></select>
                   </div>
                 </div>
               </div>
-              <div class="form-group">
+              <%--<div class="form-group">
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="watersType">水源类型</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
@@ -55,7 +56,7 @@
                     <select id="watersType" name="watersType" class="col-xs-12 col-sm-8"></select>
                   </div>
                 </div>
-              </div>
+              </div>--%>
               <div class="form-group">
                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="netWater">净用水量</label>
                 <div class="col-xs-12 col-sm-9">
@@ -196,10 +197,10 @@
 
   function getDictMapData(){
     var submitData = {};
-    $.post("${context_path}/dict/getByType", submitData, function(data) {
-      var watersType = data.WatersType;
-      for(var i = 0;i<watersType.length;i++) {
-        if ($("#watersTypeInput").val() == watersType[i].value) {
+    $.post("${context_path}/basic/meter/findAddress", submitData, function(data) {
+      var address = data.data;
+      for(var i = 0;i<address.length;i++) {
+        if ($("#address").val() == watersType[i].value) {
           $("#watersType").append("<option selected value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
         } else {
           $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
@@ -209,7 +210,7 @@
   }
   $(function(){
     getDictMapData();
-  })
+  }
 </script>
 </body>
 

@@ -104,7 +104,7 @@
             datatype: "json",
             colModel: [
                 { label: '单位名称', name: 'companyName', width: 120, sortable:false},
-                { label: '单位编号', name: 'inner_code', width: 60, sortable:true},
+                { label: '单位编号', name: 'real_code', width: 60, sortable:true},
                 { label: '水井编号', name: 'well_num', width: 60, sortable:false},
                 { label: '水井名称', name: 'name', width: 60,sortable:false},
                 { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},

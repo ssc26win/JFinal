@@ -189,7 +189,7 @@ public class SysUser extends BaseSysUser<SysUser> {
             sysUser.set("des", des).set("phone", phone).set("email", email).set("inner_code", innerCode);
             update();
         } else {
-            if (!Company.me.hasExistCode(null, innerCode)) {
+            if (!Company.me.hasExistInnerCode(null, innerCode)) {
                 return InvokeResult.failure("公司编码不存在");
             }
             if (this.hasExist(username)) {
@@ -261,7 +261,7 @@ public class SysUser extends BaseSysUser<SysUser> {
     }
 
     public InvokeResult regist(String username, String password, String phone, String email, String innerCode) {
-        if (!Company.me.hasExistCode(null, innerCode)) {
+        if (!Company.me.hasExistInnerCode(null, innerCode)) {
             return InvokeResult.failure("公司编码不存在");
         }
         if (this.hasExist(username)) {
