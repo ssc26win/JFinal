@@ -35,7 +35,7 @@
                                         <form id="exportForm" action="${context_path}/statis/year/exportData" method="post">
                                             <div class="input-group">
                                                 日期时间（年）:
-                                                <input type="number" id="year" name="year"/>
+                                                <input type="number" id="year" name="year" min="2017"/>
                                                 <select id="type" name="type" style="margin-left: 5px;width: 159px;height: 34px;"><option value="" selected>请选择单位类型</option>
                                                     <option value="1">用水单位</option>
                                                     <option value="2">供水单位</option>

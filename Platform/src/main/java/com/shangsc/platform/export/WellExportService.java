@@ -60,7 +60,7 @@ public class WellExportService extends ExportBaseService {
             Object[] obj = new Object[] {
                     well.getWellNum(),
                     well.getName(),
-                    well.getInnerCode(),
+                    well.get("real_code"),
                     well.get("companyName"),
                     well.get("water_unit"),
                     well.get("county"),

@@ -6,7 +6,6 @@ import com.google.common.collect.Maps;
 import com.jfinal.aop.Clear;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.template.ext.directive.Str;
 import com.jfinal.upload.UploadFile;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.ExportType;
@@ -166,8 +165,9 @@ public class MeterController extends BaseController {
             registDate = DateUtils.parseDate(this.getPara("registDate"));
         }
         String vender = this.getPara("vender");
+        String memo = this.getPara("memo");
         InvokeResult result = WaterMeter.me.save(id, innerCode, lineNum, meterNum, meterAddress, times,
-                watersType, meterAttr, chargeType, billingCycle, registDate, vender);
+                watersType, meterAttr, chargeType, billingCycle, registDate, vender, memo);
         this.renderJson(result);
     }
 
@@ -274,7 +274,7 @@ public class MeterController extends BaseController {
     public void findAddress() {
         String innerCode = this.getPara("innerCode");
         JSONObject result = new JSONObject();
-        result.put("data", WaterMeter.me.findAddressByInnerCode(innerCode));
+        result.put("addressList", WaterMeter.me.findAddressByInnerCode(innerCode));
         this.renderJson(result);
     }
 

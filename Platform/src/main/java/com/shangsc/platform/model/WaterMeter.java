@@ -74,7 +74,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
     }
 
     public InvokeResult save(Long id, String innerCode, String lineNum, String meterNum, String meterAddress, BigDecimal times,
-                             Integer watersType, String meterAttr, Integer chargeType, String billingCycle, Date registDate, String vender) {
+                             Integer watersType, String meterAttr, Integer chargeType, String billingCycle, Date registDate, String vender, String memo) {
         if (!Company.me.hasExistCompany(innerCode)) {
             return InvokeResult.failure("保存失败，公司编号不存在");
         }
@@ -89,11 +89,13 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
             if (meter == null) {
                 return InvokeResult.failure("更新失败, 该水表不存在");
             }
-            meter = setProp(meter, innerCode, lineNum, meterNum, meterAddress, times, watersType, meterAttr, chargeType, billingCycle, registDate, vender);
+            meter = setProp(meter, innerCode, lineNum, meterNum, meterAddress, times, watersType, meterAttr,
+                    chargeType, billingCycle, registDate, vender, memo);
             meter.update();
         } else {
             WaterMeter meter = new WaterMeter();
-            meter = setProp(meter, innerCode, lineNum, meterNum, meterAddress, times, watersType, meterAttr, chargeType, billingCycle, registDate, vender);
+            meter = setProp(meter, innerCode, lineNum, meterNum, meterAddress, times, watersType, meterAttr,
+                    chargeType, billingCycle, registDate, vender, memo);
             meter.setRegistDate(new Date());
             meter.save();
             Company.me.updateMeterNum(innerCode, true);
@@ -103,7 +105,8 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
     }
 
     private WaterMeter setProp(WaterMeter meter, String innerCode, String lineNum, String meterNum, String meterAddress, BigDecimal times,
-                               Integer watersType, String meterAttr, Integer chargeType, String billingCycle, Date registDate, String vender) {
+                               Integer watersType, String meterAttr, Integer chargeType, String billingCycle,
+                               Date registDate, String vender, String memo) {
         meter.setInnerCode(innerCode);
         meter.setLineNum(lineNum);
         meter.setMeterNum(meterNum);
@@ -119,6 +122,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
             meter.setRegistDate(registDate);
         }
         meter.setVender(vender);
+        meter.setMemo(memo);
         return meter;
     }
 

@@ -117,6 +117,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="memo">备注信息</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="text" id="memo" name="memo" value="${item.memo}" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="vender">生产厂家</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
@@ -167,7 +175,7 @@
                 },
                 meterAddress:{
                     required: true
-                },
+                }
             },
             messages: {
                 companyName:{
@@ -181,7 +189,7 @@
                 },
                 meterAddress:{
                     required: "请输入表计地址"
-                },
+                }
             },
             highlight: function (e) {
                 $(e).closest('.form-group').removeClass('has-info').addClass('has-error');

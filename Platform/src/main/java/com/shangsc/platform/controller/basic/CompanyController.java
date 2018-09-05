@@ -148,7 +148,6 @@ public class CompanyController extends BaseController {
     @RequiresPermissions(value = {"/basic/company"})
     public void save() {
         Long id = this.getParaToLong("id");
-
         String innerCode = CodeNumUtil.genInnerCode();
         String realCode = StringUtils.trim(this.getPara("realCode"));
         String name = this.getPara("name");

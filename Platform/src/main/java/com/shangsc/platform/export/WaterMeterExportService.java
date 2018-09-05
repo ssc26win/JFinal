@@ -19,7 +19,7 @@ public class WaterMeterExportService extends ExportBaseService {
     public String export(List<WaterMeter> waterMeters) {
         super.logger.info("导出水表信息开始");
         List<String> listHeader = new ArrayList<String>();
-        listHeader.addAll(Arrays.asList(new String[] {
+        listHeader.addAll(Arrays.asList(new String[]{
                 "单位编号",
                 "单位名称",
                 "所属节水办",
@@ -35,7 +35,9 @@ public class WaterMeterExportService extends ExportBaseService {
                 "水表属性",
                 "收费类型",
                 "注册日期",
-                "计费周期"
+                "计费周期",
+                "备注",
+                "生产厂家"
         }));
 
         /**
@@ -44,8 +46,8 @@ public class WaterMeterExportService extends ExportBaseService {
         logger.info("水表信息导出条数为:{}", waterMeters.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (WaterMeter waterMeter : waterMeters) {
-            Object[] obj = new Object[] {
-                waterMeter.getInnerCode(),
+            Object[] obj = new Object[]{
+                waterMeter.get("real_code"),
                 waterMeter.get("companyName"),
                 waterMeter.get("water_unit"),
                 waterMeter.get("county"),
@@ -60,7 +62,9 @@ public class WaterMeterExportService extends ExportBaseService {
                 waterMeter.getMeterAttr(),
                 waterMeter.get("chargeTypeName"),
                 ToolDateTime.format(waterMeter.getRegistDate(), ToolDateTime.pattern_ymd),
-                waterMeter.getBillingCycle()
+                waterMeter.getBillingCycle(),
+                waterMeter.getMemo(),
+                waterMeter.getVender()
             };
             objects.add(obj);
         }

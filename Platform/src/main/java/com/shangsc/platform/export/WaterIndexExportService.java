@@ -45,7 +45,7 @@ public class WaterIndexExportService extends ExportBaseService{
         for (WaterIndex waterIndex : list) {
             Object[] obj = new Object[]{
                     waterIndex.get("water_unit"),
-                    waterIndex.getInnerCode(),
+                    waterIndex.get("real_code"),
                     waterIndex.get("companyName"),
                     waterIndex.get("watersTypeName"),
                     waterIndex.getWaterIndex(),

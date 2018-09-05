@@ -23,14 +23,14 @@ TomcatMonitorLog=/usr/local/tomcat7/monitor/logs/Test_TomcatMonitor.log
 Monitor()
 {
   echo "[info]开始监控tomcat...[$(date +'%F %H:%M:%S')]"
-  if [ $TomcatID ];then
+  if [ "$TomcatID" != "" ];then
     echo "[info]tomcat进程ID为:$TomcatID."
     # 获取返回状态码
 
     TomcatServiceCode=$(curl -s -o $GetPageInfo -m 10 --connect-timeout 10 $WebUrl -w %{http_code})
 
     if [ $TomcatServiceCode -eq 200 ];then
-        echo "[info]返回码为$TomcatServiceCode,tomcat启动成功,页面正常."
+        echo "[info]返回码为$TomcatServiceCode,tomcat运行正常,页面正常."
     else
         echo "[error]访问出错，状态码为$TomcatServiceCode,错误日志已输出到$GetPageInfo"
         echo "[error]开始重启tomcat"
@@ -38,6 +38,7 @@ Monitor()
         sleep 3
         #rm -rf $TomcatCache # 清理tomcat缓存
         $StartTomcat
+	echo "[info]tomcat启动成功."
     fi
   else
     echo "[error]进程不存在!tomcat自动重启..."

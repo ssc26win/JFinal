@@ -48,13 +48,14 @@ public class CompanyExportService extends ExportBaseService {
                 "水井数量",
                 "一级表数量",
                 "远传表数量",
+                "备注"
         }));
 
         logger.info("导出单位信息导出条数为:{}", companies.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (Company company : companies) {
             Object[] obj = new Object[]{
-                    company.getInnerCode(),
+                    company.getRealCode(),
                     company.getName(),
                     company.getWaterUnit(),
                     company.getCounty(),
@@ -77,6 +78,7 @@ public class CompanyExportService extends ExportBaseService {
                     company.getWellCount(),
                     company.getFirstWatermeterCount(),
                     company.getRemotemeterCount(),
+                    company.getMemo()
             };
             objects.add(obj);
         }

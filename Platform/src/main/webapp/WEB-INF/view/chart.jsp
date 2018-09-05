@@ -35,27 +35,27 @@
     <div class="main-content" id="page-wrapper">
         <div class="page-content" id="page-content">
             <div class="row">
-                <div class="col-xs-6">
+                <div class="col-sm-6">
                     <div id="containerCompany" style="width: 50%; height: 25%; margin: 0 auto"></div>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-sm-6">
                     <div id="containerMeter" style="width: 50%; height: 25%; margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row" style="margin-top: 20px;">
-                <div class="col-xs-12">
-                    <div id="containerUseD" style="width: 50%; height: 35%; margin: 0 auto"></div>
+                <div class="col-sm-6">
+                    <div id="containerUseD" style="margin: 0 auto"></div>
                 </div>
-                <div class="col-xs-12">
-                    <div id="containerUseM" style="width: 50%; height: 35%; margin: 0 auto"></div>
+                <div class="col-sm-6">
+                    <div id="containerUseM" style="margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row" style="margin-top: 20px;">
-                <div class="col-xs-12">
-                    <div id="containerSupplyD" style="width: 50%; height: 35%; margin: 0 auto"></div>
+                <div class="col-sm-6">
+                    <div id="containerSupplyD" style="margin: 0 auto"></div>
                 </div>
-                <div class="col-xs-12">
-                    <div id="containerSupplyM" style="width: 50%; height: 35%; margin: 0 auto"></div>
+                <div class="col-sm-6">
+                    <div id="containerSupplyM" style="margin: 0 auto"></div>
                 </div>
             </div>
             <div class="adbody" style="display: none;">

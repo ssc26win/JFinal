@@ -35,7 +35,7 @@
                                         <form id="exportForm" action="${context_path}/statis/daily/exportData" method="post">
                                             <div class="input-group">
                                                 日期时间:
-                                                <input type="text" id="startTime" name="startTime" value="" class="form_date"/>~<input type="text" id="endTime" name="endTime" value="" class="form_date"/>
+                                                <input type="text" id="startTime" name="startTime" value="" class="form_date" style="width: 100px;"/>~<input type="text" id="endTime" name="endTime" value="" class="form_date" style="width: 100px;"/>
                                                 <select id="type" name="type" style="margin-left: 5px;width: 159px;height: 34px;"><option value="">请选择单位类型</option>
                                                     <option value="1">用水单位</option>
                                                     <option value="2">供水单位</option>

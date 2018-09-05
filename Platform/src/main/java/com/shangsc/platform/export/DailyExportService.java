@@ -53,7 +53,7 @@ public class DailyExportService extends ExportBaseService{
             }
             Object[] obj = new Object[]{
                     actualData.get("water_unit"),
-                    actualData.get("inner_code"),
+                    actualData.get("real_code"),
                     actualData.get("name"),
                     actualData.get("line_num"),
                     actualData.get("meter_num"),

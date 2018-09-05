@@ -124,6 +124,7 @@
                 { label: '收费类型', name: 'chargeTypeName', width: 50, sortable:false},
                 { label: '计费周期', name: 'billing_cycle', width: 50, sortable:false},
                 { label: '注册日期', name: 'regist_date', width: 100, sortable:true},
+                { label: '备注信息', name: 'memo', width: 100, sortable:false},
                 { label: '生产厂家', name: 'vender', width: 100, sortable:false}
             ],
             viewrecords: true,
