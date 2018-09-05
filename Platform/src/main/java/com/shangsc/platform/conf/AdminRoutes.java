@@ -21,10 +21,17 @@ import com.shangsc.platform.controller.ImageController;
 import com.shangsc.platform.controller.IndexController;
 import com.shangsc.platform.controller.app.AppVersionController;
 import com.shangsc.platform.controller.app.LawRecordsController;
-import com.shangsc.platform.controller.basic.*;
+import com.shangsc.platform.controller.basic.CompanyController;
+import com.shangsc.platform.controller.basic.MeterController;
+import com.shangsc.platform.controller.basic.WaterIndexController;
+import com.shangsc.platform.controller.basic.WellController;
 import com.shangsc.platform.controller.msgs.AdController;
 import com.shangsc.platform.controller.msgs.MessageController;
 import com.shangsc.platform.controller.msgs.MsgReceiverController;
+import com.shangsc.platform.controller.report.ReportDailyController;
+import com.shangsc.platform.controller.report.ReportMonthController;
+import com.shangsc.platform.controller.report.ReportStreetController;
+import com.shangsc.platform.controller.report.ReportYearController;
 import com.shangsc.platform.controller.statis.*;
 import com.shangsc.platform.controller.sys.*;
 
@@ -66,6 +73,11 @@ public class AdminRoutes extends Routes {
         add("/statis/month", MonthStatisController.class, "/WEB-INF/view/statis");
         add("/statis/year", YearStatisController.class, "/WEB-INF/view/statis");
         add("/chart", ChartController.class, "/WEB-INF/view");
+
+        add("/report/street", ReportStreetController.class, "/WEB-INF/view/report");
+        add("/report/daily", ReportDailyController.class, "/WEB-INF/view/report");
+        add("/report/month", ReportMonthController.class, "/WEB-INF/view/report");
+        add("/report/year", ReportYearController.class, "/WEB-INF/view/report");
     }
 
 }

@@ -79,7 +79,34 @@ public class CompanyController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
+    public void byStage() {
+        this.setAttr("flag", "Stage" + this.getPara("stage"));
+        render("company_index.jsp");
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/basic/company"})
     public void getListData() {
+        String keyword = this.getPara("name");
+        String companyType = this.getPara("companyType");
+        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), companyType);
+        List<Company> companies = pageInfo.getList();
+        setVoProp(companies);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
+    }
+
+    @RequiresPermissions(value = {"/basic/company"})
+    public void getStage1ListData() {
+        String keyword = this.getPara("name");
+        String companyType = this.getPara("companyType");
+        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), companyType);
+        List<Company> companies = pageInfo.getList();
+        setVoProp(companies);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
+    }
+
+    @RequiresPermissions(value = {"/basic/company"})
+    public void getStage2ListData() {
         String keyword = this.getPara("name");
         String companyType = this.getPara("companyType");
         Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), companyType);

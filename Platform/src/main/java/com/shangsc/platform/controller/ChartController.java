@@ -28,6 +28,33 @@ public class ChartController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
+    public void metersByStage() {
+        JSONObject object = new JSONObject();
+        List<WaterMeter> waterMeters = WaterMeter.me.getAllList();
+        int total = waterMeters.size();
+        object.put("total", total);
+
+        object.put("stage1Total", 30);
+
+        object.put("stage2Total", total-30);
+        this.renderJson(object);
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/chart"})
+    public void companiesByStage() {
+        JSONObject object = new JSONObject();
+        //取得用水指标数据
+        int total = Company.me.totalCount();
+        object.put("total", total);//单位总数
+
+        object.put("stage1Total", 10);
+        object.put("stage2Total", total-10);
+        this.renderJson(object);
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/chart"})
     public void company() {
         JSONObject object = new JSONObject();
         //取得用水指标数据
@@ -60,7 +87,7 @@ public class ChartController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
-    public void index() {
+    public void meter() {
         JSONObject object = new JSONObject();
         List<WaterMeter> waterMeters = WaterMeter.me.getAllList();
         int total = waterMeters.size();

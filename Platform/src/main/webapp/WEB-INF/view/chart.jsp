@@ -36,6 +36,14 @@
         <div class="page-content" id="page-content">
             <div class="row">
                 <div class="col-sm-6">
+                    <div id="containerCompaniesStage" style="width: 50%; height: 25%; margin: 0 auto"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div id="containerMetersStage" style="width: 50%; height: 25%; margin: 0 auto"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
                     <div id="containerCompany" style="width: 50%; height: 25%; margin: 0 auto"></div>
                 </div>
                 <div class="col-sm-6">
@@ -71,13 +79,114 @@
 </div>
 <script language="JavaScript">
     $(document).ready(function () {
-        var total, normalTotal, exptionTotal;
-        $.get("${context_path}/chart", function (data) {
-            total = data.total;
-            normalTotal = data.normalTotal;
-            exptionTotal = data.exptionTotal;
-            stopTotal = data.stopTotal;
-            disableTotal = data.disableTotal;
+        $.get("${context_path}/chart/metersByStage", function (data) {
+            var total = data.total;
+            var stage1Total = data.stage1Total;
+            var stage2Total = data.stage2Total;
+            var chart1 = {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            };
+            var title1 = {
+                text: '水表总数量（' + total + '）'
+            };
+            var tooltip1 = {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
+            };
+            var plotOptions1 = {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    events:{
+                        click:function (e) {
+                            location.href=e.point.url
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            };
+            var series1 = [{
+                type: 'pie',
+                name: '水表数量（%）',
+                data: [
+                    {name:'一期' + '(' + stage1Total + ')', y:stage1Total,url:'${context_path}/basic/meter/byStage?stage=1'},
+                    {name:'二期' + '(' + stage2Total + ')', y:stage2Total,url:'${context_path}/basic/meter/byStage?stage=2'},
+                ]
+            }];
+
+            var credits = {
+                enabled:false // 禁用版权信息
+            }
+            var json1 = {};
+            json1.chart = chart1;
+            json1.title = title1;
+            json1.tooltip = tooltip1;
+            json1.series = series1;
+            json1.plotOptions = plotOptions1;
+            json1.credits=credits;
+            $('#containerMetersStage').highcharts(json1);
+        })
+
+        $.get("${context_path}/chart/companiesByStage", function (data) {
+            var total = data.total;
+            var stage1Total = data.stage1Total;
+            var stage2Total = data.stage2Total;
+            var chart1 = {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            };
+            var title1 = {
+                text: '单位总数量（' + total + '）'
+            };
+            var tooltip1 = {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
+            };
+            var plotOptions1 = {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    events:{
+                        click:function (e) {
+                            location.href=e.point.url
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            };
+            var series1 = [{
+                type: 'pie',
+                name: '单位数量（%）',
+                data: [
+                    {name:'一期' + '(' + stage1Total + ')', y:stage1Total,url:'${context_path}/basic/company/byStage?stage=1'},
+                    {name:'二期' + '(' + stage2Total + ')', y:stage2Total,url:'${context_path}/basic/company/byStage?stage=2'},
+                ]
+            }];
+            var credits = {
+                enabled:false // 禁用版权信息
+            }
+            var json1 = {};
+            json1.chart = chart1;
+            json1.title = title1;
+            json1.tooltip = tooltip1;
+            json1.series = series1;
+            json1.plotOptions = plotOptions1;
+            json1.credits=credits;
+            $('#containerCompaniesStage').highcharts(json1);
+        })
+        $.get("${context_path}/chart/meter", function (data) {
+            var total = data.total;
+            var normalTotal = data.normalTotal;
+            var exptionTotal = data.exptionTotal;
+            var stopTotal = data.stopTotal;
+            var disableTotal = data.disableTotal;
             var chart1 = {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -129,13 +238,12 @@
             $('#containerMeter').highcharts(json1);
         })
 
-        var total2, warnTotal2, normalTotal2, warnTitle, supplyTotal;
         $.get("${context_path}/chart/company", function (data) {
-            total2 = data.total;
-            warnTotal2 = data.warnTotal;
-            normalTotal2 = data.normalTotal;
-            supplyTotal = data.supplyTotal;
-            warnTitle = data.warnTitle;
+            var total2 = data.total;
+            var warnTotal2 = data.warnTotal;
+            var normalTotal2 = data.normalTotal;
+            var supplyTotal = data.supplyTotal;
+            var warnTitle = data.warnTitle;
 
             var chart1 = {
                 plotBackgroundColor: null,
