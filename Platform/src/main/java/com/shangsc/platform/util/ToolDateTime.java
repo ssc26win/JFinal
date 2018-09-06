@@ -3,6 +3,7 @@ package com.shangsc.platform.util;
 import com.jfinal.log.Log;
 import com.shangsc.platform.code.MonthCode;
 import com.shangsc.platform.core.util.DateUtils;
+import com.shangsc.platform.model.SysLog;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -125,7 +126,7 @@ public abstract class ToolDateTime {
 	 * @return
 	 */
 	public static Timestamp getSqlTimestamp() {
-		return getSqlTimestamp(new Date().getTime());
+		return getSqlTimestamp(System.currentTimeMillis());
 	}
 
 	/**
@@ -268,7 +269,9 @@ public abstract class ToolDateTime {
 		try {
 			return format.parse(date);
 		} catch (ParseException e) {
-			if(log.isErrorEnabled()) log.error("ToolDateTime.parse异常：date值" + date + "，pattern值" + pattern, e);
+			if(log.isErrorEnabled()) {
+				log.error("ToolDateTime.parse异常：date值" + date + "，pattern值" + pattern, e);
+			}
 			return null;
 		}
 	}
@@ -365,7 +368,7 @@ public abstract class ToolDateTime {
 		String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		int dayIndex = calendar.get(calendar.DAY_OF_WEEK) - calendar.SUNDAY;
+		int dayIndex = calendar.get(Calendar.DAY_OF_WEEK) - Calendar.SUNDAY;
 		if (dayIndex < 0) {
 			dayIndex = 0;
 		}

@@ -1,5 +1,8 @@
 package com.shangsc.platform.controller.report;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.code.DictCode;
@@ -12,6 +15,8 @@ import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.DailyExportService;
 import com.shangsc.platform.model.ActualData;
+import com.shangsc.platform.model.ActualDataResport;
+import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
@@ -20,6 +25,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author ssc
@@ -32,20 +38,36 @@ public class ReportDailyController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/report/daily"})
     public void index() {
-        String time = this.getPara("time");
-        if (StringUtils.isNotBlank(time)) {
-            this.setAttr("startTime", time);
-            this.setAttr("endTime", time);
+        JSONArray array = new JSONArray();
+        List<String> months = ActualDataResport.me.getDayColumns();
+        JSONObject company = new JSONObject();
+        company.put("label", "单位名称");
+        company.put("name", "companyName");
+        company.put("width", "100px;");
+        company.put("sortable", "false");
+        array.add(company);
+        for (String value : months) {
+            JSONObject column = new JSONObject();
+            column.put("label", value);
+            column.put("name", "Day_" + value);
+            column.put("width", "100px;");
+            column.put("sortable", "false");
+            array.add(column);
         }
+        this.setAttr("columnsDay", array);
         String type = this.getPara("type");
         if (StringUtils.isNotEmpty(type)) {
             this.setAttr("type", type);
         }
+        Map<String, String> nameList = Company.me.loadNameList();
+        Set<String> names = nameList.keySet();
+        this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
+        this.setAttr("names", JSONUtils.toJSONString(names));
         render("daily_report.jsp");
     }
 
     @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value={"/report/daily"})
+    @RequiresPermissions(value = {"/report/daily"})
     public void getListData() {
         ActualData.me.setGlobalInnerCode(getInnerCode());
         String name = this.getPara("name");
@@ -88,7 +110,7 @@ public class ReportDailyController extends BaseController {
                         co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
                     }
                 } else {
-                    co.put("watersTypeName","");
+                    co.put("watersTypeName", "");
                 }
                 if (co.get("address") != null) {
                     co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
@@ -100,7 +122,7 @@ public class ReportDailyController extends BaseController {
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
-    @RequiresPermissions(value={"/report/daily"})
+    @RequiresPermissions(value = {"/report/daily"})
     public void exportData() {
         ActualData.me.setGlobalInnerCode(getInnerCode());
         String name = this.getPara("name");
@@ -143,7 +165,7 @@ public class ReportDailyController extends BaseController {
                         co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
                     }
                 } else {
-                    co.put("watersTypeName","");
+                    co.put("watersTypeName", "");
                 }
                 list.set(i, co);
             }

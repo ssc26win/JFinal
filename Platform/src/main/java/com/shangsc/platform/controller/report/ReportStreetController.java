@@ -1,5 +1,7 @@
 package com.shangsc.platform.controller.report;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.conf.GlobalConfig;
@@ -11,6 +13,7 @@ import com.shangsc.platform.export.YearExportService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.io.File;
 import java.util.List;
@@ -24,27 +27,29 @@ import java.util.Map;
  */
 public class ReportStreetController extends BaseController {
 
-    /**
-     * [
-     { label: '所属乡镇', name: 'water_unit', width: 100, sortable:false},
-     { label: '单位名称', name: 'name', width: 200, sortable:false},
-     { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
-     { label: '路别', name: 'line_num', width: 60, sortable:false},
-     { label: '水表编号', name: 'meter_num', width: 60,sortable:false},
-     { label: '表计地址', name: 'meter_address', width: 100,sortable:false},
-     { label: '水表属性', name: 'meter_attr', width: 100, sortable:false},
-     { label: '查询时间', name: 'years', width: 60, sortable:true},
-     { label: '用水量（立方米）', name: 'yearTotal', width: 100, sortable:true},
-     { label: '单位地址', name: 'addressMap', width: 150,sortable:false}
-     ]
-     */
     @RequiresPermissions(value = {"/report/street"})
     public void index() {
-
+        JSONArray array = new JSONArray();
+        Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
+        JSONObject company = new JSONObject();
+        company.put("label", "水源类型");
+        company.put("name", "watersTypeName");
+        company.put("width", "100px;");
+        company.put("sortable", "false");
+        array.add(company);
+        for (String value : meterAttrType.keySet()) {
+            JSONObject column = new JSONObject();
+            column.put("label", meterAttrType.get(value).toString());
+            column.put("name", "meterAttrCount" + value);
+            column.put("width", "100px;");
+            column.put("sortable", "false");
+            array.add(column);
+        }
+        this.setAttr("columnsMeterAttr", array);
         render("street_report.jsp");
     }
 
-    @RequiresPermissions(value={"/report/street"})
+    @RequiresPermissions(value = {"/report/street"})
     public void getListData() {
         ActualData.me.setGlobalInnerCode(getInnerCode());
         String name = this.getPara("name");
@@ -85,7 +90,7 @@ public class ReportStreetController extends BaseController {
                         co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
                     }
                 } else {
-                    co.put("watersTypeName","");
+                    co.put("watersTypeName", "");
                 }
                 if (co.get("address") != null) {
                     co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
@@ -97,7 +102,7 @@ public class ReportStreetController extends BaseController {
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
-    @RequiresPermissions(value={"/report/street"})
+    @RequiresPermissions(value = {"/report/street"})
     public void exportData() {
         ActualData.me.setGlobalInnerCode(getInnerCode());
         String name = this.getPara("name");
@@ -138,7 +143,7 @@ public class ReportStreetController extends BaseController {
                         co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
                     }
                 } else {
-                    co.put("watersTypeName","");
+                    co.put("watersTypeName", "");
                 }
                 list.set(i, co);
             }

@@ -97,7 +97,7 @@
             url:'${context_path}/report/street/getListData',
             mtype: "GET",
             datatype: "json",
-            colModel: '${columns}',
+            colModel: jQuery.parseJSON('${columnsMeterAttr}'),
             viewrecords: true,
             height: 560,
             rowNum: 20,
@@ -121,18 +121,12 @@
         });
         $("#btn_search").click(function(){
             //此处可以添加对查询数据的合法验证
-            var name = $("#name").val();
-            var innerCode = $("#innerCode").val();
             var street = $("#street").val();
-            var year = $("#year").val();
             var watersType = $("#watersType").val();
-            var meterAttr = $("#meterAttr").val();
-            var meterAddress = $("#meterAddress").val();
             var type = $("#type").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',
-                postData:{'name':name,'innerCode':innerCode,'year':year,'street':street,'watersType':watersType,
-                    'meterAttr':meterAttr,'meterAddress':meterAddress,'type':type}, //发送数据
+                postData:{'street':street,'watersType':watersType}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });

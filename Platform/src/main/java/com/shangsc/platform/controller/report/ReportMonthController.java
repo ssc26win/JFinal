@@ -1,5 +1,8 @@
 package com.shangsc.platform.controller.report;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.conf.GlobalConfig;
@@ -10,6 +13,8 @@ import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.MonthExportService;
 import com.shangsc.platform.model.ActualData;
+import com.shangsc.platform.model.ActualDataResport;
+import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +23,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author ssc
@@ -29,15 +35,31 @@ public class ReportMonthController extends BaseController {
 
     @RequiresPermissions(value = {"/report/month"})
     public void index() {
-        String time = this.getPara("time");
-        if (StringUtils.isNotBlank(time)) {
-            this.setAttr("startTime", time);
-            this.setAttr("endTime", time);
+        JSONArray array = new JSONArray();
+        List<String> months = ActualDataResport.me.getMonthColumns();
+        JSONObject company = new JSONObject();
+        company.put("label", "单位名称");
+        company.put("name", "companyName");
+        company.put("width", "100px;");
+        company.put("sortable", "false");
+        array.add(company);
+        for (String value : months) {
+            JSONObject column = new JSONObject();
+            column.put("label", value);
+            column.put("name", "Month_" + value);
+            column.put("width", "100px;");
+            column.put("sortable", "false");
+            array.add(column);
         }
+        this.setAttr("columnsMonth", array);
         String type = this.getPara("type");
         if (StringUtils.isNotEmpty(type)) {
             this.setAttr("type", type);
         }
+        Map<String, String> nameList = Company.me.loadNameList();
+        Set<String> names = nameList.keySet();
+        this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
+        this.setAttr("names", JSONUtils.toJSONString(names));
         render("month_report.jsp");
     }
 
