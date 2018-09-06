@@ -34,7 +34,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         String select = " select tc.street,twm.waters_type ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm " +
                 " inner join t_company tc on twm.inner_code=tc.inner_code " +
-                " where (tc.street <> '' or tc.street is not null) and (twm.waters_type '' or twm.waters_type is not null) ");
+                " where (tc.street<>'' or tc.street is not null) and (twm.waters_type<>'' or twm.waters_type is not null) ");
         if (StringUtils.isNotEmpty(globalInnerCode)) {
             sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
         }
@@ -64,10 +64,10 @@ public class ActualDataReport extends BaseActualData<ActualData> {
     }
 
     public Map<String, String> getYearColumns() {
-        String sql = "select date_format(write_time, '%Y') as years from t_actual_data " +
-                "GROUP BY date_format(write_time, '%Y') order by  date_format(write_time, '%Y')";
+        String sql = "select date_format(tad.write_time, '%Y') as years from (select write_time from t_actual_data order by write_time asc) tad " +
+                " GROUP BY date_format(tad.write_time, '%Y')";
         List<Record> records = Db.find(sql);
-        Map<String, String> years = new HashMap<>();
+        Map<String, String> years = new LinkedHashMap<>();
         for (Record record : records) {
             if (StringUtils.isNotEmpty(record.getStr("years"))) {
                 years.put(record.getStr("years"), ReportColType.year_col + record.getStr("years"));
@@ -81,12 +81,14 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         Integer year = Integer.valueOf(date.get(Calendar.YEAR));
         String start = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year) + "-01-01 00:00:00"));
         String end = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year + 1) + "-01-01 00:00:00"));
-        String sql = "select date_format(write_time, '%Y-%m') as months from t_actual_data " +
-                "where write_time >='" + start + "' and write_time <='" + end + "'" +
-                "GROUP BY date_format(write_time, '%Y-%m') order by date_format(write_time, '%Y-%m')";
+        String sql = "select date_format(tad.write_time, '%Y-%m') as months from (select write_time from t_actual_data order by write_time asc) tad " +
+                "where tad.write_time >='" + start + "' and tad.write_time <='" + end + "'" +
+                "GROUP BY date_format(tad.write_time, '%Y-%m')";
         List<Record> records = Db.find(sql);
-        Map<String, String> months = new HashMap<>();
-        for (Record record : records) {
+
+        Map<String, String> months = new LinkedHashMap<>();
+        for (int i = 0; i < records.size(); i++) {
+            Record record = records.get(i);
             if (StringUtils.isNotEmpty(record.getStr("months"))) {
                 months.put(record.getStr("months"), ReportColType.month_col + record.getStr("months"));
             }
@@ -98,12 +100,13 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         Map<String, String> monthDateStartAndEnd = ToolDateTime.getMonthDateStartAndEnd(new Date());
         String start = monthDateStartAndEnd.get(MonthCode.warn_start_date);
         String end = monthDateStartAndEnd.get(MonthCode.warn_end_date);
-        String sql = "select date_format(write_time, '%Y-%m-%d') as days from t_actual_data " +
-                "where write_time >='" + start + "' and write_time <='" + end + "'" +
-                "GROUP BY date_format(write_time, '%Y-%m-%d') order by date_format(write_time, '%Y-%m-%d')";
+        String sql = "select date_format(tad.write_time, '%Y-%m-%d') as days from (select write_time from t_actual_data order by write_time asc) tad " +
+                "where tad.write_time >='" + start + "' and tad.write_time <='" + end + "'" +
+                "GROUP BY date_format(tad.write_time, '%Y-%m-%d')";
         List<Record> records = Db.find(sql);
-        Map<String, String>  days = new HashMap<>();
-        for (Record record : records) {
+        Map<String, String> days = new LinkedHashMap<>();
+        for (int i = 0; i < records.size(); i++) {
+            Record record = records.get(i);
             if (StringUtils.isNotEmpty(record.getStr("days"))) {
                 days.put(record.getStr("days"), ReportColType.day_col + record.getStr("days"));
             }
@@ -135,7 +138,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
             }
         }
         sqlExceptSelect.append(" group by tc.inner_code");
-        sqlExceptSelect.append("order by tc.inner_code asc");
+        sqlExceptSelect.append(" order by tc.inner_code asc");
         logger.info("--- 单位用水量sql开始 ---");
         logger.info(select);
         logger.info(sqlExceptSelect.toString());

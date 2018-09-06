@@ -88,12 +88,13 @@ public class ReportMonthController extends BaseController {
                     if (innerCodeTarget.equals(inner_code)) {
                         String colStr = record.getStr("TargetDT");
                         BigDecimal colVal = new BigDecimal("0.0");
-                        if (StringUtils.isNotEmpty(record.getStr("TargetTotal"))) {
+                        if (record.getBigDecimal("TargetTotal") != null) {
                             colVal = record.getBigDecimal("TargetTotal");
                         }
                         company.put(colStr, colVal);
                     }
                 }
+                list.set(i, company);
             }
         }
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
@@ -115,7 +116,7 @@ public class ReportMonthController extends BaseController {
             }
             String yearSql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m') as TargetDT, sum(tad.net_water) as TargetTotal " +
                     " from t_actual_data tad where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
-                    "group by tad.inner_code,date_format(tad.write_time, '%Y-%m') order by tad.inner_code asc,TargetDT asc";
+                    "group by tad.inner_code,date_format(tad.write_time, '%Y-%m') order by TargetDT asc";
             List<Record> records = Db.find(yearSql);
             for (int i = 0; i < list.size(); i++) {
                 Company company = list.get(i);
@@ -125,12 +126,13 @@ public class ReportMonthController extends BaseController {
                     if (innerCodeTarget.equals(inner_code)) {
                         String colStr = record.getStr("TargetDT");
                         BigDecimal colVal = new BigDecimal("0.0");
-                        if (StringUtils.isNotEmpty(record.getStr("TargetTotal"))) {
+                        if (record.getBigDecimal("TargetTotal") != null) {
                             colVal = record.getBigDecimal("TargetTotal");
                         }
                         company.put(colStr, colVal);
                     }
                 }
+                list.set(i, company);
             }
         }
         ExportByDataTypeService service = new ExportByDataTypeService();

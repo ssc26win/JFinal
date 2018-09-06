@@ -7,6 +7,7 @@ import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.shangsc.platform.code.MonthCode;
 import com.shangsc.platform.code.ReportTypeEnum;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
@@ -16,15 +17,13 @@ import com.shangsc.platform.export.ExportByDataTypeService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.ActualDataReport;
 import com.shangsc.platform.model.Company;
+import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author ssc
@@ -79,8 +78,12 @@ public class ReportDailyController extends BaseController {
             for (Company company : list) {
                 innerCodes.add("'" + company.getInnerCode() + "'");
             }
+            Map<String, String> monthDateStartAndEnd = ToolDateTime.getMonthDateStartAndEnd(new Date());
+            String start = monthDateStartAndEnd.get(MonthCode.warn_start_date);
+            String end = monthDateStartAndEnd.get(MonthCode.warn_end_date);
             String sql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') as TargetDT, sum(tad.net_water) as TargetTotal " +
                     " from t_actual_data tad where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
+                    " and tad.write_time >='" + start + "'" + "and tad.write_time <='" + end + "'" +
                     "group by tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') order by tad.inner_code asc,TargetDT asc";
             List<Record> records = Db.find(sql);
             for (int i = 0; i < list.size(); i++) {
@@ -91,12 +94,13 @@ public class ReportDailyController extends BaseController {
                     if (innerCodeTarget.equals(inner_code)) {
                         String colStr = record.getStr("TargetDT");
                         BigDecimal colVal = new BigDecimal("0.0");
-                        if (StringUtils.isNotEmpty(record.getStr("TargetTotal"))) {
+                        if (record.getBigDecimal("TargetTotal") != null) {
                             colVal = record.getBigDecimal("TargetTotal");
                         }
                         company.put(colStr, colVal);
                     }
                 }
+                list.set(i, company);
             }
         }
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
@@ -116,9 +120,13 @@ public class ReportDailyController extends BaseController {
             for (Company company : list) {
                 innerCodes.add("'" + company.getInnerCode() + "'");
             }
+            Map<String, String> monthDateStartAndEnd = ToolDateTime.getMonthDateStartAndEnd(new Date());
+            String start = monthDateStartAndEnd.get(MonthCode.warn_start_date);
+            String end = monthDateStartAndEnd.get(MonthCode.warn_end_date);
             String sql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') as TargetDT, sum(tad.net_water) as TargetTotal " +
                     " from t_actual_data tad where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
-                    "group by tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') order by tad.inner_code asc,TargetDT asc";
+                    " and tad.write_time >='" + start + "'" + "and tad.write_time <='" + end + "'" +
+                    "group by tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') order by TargetDT asc";
             List<Record> records = Db.find(sql);
             for (int i = 0; i < list.size(); i++) {
                 Company company = list.get(i);
@@ -128,12 +136,13 @@ public class ReportDailyController extends BaseController {
                     if (innerCodeTarget.equals(inner_code)) {
                         String colStr = record.getStr("TargetDT");
                         BigDecimal colVal = new BigDecimal("0.0");
-                        if (StringUtils.isNotEmpty(record.getStr("TargetTotal"))) {
+                        if (record.getBigDecimal("TargetTotal") != null) {
                             colVal = record.getBigDecimal("TargetTotal");
                         }
                         company.put(colStr, colVal);
                     }
                 }
+                list.set(i, company);
             }
         }
         ExportByDataTypeService service = new ExportByDataTypeService();

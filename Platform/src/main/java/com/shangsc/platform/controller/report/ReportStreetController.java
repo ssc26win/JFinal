@@ -87,7 +87,10 @@ public class ReportStreetController extends BaseController {
             String yearSql = "select lsall.street,lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
                     "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
-                    " left join t_company tc on tc.inner_code=tad.inner_code) lsall group by lsall.waters_type,lsall.meter_attr order by lsall.street asc";
+                    " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
+                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
+                    " group by lsall.waters_type,lsall.meter_attr order by lsall.street asc";
 
             List<Record> records = Db.find(yearSql);
             for (int i = 0; i < list.size(); i++) {
@@ -95,21 +98,22 @@ public class ReportStreetController extends BaseController {
                 if (company.getStreet() != null) {
                     company.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(company.getStreet()))));
                 }
-                if (company.get("water_type") != null && StringUtils.isNotEmpty(company.getStr("water_type"))) {
-                    company.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(company.getStr("water_type")))));
+                if (company.get("waters_type") != null) {
+                    company.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(company.get("waters_type")))));
                 }
-                String waterTypeTarget = company.get("water_type");
+                Integer waterTypeTarget = company.getInt("waters_type");
                 for (Record record : records) {
-                    String waters_type = record.getStr("waters_type");
-                    if (waterTypeTarget.equals(waters_type)) {
+                    Integer waters_type = record.getInt("waters_type");
+                    if (waterTypeTarget == waters_type) {
                         String colStr = record.getStr("meter_attr");
                         BigDecimal colVal = new BigDecimal("0.0");
-                        if (StringUtils.isNotEmpty(record.getStr("TargetAttrTotal"))) {
+                        if (record.getBigDecimal("TargetAttrTotal") != null) {
                             colVal = record.getBigDecimal("TargetAttrTotal");
                         }
                         company.put(ReportColType.street_col + colStr, colVal);
                     }
                 }
+                list.set(i, company);
             }
         }
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
@@ -148,7 +152,10 @@ public class ReportStreetController extends BaseController {
             String yearSql = "select lsall.street,lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
                     "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
-                    " left join t_company tc on tc.inner_code=tad.inner_code) lsall group by lsall.waters_type,lsall.meter_attr order by lsall.street asc";
+                    " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
+                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
+                    " group by lsall.waters_type,lsall.meter_attr order by lsall.street asc";
 
             List<Record> records = Db.find(yearSql);
             for (int i = 0; i < list.size(); i++) {
@@ -156,23 +163,25 @@ public class ReportStreetController extends BaseController {
                 if (company.getStreet() != null) {
                     company.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(company.getStreet()))));
                 }
-                if (company.get("water_type") != null && StringUtils.isNotEmpty(company.getStr("water_type"))) {
-                    company.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(company.getStr("water_type")))));
+                if (company.get("waters_type") != null) {
+                    company.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(company.get("waters_type")))));
                 }
-                String waterTypeTarget = company.get("water_type");
+                Integer waterTypeTarget = company.getInt("waters_type");
                 for (Record record : records) {
-                    String waters_type = record.getStr("waters_type");
-                    if (waterTypeTarget.equals(waters_type)) {
+                    Integer waters_type = record.getInt("waters_type");
+                    if (waterTypeTarget == waters_type) {
                         String colStr = record.getStr("meter_attr");
                         BigDecimal colVal = new BigDecimal("0.0");
-                        if (StringUtils.isNotEmpty(record.getStr("TargetAttrTotal"))) {
+                        if (record.getBigDecimal("TargetAttrTotal") != null) {
                             colVal = record.getBigDecimal("TargetAttrTotal");
                         }
                         company.put(ReportColType.street_col + colStr, colVal);
                     }
                 }
+                list.set(i, company);
             }
         }
+
         ExportByDataTypeService service = new ExportByDataTypeService();
         Set<String> columns = meterAttrType.keySet();
         for (String key : columns) {

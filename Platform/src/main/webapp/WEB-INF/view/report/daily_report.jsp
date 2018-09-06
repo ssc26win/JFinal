@@ -94,7 +94,7 @@
             }
         });
 
-        var url = '${context_path}/statis/daily/getListData';
+        var url = '${context_path}/report/daily/getListData';
         var startTime = '${startTime}';
         var endTime = '${endTime}';
         var type = '${type}';

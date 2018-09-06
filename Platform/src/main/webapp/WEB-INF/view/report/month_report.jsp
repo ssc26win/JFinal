@@ -100,7 +100,7 @@
         if((startTime!=undefined&&startTime!=null&&startTime!='') && (endTime!=undefined&&endTime!=null&&endTime!='')){
             var startTime = $("#startTime").val(startTime);
             var endTime = $("#endTime").val(endTime);
-            url= '${context_path}/statis/month/getListData?startTime=${startTime}&endTime=${endTime}';
+            url= '${context_path}/report/month/getListData?startTime=${startTime}&endTime=${endTime}';
             if (type != '' && type != undefined) {
                 $("#type").val(type);
                 url = url + '&type=${type}';
