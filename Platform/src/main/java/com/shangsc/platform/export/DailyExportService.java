@@ -9,7 +9,7 @@ import java.util.*;
  * @Date 2017/8/28 17:43
  * @Desc 用途：
  */
-public class DailyExportService extends ExportBaseService{
+public class DailyExportService extends ExportBaseService {
     /*
          "所属节水办",
                 "单位编号",
@@ -45,7 +45,7 @@ public class DailyExportService extends ExportBaseService{
                 "查询时间"
         }));
 
-        logger.info("导出"+ fName +"信息导出条数为:{}", list.size());
+        logger.info("导出" + fName + "信息导出条数为:{}", list.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
             if (actualData.get("net_water") == null) {

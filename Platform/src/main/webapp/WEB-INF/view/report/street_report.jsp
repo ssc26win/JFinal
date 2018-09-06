@@ -32,12 +32,16 @@
                             <div class="widget-main">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <form id="exportForm" action="${context_path}/statis/year/exportData" method="post">
+                                        <form id="exportForm" action="${context_path}/report/street/exportData" method="post">
                                             <div class="input-group">
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;">
                                                     <option value="">请选择水源类型</option></select>
                                                 <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
                                                     <option value="">所属乡镇或街道</option>
+                                                </select>
+                                                <select id="type" name="type" style="margin-left: 5px;width: 159px;height: 34px;"><option value="">请选择单位类型</option>
+                                                    <option value="1">用水单位</option>
+                                                    <option value="2">供水单位</option>
                                                 </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="btn_search" class="btn btn-purple btn-sm">
@@ -126,7 +130,7 @@
             var type = $("#type").val();
             $("#grid-table").jqGrid('setGridParam',{
                 datatype:'json',
-                postData:{'street':street,'watersType':watersType}, //发送数据
+                postData:{'street':street,'watersType':watersType,'type':type}, //发送数据
                 page:1
             }).trigger("reloadGrid"); //重新载入
         });

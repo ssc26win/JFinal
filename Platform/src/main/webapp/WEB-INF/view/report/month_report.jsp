@@ -32,7 +32,7 @@
                             <div class="widget-main">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <form id="exportForm" action="${context_path}/statis/month/exportData" method="post">
+                                        <form id="exportForm" action="${context_path}/report/month/exportData" method="post">
                                             <div class="input-group">
                                                 <select id="type" name="type" style="margin-left: 5px;width: 159px;height: 34px;"><option value="">请选择单位类型</option>
                                                     <option value="1">用水单位</option>
