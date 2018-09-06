@@ -24,6 +24,8 @@ public class DictCode {
     public static final String GeomorphicType="GeomorphicType";
     public static final String GroundType="GroundType";
 
+    public static final String MeterAttr="MeterAttr";
+
     public static final String ACTUAL_EXCEPTION_TIME_OUT="ActualExceptionTimeOut";
 
     public static String getCompanyUse() {
@@ -39,6 +41,7 @@ public class DictCode {
         list.add("'" + WatersType + "'");
         list.add("'" + WaterUseType + "'");
         list.add("'" + ChargeType + "'");
+        list.add("'" + MeterAttr + "'");
         return StringUtils.join(list, ",");
     }
 

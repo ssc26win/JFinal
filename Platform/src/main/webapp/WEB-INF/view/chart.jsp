@@ -36,18 +36,18 @@
         <div class="page-content" id="page-content">
             <div class="row">
                 <div class="col-sm-6">
-                    <div id="containerCompaniesStage" style="width: 50%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerCompaniesStage" style="width: 60%; height: 25%; margin: 0 auto"></div>
                 </div>
                 <div class="col-sm-6">
-                    <div id="containerMetersStage" style="width: 50%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerMetersStage" style="width: 60%; height: 25%; margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6">
-                    <div id="containerCompany" style="width: 50%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerCompany" style="width: 60%; height: 25%; margin: 0 auto"></div>
                 </div>
                 <div class="col-sm-6">
-                    <div id="containerMeter" style="width: 50%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerMeter" style="width: 60%; height: 25%; margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row" style="margin-top: 20px;">

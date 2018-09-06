@@ -257,28 +257,7 @@ public class CompanyController extends BaseController {
             pageInfo = Company.me.getCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr(), companyType);
         }
         List<Company> companies = pageInfo.getList();
-        if (CommonUtils.isNotEmpty(companies)) {
-            Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
-            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
-            Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictCode.UnitType);
-            Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
-            for (int i = 0; i < companies.size(); i++) {
-                Company co = companies.get(i);
-                if (co.getCustomerType() != null) {
-                    co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
-                }
-                if (co.getWaterUseType() != null) {
-                    co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
-                }
-                if (co.getUnitType() != null) {
-                    co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
-                }
-                if (co.getStreet() != null) {
-                    co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.getStreet()))));
-                }
-                companies.set(i, co);
-            }
-        }
+        setVoProp(companies);
         String path = service.export(companies);
         renderFile(new File(path));
     }
@@ -303,7 +282,7 @@ public class CompanyController extends BaseController {
                 if (co.getStreet() != null) {
                     co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.getStreet()))));
                 }
-                if (co.getAddress() != null) {
+                if (StringUtils.isNotEmpty(co.getAddress())) {
                     co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
                             + co.get("inner_code") + "')\">" + co.getAddress() + "</a>");
                 }

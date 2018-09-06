@@ -59,7 +59,7 @@ public class WaterMeterExportService extends ExportBaseService {
                 waterMeter.get("gb_industry"),
                 waterMeter.get("main_industry"),
                 waterMeter.get("waterUseTypeName"),
-                waterMeter.getMeterAttr(),
+                waterMeter.get("meterAttrName"),
                 waterMeter.get("chargeTypeName"),
                 ToolDateTime.format(waterMeter.getRegistDate(), ToolDateTime.pattern_ymd),
                 waterMeter.getBillingCycle(),

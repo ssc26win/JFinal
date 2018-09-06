@@ -87,7 +87,8 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="meterAttr">水表属性</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="meterAttr"  name="meterAttr" value="${item.meterAttr}" class="col-xs-12 col-sm-8">
+                                        <input type="hidden" id="meterAttrInput" name="meterAttrInput" value="${item.meterAttr}" class="col-xs-12 col-sm-8">
+                                        <select id="meterAttr" name="meterAttr"  class="col-xs-12 col-sm-8" ></select>
                                     </div>
                                 </div>
                             </div>
@@ -257,7 +258,7 @@
         $.post("${context_path}/dict/getMeterUseDict", submitData, function(data) {
             var chargeType = data.ChargeType;
             var watersType = data.WatersType;
-            var waterUseType = data.WaterUseType;
+            var meterAttr = data.MeterAttr;
             for(var i = 0;i<chargeType.length;i++) {
                 if ($("#chargeTypeInput").val() == chargeType[i].value) {
                     $("#chargeType").append("<option selected value='" + chargeType[i].value + "'>"+chargeType[i].name+"</option>");
@@ -270,6 +271,13 @@
                     $("#watersType").append("<option selected value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
                 } else {
                     $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
+                }
+            }
+            for(var i = 0;i<meterAttr.length;i++) {
+                if ($("#meterAttrInput").val() == meterAttr[i].value) {
+                    $("#meterAttr").append("<option selected value='" + meterAttr[i].value + "'>"+meterAttr[i].name+"</option>");
+                } else {
+                    $("#meterAttr").append("<option value='" + meterAttr[i].value + "'>"+meterAttr[i].name+"</option>");
                 }
             }
         },"json");

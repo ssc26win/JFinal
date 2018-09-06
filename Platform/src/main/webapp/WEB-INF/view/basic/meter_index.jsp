@@ -120,7 +120,7 @@
                 { label: '国标行业', name: 'gb_industry', width: 50, sortable:false},
                 { label: '主要行业', name: 'main_industry', width: 50, sortable:false},
                 { label: '取水用途', name: 'waterUseTypeName', width: 80, sortable:false},
-                { label: '水表属性', name: 'meter_attr', width: 80, sortable:false},
+                { label: '水表属性', name: 'meterAttrName', width: 80, sortable:false},
                 { label: '收费类型', name: 'chargeTypeName', width: 50, sortable:false},
                 { label: '计费周期', name: 'billing_cycle', width: 50, sortable:false},
                 { label: '注册日期', name: 'regist_date', width: 100, sortable:true},

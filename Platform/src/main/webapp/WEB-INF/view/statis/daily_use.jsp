@@ -44,7 +44,9 @@
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <input type="text" id="meterAddress" name="meterAddress" class="" placeholder="请输入表计地址" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option value="">请选择水源类型</option></select>
-                                                <input type="text" id="meterAttr" name="meterAttr" class="" placeholder="请输入水表属性" style="margin-left: 5px;"/>
+                                                <select id="meterAttr" name="meterAttr" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                    <option value="">请选择水表属性</option>
+                                                </select>
                                                 <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
                                                     <option value="">所属乡镇或街道</option>
                                                 </select>
@@ -127,7 +129,7 @@
                 { label: '路别', name: 'line_num', width: 60, sortable:false},
                 { label: '水表编号', name: 'meter_num', width: 60,sortable:false},
                 { label: '表计地址', name: 'meter_address', width: 100,sortable:false},
-                { label: '水表属性', name: 'meter_attr', width: 100, sortable:false},
+                { label: '水表属性', name: 'meterAttrName', width: 100, sortable:false},
                 { label: '查询日期', name: 'todays', width: 80, sortable:true},
                 { label: '日用水量（立方米）', name: 'absNetWater', width: 100, sortable:true},
                 { label: '单位地址', name: 'addressMap', width: 150,sortable:false}
@@ -235,6 +237,10 @@
             var street = data.Street;
             for(var i = 0;i<street.length;i++) {
                 $("#street").append("<option value='" + street[i].value + "'>"+street[i].name+"</option>");
+            }
+            var meterAttr = data.MeterAttr;
+            for(var i = 0;i<meterAttr.length;i++) {
+                $("#meterAttr").append("<option value='" + meterAttr[i].value + "'>"+meterAttr[i].name+"</option>");
             }
         },"json");
     }

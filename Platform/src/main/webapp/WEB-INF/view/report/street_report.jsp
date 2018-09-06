@@ -34,17 +34,8 @@
                                     <div class="col-xs-12">
                                         <form id="exportForm" action="${context_path}/statis/year/exportData" method="post">
                                             <div class="input-group">
-                                                日期时间（年）:
-                                                <input type="number" id="year" name="year" min="2017"/>
-                                                <select id="type" name="type" style="margin-left: 5px;width: 159px;height: 34px;"><option value="" selected>请选择单位类型</option>
-                                                    <option value="1">用水单位</option>
-                                                    <option value="2">供水单位</option>
-                                                </select>
-                                                <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
-                                                <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
-                                                <input type="text" id="meterAddress" name="meterAddress" class="" placeholder="请输入表计地址" style="margin-left: 5px;"/>
-                                                <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option value="">请选择水源类型</option></select>
-                                                <input type="text" id="meterAttr" name="meterAttr" class="" placeholder="请输入水表属性" style="margin-left: 5px;"/>
+                                                <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                    <option value="">请选择水源类型</option></select>
                                                 <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
                                                     <option value="">所属乡镇或街道</option>
                                                 </select>
@@ -106,18 +97,7 @@
             url:'${context_path}/report/street/getListData',
             mtype: "GET",
             datatype: "json",
-            colModel: [
-                { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
-                { label: '单位名称', name: 'name', width: 200, sortable:false},
-                { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
-                { label: '路别', name: 'line_num', width: 60, sortable:false},
-                { label: '水表编号', name: 'meter_num', width: 60,sortable:false},
-                { label: '表计地址', name: 'meter_address', width: 100,sortable:false},
-                { label: '水表属性', name: 'meter_attr', width: 100, sortable:false},
-                { label: '查询时间', name: 'years', width: 60, sortable:true},
-                { label: '用水量（立方米）', name: 'yearTotal', width: 100, sortable:true},
-                { label: '单位地址', name: 'addressMap', width: 150,sortable:false}
-            ],
+            colModel: '${columns}',
             viewrecords: true,
             height: 560,
             rowNum: 20,

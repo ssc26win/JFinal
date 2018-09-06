@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2011-2016, Eason Pan(pylxyhome@vip.qq.com).
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -35,93 +35,95 @@ import java.util.*;
 public class DictController extends BaseController {
 
 
-	@RequiresPermissions(value={"/dict"})
-	public void index() {
-		render("type_index.jsp");
-	}
+    @RequiresPermissions(value = {"/dict"})
+    public void index() {
+        render("type_index.jsp");
+    }
 
-	@RequiresPermissions(value={"/dict"})
-	public void add_type() {
-		Integer id=this.getParaToInt("id");
-		if(id!=null){
-			this.setAttr("item", DictType.dao.findById(id));
-		}
-		render("type_add.jsp");
-	}
-	@RequiresPermissions(value={"/dict"})
-	public void add_data() {
-		Integer id=this.getParaToInt("id");
-		if(id!=null){
-			this.setAttr("item", DictData.dao.findById(id));
-		}
-		this.setAttr("typeId", this.getParaToInt("typeId"));
-		render("data_add.jsp");
-	}
-	@RequiresPermissions(value={"/dict"})
-	public void data_index() {
-		Integer typeId=this.getParaToInt("typeId");
-		this.setAttr("typeId", typeId);
-		render("data_index.jsp");
-	}
+    @RequiresPermissions(value = {"/dict"})
+    public void add_type() {
+        Integer id = this.getParaToInt("id");
+        if (id != null) {
+            this.setAttr("item", DictType.dao.findById(id));
+        }
+        render("type_add.jsp");
+    }
 
-	@RequiresPermissions(value={"/dict"})
-	public void saveType(){
-		Integer id=this.getParaToInt("id");
-		String name=this.getPara("name");
-		String remark=this.getPara("remark");
-		InvokeResult invokeResult=DictType.dao.saveDictType(id,name,remark);
-		this.renderJson(invokeResult);
-	}
+    @RequiresPermissions(value = {"/dict"})
+    public void add_data() {
+        Integer id = this.getParaToInt("id");
+        if (id != null) {
+            this.setAttr("item", DictData.dao.findById(id));
+        }
+        this.setAttr("typeId", this.getParaToInt("typeId"));
+        render("data_add.jsp");
+    }
 
-	@RequiresPermissions(value={"/dict"})
-	public void saveData(){
-		Integer id=this.getParaToInt("id");
-		Integer seq=this.getParaToInt("seq");
-		String value=this.getPara("value");
-		Integer typeId=this.getParaToInt("typeId");
-		String name=this.getPara("name");
-		String remark=this.getPara("remark");
-		InvokeResult invokeResult=DictData.dao.saveDictData(id, name, remark, seq, value, typeId);
-		this.renderJson(invokeResult);
-	}
+    @RequiresPermissions(value = {"/dict"})
+    public void data_index() {
+        Integer typeId = this.getParaToInt("typeId");
+        this.setAttr("typeId", typeId);
+        render("data_index.jsp");
+    }
 
-	@RequiresPermissions(value={"/dict"})
-	public void deleteData(){
-		Integer id=this.getParaToInt("id");
-		InvokeResult invokeResult=DictData.dao.deleteData(id);
-		this.renderJson(invokeResult);
-	}
+    @RequiresPermissions(value = {"/dict"})
+    public void saveType() {
+        Integer id = this.getParaToInt("id");
+        String name = this.getPara("name");
+        String remark = this.getPara("remark");
+        InvokeResult invokeResult = DictType.dao.saveDictType(id, name, remark);
+        this.renderJson(invokeResult);
+    }
 
-	@RequiresPermissions(value={"/dict"})
-	public void getTypeListData() {
-		String keyword=this.getPara("keyword");
-		Set<Condition> conditions=new HashSet<Condition>();
-		if(CommonUtils.isNotEmpty(keyword)){
-			conditions.add(new Condition("name", Operators.LIKE,keyword));
-		}
-		Page<DictType> pageInfo=DictType.dao.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
-		this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
-	}
+    @RequiresPermissions(value = {"/dict"})
+    public void saveData() {
+        Integer id = this.getParaToInt("id");
+        Integer seq = this.getParaToInt("seq");
+        String value = this.getPara("value");
+        Integer typeId = this.getParaToInt("typeId");
+        String name = this.getPara("name");
+        String remark = this.getPara("remark");
+        InvokeResult invokeResult = DictData.dao.saveDictData(id, name, remark, seq, value, typeId);
+        this.renderJson(invokeResult);
+    }
 
-	@RequiresPermissions(value={"/dict"})
-	public void getListData() {
-		Integer typeId=this.getParaToInt("typeId");
-		String keyword=this.getPara("keyword");
-		Set<Condition> conditions=new HashSet<Condition>();
-		if(CommonUtils.isNotEmpty(keyword)){
-			conditions.add(new Condition("name",Operators.LIKE,keyword));
-		}
-		conditions.add(new Condition("dict_type_id",Operators.EQ,typeId));
-		Page<DictData> pageInfo=DictData.dao.getPage(getPage(), this.getRows(),conditions,this.getOrderby());
-		this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
-	}
+    @RequiresPermissions(value = {"/dict"})
+    public void deleteData() {
+        Integer id = this.getParaToInt("id");
+        InvokeResult invokeResult = DictData.dao.deleteData(id);
+        this.renderJson(invokeResult);
+    }
+
+    @RequiresPermissions(value = {"/dict"})
+    public void getTypeListData() {
+        String keyword = this.getPara("keyword");
+        Set<Condition> conditions = new HashSet<Condition>();
+        if (CommonUtils.isNotEmpty(keyword)) {
+            conditions.add(new Condition("name", Operators.LIKE, keyword));
+        }
+        Page<DictType> pageInfo = DictType.dao.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+    }
+
+    @RequiresPermissions(value = {"/dict"})
+    public void getListData() {
+        Integer typeId = this.getParaToInt("typeId");
+        String keyword = this.getPara("keyword");
+        Set<Condition> conditions = new HashSet<Condition>();
+        if (CommonUtils.isNotEmpty(keyword)) {
+            conditions.add(new Condition("name", Operators.LIKE, keyword));
+        }
+        conditions.add(new Condition("dict_type_id", Operators.EQ, typeId));
+        Page<DictData> pageInfo = DictData.dao.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
+    }
 
     @Clear(AuthorityInterceptor.class)
     public void getByType() {
         Integer typeId = this.getParaToInt("typeId");
         String typeName = this.getPara("typeName");
 
-        Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String,Object>>>();
+        Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String, Object>>>();
 
         if ((typeId == null || typeId == 0) && StringUtils.isEmpty(typeName)) {
 
@@ -129,122 +131,126 @@ public class DictController extends BaseController {
 
             allData.put(DictCode.UserType, resultUserType);
 
-			List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMapList(0, DictCode.WaterUseType);
+            List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMapList(0, DictCode.WaterUseType);
 
             allData.put(DictCode.WaterUseType, resultWaterUseType);
 
-			List<Map<String, Object>> resultUnitType = DictData.dao.getDictMapList(0, DictCode.UnitType);
+            List<Map<String, Object>> resultUnitType = DictData.dao.getDictMapList(0, DictCode.UnitType);
 
             allData.put(DictCode.UnitType, resultUnitType);
 
-			List<Map<String, Object>> resultWatersType = DictData.dao.getDictMapList(0, DictCode.WatersType);
+            List<Map<String, Object>> resultWatersType = DictData.dao.getDictMapList(0, DictCode.WatersType);
 
             allData.put(DictCode.WatersType, resultWatersType);
 
-			List<Map<String, Object>> resultChargeType = DictData.dao.getDictMapList(0, DictCode.ChargeType);
+            List<Map<String, Object>> resultChargeType = DictData.dao.getDictMapList(0, DictCode.ChargeType);
 
             allData.put(DictCode.ChargeType, resultChargeType);
 
         } else {
-			List<Map<String, Object>> resultType = DictData.dao.getDictMapList(typeId, typeName);
+            List<Map<String, Object>> resultType = DictData.dao.getDictMapList(typeId, typeName);
             allData.put(typeName, resultType);
         }
         this.renderJson(allData);
     }
 
 
-	@Clear(AuthorityInterceptor.class)
-	@RequiresPermissions(value={"/"})
-	public void getCompanyUseDict() {
-		Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String,Object>>>();
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/"})
+    public void getCompanyUseDict() {
+        Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String, Object>>>();
 
-		List<Map<String, Object>> resultUserType = DictData.dao.getDictMapList(0, DictCode.UserType);
+        List<Map<String, Object>> resultUserType = DictData.dao.getDictMapList(0, DictCode.UserType);
 
-		allData.put(DictCode.UserType, resultUserType);
+        allData.put(DictCode.UserType, resultUserType);
 
-		List<Map<String, Object>> resultStreet = DictData.dao.getDictMapList(0, DictCode.Street);
+        List<Map<String, Object>> resultStreet = DictData.dao.getDictMapList(0, DictCode.Street);
 
-		allData.put(DictCode.Street, resultStreet);
+        allData.put(DictCode.Street, resultStreet);
 
-		List<Map<String, Object>> resultUnitType = DictData.dao.getDictMapList(0, DictCode.UnitType);
+        List<Map<String, Object>> resultUnitType = DictData.dao.getDictMapList(0, DictCode.UnitType);
 
-		allData.put(DictCode.UnitType, resultUnitType);
+        allData.put(DictCode.UnitType, resultUnitType);
 
         List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMapList(0, DictCode.WaterUseType);
 
         allData.put(DictCode.WaterUseType, resultWaterUseType);
 
-		this.renderJson(allData);
-	}
+        this.renderJson(allData);
+    }
 
-	@Clear(AuthorityInterceptor.class)
-	@RequiresPermissions(value={"/"})
-	public void getMeterUseDict() {
-		Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String,Object>>>();
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/"})
+    public void getMeterUseDict() {
+        Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String, Object>>>();
 
-		List<Map<String, Object>> resultWatersType = DictData.dao.getDictMapList(0, DictCode.WatersType);
+        List<Map<String, Object>> resultWatersType = DictData.dao.getDictMapList(0, DictCode.WatersType);
 
-		allData.put(DictCode.WatersType, resultWatersType);
+        allData.put(DictCode.WatersType, resultWatersType);
 
-		//List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMapList(0, DictCode.WaterUseType);
-        //
-		//allData.put(DictCode.WaterUseType, resultWaterUseType);
+        List<Map<String, Object>> meterAttr = DictData.dao.getDictMapList(0, DictCode.MeterAttr);
 
-		List<Map<String, Object>> resultChargeType = DictData.dao.getDictMapList(0, DictCode.ChargeType);
+        allData.put(DictCode.MeterAttr, meterAttr);
 
-		allData.put(DictCode.ChargeType, resultChargeType);
+        List<Map<String, Object>> resultChargeType = DictData.dao.getDictMapList(0, DictCode.ChargeType);
 
-		this.renderJson(allData);
-	}
+        allData.put(DictCode.ChargeType, resultChargeType);
 
-	@Clear(AuthorityInterceptor.class)
-	@RequiresPermissions(value={"/"})
-	public void getIndexUseDict() {
-		Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String,Object>>>();
+        this.renderJson(allData);
+    }
 
-		List<Map<String, Object>> resultsType = DictData.dao.getDictMapList(0, DictCode.WatersType);
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/"})
+    public void getIndexUseDict() {
+        Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String, Object>>>();
 
-		allData.put(DictCode.WatersType, resultsType);
+        List<Map<String, Object>> resultsType = DictData.dao.getDictMapList(0, DictCode.WatersType);
 
-		this.renderJson(allData);
-	}
+        allData.put(DictCode.WatersType, resultsType);
 
-	@Clear(AuthorityInterceptor.class)
-	@RequiresPermissions(value={"/"})
-	public void getWellUseDict() {
-		Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String,Object>>>();
+        this.renderJson(allData);
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/"})
+    public void getWellUseDict() {
+        Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String, Object>>>();
 
 		/*List<Map<String, Object>> resultWatersType = DictData.dao.getDictMapList(0, DictCode.WatersType);
-		allData.put(DictCode.WatersType, resultWatersType);*/
+        allData.put(DictCode.WatersType, resultWatersType);*/
 
-		List<Map<String, Object>> resultCalculateType = DictData.dao.getDictMapList(0, DictCode.CalculateType);
-		allData.put(DictCode.CalculateType, resultCalculateType);
+        List<Map<String, Object>> resultCalculateType = DictData.dao.getDictMapList(0, DictCode.CalculateType);
+        allData.put(DictCode.CalculateType, resultCalculateType);
 
-		List<Map<String, Object>> resultGeomorphicType = DictData.dao.getDictMapList(0, DictCode.GeomorphicType);
-		allData.put(DictCode.GeomorphicType, resultGeomorphicType);
+        List<Map<String, Object>> resultGeomorphicType = DictData.dao.getDictMapList(0, DictCode.GeomorphicType);
+        allData.put(DictCode.GeomorphicType, resultGeomorphicType);
 
-		List<Map<String, Object>> resultGroundType = DictData.dao.getDictMapList(0, DictCode.GroundType);
-		allData.put(DictCode.GroundType, resultGroundType);
+        List<Map<String, Object>> resultGroundType = DictData.dao.getDictMapList(0, DictCode.GroundType);
+        allData.put(DictCode.GroundType, resultGroundType);
 
-		this.renderJson(allData);
-	}
+        this.renderJson(allData);
+    }
 
-	@Clear(AuthorityInterceptor.class)
-	@RequiresPermissions(value={"/"})
-	public void getSearchStatisUseDict() {
-		Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String,Object>>>();
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/"})
+    public void getSearchStatisUseDict() {
+        Map<String, List<Map<String, Object>>> allData = new HashMap<String, List<Map<String, Object>>>();
 
-		List<Map<String, Object>> resultWatersType = DictData.dao.getDictMapList(0, DictCode.WatersType);
+        List<Map<String, Object>> resultWatersType = DictData.dao.getDictMapList(0, DictCode.WatersType);
 
-		allData.put(DictCode.WatersType, resultWatersType);
+        allData.put(DictCode.WatersType, resultWatersType);
 
 
-		List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMapList(0, DictCode.Street);
+        List<Map<String, Object>> resultWaterUseType = DictData.dao.getDictMapList(0, DictCode.Street);
 
-		allData.put(DictCode.Street, resultWaterUseType);
+        allData.put(DictCode.Street, resultWaterUseType);
 
-		this.renderJson(allData);
-	}
+        List<Map<String, Object>> meterAttr = DictData.dao.getDictMapList(0, DictCode.MeterAttr);
+
+        allData.put(DictCode.MeterAttr, meterAttr);
+
+        this.renderJson(allData);
+    }
 
 }
 

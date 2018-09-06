@@ -79,6 +79,7 @@ public class MonthStatisController extends BaseController {
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
+            Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
                 String monthTotal = "0";
@@ -86,7 +87,10 @@ public class MonthStatisController extends BaseController {
                     monthTotal = co.get("monthTotal").toString();
                 }
                 co.put("monthTotal", monthTotal);
-                if (co.get("waters_type") != null) {
+                if (co.get("meter_attr")!= null && StringUtils.isNotEmpty(co.get("meter_attr").toString())) {
+                    co.put("meterAttrName", String.valueOf(meterAttrType.get(String.valueOf(co.get("meter_attr")))));
+                }
+                if (co.get("waters_type") != null && StringUtils.isNotEmpty(co.get("waters_type").toString())) {
                     String watersTypeStr = co.get("waters_type").toString();
                     if (mapWatersType.get(watersTypeStr) != null) {
                         co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
@@ -142,6 +146,7 @@ public class MonthStatisController extends BaseController {
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
+            Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
                 String monthTotal = "0";
@@ -149,7 +154,10 @@ public class MonthStatisController extends BaseController {
                     monthTotal = co.get("monthTotal").toString();
                 }
                 co.put("monthTotal", monthTotal);
-                if (co.get("waters_type") != null) {
+                if (co.get("meter_attr")!= null && StringUtils.isNotEmpty(co.get("meter_attr").toString())) {
+                    co.put("meterAttrName", String.valueOf(meterAttrType.get(String.valueOf(co.get("meter_attr")))));
+                }
+                if (co.get("waters_type") != null && StringUtils.isNotEmpty(co.get("waters_type").toString())) {
                     String watersTypeStr = co.get("waters_type").toString();
                     if (mapWatersType.get(watersTypeStr) != null) {
                         co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));

@@ -210,17 +210,20 @@ public class MeterController extends BaseController {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
             Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictCode.ChargeType);
             Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
+            Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
             for (int i = 0; i < list.size(); i++) {
                 WaterMeter co = list.get(i);
-                if (co.get("water_use_type") != null) {
+                if (co.get("water_use_type") != null && StringUtils.isNotEmpty(co.get("water_use_type").toString())) {
                     co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.get("water_use_type")))));
                 }
                 if (co.getWatersType() != null) {
                     co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
-
                 }
                 if (co.getChargeType() != null) {
                    co.put("chargeTypeName", String.valueOf(mapChargeType.get(String.valueOf(co.getChargeType()))));
+                }
+                if (StringUtils.isNotEmpty(co.getMeterAttr())) {
+                    co.put("meterAttrName", String.valueOf(meterAttrType.get(String.valueOf(co.getMeterAttr()))));
                 }
                 list.set(i, co);
             }
