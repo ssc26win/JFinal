@@ -7,6 +7,7 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.ReportTypeEnum;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.JqGridModelUtils;
@@ -66,23 +67,27 @@ public class ReportYearController extends BaseController {
         String type = this.getPara("type");
         Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), getRows(), getOrderbyStr(), name, innerCode, type);
         List<Company> list = pageInfo.getList();
+        Map<String, String> yearColumns = ActualDataReport.me.getYearColumns();
         if (CollectionUtils.isNotEmpty(list)) {
             Set<String> innerCodes = new HashSet<>();
             for (Company company : list) {
                 innerCodes.add("'" + company.getInnerCode() + "'");
             }
-            String yearSql = "select tad.inner_code,date_format(tad.write_time, '%Y') as TargetDT, sum(tad.net_water) as TargetTotal " +
+            String sql = "select tad.inner_code,date_format(tad.write_time, '%Y') as TargetDT, sum(tad.net_water) as TargetTotal " +
                     " from t_actual_data tad where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
                     "group by tad.inner_code,date_format(tad.write_time, '%Y') order by TargetDT asc";
-            List<Record> records = Db.find(yearSql);
+            List<Record> records = Db.find(sql);
             for (int i = 0; i < list.size(); i++) {
                 Company company = list.get(i);
+                for (String colKey : yearColumns.keySet()) {
+                    company.put(colKey, new BigDecimal("0"));
+                }
                 String innerCodeTarget = company.getInnerCode();
                 for (Record record : records) {
                     String inner_code = record.getStr("inner_code");
                     if (innerCodeTarget.equals(inner_code)) {
                         String colStr = record.getStr("TargetDT");
-                        BigDecimal colVal = new BigDecimal("0.0");
+                        BigDecimal colVal = new BigDecimal("0");
                         if (record.getBigDecimal("TargetTotal") != null) {
                             colVal = record.getBigDecimal("TargetTotal");
                         }
@@ -101,7 +106,7 @@ public class ReportYearController extends BaseController {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String type = this.getPara("type");
-        Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), getRows(), getOrderbyStr(), name, innerCode, type);
+        Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), name, innerCode, type);
         List<Company> list = pageInfo.getList();
         Map<String, String> yearColumns = ActualDataReport.me.getYearColumns();
         if (CollectionUtils.isNotEmpty(list)) {
@@ -109,19 +114,22 @@ public class ReportYearController extends BaseController {
             for (Company company : list) {
                 innerCodes.add("'" + company.getInnerCode() + "'");
             }
-            String yearSql = "select tad.inner_code,date_format(tad.write_time, '%Y') as TargetDT, sum(tad.net_water) as TargetTotal " +
+            String sql = "select tad.inner_code,date_format(tad.write_time, '%Y') as TargetDT, sum(tad.net_water) as TargetTotal " +
                     " from t_actual_data tad where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
                     "group by tad.inner_code,date_format(tad.write_time, '%Y') order by tad.inner_code asc,TargetDT asc";
 
-            List<Record> records = Db.find(yearSql);
+            List<Record> records = Db.find(sql);
             for (int i = 0; i < list.size(); i++) {
                 Company company = list.get(i);
+                for (String colKey : yearColumns.keySet()) {
+                    company.put(colKey, new BigDecimal("0"));
+                }
                 String innerCodeTarget = company.getInnerCode();
                 for (Record record : records) {
                     String inner_code = record.getStr("inner_code");
                     if (innerCodeTarget.equals(inner_code)) {
                         String colStr = record.getStr("TargetDT");
-                        BigDecimal colVal = new BigDecimal("0.0");
+                        BigDecimal colVal = new BigDecimal("0");
                         if (record.getBigDecimal("TargetTotal") != null) {
                             colVal = record.getBigDecimal("TargetTotal");
                         }

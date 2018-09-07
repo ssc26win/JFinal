@@ -65,7 +65,9 @@
                         </div>
                     </div>
                     <!-- PAGE CONTENT BEGINS -->
-                    <table id="grid-table"></table>
+                    <div style="overflow-x:auto">
+                        <table id="grid-table"></table>
+                    </div>
 
                     <div id="grid-pager"></div>
 
@@ -110,34 +112,36 @@
             datatype: "json",
             colModel: [
                 { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
-                { label: '单位名称', name: 'name', width: 120, sortable:false},
-                { label: '单位编号', name: 'real_code', width: 80, sortable:false},
-                { label: '所属区县', name: 'county', width: 80, sortable:false},
+                { label: '单位名称', name: 'name', width: 150, sortable:false},
+                { label: '单位编号', name: 'real_code', width: 70, sortable:false},
+                { label: '所属区县', name: 'county', width: 70, sortable:false},
                 { label: '所属乡镇', name: 'streetName', width: 80, sortable:false},
-                { label: '原乡镇或街道', name: 'street_src', width: 80, sortable:false},
-                { label: '单位地址', name: 'address', width: 120,sortable:false},
+                { label: '原乡镇或街道', name: 'street_src', width: 120, sortable:false},
+                { label: '单位地址', name: 'address', width: 150,sortable:false},
                 { label: '用户类型', name: 'customerTypeName', width: 80, sortable:false},
-                { label: '国标行业', name: 'gb_industry', width: 80, sortable:false},
+                { label: '国标行业', name: 'gb_industry', width: 90, sortable:false},
                 { label: '主要行业', name: 'main_industry', width: 80, sortable:false},
                 { label: '取水用途', name: 'waterUseTypeName', width: 80, sortable:false},
-                { label: '联系人', name: 'contact', width: 70, sortable:false},
+                { label: '联系人', name: 'contact', width: 60, sortable:false},
                 { label: '联系电话', name: 'phone', width: 80, sortable:false},
                 { label: '邮政编码', name: 'postal_code', width: 70, sortable:false},
-                { label: '管水部门', name: 'department', width: 100, sortable:false},
-                { label: '水井数量', name: 'well_count', width: 80, sortable:true},
+                { label: '管水部门', name: 'department', width: 80, sortable:false},
+                { label: '水井数量', name: 'well_count', width: 70, sortable:true},
                 { label: '一级表数量', name: 'first_watermeter_count', width: 80, sortable:true},
                 { label: '远传表数量', name: 'remotemeter_count', width: 80, sortable:true},
-                { label: '节约用水型单位类型', name: 'unitTypeName', width: 80, sortable:false},
+                { label: '节约用水型单位类型', name: 'unitTypeName', width: 130, sortable:false},
                 { label: '自备井水价', name: 'self_well_price', width: 80, sortable:true},
                 { label: '地表水水价', name: 'surface_price', width: 80, sortable:true},
                 { label: '自来水水价', name: 'self_free_price', width: 80, sortable:true},
-                { label: '注册时间', name: 'create_time', width: 90, sortable:true}
+                { label: '注册时间', name: 'create_time', width: 120, sortable:true}
             ],
             viewrecords: true,
             height: 560,
             rowNum: 20,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
+            shrinkToFit:false,
+            autoScroll: true,
             recordtext:"{0} - {1} 共 {2} 条",
             pgtext:"第 {0} 页 共 {1} 页",
             pager: pager_selector,
@@ -151,8 +155,8 @@
         $(window).triggerHandler('resize.jqGrid');
 
         $(window).bind('resize', function() {
-            $("#jqgrid").setGridWidth($(window).width()*0.75);
-            $("#grid-table").setGridHeight($(window).height()-200);
+            $("#jqgrid").setGridWidth($(window).width());
+            $("#grid-table").setGridHeight($(window).height());
         });
         $("#btn_search").click(function(){
             //此处可以添加对查询数据的合法验证

@@ -8,6 +8,8 @@ alter table t_company add column `real_code` varchar(100) DEFAULT '' COMMENT '�
 alter table t_company modify column `inner_code` varchar(50) DEFAULT NULL COMMENT '内部编号';
 alter table t_company add column `memo` varchar(255) DEFAULT '' COMMENT '备注';
 
+update t_company set real_code=inner_code where inner_code <>'' and inner_code is not null;
+
 alter table t_water_meter add column `memo` varchar(255) DEFAULT '' COMMENT '备注';
 alter table t_water_meter add column `vender` varchar(255) DEFAULT '' COMMENT '生产厂家';
 

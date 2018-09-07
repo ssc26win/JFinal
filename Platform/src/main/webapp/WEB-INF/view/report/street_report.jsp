@@ -62,7 +62,8 @@
                 </div>
                 <div class="col-xs-12" style="margin-bottom: 5px;">
                     <!-- PAGE CONTENT BEGINS -->
-                    <table id="grid-table"></table>
+
+                        <table id="grid-table"></table>
 
                     <div id="grid-pager"></div>
 
@@ -107,6 +108,8 @@
             rowNum: 20,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
+            shrinkToFit:false,
+            autoScroll: true,
             recordtext:"{0} - {1} 共 {2} 条",
             pgtext:"第 {0} 页 共 {1} 页",
             pager: pager_selector,

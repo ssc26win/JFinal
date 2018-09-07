@@ -8,6 +8,7 @@ import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.ReportColType;
 import com.shangsc.platform.code.ReportTypeEnum;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.JqGridModelUtils;
@@ -21,10 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author ssc
@@ -38,17 +36,23 @@ public class ReportStreetController extends BaseController {
     public void index() {
         JSONArray array = new JSONArray();
         Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
+        JSONObject street = new JSONObject();
+        street.put("label", "所属乡镇");
+        street.put("name", "streetName");
+        street.put("width", "100");
+        street.put("sortable", "false");
+        array.add(street);
         JSONObject company = new JSONObject();
         company.put("label", "水源类型");
         company.put("name", "watersTypeName");
-        company.put("width", "100px;");
+        company.put("width", "100");
         company.put("sortable", "false");
         array.add(company);
         for (String value : meterAttrType.keySet()) {
             JSONObject column = new JSONObject();
             column.put("label", meterAttrType.get(value).toString());
             column.put("name", ReportColType.street_col + value);
-            column.put("width", "100px;");
+            column.put("width", "100");
             column.put("sortable", "false");
             array.add(column);
         }
@@ -84,15 +88,19 @@ public class ReportStreetController extends BaseController {
             Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
 
-            String yearSql = "select lsall.street,lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+            String sql = "select lsall.street,lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
                     "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " group by lsall.waters_type,lsall.meter_attr order by lsall.street asc";
+                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " group by lsall.street,lsall.waters_type,lsall.meter_attr order by lsall.street asc";
 
-            List<Record> records = Db.find(yearSql);
+            List<Record> records = Db.find(sql);
+
+            Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
+
             for (int i = 0; i < list.size(); i++) {
                 Company company = list.get(i);
                 if (company.getStreet() != null) {
@@ -101,12 +109,17 @@ public class ReportStreetController extends BaseController {
                 if (company.get("waters_type") != null) {
                     company.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(company.get("waters_type")))));
                 }
+                for (String colKey : meterAttrType.keySet()) {
+                    company.put(ReportColType.street_col + colKey, new BigDecimal("0"));
+                }
                 Integer waterTypeTarget = company.getInt("waters_type");
+                Integer streetTarget = company.getStreet();
                 for (Record record : records) {
                     Integer waters_type = record.getInt("waters_type");
-                    if (waterTypeTarget == waters_type) {
+                    Integer street_t = record.getInt("street");
+                    if (waterTypeTarget == waters_type.intValue() && streetTarget == street_t.intValue()) {
                         String colStr = record.getStr("meter_attr");
-                        BigDecimal colVal = new BigDecimal("0.0");
+                        BigDecimal colVal = new BigDecimal("0");
                         if (record.getBigDecimal("TargetAttrTotal") != null) {
                             colVal = record.getBigDecimal("TargetAttrTotal");
                         }
@@ -133,7 +146,7 @@ public class ReportStreetController extends BaseController {
             watersType = Integer.parseInt(watersTypeStr);
         }
         String type = this.getPara("type");
-        Page<Company> pageInfo = ActualDataReport.me.getStreet(getPage(), getRows(), getOrderbyStr(), street, watersType, type);
+        Page<Company> pageInfo = ActualDataReport.me.getStreet(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, watersType, type);
         List<Company> list = pageInfo.getList();
 
         Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
@@ -149,15 +162,16 @@ public class ReportStreetController extends BaseController {
             Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
 
-            String yearSql = "select lsall.street,lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+            String sql = "select lsall.street,lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
                     "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " group by lsall.waters_type,lsall.meter_attr order by lsall.street asc";
+                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " group by lsall.street,lsall.waters_type,lsall.meter_attr order by lsall.street asc";
 
-            List<Record> records = Db.find(yearSql);
+            List<Record> records = Db.find(sql);
             for (int i = 0; i < list.size(); i++) {
                 Company company = list.get(i);
                 if (company.getStreet() != null) {
@@ -166,12 +180,17 @@ public class ReportStreetController extends BaseController {
                 if (company.get("waters_type") != null) {
                     company.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(company.get("waters_type")))));
                 }
+                for (String colKey : meterAttrType.keySet()) {
+                    company.put(ReportColType.street_col + colKey, new BigDecimal("0"));
+                }
                 Integer waterTypeTarget = company.getInt("waters_type");
+                Integer streetTarget = company.getStreet();
                 for (Record record : records) {
                     Integer waters_type = record.getInt("waters_type");
-                    if (waterTypeTarget == waters_type) {
+                    Integer street_t = record.getInt("street");
+                    if (waterTypeTarget == waters_type.intValue() && streetTarget == street_t.intValue()) {
                         String colStr = record.getStr("meter_attr");
-                        BigDecimal colVal = new BigDecimal("0.0");
+                        BigDecimal colVal = new BigDecimal("0");
                         if (record.getBigDecimal("TargetAttrTotal") != null) {
                             colVal = record.getBigDecimal("TargetAttrTotal");
                         }
@@ -182,13 +201,14 @@ public class ReportStreetController extends BaseController {
             }
         }
 
-        ExportByDataTypeService service = new ExportByDataTypeService();
-        Set<String> columns = meterAttrType.keySet();
-        for (String key : columns) {
-            columns.remove(key);
-            columns.add(ReportColType.street_col + key);
+        Set<String> columnsTitle = new LinkedHashSet<>();
+        Set<String> columnsKey = new LinkedHashSet<>();
+        for (String value : meterAttrType.keySet()) {
+            columnsTitle.add(meterAttrType.get(value).toString());
+            columnsKey.add(ReportColType.street_col + value);
         }
-        String path = service.exportStreetStatis(list, type, columns, ReportTypeEnum.STREET);
+        ExportByDataTypeService service = new ExportByDataTypeService();
+        String path = service.exportStreetStatis(list, type, columnsTitle, new ArrayList<>(columnsKey), ReportTypeEnum.STREET);
         renderFile(new File(path));
     }
 }

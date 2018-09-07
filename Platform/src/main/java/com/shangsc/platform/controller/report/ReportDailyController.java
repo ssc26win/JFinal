@@ -9,6 +9,7 @@ import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.MonthCode;
 import com.shangsc.platform.code.ReportTypeEnum;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
@@ -73,6 +74,7 @@ public class ReportDailyController extends BaseController {
         String type = this.getPara("type");
         Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), getRows(), getOrderbyStr(), name, innerCode, type);
         List<Company> list = pageInfo.getList();
+        Map<String, String> dayColumns = ActualDataReport.me.getDayColumns();
         if (CollectionUtils.isNotEmpty(list)) {
             Set<String> innerCodes = new HashSet<>();
             for (Company company : list) {
@@ -88,12 +90,15 @@ public class ReportDailyController extends BaseController {
             List<Record> records = Db.find(sql);
             for (int i = 0; i < list.size(); i++) {
                 Company company = list.get(i);
+                for (String colKey : dayColumns.keySet()) {
+                    company.put(colKey, new BigDecimal("0"));
+                }
                 String innerCodeTarget = company.getInnerCode();
                 for (Record record : records) {
                     String inner_code = record.getStr("inner_code");
                     if (innerCodeTarget.equals(inner_code)) {
                         String colStr = record.getStr("TargetDT");
-                        BigDecimal colVal = new BigDecimal("0.0");
+                        BigDecimal colVal = new BigDecimal("0");
                         if (record.getBigDecimal("TargetTotal") != null) {
                             colVal = record.getBigDecimal("TargetTotal");
                         }
@@ -112,7 +117,7 @@ public class ReportDailyController extends BaseController {
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String type = this.getPara("type");
-        Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), getRows(), getOrderbyStr(), name, innerCode, type);
+        Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), name, innerCode, type);
         List<Company> list = pageInfo.getList();
         Map<String, String> dayColumns = ActualDataReport.me.getDayColumns();
         if (CollectionUtils.isNotEmpty(list)) {
@@ -130,12 +135,15 @@ public class ReportDailyController extends BaseController {
             List<Record> records = Db.find(sql);
             for (int i = 0; i < list.size(); i++) {
                 Company company = list.get(i);
+                for (String colKey : dayColumns.keySet()) {
+                    company.put(colKey, new BigDecimal("0"));
+                }
                 String innerCodeTarget = company.getInnerCode();
                 for (Record record : records) {
                     String inner_code = record.getStr("inner_code");
                     if (innerCodeTarget.equals(inner_code)) {
                         String colStr = record.getStr("TargetDT");
-                        BigDecimal colVal = new BigDecimal("0.0");
+                        BigDecimal colVal = new BigDecimal("0");
                         if (record.getBigDecimal("TargetTotal") != null) {
                             colVal = record.getBigDecimal("TargetTotal");
                         }

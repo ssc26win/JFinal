@@ -454,4 +454,8 @@ String.prototype.trim = function() {
         $("#grid-table").attr("width",  "1786px");
 
     })*/
+    /*$(function () {
+        $("#incomegrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "scroll" });
+        $("#incomegrid").closest(".ui-jqgrid-bdiv").css({ "overflow-y" : "scroll" })
+    })*/
 </script>

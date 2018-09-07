@@ -50,7 +50,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         if (watersType != null) {
             sqlExceptSelect.append(" and twm.waters_type=" + watersType);
         }
-        sqlExceptSelect.append(" group by twm.waters_type ");
+        sqlExceptSelect.append(" group by tc.street,twm.waters_type ");
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
         } else {
