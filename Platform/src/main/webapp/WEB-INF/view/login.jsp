@@ -162,6 +162,13 @@
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
+															<input type="text" id="reUsernameEmail" name="reUsernameEmail" class="form-control" readonly value="${reUsernameEmail}" />
+															<i class="ace-icon fa fa-user"></i>
+														</span>
+													</label>
+
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
 															<input type="password" id="reSetpassword" name="reSetpassword" class="form-control" placeholder="请输入密码" />
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
@@ -203,10 +210,16 @@
 
 											<div class="space-6"></div>
 											<p>
-												请填写邮箱
+												请填写账户名及邮箱
 											</p>
 											<form>
 												<fieldset>
+													<label class="block clearfix">
+														<span class="block input-icon input-icon-right">
+															<input type="text" class="form-control" placeholder="请输入用户名" name="usernameEmail" id="usernameEmail"/>
+															<i class="ace-icon fa fa-user"></i>
+														</span>
+													</label>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<input type="email" id="sendrePwdEmail" name="sendrePwdEmail" class="form-control" placeholder="请输入邮箱" />
@@ -498,26 +511,34 @@
 					if ($btn.hasClass("disabled")) {
 						return false;
 					}
+					var $remailUName = $('#usernameEmail');
+					if (!$remailUName.val()) {
+						layer.close(index);
+						layer.alert('请输入用户名！');
+						$remailUName.focus();
+						return false;
+					}
 					var $remail = $('#sendrePwdEmail');
 					if (!$remail.val()) {
+						layer.close(index);
 						layer.alert('请输入邮箱！');
 						$remail.focus();
 						return false;
 					}
 					var submitData = {
-						email:$remail.val()
+						email:$remail.val(), username:$remailUName.val()
 					};
 					$btn.addClass("disabled");
 					$.post("${context_path}/resetPwdSendEmail", submitData, function(data) {
 						$btn.removeClass("disabled");
 						if (data.code == 0) {
-							layer.close(index);
 							layer.alert("发送邮件成功，请登录您的邮箱！", function(){
 								window.top.location.href = "${context_path}/";
 							});
 						} else {
 							layer.alert(data.msg);
 						}
+						layer.close(index);
 					}, "json");
 					return false;
 				});

@@ -39,7 +39,7 @@ public class ReportStreetController extends BaseController {
         JSONObject street = new JSONObject();
         street.put("label", "所属乡镇");
         street.put("name", "streetName");
-        street.put("width", "100");
+        street.put("width", "120");
         street.put("sortable", "false");
         array.add(street);
         JSONObject company = new JSONObject();
@@ -52,7 +52,7 @@ public class ReportStreetController extends BaseController {
             JSONObject column = new JSONObject();
             column.put("label", meterAttrType.get(value).toString());
             column.put("name", ReportColType.street_col + value);
-            column.put("width", "100");
+            column.put("width", "120");
             column.put("sortable", "false");
             array.add(column);
         }

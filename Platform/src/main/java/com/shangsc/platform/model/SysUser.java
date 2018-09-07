@@ -183,6 +183,13 @@ public class SysUser extends BaseSysUser<SysUser> {
         return this.get(conditions);
     }
 
+    public SysUser getByEmailAndName(String email, String username) {
+        Set<Condition> conditions = new HashSet<Condition>();
+        conditions.add(new Condition("email", Operators.EQ, email));
+        conditions.add(new Condition("name", Operators.EQ, username));
+        return this.get(conditions);
+    }
+
     public InvokeResult save(Integer id, String username, String password, String des, String phone, String email, String innerCode) {
         if (null != id) {
             SysUser sysUser = this.findById(id);

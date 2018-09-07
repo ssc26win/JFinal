@@ -551,8 +551,8 @@ public class ActualData extends BaseActualData<ActualData> {
         }
 
         if (year != null && year > 0) {
-            String yearStart = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year) + "-01-01 00:00:00"));
-            String yearEnd = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year + 1) + "-01-01 00:00:00"));
+            String yearStart = String.valueOf(year) + "-01-01 00:00:00";
+            String yearEnd = String.valueOf(year + 1) + "-01-01 00:00:00";
             sqlExceptSelect.append(" and tad.write_time >= '" + yearStart + "'");
             sqlExceptSelect.append(" and tad.write_time < '" + yearEnd + "'");
         }

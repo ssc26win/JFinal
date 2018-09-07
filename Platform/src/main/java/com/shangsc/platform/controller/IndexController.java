@@ -40,6 +40,7 @@ import java.util.Set;
 
 /**
  * 首页、登陆、登出
+ *
  * @author ssc
  */
 @Clear(SysLogInterceptor.class)
@@ -62,6 +63,7 @@ public class IndexController extends Controller {
         if (StringUtils.isNotEmpty(this.getPara("email"))) {
             this.setAttr("email", this.getPara("email"));
         }
+        this.setAttr("reUsernameEmail", this.getPara("reUsernameEmail"));
         Map<String, String> nameList = Company.me.loadNameList();
         Set<String> names = nameList.keySet();
         this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
@@ -166,7 +168,8 @@ public class IndexController extends Controller {
     public void resetPwdSendEmail() {
         IWebUtils.removeCurrentSysUser(getRequest(), getResponse());
         String email = this.getPara("email");
-        SysUser sysUser = SysUser.me.getByEmail(email);
+        String username = this.getPara("username");
+        SysUser sysUser = SysUser.me.getByEmailAndName(email, username);
         if (sysUser == null) {
             this.renderJson(InvokeResult.failure("邮箱不存在"));
             return;
@@ -180,6 +183,7 @@ public class IndexController extends Controller {
         content.append(PropKit.get("config.host.url"));
         content.append("/login");
         content.append("?email=" + email);
+        content.append("&reUsernameEmail=" + username);
         content.append("&time=" + System.currentTimeMillis());
         content.append("' target='_blank' ><b>点击</b>重置密码(30分钟内有效)</a>");
         this.setCookie("find_password_by_email", String.valueOf(System.currentTimeMillis()), 1000 * 60 * 30);

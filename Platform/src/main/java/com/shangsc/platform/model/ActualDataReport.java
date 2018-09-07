@@ -79,11 +79,11 @@ public class ActualDataReport extends BaseActualData<ActualData> {
     public Map<String, String> getMonthColumns() {
         Calendar date = Calendar.getInstance();
         Integer year = Integer.valueOf(date.get(Calendar.YEAR));
-        String start = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year) + "-01-01 00:00:00"));
-        String end = DateUtils.formatDate(DateUtils.getStrDate(String.valueOf(year + 1) + "-01-01 00:00:00"));
+        String start = String.valueOf(year) + "-01-01 00:00:00";
+        String end = String.valueOf(year + 1) + "-01-01 00:00:00";
         String sql = "select date_format(tad.write_time, '%Y-%m') as months from (select write_time from t_actual_data order by write_time asc) tad " +
-                "where tad.write_time >='" + start + "' and tad.write_time <='" + end + "'" +
-                "GROUP BY date_format(tad.write_time, '%Y-%m')";
+                " where tad.write_time >='" + start + "' and tad.write_time <='" + end + "'" +
+                " GROUP BY date_format(tad.write_time, '%Y-%m')";
         List<Record> records = Db.find(sql);
 
         Map<String, String> months = new LinkedHashMap<>();
@@ -101,8 +101,8 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         String start = monthDateStartAndEnd.get(MonthCode.warn_start_date);
         String end = monthDateStartAndEnd.get(MonthCode.warn_end_date);
         String sql = "select date_format(tad.write_time, '%Y-%m-%d') as days from (select write_time from t_actual_data order by write_time asc) tad " +
-                "where tad.write_time >='" + start + "' and tad.write_time <='" + end + "'" +
-                "GROUP BY date_format(tad.write_time, '%Y-%m-%d')";
+                " where tad.write_time >='" + start + "' and tad.write_time <='" + end + "'" +
+                " GROUP BY date_format(tad.write_time, '%Y-%m-%d')";
         List<Record> records = Db.find(sql);
         Map<String, String> days = new LinkedHashMap<>();
         for (int i = 0; i < records.size(); i++) {

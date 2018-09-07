@@ -40,14 +40,14 @@ public class ReportYearController extends BaseController {
         JSONObject company = new JSONObject();
         company.put("label", "单位名称");
         company.put("name", "companyName");
-        company.put("width", "100px;");
+        company.put("width", "150");
         company.put("sortable", "false");
         array.add(company);
         for (String value : years.keySet()) {
             JSONObject column = new JSONObject();
             column.put("label", value);
             column.put("name", value);
-            column.put("width", "100px;");
+            column.put("width", "100");
             column.put("sortable", "false");
             array.add(column);
         }
@@ -75,7 +75,7 @@ public class ReportYearController extends BaseController {
             }
             String sql = "select tad.inner_code,date_format(tad.write_time, '%Y') as TargetDT, sum(tad.net_water) as TargetTotal " +
                     " from t_actual_data tad where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
-                    "group by tad.inner_code,date_format(tad.write_time, '%Y') order by TargetDT asc";
+                    " group by tad.inner_code,date_format(tad.write_time, '%Y') order by TargetDT asc";
             List<Record> records = Db.find(sql);
             for (int i = 0; i < list.size(); i++) {
                 Company company = list.get(i);
@@ -116,7 +116,7 @@ public class ReportYearController extends BaseController {
             }
             String sql = "select tad.inner_code,date_format(tad.write_time, '%Y') as TargetDT, sum(tad.net_water) as TargetTotal " +
                     " from t_actual_data tad where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
-                    "group by tad.inner_code,date_format(tad.write_time, '%Y') order by tad.inner_code asc,TargetDT asc";
+                    " group by tad.inner_code,date_format(tad.write_time, '%Y') order by tad.inner_code asc,TargetDT asc";
 
             List<Record> records = Db.find(sql);
             for (int i = 0; i < list.size(); i++) {
