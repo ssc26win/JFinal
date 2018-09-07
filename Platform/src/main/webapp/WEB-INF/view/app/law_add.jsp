@@ -110,10 +110,10 @@
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
 <script type="text/javascript">
     jQuery(function($) {
-        /*$('#file_upload').uploadify({
+        $('#file_upload').uploadify({
             //校验数据
             'swf' : '${res_url}uploadify/uploadify.swf', //指定上传控件的主体文件，默认‘uploader.swf’
-            'uploader' : '/basic/ad/uploadImg', //指定服务器端上传处理文件，默认‘upload.php’
+            'uploader' : '/app/law/uploadImg', //指定服务器端上传处理文件，默认‘upload.php’
             'auto' : true, //手动上传
             'buttonImage' : '${res_url}uploadify/uploadify-upload.png', //浏览按钮背景图片
             'width' :110,
@@ -132,7 +132,7 @@
             'onUploadError' : function(file, data, response) {//当上传返回错误时触发
                 $('#f_pics').append("<div class=\"pics_con\">" + data + "</div>");
             }
-        });*/
+        });
 
         var $validation = true;
 
