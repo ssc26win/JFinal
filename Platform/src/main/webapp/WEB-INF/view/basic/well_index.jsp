@@ -103,7 +103,7 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
-                { label: '单位名称', name: 'companyName', width: 200, sortable:false},
+                { label: '单位名称', name: 'companyName', width: 220, sortable:false},
                 { label: '单位编号', name: 'real_code', width: 60, sortable:true},
                 { label: '水井编号', name: 'well_num', width: 80, sortable:false},
                 { label: '水井名称', name: 'name', width: 180,sortable:false},

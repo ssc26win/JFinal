@@ -223,7 +223,7 @@
 							required: "软件名不能为空"
 						},
 						versionNo:{
-							required: "版本号不能为空",
+							required: "版本号不能为空"
 						},
 						natureNo:{
 							required: "自然版本号不能为空",
