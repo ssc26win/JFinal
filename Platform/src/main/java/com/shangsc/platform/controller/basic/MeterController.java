@@ -73,6 +73,13 @@ public class MeterController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
+    public void byTerm() {
+        this.setAttr("term", this.getPara("term"));
+        render("meter_index.jsp");
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/basic/meter"})
     public void getListData() {
         String keyword = this.getPara("name");
         Integer term = this.getParaToInt("term");

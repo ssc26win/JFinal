@@ -3,7 +3,6 @@ package com.shangsc.platform.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
-import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.MapState;
@@ -37,7 +36,8 @@ public class ChartController extends BaseController {
         object.put("total", total);//单位总数
 
         Map<Integer, Object> termGroup = Company.me.getTermGroup();
-
+        String contextPath = this.getRequest().getServletContext().getContextPath();
+        String context_path = contextPath.equals("/") ? "" : contextPath;
         JSONArray array = new JSONArray();
         Map<String, Object> termType = DictData.dao.getDictMap(0, DictCode.Term);
         //{name:'一期' + '(' + stage1Total + ')', y:stage1Total,url:'${context_path}/basic/meter/byTerm?term=1'},
@@ -45,7 +45,7 @@ public class ChartController extends BaseController {
             JSONObject serObj = new JSONObject();
             serObj.put("name", termType.get(termKey.toString()) + "(" + termGroup.get(termKey).toString() + ")");
             serObj.put("y", (Long) termGroup.get(termKey));
-            serObj.put("url", PropKit.get("config.host.url") + "/basic/company/byTerm?term=" + termKey);
+            serObj.put("url", context_path + "/basic/company/byTerm?term=" + termKey);
             array.add(serObj);
         }
         object.put("CompanyTermSerArray", array);
@@ -60,6 +60,8 @@ public class ChartController extends BaseController {
         int total = waterMeters.size();
         object.put("total", total);
         Map<Integer, Object> termGroup = WaterMeter.me.getTermGroup();
+        String contextPath = this.getRequest().getServletContext().getContextPath();
+        String context_path = contextPath.equals("/") ? "" : contextPath;
         JSONArray array = new JSONArray();
         Map<String, Object> termType = DictData.dao.getDictMap(0, DictCode.Term);
         //{name:'一期' + '(' + stage1Total + ')', y:stage1Total,url:'${context_path}/basic/meter/byTerm?term=1'},
@@ -67,7 +69,7 @@ public class ChartController extends BaseController {
             JSONObject serObj = new JSONObject();
             serObj.put("name", termType.get(termKey.toString()) + "(" + termGroup.get(termKey).toString() + ")");
             serObj.put("y", (Long) termGroup.get(termKey));
-            serObj.put("url", PropKit.get("config.host.url") + "/basic/meter/byTerm?term=" + termKey);
+            serObj.put("url", context_path + "/basic/meter/byTerm?term=" + termKey);
             array.add(serObj);
         }
         object.put("MeterTermSerArray", array);

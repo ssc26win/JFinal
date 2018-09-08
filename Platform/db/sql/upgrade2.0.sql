@@ -78,6 +78,7 @@ insert into dict_type(id, name, remark, update_time) values (16, 'Term', '周期
 insert into dict_data(dict_type_id, value, seq, update_time, name, remark) values (16, 1, 1, 1524777777,'第一期','第一期');
 insert into dict_data(dict_type_id, value, seq, update_time, name, remark) values (16, 2, 2, 1524777777,'第二期','第二期');
 
+update t_water_meter set term=2 where meter_address like '18%' or meter_address like '2018%';
 
 select id,meter_attr from t_water_meter ORDER BY meter_attr desc;
 
