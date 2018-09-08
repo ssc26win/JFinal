@@ -26,11 +26,14 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return Db.find("select * from t_water_meter GROUP BY meter_address");
     }
 
-    public Page<WaterMeter> getWaterMeterPage(int page, int rows, String keyword, String orderbyStr) {
+    public Page<WaterMeter> getWaterMeterPage(int page, int rows, String keyword, String orderbyStr, Integer term) {
         String select = "select twm.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,tc.gb_industry,tc.main_industry,tc.water_use_type";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm inner join " +
                 " t_company tc on twm.inner_code=tc.inner_code ");
         sqlExceptSelect.append(" where 1=1 ");
+        if (term != null) {
+            sqlExceptSelect.append("and twm.term=" + term);
+        }
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
@@ -74,7 +77,8 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
     }
 
     public InvokeResult save(Long id, String innerCode, String lineNum, String meterNum, String meterAddress, BigDecimal times,
-                             Integer watersType, String meterAttr, Integer chargeType, String billingCycle, Date registDate, String vender, String memo) {
+                             Integer watersType, Integer meterAttr, Integer chargeType, String billingCycle, Date registDate,
+                             String vender, String memo, Integer term) {
         if (!Company.me.hasExistCompany(innerCode)) {
             return InvokeResult.failure("保存失败，公司编号不存在");
         }
@@ -90,12 +94,12 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
                 return InvokeResult.failure("更新失败, 该水表不存在");
             }
             meter = setProp(meter, innerCode, lineNum, meterNum, meterAddress, times, watersType, meterAttr,
-                    chargeType, billingCycle, registDate, vender, memo);
+                    chargeType, billingCycle, registDate, vender, memo, term);
             meter.update();
         } else {
             WaterMeter meter = new WaterMeter();
             meter = setProp(meter, innerCode, lineNum, meterNum, meterAddress, times, watersType, meterAttr,
-                    chargeType, billingCycle, registDate, vender, memo);
+                    chargeType, billingCycle, registDate, vender, memo, term);
             meter.setRegistDate(new Date());
             meter.save();
             Company.me.updateMeterNum(innerCode, true);
@@ -105,8 +109,8 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
     }
 
     private WaterMeter setProp(WaterMeter meter, String innerCode, String lineNum, String meterNum, String meterAddress, BigDecimal times,
-                               Integer watersType, String meterAttr, Integer chargeType, String billingCycle,
-                               Date registDate, String vender, String memo) {
+                               Integer watersType, Integer meterAttr, Integer chargeType, String billingCycle,
+                               Date registDate, String vender, String memo, Integer term) {
         meter.setInnerCode(innerCode);
         meter.setLineNum(lineNum);
         meter.setMeterNum(meterNum);
@@ -123,6 +127,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         }
         meter.setVender(vender);
         meter.setMemo(memo);
+        meter.setTerm(term);
         return meter;
     }
 
@@ -301,9 +306,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
      */
     public static int[] saveBatch(List<WaterMeter> modelOrRecordList, int batchSize) {
         String sql = "insert into t_water_meter(inner_code,line_num,meter_num,meter_address,times,waters_type," +
-                "meter_attr,charge_type,billing_cycle,regist_date,vender) values (?,?,?,?,?,?,?,?,?,?,?)";
+                "meter_attr,charge_type,billing_cycle,regist_date,vender,term) values (?,?,?,?,?,?,?,?,?,?,?,?)";
         String columns = "inner_code,line_num,meter_num,meter_address,times,waters_type," +
-                "meter_attr,charge_type,billing_cycle,regist_date,vender";
+                "meter_attr,charge_type,billing_cycle,regist_date,vender,term";
         int[] result = Db.batch(sql, columns, modelOrRecordList, batchSize);
         return result;
     }
@@ -312,6 +317,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         List<WaterMeter> lists = new ArrayList<WaterMeter>();
         Map<String, Integer> dictNameMap = DictData.dao.getDictNameMap(DictCode.WatersType);
         Map<String, Integer> dictNameCharge = DictData.dao.getDictNameMap(DictCode.ChargeType);
+        Map<String, Integer> termType = DictData.dao.getDictNameMap(DictCode.Term);
         //单位编号	单位名称	所属节水办	所属区县	路别	表计地址	最小单位	表号	水源类型	国标行业	主要行业	取水用途	水表属性	收费类型	注册日期
         for (int i = 0; i < maps.size(); i++) {
             Map<Integer, String> map = maps.get(i);
@@ -342,7 +348,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
                 meter.setWatersType(dictNameMap.get(map.get(8)));
             }
             if (StringUtils.isNotEmpty(map.get(9))) {
-                meter.setMeterAttr(map.get(9));
+                meter.setMeterAttrSrc(map.get(9));
             }
             if (StringUtils.isNotEmpty(map.get(10))) {
                 meter.setChargeType(dictNameCharge.get(map.get(10)));
@@ -372,9 +378,23 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
                 vender = map.get(15).toString();
             }
             meter.setVender(vender);
+            Integer term = null;
+            if (StringUtils.isNotEmpty(map.get(16))) {
+                term = termType.get(map.get(16).toString());
+            }
+            meter.setTerm(term);
             lists.add(meter);
         }
 
         saveBatch(lists, lists.size());
+    }
+
+    public Map<Integer, Object> getTermGroup() {
+        List<Record> records = Db.find("select term,count(term) as termTotal from t_water_meter group by term");
+        Map<Integer, Object> result = new LinkedHashMap<>();
+        for (Record record : records) {
+            result.put(record.getInt("term"), record.get("termTotal"));
+        }
+        return result;
     }
 }

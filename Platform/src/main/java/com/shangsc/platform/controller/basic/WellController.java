@@ -159,7 +159,7 @@ public class WellController extends BaseController {
             Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
             for (int i = 0; i < list.size(); i++) {
                 Well co = list.get(i);
-                if (co.get("street") != null) {
+                if (co.get("street") != null && mapStreetType.size() > 0) {
                     co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.get("street")))));
                 }
                 if (co.getAboveScale() != null) {
@@ -177,13 +177,13 @@ public class WellController extends BaseController {
                 if (co.getLicence() != null) {
                     co.put("licenceName", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getLicence())));
                 }
-                if (co.getCalculateType() != null) {
+                if (co.getCalculateType() != null && mapCalculateType.size() > 0) {
                     co.put("calculateTypeName", String.valueOf(mapCalculateType.get(String.valueOf(co.getCalculateType()))));
                 }
-                if (co.getGeomorphicType() != null) {
+                if (co.getGeomorphicType() != null && mapGeomorphicType.size() > 0) {
                     co.put("geomorphicTypeName", String.valueOf(mapGeomorphicType.get(String.valueOf(co.getGeomorphicType()))));
                 }
-                if (co.getGroundType() != null) {
+                if (co.getGroundType() != null && mapGroundType.size() > 0) {
                     co.put("groundTypeName", String.valueOf(mapGroundType.get(String.valueOf(co.getGroundType()))));
                 }
                 list.set(i, co);

@@ -151,7 +151,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label" for="surface_price">单位类型:</label>
+                                <label class="col-sm-2 control-label" for="company_type">单位类型:</label>
                                 <div class="col-sm-4">
                                     <input  type="hidden" id="company_typeInput" name="company_typeInput" value="${item.company_type}" />
                                     <select id="company_type" name="company_type" value="${item.companyType}" class="form-control">
@@ -159,9 +159,16 @@
                                         <option value="2">供水单位</option>
                                     </select>
                                 </div>
-                                <label class="col-sm-2 control-label" for="self_free_price">备注信息：</label>
+                                <label class="col-sm-2 control-label" for="memo">备注信息：</label>
                                 <div class="col-sm-4">
                                     <input type="text" id="memo" name="memo" value="${item.memo}" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="term">周期:</label>
+                                <div class="col-sm-4">
+                                    <input  type="hidden" id="termInput" name="termInput" value="${item.term}" />
+                                    <select id="term" name="term" value="${item.term}" class="form-control"></select>
                                 </div>
                             </div>
                             <div class="clearfix form-actions" align="center">
@@ -325,6 +332,13 @@
                 $("#waterUseType").append("<option value='" + waterUseType[i].value + "'>"+waterUseType[i].name+"</option>");
             }
             $("#waterUseType").val($("#waterUseTypeInput").val());
+
+            var term = data.Term;
+            for(var i = 0;i<term.length;i++) {
+                $("#term").append("<option value='" + term[i].value + "'>"+term[i].name+"</option>");
+            }
+            $("#term").val($("#termInput").val());
+
             $("#company_type").val($("#company_typeInput").val());
 
         },"json");

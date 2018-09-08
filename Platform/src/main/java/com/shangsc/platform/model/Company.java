@@ -156,7 +156,7 @@ public class Company extends BaseCompany<Company> {
                              String address, Integer customerType, Integer waterUseType, String gbIndustry, String mainIndustry,
                              String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
                              Integer remotemeterCount, Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createTime,
-                             BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type, String memo) {
+                             BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type, String memo, Integer term) {
         if (hasExistRealCode(id, realCode)) {
             return InvokeResult.failure("保存失败，单位编号已存在");
         }
@@ -173,14 +173,14 @@ public class Company extends BaseCompany<Company> {
             company = setProp(company, name, realCode, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                     gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
                     remotemeterCount, unitType, longitude, latitude, createTime, self_well_price, surface_price,
-                    self_free_price, company_type, memo);
+                    self_free_price, company_type, memo, term);
             company.update();
         } else {
             Company company = new Company();
             company = setProp(company, name, realCode, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                     gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
                     remotemeterCount, unitType, longitude, latitude, createTime, self_well_price, surface_price,
-                    self_free_price, company_type, memo);
+                    self_free_price, company_type, memo, term);
             company.save();
         }
         return InvokeResult.success();
@@ -190,7 +190,7 @@ public class Company extends BaseCompany<Company> {
                             String address, Integer customerType, Integer waterUseType, String gbIndustry, String mainIndustry,
                             String contact, String phone, String postalCode, String department, Integer wellCount, Integer firstWatermeterCount,
                             Integer remotemeterCount, Integer unitType, BigDecimal longitude, BigDecimal latitude, Date createTime,
-                            BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type, String memo) {
+                            BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type, String memo, Integer term) {
         company.setName(name);
         company.setRealCode(realCode);
         company.setInnerCode(innerCode);
@@ -223,13 +223,17 @@ public class Company extends BaseCompany<Company> {
         company.setSurfacePrice(surface_price);
         company.setSelfFreePrice(self_free_price);
         company.setMemo(memo);
+        company.setTerm(term);
         return company;
     }
 
-    public Page<Company> getCompanyPage(int page, int rows, String keyword, String orderbyStr, String companyType) {
+    public Page<Company> getCompanyPage(int page, int rows, String keyword, String orderbyStr, String companyType, Integer term) {
         String select = "select c.*, (select count(net_water) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
         sqlExceptSelect.append(" where 1=1 ");
+        if (term != null) {
+            sqlExceptSelect.append("and c.term=" + term);
+        }
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
@@ -578,11 +582,11 @@ public class Company extends BaseCompany<Company> {
     public static int[] saveBatch(List<Company> modelOrRecordList, int batchSize) {
         String sql = "insert into t_company(inner_code,real_code,name,water_unit,county,street,street_src,address,customer_type,gb_industry," +
                 "main_industry,water_use_type,contact,phone,postal_code,department,well_count,first_watermeter_count," +
-                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type,memo)" +
-                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type,memo,term)" +
+                " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         String columns = "inner_code,real_code,name,water_unit,county,street,street_src,address,customer_type,gb_industry," +
                 "main_industry,water_use_type,contact,phone,postal_code,department,well_count,first_watermeter_count," +
-                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type,memo";
+                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type,memo,term";
         int[] result = Db.batch(sql, columns, modelOrRecordList, batchSize);
         return result;
     }
@@ -592,6 +596,7 @@ public class Company extends BaseCompany<Company> {
         Map<String, Integer> dictUserType = DictData.dao.getDictNameMap(DictCode.UserType);
         Map<String, Integer> dictStreet = DictData.dao.getDictNameMap(DictCode.Street);
         Map<String, Integer> dictWaterUseType = DictData.dao.getDictNameMap(DictCode.WaterUseType);
+        Map<String, Integer> termType = DictData.dao.getDictNameMap(DictCode.Term);
         for (int i = 0; i < maps.size(); i++) {
             Company company = new Company();
             Integer company_type = CompanyType.COMPANY;
@@ -704,10 +709,14 @@ public class Company extends BaseCompany<Company> {
             if (StringUtils.isNotEmpty(map.get(19))) {
                 memo = map.get(19).toString();
             }
+            Integer term = null;
+            if (StringUtils.isNotEmpty(map.get(20))) {
+                term = termType.get(map.get(20).toString());
+            }
             setProp(company, name, realCode, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                     gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
                     remotemeterCount, unitType, null, null, createDate, self_well_price, surface_price, self_free_price,
-                    company_type, memo);
+                    company_type, memo, term);
             lists.add(company);
         }
         saveBatch(lists, lists.size());
@@ -731,5 +740,14 @@ public class Company extends BaseCompany<Company> {
             names.put(company.getName(), company.getInnerCode());
         }
         return names;
+    }
+
+    public Map<Integer, Object> getTermGroup() {
+        List<Record> records = Db.find("select term,count(term) as termTotal from t_company group by term");
+        Map<Integer, Object> result = new LinkedHashMap<>();
+        for (Record record : records) {
+            result.put(record.getInt("term"), record.get("termTotal"));
+        }
+        return result;
     }
 }

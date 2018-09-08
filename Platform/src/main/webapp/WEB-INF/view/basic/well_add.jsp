@@ -208,7 +208,7 @@
                 },
                 wellNum:{
                     required: true
-                },
+                }
             },
             messages: {
                 companyName:{
@@ -219,7 +219,7 @@
                 },
                 wellNum:{
                     required: "请输入水井编号"
-                },
+                }
             },
             highlight: function (e) {
                 $(e).closest('.form-group').removeClass('has-info').addClass('has-error');

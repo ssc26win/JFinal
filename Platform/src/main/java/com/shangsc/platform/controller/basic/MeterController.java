@@ -75,7 +75,8 @@ public class MeterController extends BaseController {
     @RequiresPermissions(value = {"/basic/meter"})
     public void getListData() {
         String keyword = this.getPara("name");
-        Page<WaterMeter> pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        Integer term = this.getParaToInt("term");
+        Page<WaterMeter> pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), term);
         List<WaterMeter> list = pageInfo.getList();
         setVoProp(list);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
@@ -157,7 +158,7 @@ public class MeterController extends BaseController {
             times = new BigDecimal(StringUtils.trim(this.getPara("times")));
         }
         Integer watersType = this.getParaToInt("watersType");
-        String meterAttr = this.getPara("meterAttr");
+        Integer meterAttr = this.getParaToInt("meterAttr");
         Integer chargeType = this.getParaToInt("chargeType");
         String billingCycle = this.getPara("billingCycle");
         Date registDate = null;
@@ -166,8 +167,9 @@ public class MeterController extends BaseController {
         }
         String vender = this.getPara("vender");
         String memo = this.getPara("memo");
+        Integer term = this.getParaToInt("term");
         InvokeResult result = WaterMeter.me.save(id, innerCode, lineNum, meterNum, meterAddress, times,
-                watersType, meterAttr, chargeType, billingCycle, registDate, vender, memo);
+                watersType, meterAttr, chargeType, billingCycle, registDate, vender, memo, term);
         this.renderJson(result);
     }
 
@@ -196,7 +198,7 @@ public class MeterController extends BaseController {
         } else if (ExportType.METER_DISABLE.equals(flagType)) {
             pageInfo = WaterMeter.me.getDisableWaterMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
         } else {
-            pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+            pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr(), null);
         }
         List<WaterMeter> list = pageInfo.getList();
         setVoProp(list);
@@ -211,19 +213,23 @@ public class MeterController extends BaseController {
             Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictCode.ChargeType);
             Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
             Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
+            Map<String, Object> termType = DictData.dao.getDictMap(0, DictCode.Term);
             for (int i = 0; i < list.size(); i++) {
                 WaterMeter co = list.get(i);
-                if (co.get("water_use_type") != null && StringUtils.isNotEmpty(co.get("water_use_type").toString())) {
+                if (co.get("water_use_type") != null && mapWaterUseType.size() > 0) {
                     co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.get("water_use_type")))));
                 }
-                if (co.getWatersType() != null) {
+                if (co.getWatersType() != null && mapWatersType.size() > 0) {
                     co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
                 }
-                if (co.getChargeType() != null) {
+                if (co.getChargeType() != null && mapChargeType.size() > 0) {
                    co.put("chargeTypeName", String.valueOf(mapChargeType.get(String.valueOf(co.getChargeType()))));
                 }
-                if (StringUtils.isNotEmpty(co.getMeterAttr())) {
+                if (co.getMeterAttr() != null && meterAttrType.size() > 0) {
                     co.put("meterAttrName", String.valueOf(meterAttrType.get(String.valueOf(co.getMeterAttr()))));
+                }
+                if (co.getTerm() != null && termType.size() > 0) {
+                    co.put("termName", String.valueOf(termType.get(String.valueOf(co.getTerm()))));
                 }
                 list.set(i, co);
             }

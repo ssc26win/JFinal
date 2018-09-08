@@ -176,6 +176,10 @@ public class DictController extends BaseController {
 
         allData.put(DictCode.WaterUseType, resultWaterUseType);
 
+        List<Map<String, Object>> termType = DictData.dao.getDictMapList(0, DictCode.Term);
+
+        allData.put(DictCode.Term, termType);
+
         this.renderJson(allData);
     }
 
@@ -195,6 +199,10 @@ public class DictController extends BaseController {
         List<Map<String, Object>> resultChargeType = DictData.dao.getDictMapList(0, DictCode.ChargeType);
 
         allData.put(DictCode.ChargeType, resultChargeType);
+
+        List<Map<String, Object>> termType = DictData.dao.getDictMapList(0, DictCode.Term);
+
+        allData.put(DictCode.Term, termType);
 
         this.renderJson(allData);
     }

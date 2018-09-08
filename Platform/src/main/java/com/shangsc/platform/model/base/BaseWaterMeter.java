@@ -65,12 +65,12 @@ public abstract class BaseWaterMeter<M extends BaseWaterMeter<M>> extends BaseMo
 		return get("waters_type");
 	}
 
-	public void setMeterAttr(String meterAttr) {
-		set("meter_attr", meterAttr);
+	public void setMeterAttrSrc(String meterAttrSrc) {
+		set("meter_attr_src", meterAttrSrc);
 	}
 
-	public String getMeterAttr() {
-		return get("meter_attr");
+	public String getMeterAttrSrc() {
+		return get("meter_attr_src");
 	}
 
 	public void setChargeType(Integer chargeType) {
@@ -97,6 +97,14 @@ public abstract class BaseWaterMeter<M extends BaseWaterMeter<M>> extends BaseMo
 		return get("regist_date");
 	}
 
+	public void setMeterAttr(Integer meterAttr) {
+		set("meter_attr", meterAttr);
+	}
+
+	public Integer getMeterAttr() {
+		return get("meter_attr");
+	}
+
 	public void setMemo(String memo) {
 		set("memo", memo);
 	}
@@ -111,6 +119,14 @@ public abstract class BaseWaterMeter<M extends BaseWaterMeter<M>> extends BaseMo
 
 	public String getVender() {
 		return get("vender");
+	}
+
+	public void setTerm(Integer term) {
+		set("term", term);
+	}
+
+	public Integer getTerm() {
+		return get("term");
 	}
 
 }

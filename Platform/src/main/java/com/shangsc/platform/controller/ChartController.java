@@ -3,7 +3,9 @@ package com.shangsc.platform.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Record;
+import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.MapState;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
@@ -28,28 +30,47 @@ public class ChartController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
-    public void metersByStage() {
-        JSONObject object = new JSONObject();
-        List<WaterMeter> waterMeters = WaterMeter.me.getAllList();
-        int total = waterMeters.size();
-        object.put("total", total);
-
-        object.put("stage1Total", 30);
-
-        object.put("stage2Total", total-30);
-        this.renderJson(object);
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/chart"})
-    public void companiesByStage() {
+    public void companiesByTerm() {
         JSONObject object = new JSONObject();
         //取得用水指标数据
         int total = Company.me.totalCount();
         object.put("total", total);//单位总数
 
-        object.put("stage1Total", 10);
-        object.put("stage2Total", total-10);
+        Map<Integer, Object> termGroup = Company.me.getTermGroup();
+
+        JSONArray array = new JSONArray();
+        Map<String, Object> termType = DictData.dao.getDictMap(0, DictCode.Term);
+        //{name:'一期' + '(' + stage1Total + ')', y:stage1Total,url:'${context_path}/basic/meter/byTerm?term=1'},
+        for (Integer termKey : termGroup.keySet()) {
+            JSONObject serObj = new JSONObject();
+            serObj.put("name", termType.get(termKey.toString()) + "(" + termGroup.get(termKey).toString() + ")");
+            serObj.put("y", (Long) termGroup.get(termKey));
+            serObj.put("url", PropKit.get("config.host.url") + "/basic/company/byTerm?term=" + termKey);
+            array.add(serObj);
+        }
+        object.put("CompanyTermSerArray", array);
+        this.renderJson(object);
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/chart"})
+    public void metersByTerm() {
+        JSONObject object = new JSONObject();
+        List<WaterMeter> waterMeters = WaterMeter.me.getAllList();
+        int total = waterMeters.size();
+        object.put("total", total);
+        Map<Integer, Object> termGroup = WaterMeter.me.getTermGroup();
+        JSONArray array = new JSONArray();
+        Map<String, Object> termType = DictData.dao.getDictMap(0, DictCode.Term);
+        //{name:'一期' + '(' + stage1Total + ')', y:stage1Total,url:'${context_path}/basic/meter/byTerm?term=1'},
+        for (Integer termKey : termGroup.keySet()) {
+            JSONObject serObj = new JSONObject();
+            serObj.put("name", termType.get(termKey.toString()) + "(" + termGroup.get(termKey).toString() + ")");
+            serObj.put("y", (Long) termGroup.get(termKey));
+            serObj.put("url", PropKit.get("config.host.url") + "/basic/meter/byTerm?term=" + termKey);
+            array.add(serObj);
+        }
+        object.put("MeterTermSerArray", array);
         this.renderJson(object);
     }
 

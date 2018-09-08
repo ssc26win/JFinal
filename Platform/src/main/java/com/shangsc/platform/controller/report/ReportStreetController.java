@@ -52,7 +52,11 @@ public class ReportStreetController extends BaseController {
             JSONObject column = new JSONObject();
             column.put("label", meterAttrType.get(value).toString());
             column.put("name", ReportColType.street_col + value);
-            column.put("width", "120");
+            if (meterAttrType.get(value).toString().length() >= 3) {
+                column.put("width", meterAttrType.get(value).toString().length() * 16);
+            } else {
+                column.put("width", 50);
+            }
             column.put("sortable", "false");
             array.add(column);
         }
@@ -118,7 +122,7 @@ public class ReportStreetController extends BaseController {
                     Integer waters_type = record.getInt("waters_type");
                     Integer street_t = record.getInt("street");
                     if (waterTypeTarget == waters_type.intValue() && streetTarget == street_t.intValue()) {
-                        String colStr = record.getStr("meter_attr");
+                        String colStr = record.getInt("meter_attr").toString();
                         BigDecimal colVal = new BigDecimal("0");
                         if (record.getBigDecimal("TargetAttrTotal") != null) {
                             colVal = record.getBigDecimal("TargetAttrTotal");
@@ -189,7 +193,7 @@ public class ReportStreetController extends BaseController {
                     Integer waters_type = record.getInt("waters_type");
                     Integer street_t = record.getInt("street");
                     if (waterTypeTarget == waters_type.intValue() && streetTarget == street_t.intValue()) {
-                        String colStr = record.getStr("meter_attr");
+                        String colStr = record.getInt("meter_attr").toString();
                         BigDecimal colVal = new BigDecimal("0");
                         if (record.getBigDecimal("TargetAttrTotal") != null) {
                             colVal = record.getBigDecimal("TargetAttrTotal");

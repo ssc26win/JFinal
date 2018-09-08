@@ -121,7 +121,7 @@
                                 <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="memo">备注信息</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="memo" name="memo" value="${item.memo}" class="form-control">
+                                        <input type="text" id="memo" name="memo" value="${item.memo}" class="col-xs-12 col-sm-8">
                                     </div>
                                 </div>
                             </div>
@@ -130,6 +130,15 @@
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
                                         <input type="text" id="vender" name="vender" value="${item.vender}" class="col-xs-12 col-sm-8">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="term">周期</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input  type="hidden" id="termInput" name="termInput" value="${item.term}" />
+                                        <select id="term" name="term" value="${item.term}" class="col-xs-12 col-sm-8"></select>
                                     </div>
                                 </div>
                             </div>
@@ -280,6 +289,11 @@
                     $("#meterAttr").append("<option value='" + meterAttr[i].value + "'>"+meterAttr[i].name+"</option>");
                 }
             }
+            var term = data.Term;
+            for(var i = 0;i<term.length;i++) {
+                $("#term").append("<option value='" + term[i].value + "'>"+term[i].name+"</option>");
+            }
+            $("#term").val($("#termInput").val());
         },"json");
     }
     $(function(){

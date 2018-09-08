@@ -113,7 +113,7 @@
                 {label: '创建时间', name: 'create_time', width: 150, sortable: false}
             ],
             viewrecords: true,
-            height: 300,
+            height: 280,
             rowNum: 20,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色

@@ -94,7 +94,7 @@
             if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
                 //setTimeout is for webkit only to give time for DOM changes and then redraw!!!
                 setTimeout(function() {
-                    $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+                    $(grid_selector).jqGrid('setGridWidth', parent_column.width() );
                 }, 0);
             }
         });
@@ -102,6 +102,10 @@
         var url = '${context_path}/basic/meter/getListData';
         if (flag != null && flag != undefined && flag != '') {
             url = '${context_path}/basic/meter/get'+flag+'ListData/';
+        }
+        var term = '${term}';
+        if (term != null && term != undefined && term != '') {
+            url = '${context_path}/basic/meter/getListData?term=' +term;
         }
         $("#grid-table_meter").jqGrid({
             url:url,
@@ -125,7 +129,8 @@
                 { label: '计费周期', name: 'billing_cycle', width: 50, sortable:false},
                 { label: '注册日期', name: 'regist_date', width: 100, sortable:true},
                 { label: '备注信息', name: 'memo', width: 100, sortable:false},
-                { label: '生产厂家', name: 'vender', width: 100, sortable:false}
+                { label: '生产厂家', name: 'vender', width: 100, sortable:false},
+                { label: '周期', name: 'termName', width: 70, sortable:false}
             ],
             viewrecords: true,
             height: 560,

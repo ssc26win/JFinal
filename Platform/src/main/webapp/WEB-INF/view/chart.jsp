@@ -36,10 +36,10 @@
         <div class="page-content" id="page-content">
             <div class="row">
                 <div class="col-sm-6">
-                    <div id="containerCompaniesStage" style="width: 60%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerCompaniesTerm" style="width: 60%; height: 25%; margin: 0 auto"></div>
                 </div>
                 <div class="col-sm-6">
-                    <div id="containerMetersStage" style="width: 60%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerMetersTerm" style="width: 60%; height: 25%; margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row">
@@ -79,17 +79,14 @@
 </div>
 <script language="JavaScript">
     $(document).ready(function () {
-        $.get("${context_path}/chart/metersByStage", function (data) {
-            var total = data.total;
-            var stage1Total = data.stage1Total;
-            var stage2Total = data.stage2Total;
+        $.get("${context_path}/chart/metersByTerm", function (data) {
             var chart1 = {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false
             };
             var title1 = {
-                text: '水表总数量（' + total + '）'
+                text: '水表总数量（' + data.total + '）'
             };
             var tooltip1 = {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
@@ -112,10 +109,7 @@
             var series1 = [{
                 type: 'pie',
                 name: '水表数量（%）',
-                data: [
-                    {name:'一期' + '(' + stage1Total + ')', y:stage1Total,url:'${context_path}/basic/meter/byStage?stage=1'},
-                    {name:'二期' + '(' + stage2Total + ')', y:stage2Total,url:'${context_path}/basic/meter/byStage?stage=2'},
-                ]
+                data: data.MeterTermSerArray
             }];
 
             var credits = {
@@ -128,20 +122,17 @@
             json1.series = series1;
             json1.plotOptions = plotOptions1;
             json1.credits=credits;
-            $('#containerMetersStage').highcharts(json1);
+            $('#containerMetersTerm').highcharts(json1);
         })
 
-        $.get("${context_path}/chart/companiesByStage", function (data) {
-            var total = data.total;
-            var stage1Total = data.stage1Total;
-            var stage2Total = data.stage2Total;
+        $.get("${context_path}/chart/companiesByTerm", function (data) {
             var chart1 = {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false
             };
             var title1 = {
-                text: '单位总数量（' + total + '）'
+                text: '单位总数量（' + data.total + '）'
             };
             var tooltip1 = {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
@@ -164,10 +155,7 @@
             var series1 = [{
                 type: 'pie',
                 name: '单位数量（%）',
-                data: [
-                    {name:'一期' + '(' + stage1Total + ')', y:stage1Total,url:'${context_path}/basic/company/byStage?stage=1'},
-                    {name:'二期' + '(' + stage2Total + ')', y:stage2Total,url:'${context_path}/basic/company/byStage?stage=2'},
-                ]
+                data: data.CompanyTermSerArray
             }];
             var credits = {
                 enabled:false // 禁用版权信息
@@ -179,7 +167,7 @@
             json1.series = series1;
             json1.plotOptions = plotOptions1;
             json1.credits=credits;
-            $('#containerCompaniesStage').highcharts(json1);
+            $('#containerCompaniesTerm').highcharts(json1);
         })
         $.get("${context_path}/chart/meter", function (data) {
             var total = data.total;

@@ -241,4 +241,12 @@ public abstract class BaseCompany<M extends BaseCompany<M>> extends BaseModel<M>
 		return get("memo");
 	}
 
+	public void setTerm(Integer term) {
+		set("term", term);
+	}
+
+	public Integer getTerm() {
+		return get("term");
+	}
+
 }

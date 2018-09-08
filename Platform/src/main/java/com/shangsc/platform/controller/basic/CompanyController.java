@@ -79,8 +79,8 @@ public class CompanyController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
-    public void byStage() {
-        this.setAttr("flag", "Stage" + this.getPara("stage"));
+    public void byTerm() {
+        this.setAttr("term", this.getPara("term"));
         render("company_index.jsp");
     }
 
@@ -89,27 +89,8 @@ public class CompanyController extends BaseController {
     public void getListData() {
         String keyword = this.getPara("name");
         String companyType = this.getPara("companyType");
-        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), companyType);
-        List<Company> companies = pageInfo.getList();
-        setVoProp(companies);
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
-    }
-
-    @RequiresPermissions(value = {"/basic/company"})
-    public void getStage1ListData() {
-        String keyword = this.getPara("name");
-        String companyType = this.getPara("companyType");
-        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), companyType);
-        List<Company> companies = pageInfo.getList();
-        setVoProp(companies);
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
-    }
-
-    @RequiresPermissions(value = {"/basic/company"})
-    public void getStage2ListData() {
-        String keyword = this.getPara("name");
-        String companyType = this.getPara("companyType");
-        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), companyType);
+        Integer term = this.getParaToInt("term");
+        Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), companyType, term);
         List<Company> companies = pageInfo.getList();
         setVoProp(companies);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
@@ -226,10 +207,11 @@ public class CompanyController extends BaseController {
         if (StringUtils.isNotEmpty(this.getPara("self_free_price"))) {
             self_free_price = CodeNumUtil.getBigDecimal(this.getPara("self_free_price"), 2);
         }
+        Integer term = this.getParaToInt("term");
         InvokeResult result = Company.me.save(id, name, realCode, innerCode, waterUnit, county, street, streetSrc, address,
                 customerType, waterUseType, gbIndustry, mainIndustry, contact, phone, postalCode, department,
                 wellCount, firstWatermeterCount, remotemeterCount, unitType, longitude, latitude, createTime,
-                self_well_price, surface_price, self_free_price, company_type, memo);
+                self_well_price, surface_price, self_free_price, company_type, memo, term);
         this.renderJson(result);
     }
 
@@ -254,7 +236,7 @@ public class CompanyController extends BaseController {
         } else if (ExportType.COMPANY_WARN.equals(flagType)) {
             pageInfo = Company.me.getWarnCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
         } else {
-            pageInfo = Company.me.getCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr(), companyType);
+            pageInfo = Company.me.getCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr(), companyType, null);
         }
         List<Company> companies = pageInfo.getList();
         setVoProp(companies);
@@ -268,19 +250,23 @@ public class CompanyController extends BaseController {
             Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
             Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictCode.UnitType);
             Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
+            Map<String, Object> termType = DictData.dao.getDictMap(0, DictCode.Term);
             for (int i = 0; i < companies.size(); i++) {
                 Company co = companies.get(i);
-                if (co.getCustomerType() != null) {
+                if (co.getCustomerType() != null && mapUserType.size() > 0) {
                     co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
                 }
-                if (co.getWaterUseType() != null) {
+                if (co.getWaterUseType() != null && mapWaterUseType.size() > 0) {
                     co.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(co.getWaterUseType()))));
                 }
-                if (co.getUnitType() != null) {
+                if (co.getUnitType() != null && mapUintType.size() > 0) {
                     co.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(co.getUnitType()))));
                 }
-                if (co.getStreet() != null) {
+                if (co.getStreet() != null && mapStreetType.size() > 0) {
                     co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.getStreet()))));
+                }
+                if (co.getTerm() != null && termType.size() > 0) {
+                    co.put("termName", String.valueOf(termType.get(String.valueOf(co.getTerm()))));
                 }
                 if (StringUtils.isNotEmpty(co.getAddress())) {
                     co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"

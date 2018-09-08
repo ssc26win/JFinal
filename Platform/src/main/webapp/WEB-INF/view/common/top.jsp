@@ -60,7 +60,7 @@
 		parent.layer.open({
 			title:'查看消息',
 			type: 2,
-			area: ['980px', '560px'],
+			area: ['980px', '600px'],
 			fix: false, //不固定
 			maxmin: true,
 			content: '${context_path}/basic/msgreceiver/myMsgList'

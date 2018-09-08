@@ -57,7 +57,7 @@ public class CreateData {
             meter.setInnerCode(CodeNumUtil.genInnerCode());
             meter.setMeterNum("Test0010" + i);
             meter.setMeterAddress(CodeNumUtil.genInnerCode2(i));
-            meter.setMeterAttr("属性" + i);
+            meter.setMeterAttrSrc("属性" + i);
             meter.setChargeType(2);
             meter.setWatersType(2);
             Calendar c = Calendar.getInstance();

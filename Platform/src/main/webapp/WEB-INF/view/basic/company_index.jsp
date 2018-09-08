@@ -104,7 +104,11 @@
         var flag = '${flag}';
         var url = '${context_path}/basic/company/getListData';
         if (flag != null && flag != undefined && flag != '') {
-            url = '${context_path}/basic/company/get'+flag+'ListData/';
+            url = '${context_path}/basic/company/get'+flag+'ListData';
+        }
+        var term = '${term}';
+        if (term != null && term != undefined && term != '') {
+            url = '${context_path}/basic/company/getListData?term=' +term;
         }
         $("#grid-table").jqGrid({
             url:url,
@@ -112,7 +116,7 @@
             datatype: "json",
             colModel: [
                 { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
-                { label: '单位名称', name: 'name', width: 150, sortable:false},
+                { label: '单位名称', name: 'name', width: 200, sortable:false},
                 { label: '单位编号', name: 'real_code', width: 70, sortable:false},
                 { label: '所属区县', name: 'county', width: 70, sortable:false},
                 { label: '所属乡镇', name: 'streetName', width: 80, sortable:false},
@@ -133,7 +137,8 @@
                 { label: '自备井水价', name: 'self_well_price', width: 80, sortable:true},
                 { label: '地表水水价', name: 'surface_price', width: 80, sortable:true},
                 { label: '自来水水价', name: 'self_free_price', width: 80, sortable:true},
-                { label: '注册时间', name: 'create_time', width: 120, sortable:true}
+                { label: '注册时间', name: 'create_time', width: 130, sortable:true},
+                { label: '周期', name: 'termName', width: 70, sortable:false}
             ],
             viewrecords: true,
             height: 560,
