@@ -49,6 +49,37 @@ public class DictData extends BaseDictData<DictData> {
         return InvokeResult.success();
     }
 
+    public InvokeResult insertDictData(String name, String remark,
+                                       Integer seq, String value, String typeName) {
+        DictType dictType = DictType.dao.findFirst("select * from dict_type where name='" + typeName + "'");
+        if (dictType != null) {
+            Integer typeId = dictType.getId();
+            DictData dictData = new DictData();
+            dictData.setName(name);
+            dictData.setSeq(seq);
+            dictData.setRemark(remark);
+            dictData.setValue(value);
+            dictData.setDictTypeId(typeId);
+            dictData.setUpdateTime(DateUtils.formatDateToUnixTimestamp(new Date()));
+            dictData.save();
+        }
+        return InvokeResult.success();
+    }
+
+    public Long insertDictData(String name, String remark,
+                                       Integer seq, String value, Integer typeId) {
+        DictData dictData = new DictData();
+        dictData.setName(name);
+        dictData.setSeq(seq);
+        dictData.setRemark(remark);
+        dictData.setValue(value);
+        dictData.setDictTypeId(typeId);
+        dictData.setUpdateTime(DateUtils.formatDateToUnixTimestamp(new Date()));
+        dictData.save();
+
+        return dictData.get("id");
+    }
+
     public InvokeResult deleteData(Integer id) {
         this.deleteById(id);
         return InvokeResult.success();
@@ -147,4 +178,15 @@ public class DictData extends BaseDictData<DictData> {
         }
         return all;
     }
+
+    public DictData getLatestDictData(String typeName) {
+        Integer typeId = null;
+        if (StringUtils.isNotEmpty(typeName)) {
+            DictType dictType = DictType.dao.findFirst("select * from dict_type where name='" + typeName + "'");
+            typeId = dictType.getId();
+        }
+        DictData first = this.findFirst("select * from dict_data where dict_type_id=" + typeId + " order by value desc limit 1");
+        return first;
+    }
+
 }

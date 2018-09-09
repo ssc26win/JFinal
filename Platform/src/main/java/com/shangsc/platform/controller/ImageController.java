@@ -48,7 +48,7 @@ public class ImageController extends Controller {
         this.setAttr("relaTable", this.getPara("relaTable"));
         Long relaId = this.getParaToLong("relaId");
         List<Image> images = Image.dao.find("select * from t_image where rela_id=", relaId);
-        
+
 
         render("add_images.jsp");
     }

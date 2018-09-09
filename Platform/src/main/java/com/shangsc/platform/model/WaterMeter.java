@@ -317,7 +317,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         List<WaterMeter> lists = new ArrayList<WaterMeter>();
         Map<String, Integer> dictNameMap = DictData.dao.getDictNameMap(DictCode.WatersType);
         Map<String, Integer> dictNameCharge = DictData.dao.getDictNameMap(DictCode.ChargeType);
+        Map<String, Integer> dictNameMeterAttr = DictData.dao.getDictNameMap(DictCode.MeterAttr);
         Map<String, Integer> termType = DictData.dao.getDictNameMap(DictCode.Term);
+
         //单位编号	单位名称	所属节水办	所属区县	路别	表计地址	最小单位	表号	水源类型	国标行业	主要行业	取水用途	水表属性	收费类型	注册日期
         for (int i = 0; i < maps.size(); i++) {
             Map<Integer, String> map = maps.get(i);
@@ -349,6 +351,20 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
             }
             if (StringUtils.isNotEmpty(map.get(9))) {
                 meter.setMeterAttrSrc(map.get(9));
+                if (dictNameMeterAttr.get(map.get(9)) == null) {
+                    DictData latestDictData = DictData.dao.getLatestDictData(DictCode.MeterAttr);
+                    if (latestDictData != null) {
+                        String value = latestDictData.getValue();
+                        if (StringUtils.isNotEmpty(value)) {
+                            String remark = map.get(9);
+                            DictData.dao.insertDictData(remark, remark, latestDictData.getSeq() + 1,
+                                    String.valueOf(Integer.parseInt(value)) + 1, latestDictData.getDictTypeId());
+                            meter.setMeterAttr(dictNameMeterAttr.get(map.get(9)));
+                        }
+                    }
+                } else {
+                    meter.setMeterAttr(dictNameMeterAttr.get(map.get(9)));
+                }
             }
             if (StringUtils.isNotEmpty(map.get(10))) {
                 meter.setChargeType(dictNameCharge.get(map.get(10)));
