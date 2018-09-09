@@ -23,65 +23,71 @@ import com.shangsc.platform.model.SysUser;
 import java.util.LinkedHashMap;
 
 /**
- * 
  * @author ssc
- *
  */
 public abstract class BaseController extends Controller {
-	public static final int BUFFER_SIZE = 1024 * 1024;
-	/**
-	 * 获取排序对象
-	 * @author ssc
-	 * @return
-	 */
-	protected LinkedHashMap<String,String> getOrderby(){
-		String sord=this.getPara("sord");
-		String sidx=this.getPara("sidx");
-		LinkedHashMap<String,String> orderby=new LinkedHashMap<String,String>();
-		if (CommonUtils.isNotEmpty(sidx)) {
-			orderby.put(sidx, sord);
-		}
-		return orderby;
-	}
-	/**
-	 * 获取排序字符串
-	 * @author ssc
-	 * @return
-	 */
-	protected String getOrderbyStr(){
-		String sord=this.getPara("sord");
-		String sidx=this.getPara("sidx");
-		if(CommonUtils.isNotEmpty(sidx)){
-			return " order by "+ sidx+" "+sord;
-		}
-		return "";
-	}
-	/**
-	 * 获取每几页
-	 * @author ssc
-	 * @return
-	 */
-	protected int getPage(){
-		return this.getParaToInt("page", 1);
-	}
-	/**
-	 * 获取每页数量
-	 * @author ssc
-	 * @return
-	 */
-	protected int getRows(){
-		int rows = this.getParaToInt("rows", 10);
-		if (rows > 1000) {
-			rows = 1000;
-		}
-		return rows;
-	}
+    public static final int BUFFER_SIZE = 1024 * 1024;
 
-	public String getInnerCode() {
-		SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
-		return sysUser.getInnerCode();
-	}
-	
+    /**
+     * 获取排序对象
+     *
+     * @return
+     * @author ssc
+     */
+    protected LinkedHashMap<String, String> getOrderby() {
+        String sord = this.getPara("sord");
+        String sidx = this.getPara("sidx");
+        LinkedHashMap<String, String> orderby = new LinkedHashMap<String, String>();
+        if (CommonUtils.isNotEmpty(sidx)) {
+            orderby.put(sidx, sord);
+        }
+        return orderby;
+    }
+
+    /**
+     * 获取排序字符串
+     *
+     * @return
+     * @author ssc
+     */
+    protected String getOrderbyStr() {
+        String sord = this.getPara("sord");
+        String sidx = this.getPara("sidx");
+        if (CommonUtils.isNotEmpty(sidx)) {
+            return " order by " + sidx + " " + sord;
+        }
+        return "";
+    }
+
+    /**
+     * 获取每几页
+     *
+     * @return
+     * @author ssc
+     */
+    protected int getPage() {
+        return this.getParaToInt("page", 1);
+    }
+
+    /**
+     * 获取每页数量
+     *
+     * @return
+     * @author ssc
+     */
+    protected int getRows() {
+        int rows = this.getParaToInt("rows", 10);
+        if (rows > 1000) {
+            rows = 1000;
+        }
+        return rows;
+    }
+
+    public String getInnerCode() {
+        SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
+        return sysUser.getInnerCode();
+    }
+
 }
 
 

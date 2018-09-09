@@ -89,6 +89,8 @@ CREATE TABLE `t_message` (
   `img_url` varchar(255) DEFAULT NULL COMMENT '图片地址',
   `status` tinyint(4) DEFAULT NULL COMMENT '状态',
   `memo` varchar(500) DEFAULT NULL COMMENT '备注',
+  `inner_code` varchar(50) DEFAULT '' COMMENT '所属公司编码',
+  `user_id` int(11) DEFAULT NULL COMMENT '创建人ID',
   `create_user` varchar(50) DEFAULT NULL COMMENT '创建人',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
@@ -115,18 +117,28 @@ CREATE TABLE `t_law_record` (
   `memo` varchar(500) DEFAULT NULL COMMENT '备注',
   `longitude` decimal(20,6) DEFAULT NULL COMMENT '经度',
   `latitude` decimal(20,6) DEFAULT NULL COMMENT '纬度',
-  `create_user` varchar(50) DEFAULT NULL COMMENT '创建人',
+  `inner_code` varchar(50) DEFAULT '' COMMENT '所属公司编码',
+  `user_id` int(11) DEFAULT NULL COMMENT '创建人ID',
+  `create_user` varchar(50) DEFAULT NULL COMMENT '创建人名称',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='执法记录表';
 
+
 CREATE TABLE `t_image` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `rela_id` bigint(20) DEFAULT NULL COMMENT '引用表id',
   `rela_type` varchar(50) DEFAULT NULL COMMENT '引用表类型',
+  `name` varchar(255) DEFAULT NULL COMMENT '图片名称',
+  `origin_name` varchar(255) DEFAULT NULL COMMENT '图片原始名称',
   `img_url` varchar(255) DEFAULT NULL COMMENT '图片地址',
+  `width` int(11) DEFAULT NULL COMMENT '宽度(单位:像素px)',
+  `height` int(11) DEFAULT NULL COMMENT '高度(单位:像素px)',
+  `size` int(11) DEFAULT NULL COMMENT '图片大小(单位:KB)',
   `memo` varchar(500) DEFAULT NULL COMMENT '备注',
+  `user_id` int(11) DEFAULT NULL COMMENT '创建人ID',
+  `create_user` varchar(50) DEFAULT NULL COMMENT '创建人',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='图片表';

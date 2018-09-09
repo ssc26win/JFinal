@@ -18,48 +18,51 @@ package com.shangsc.platform.core.view;
 
 /**
  * 门面调用封装
- * @author ssc
  *
+ * @author ssc
  */
 public class InvokeResult {
 
-	private Object data;
+    private Object data;
 
-	private String msg="";
+    private String msg = "";
 
-	private int code;
-	
-	public static InvokeResult success(Object data) {
-		InvokeResult result = new InvokeResult();
-		result.data = data;
-		result.code=0;
-		return result;
-	}
+    private int code;
 
-	public static InvokeResult success() {
-		InvokeResult result = new InvokeResult();
-		result.code=0;
-		return result;
-	}
+    public static InvokeResult success(Object data) {
+        InvokeResult result = new InvokeResult();
+        result.data = data;
+        result.code = 0;
+        return result;
+    }
 
-	public static InvokeResult failure(String msg) {
-		return failure(-1,msg);
-	}
-	public static InvokeResult failure(int code,String msg) {
-		InvokeResult result = new InvokeResult();
-		result.msg = msg;
-		result.code=code; 
-		return result;
-	}
-	public Object getData() {
-		return data;
-	}
+    public static InvokeResult success() {
+        InvokeResult result = new InvokeResult();
+        result.code = 0;
+        return result;
+    }
 
-	public String getMsg() {
-		return msg;
-	}
-	public int getCode() {
-		return code;
-	}
+    public static InvokeResult failure(String msg) {
+        return failure(-1, msg);
+    }
+
+    public static InvokeResult failure(int code, String msg) {
+        InvokeResult result = new InvokeResult();
+        result.msg = msg;
+        result.code = code;
+        return result;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public int getCode() {
+        return code;
+    }
 }
 

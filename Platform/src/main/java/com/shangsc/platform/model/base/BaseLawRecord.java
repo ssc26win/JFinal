@@ -65,6 +65,22 @@ public abstract class BaseLawRecord<M extends BaseLawRecord<M>> extends BaseMode
 		return get("latitude");
 	}
 
+	public void setInnerCode(String innerCode) {
+		set("inner_code", innerCode);
+	}
+
+	public String getInnerCode() {
+		return get("inner_code");
+	}
+
+	public void setUserId(Integer userId) {
+		set("user_id", userId);
+	}
+
+	public Integer getUserId() {
+		return get("user_id");
+	}
+
 	public void setCreateUser(String createUser) {
 		set("create_user", createUser);
 	}

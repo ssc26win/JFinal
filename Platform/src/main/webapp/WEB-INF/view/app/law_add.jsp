@@ -35,7 +35,7 @@
                                     <div class="step-content pos-rel" id="step-container">
                                         <div class="step-pane active" id="step1">
                                             <form class="form-horizontal" id="validation-form" method="post">
-                                                <input id="id" name="id" type="hidden" value="${id}"/>
+                                                <input id="id" name="id" type="hidden" value="${item.id}"/>
 
                                                 <div class="form-group">
                                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right"
@@ -60,7 +60,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
+                                                <%--<div class="form-group">
                                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right"
                                                            for="images">
                                                         <a href="#" title="点击获取" style="text-decoration: none"
@@ -71,10 +71,10 @@
                                                         <div class="clearfix">
                                                             <textarea id="images" name="images"
                                                                       class="col-xs-12 col-sm-9" rows="4" cols="16"
-                                                                      readonly>${item.content}</textarea>
+                                                                      readonly>${responseImgNames}</textarea>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>--%>
                                                 <div class="clearfix form-actions" align="center">
                                                     <div class="col-md-offset-3 col-md-9">
                                                         <button id="submit-btn" class="btn btn-info" type="submit"
@@ -113,7 +113,6 @@
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true"/>
 <script type="text/javascript">
     var $validation = true;
-
     $('#validation-form').validate({
         errorElement: 'div',
         errorClass: 'help-block',
@@ -195,14 +194,26 @@
         }
     })
 
-    function getImages () {
+    function getImages() {
+        var url = '${context_path}/image/uploadImgs?relaTable=t_law_record';
+        if ($("#id").val() != "") {
+            url = url + "&relaId=" + $("#id").val();
+        }
         parent.layer.open({
-            title:'添加图片',
+            title: '添加图片',
             type: 2,
-            area: ['950px', '500px'],
+            area: ['980px', '400px'],
             fix: false, //不固定
             maxmin: true,
-            content: '${context_path}/image/uploadImgs?relaTable=t_law_record'
+            content: url,
+            btn: ['确定', '关闭'],
+            yes: function (index, layero) {
+                var images = $(layero).find("iframe")[0].contentWindow.$("#responseImgNames").val();
+                alert(images);
+            },
+            cancel: function(index) {
+
+            }
         });
     }
 

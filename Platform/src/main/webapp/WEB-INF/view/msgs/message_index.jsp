@@ -113,7 +113,7 @@
                 /*{ label: '图片地址', name: 'img_url', width: 100, sortable:false},*/
                 {label: '发布状态', name: 'statusName', width: 100, sortable: false},
                 {label: '创建时间', name: 'create_time', width: 100, sortable: false},
-                {label: '接收人', name: 'receiver', width: 350, sortable: false}
+                {label: '接收人', name: 'MsgReceiverNames', width: 350, sortable: false}
             ],
             viewrecords: true,
             height: 560,
@@ -307,7 +307,7 @@
                         reloadGrid();
                     });
                 } else {
-                    layer.alert("操作失败");
+                    layer.alert(data.msg);
                 }
             }, "json");
         });

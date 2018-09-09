@@ -1,7 +1,6 @@
 package com.shangsc.platform.model;
 
 import com.jfinal.plugin.activerecord.Db;
-import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseLawRecord;
@@ -16,23 +15,17 @@ import java.util.List;
 public class LawRecord extends BaseLawRecord<LawRecord> {
 	public static final LawRecord dao = new LawRecord();
 
-	public InvokeResult save(Long id, String title, String content, Integer status, String userName) {
+	public InvokeResult save(Long id, String title, String content, Integer status, String innerCode, String userName) {
 		if (null != id && id > 0L) {
 			LawRecord lawRecord = this.findById(id);
-			if (lawRecord == null) {
-				return InvokeResult.failure("更新消息失败, 该消息不存在");
-			}
-			lawRecord = setProp(lawRecord, title, content, status, userName);
-			if (YesOrNo.isYes(String.valueOf(status))) {
-				offPublishOther();
-			}
+			lawRecord = setProp(lawRecord, title, content, status, innerCode, userName);
+			lawRecord.setUpdateTime(new Date());
 			lawRecord.update();
 		} else {
 			LawRecord lawRecord = new LawRecord();
-			lawRecord = setProp(lawRecord, title, content, status, userName);
-			if (YesOrNo.isYes(String.valueOf(status))) {
-				offPublishOther();
-			}
+			lawRecord = setProp(lawRecord, title, content, status, innerCode, userName);
+            lawRecord.setCreateUser(userName);
+            lawRecord.setCreateTime(new Date());
 			lawRecord.save();
 		}
 		return InvokeResult.success();
@@ -42,13 +35,12 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
 		Db.update("update t_law_record set status=0 where 1=1");
 	}
 
-	private LawRecord setProp(LawRecord lawRecord, String title, String content, Integer status, String userName) {
+	private LawRecord setProp(LawRecord lawRecord, String title, String content, Integer status, String innerCode, String userName) {
 		lawRecord.setTitle(title);
 		lawRecord.setContent(content);
 		lawRecord.setStatus(status);
 		lawRecord.setMemo("");
-		lawRecord.setCreateUser(userName);
-		lawRecord.setCreateTime(new Date());
+        lawRecord.setInnerCode(innerCode);
 		return lawRecord;
 	}
 

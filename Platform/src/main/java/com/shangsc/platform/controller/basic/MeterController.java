@@ -230,7 +230,7 @@ public class MeterController extends BaseController {
                     co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
                 }
                 if (co.getChargeType() != null && mapChargeType.size() > 0) {
-                   co.put("chargeTypeName", String.valueOf(mapChargeType.get(String.valueOf(co.getChargeType()))));
+                    co.put("chargeTypeName", String.valueOf(mapChargeType.get(String.valueOf(co.getChargeType()))));
                 }
                 if (co.getMeterAttr() != null && meterAttrType.size() > 0) {
                     co.put("meterAttrName", String.valueOf(meterAttrType.get(String.valueOf(co.getMeterAttr()))));
@@ -243,7 +243,7 @@ public class MeterController extends BaseController {
         }
     }
 
-    @RequiresPermissions(value={"/basic/meter"})
+    @RequiresPermissions(value = {"/basic/meter"})
     public void importPage() {
         this.setAttr("uploadUrl", "meter");
         render("import_data.jsp");
@@ -256,14 +256,14 @@ public class MeterController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/meter"})
     public void uploadImportData() {
-        String dataStr= DateUtils.format(new Date(), "yyyyMMddHHmm");
+        String dataStr = DateUtils.format(new Date(), "yyyyMMddHHmm");
         List<UploadFile> flist = this.getFiles("/temp", 1024 * 1024 * 50);
-        Map<String,Object> data= Maps.newHashMap();
-        if(flist.size()>0){
-            UploadFile uf=flist.get(0);
-            String status_url= PropKit.get("uploadMeterPath");
-            String fileUrl=dataStr+"/"+uf.getFileName();
-            String newFile=status_url+fileUrl;
+        Map<String, Object> data = Maps.newHashMap();
+        if (flist.size() > 0) {
+            UploadFile uf = flist.get(0);
+            String status_url = PropKit.get("uploadMeterPath");
+            String fileUrl = dataStr + "/" + uf.getFileName();
+            String newFile = status_url + fileUrl;
             FileUtils.mkdir(newFile, false);
             FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);
             data.put("fileName", uf.getFileName());

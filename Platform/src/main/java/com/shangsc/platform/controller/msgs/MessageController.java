@@ -1,15 +1,11 @@
 package com.shangsc.platform.controller.msgs;
 
-import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
-import com.jfinal.aop.Clear;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
-import com.shangsc.platform.code.ReadOrNo;
 import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
-import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
@@ -18,6 +14,8 @@ import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Message;
 import com.shangsc.platform.model.MsgReceiver;
 import com.shangsc.platform.model.SysUser;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.*;
@@ -44,9 +42,18 @@ public class MessageController extends BaseController {
         }
         Page<Message> pageInfo = Message.dao.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
         List<Message> list = pageInfo.getList();
+        Set<Long> msgIds = new HashSet<>();
+        for (Message message : list) {
+            msgIds.add(message.getId());
+        }
+        Map<Long, List<String>> byMsgIds = MsgReceiver.dao.findReceiversByMsgIds(new ArrayList<Long>(msgIds));
         for (Message message : list) {
             if (message.getStatus() != null) {
                 message.put("statusName", YesOrNo.getYesOrNoMap().get(String.valueOf(message.getStatus())));
+            }
+            List<String> receiverNames = byMsgIds.get(message.getId());
+            if (CollectionUtils.isNotEmpty(receiverNames)) {
+                message.put("MsgReceiverNames", StringUtils.join(receiverNames, ","));
             }
         }
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
@@ -83,8 +90,9 @@ public class MessageController extends BaseController {
         String title = this.getPara("title");
         String content = this.getPara("content");
         String imgUrl = this.getPara("imgUrl");
-        Integer status = this.getParaToInt("status");
-        InvokeResult result = Message.dao.save(id, title, content, imgUrl, status, sysUser.getName(), new ArrayList<Long>());
+        Integer status = this.getParaToInt("status", 0);
+        InvokeResult result = Message.dao.save(id, title, content, imgUrl, status, sysUser.getInnerCode(),
+                sysUser.getId(), sysUser.getName(), new ArrayList<Long>());
         this.renderJson(result);
     }
 

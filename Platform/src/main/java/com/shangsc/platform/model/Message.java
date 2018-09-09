@@ -1,10 +1,10 @@
 package com.shangsc.platform.model;
 
 import com.jfinal.plugin.activerecord.Db;
-import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseMessage;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -16,23 +16,20 @@ import java.util.List;
 public class Message extends BaseMessage<Message> {
     public static final Message dao = new Message();
 
-    public InvokeResult save(Long id, String title, String content, String imgUrl, Integer status, String userName, List<Long> userIds) {
+    public InvokeResult save(Long id, String title, String content, String imgUrl, Integer status,
+                             String innerCode, Integer userId, String userName, List<Long> userIds) {
         if (null != id && id > 0L) {
             Message message = this.findById(id);
             if (message == null) {
                 return InvokeResult.failure("更新消息失败, 该消息不存在");
             }
-            message = setProp(message, title, content, imgUrl, status, userName, userIds);
-            if (YesOrNo.isYes(String.valueOf(status))) {
-                offPublishOther();
-            }
+            message = setProp(message, title, content, imgUrl, status, innerCode, userId, userName, userIds);
+            message.setUpdateTime(new Date());
             message.update();
         } else {
             Message message = new Message();
-            message = setProp(message, title, content, imgUrl, status, userName, userIds);
-            if (YesOrNo.isYes(String.valueOf(status))) {
-                offPublishOther();
-            }
+            message = setProp(message, title, content, imgUrl, status, innerCode, userId, userName, userIds);
+            message.setCreateTime(new Date());
             message.save();
         }
         return InvokeResult.success();
@@ -42,13 +39,15 @@ public class Message extends BaseMessage<Message> {
         Db.update("update t_message set status=0 where 1=1");
     }
 
-    private Message setProp(Message message, String title, String content, String imgUrl, Integer status, String userName, List<Long> userIds) {
+    private Message setProp(Message message, String title, String content, String imgUrl, Integer status,
+                            String innerCode, Integer userId, String userName, List<Long> userIds) {
         message.setTitle(title);
         message.setContent(content);
         message.setImgUrl(imgUrl);
         message.setStatus(status);
+        message.setInnerCode(innerCode);
+        message.setUserId(userId);
         message.setCreateUser(userName);
-        message.setCreateTime(new Date());
         return message;
     }
 
@@ -61,14 +60,17 @@ public class Message extends BaseMessage<Message> {
     }
 
     public InvokeResult publish(Long id) {
-        Message message = this.findById(id);
-        if (message == null) {
-            return InvokeResult.failure("更新广告失败, 该广告不存在");
+        List<MsgReceiver> msgReceivers = MsgReceiver.dao.find("select * from t_msg_receiver where msg_id=" + id);
+        if (CollectionUtils.isNotEmpty(msgReceivers)) {
+            Message message = this.findById(id);
+            if (message == null) {
+                return InvokeResult.failure("发布消息失败, 该消息不存在");
+            }
+            message.setStatus(1);
+            message.update();
+            return InvokeResult.success();
+        } else {
+            return InvokeResult.failure("发布消息失败, 请先添加接收人");
         }
-        message.setStatus(1);
-        offPublishOther();
-        message.update();
-        return InvokeResult.success();
     }
-
 }

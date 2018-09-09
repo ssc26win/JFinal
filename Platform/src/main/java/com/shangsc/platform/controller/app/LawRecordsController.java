@@ -11,8 +11,10 @@ import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.*;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.model.Image;
 import com.shangsc.platform.model.LawRecord;
 import com.shangsc.platform.model.SysUser;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.util.*;
@@ -48,9 +50,13 @@ public class LawRecordsController extends BaseController {
 
     @RequiresPermissions(value = {"/app/law"})
     public void add() {
-        Integer id = this.getParaToInt("id");
+        Long id = this.getParaToLong("id");
         if (id != null) {
             this.setAttr("item", LawRecord.dao.findById(id));
+            Map<Long, List<String>> map = Image.dao.findImgsByLawIds(Arrays.asList(new Long[]{id}), "t_law_record");
+            if (map.containsKey(id)) {
+                this.setAttr("responseImgNames", StringUtils.join(map.get(id), ","));
+            }
         }
         this.setAttr("id", id);
         String action = "add";
@@ -69,7 +75,7 @@ public class LawRecordsController extends BaseController {
         String content = this.getPara("content");
         String imgUrl = this.getPara("imgUrl");
         Integer status = this.getParaToInt("status");
-        InvokeResult result = LawRecord.dao.save(id, title, content, status, sysUser.getName());
+        InvokeResult result = LawRecord.dao.save(id, title, content, status, sysUser.getInnerCode(), sysUser.getName());
         this.renderJson(result);
     }
 
