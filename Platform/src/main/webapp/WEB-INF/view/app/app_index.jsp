@@ -90,7 +90,7 @@
                     { label: '状态', name: 'status',formatter:fmatterStatus, width:40,sortable:false }
                 ],
 				viewrecords: true,
-                height: 280,
+                height: 560,
                 rowNum: 20,
                 multiselect: true,//checkbox多选
                 altRows: true,//隔行变色
