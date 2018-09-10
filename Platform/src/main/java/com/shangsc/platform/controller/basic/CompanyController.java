@@ -36,8 +36,11 @@ import java.util.*;
  */
 public class CompanyController extends BaseController {
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void index() {
+        this.setAttr("term", this.getPara("term"));
+        this.setAttr("flag", this.getPara("flag"));
         render("company_index.jsp");
     }
 
@@ -47,41 +50,6 @@ public class CompanyController extends BaseController {
         this.setAttr("address", this.getPara("address"));
         this.setAttr("position", this.getPara("position"));
         render("company_map.jsp");
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/basic/company"})
-    public void normal() {
-        this.setAttr("flag", "Normal");
-        render("company_index.jsp");
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/basic/company"})
-    public void warn() {
-        this.setAttr("flag", "Warn");
-        render("company_index.jsp");
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/basic/company"})
-    public void other() {
-        this.setAttr("flag", "Other");
-        render("company_index.jsp");
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/basic/company"})
-    public void supply() {
-        this.setAttr("flag", "Supply");
-        render("company_index.jsp");
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/basic/company"})
-    public void byTerm() {
-        this.setAttr("term", this.getPara("term"));
-        render("company_index.jsp");
     }
 
     @Clear(AuthorityInterceptor.class)

@@ -22,10 +22,6 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
 
     public static final WaterMeter me = new WaterMeter();
 
-    public List<Record> getAllListByDistinct() {
-        return Db.find("select * from t_water_meter GROUP BY meter_address");
-    }
-
     public Page<WaterMeter> getWaterMeterPage(int page, int rows, String keyword, String orderbyStr, Integer term) {
         String select = "select twm.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,tc.gb_industry,tc.main_industry,tc.water_use_type";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm inner join " +
@@ -163,11 +159,6 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
             addresss.add(meter.getMeterAddress());
         }
         return addresss;
-    }
-
-    public WaterMeter findByInnerCodeAndWatersType(String innerCode, String watersType) {
-        String sql = "SELECT * FROM t_Water_Meter WHERE inner_code=? and waters_type=?";
-        return this.findFirst(sql, innerCode, watersType);
     }
 
     private String actualMeterConditionSql(boolean isStop) {

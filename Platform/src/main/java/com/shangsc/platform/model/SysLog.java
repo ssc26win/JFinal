@@ -21,7 +21,7 @@ import java.util.Date;
 
 /**
  * @author ssc
- * 系统日志
+ *         系统日志
  */
 @SuppressWarnings("serial")
 public class SysLog extends BaseSysLog<SysLog> {

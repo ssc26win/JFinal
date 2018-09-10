@@ -50,21 +50,21 @@ public class ImageController extends Controller {
         this.renderNull();
     }
 
+    /**
+     * initialPreview: [
+     * "http://lorempixel.com/800/460/people/1",
+     * "http://lorempixel.com/800/460/people/2"
+     * ],
+     * initialPreviewConfig: [
+     * {caption: "People-1.jpg", size: 576237, width: "120px", url: "/site/file-delete", key: 1},
+     * {caption: "People-2.jpg", size: 932882, width: "120px", url: "/site/file-delete", key: 2},
+     * ],
+     */
     public void uploadImgs() {
         this.setAttr("relaTable", this.getPara("relaTable"));
         Long relaId = this.getParaToLong("relaId");
         List<Image> images = Image.dao.find("select * from t_image where rela_id=?", relaId);
         if (CollectionUtils.isNotEmpty(images)) {
-            /**
-             * initialPreview: [
-             "http://lorempixel.com/800/460/people/1",
-             "http://lorempixel.com/800/460/people/2"
-             ],
-             initialPreviewConfig: [
-             {caption: "People-1.jpg", size: 576237, width: "120px", url: "/site/file-delete", key: 1},
-             {caption: "People-2.jpg", size: 932882, width: "120px", url: "/site/file-delete", key: 2},
-             ],
-             */
             JSONArray initialPreview = new JSONArray();
             JSONArray initialPreviewConfig = new JSONArray();
             String contextPath = this.getRequest().getServletContext().getContextPath();
@@ -130,7 +130,7 @@ public class ImageController extends Controller {
             data.put("staticUrl", imgUrl);
             data.put("fileUrl", fileUrl);
             String relaTable = this.getPara("relaTable");
-            Long relaId = this.getParaToLong("relaId", 0l);
+            Long relaId = this.getParaToLong("relaId", 0L);
             InvokeResult save = Image.dao.save(null, originFileName, originFileName, width, height, size,
                     memo, imgUrl, relaId, relaTable, userId, userName);
             Object imageId = save.getData();
@@ -147,5 +147,4 @@ public class ImageController extends Controller {
         InvokeResult result = Image.dao.deleteDataByIdAndRelaId(relaId, id);
         renderJson(result);
     }
-
 }

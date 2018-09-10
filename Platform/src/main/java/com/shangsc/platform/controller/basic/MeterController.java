@@ -38,43 +38,11 @@ import java.util.*;
  */
 public class MeterController extends BaseController {
 
+    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
     public void index() {
-        render("meter_index.jsp");
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/basic/meter"})
-    public void normal() {
-        this.setAttr("flag", "Normal");
-        render("meter_index.jsp");
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/basic/meter"})
-    public void exption() {
-        this.setAttr("flag", "Exception");
-        render("meter_index.jsp");
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/basic/meter"})
-    public void stop() {
-        this.setAttr("flag", "Stop");
-        render("meter_index.jsp");
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/basic/meter"})
-    public void disable() {
-        this.setAttr("flag", "Disable");
-        render("meter_index.jsp");
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/basic/meter"})
-    public void byTerm() {
         this.setAttr("term", this.getPara("term"));
+        this.setAttr("flag", this.getPara("flag"));
         render("meter_index.jsp");
     }
 

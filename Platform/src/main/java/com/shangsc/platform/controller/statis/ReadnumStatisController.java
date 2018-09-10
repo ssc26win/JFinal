@@ -27,12 +27,12 @@ import java.util.Map;
  */
 public class ReadnumStatisController extends BaseController {
 
-    @RequiresPermissions(value={"/statis/readnum"})
+    @RequiresPermissions(value = {"/statis/readnum"})
     public void index() {
         render("read_num.jsp");
     }
 
-    @RequiresPermissions(value={"/statis/readnum"})
+    @RequiresPermissions(value = {"/statis/readnum"})
     public void getListData() {
         ActualData.me.setGlobalInnerCode(getInnerCode());
         String name = this.getPara("name");
@@ -70,7 +70,7 @@ public class ReadnumStatisController extends BaseController {
             Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
-                if (co.get("meter_attr")!= null && StringUtils.isNotEmpty(co.get("meter_attr").toString())) {
+                if (co.get("meter_attr") != null && StringUtils.isNotEmpty(co.get("meter_attr").toString())) {
                     co.put("meterAttrName", String.valueOf(meterAttrType.get(String.valueOf(co.get("meter_attr")))));
                 }
                 if (co.get("waters_type") != null && StringUtils.isNotEmpty(co.get("waters_type").toString())) {
@@ -79,7 +79,7 @@ public class ReadnumStatisController extends BaseController {
                         co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
                     }
                 } else {
-                    co.put("watersTypeName","");
+                    co.put("watersTypeName", "");
                 }
                 if (co.get("address") != null) {
                     co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
@@ -91,7 +91,7 @@ public class ReadnumStatisController extends BaseController {
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
-    @RequiresPermissions(value={"/statis/readnum"})
+    @RequiresPermissions(value = {"/statis/readnum"})
     public void exportData() {
         ActualData.me.setGlobalInnerCode(getInnerCode());
         String name = this.getPara("name");
@@ -129,7 +129,7 @@ public class ReadnumStatisController extends BaseController {
             Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
-                if (co.get("meter_attr")!= null && StringUtils.isNotEmpty(co.get("meter_attr").toString())) {
+                if (co.get("meter_attr") != null && StringUtils.isNotEmpty(co.get("meter_attr").toString())) {
                     co.put("meterAttrName", String.valueOf(meterAttrType.get(String.valueOf(co.get("meter_attr")))));
                 }
                 if (co.get("waters_type") != null && StringUtils.isNotEmpty(co.get("waters_type").toString())) {

@@ -49,23 +49,6 @@ public class DictData extends BaseDictData<DictData> {
         return InvokeResult.success();
     }
 
-    public InvokeResult insertDictData(String name, String remark,
-                                       Integer seq, String value, String typeName) {
-        DictType dictType = DictType.dao.findFirst("select * from dict_type where name='" + typeName + "'");
-        if (dictType != null) {
-            Integer typeId = dictType.getId();
-            DictData dictData = new DictData();
-            dictData.setName(name);
-            dictData.setSeq(seq);
-            dictData.setRemark(remark);
-            dictData.setValue(value);
-            dictData.setDictTypeId(typeId);
-            dictData.setUpdateTime(DateUtils.formatDateToUnixTimestamp(new Date()));
-            dictData.save();
-        }
-        return InvokeResult.success();
-    }
-
     public Long insertDictData(String name, String remark,
                                        Integer seq, String value, Integer typeId) {
         DictData dictData = new DictData();

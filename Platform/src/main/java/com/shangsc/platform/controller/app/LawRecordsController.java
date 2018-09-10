@@ -73,7 +73,6 @@ public class LawRecordsController extends BaseController {
         Long id = this.getParaToLong("id");
         String title = this.getPara("title");
         String content = this.getPara("content");
-        String imgUrl = this.getPara("imgUrl");
         Integer status = this.getParaToInt("status");
         InvokeResult result = LawRecord.dao.save(id, title, content, status, sysUser.getInnerCode(), sysUser.getName());
         this.renderJson(result);
@@ -84,24 +83,5 @@ public class LawRecordsController extends BaseController {
         String ids = this.getPara("ids");
         InvokeResult result = LawRecord.dao.deleteData(ids);
         this.renderJson(result);
-    }
-
-    @RequiresPermissions(value = {"/app/law"})
-    public void uploadImg() {
-        String dataStr = DateUtils.format(new Date(), "yyyyMMddHHmm");
-        List<UploadFile> flist = this.getFiles("/temp", 1024 * 1024 * 50);
-        Map<String, Object> data = Maps.newHashMap();
-        if (flist.size() > 0) {
-            UploadFile uf = flist.get(0);
-            String status_url = PropKit.get("static_url");
-            String fileUrl = dataStr + "/" + uf.getFileName();
-            String newFile = PropKit.get("uploadAdImgPath") + fileUrl;
-            FileUtils.mkdir(newFile, false);
-            FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);
-            uf.getFile().delete();
-            data.put("staticUrl", status_url);
-            data.put("fileUrl", newFile);
-            renderJson(data);
-        }
     }
 }

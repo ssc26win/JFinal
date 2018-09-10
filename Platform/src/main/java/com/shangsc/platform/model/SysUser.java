@@ -212,8 +212,8 @@ public class SysUser extends BaseSysUser<SysUser> {
                 password = "123456";
             }
             SysUser sysUser = new SysUser();
-            sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date()).set("des", des).set("phone", phone).set("email", email).save();
-
+            sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date())
+                    .set("des", des).set("phone", phone).set("email", email).save();
         }
         return InvokeResult.success();
     }
@@ -246,7 +246,6 @@ public class SysUser extends BaseSysUser<SysUser> {
      * @return
      */
     public InvokeResult savePwdUpdate(Integer uid, String newPwd) {
-        // TODO Auto-generated method stub
         SysUser sysUser = SysUser.me.findById(uid);
         if (sysUser != null) {
             Db.update("update sys_login_record set login_err_times=0 where sys_uid=" + uid);
@@ -255,7 +254,6 @@ public class SysUser extends BaseSysUser<SysUser> {
         } else {
             return InvokeResult.failure(-2, "修改失败");
         }
-
     }
 
     public Page<SysUser> getSysUserPage(int page, int rows, String keyword, String innerCode, String orderbyStr) {

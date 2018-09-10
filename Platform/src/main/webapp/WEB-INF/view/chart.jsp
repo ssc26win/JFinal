@@ -206,10 +206,10 @@
                 name: '水表数量（%）',
                 data: [
                     //{name:'远传水表总数量' + '(' + total + ')', y:total,url:'${context_path}/basic/meter'},
-                    {name:'正常表' + '(' + normalTotal + ')', y:normalTotal,url:'${context_path}/basic/meter/normal'},
-                    {name:'停用表' + '(' + stopTotal + ')', y:stopTotal,url:'${context_path}/basic/meter/stop'},
-                    {name:'备用表' + '(' + exptionTotal + ')', y:exptionTotal,url:'${context_path}/basic/meter/exption'},
-                    {name:'未启用表' + '(' + disableTotal + ')', y:disableTotal,url:'${context_path}/basic/meter/disable'},
+                    {name:'正常表' + '(' + normalTotal + ')', y:normalTotal,url:'${context_path}/basic/meter?flag=Normal'},
+                    {name:'停用表' + '(' + stopTotal + ')', y:stopTotal,url:'${context_path}/basic/meter?flag=Stop'},
+                    {name:'备用表' + '(' + exptionTotal + ')', y:exptionTotal,url:'${context_path}/basic/meter?flag=Exception'},
+                    {name:'未启用表' + '(' + disableTotal + ')', y:disableTotal,url:'${context_path}/basic/meter?flag=Disable'},
                 ]
             }];
 
@@ -264,9 +264,9 @@
                 name: '单位数量（%）',
                 data: [
                     //{name:'单位总数量' + '(' + total2 + ')', y:total2,url:'${context_path}/basic/company'},
-                    {name:'用水单位' + '(' + normalTotal2 + ')', y:normalTotal2,url:'${context_path}/basic/company/normal'},
-                    {name: warnTitle + '单位' + '(' + warnTotal2 + ')', y:warnTotal2,url:'${context_path}/basic/company/warn'},
-                    {name:'供水单位' + '(' + supplyTotal + ')', y:supplyTotal,url:'${context_path}/basic/company/supply'},
+                    {name:'用水单位' + '(' + normalTotal2 + ')', y:normalTotal2,url:'${context_path}/basic/company?flag=Normal'},
+                    {name: warnTitle + '单位' + '(' + warnTotal2 + ')', y:warnTotal2,url:'${context_path}/basic/company?flag=Warn'},
+                    {name:'供水单位' + '(' + supplyTotal + ')', y:supplyTotal,url:'${context_path}/basic/company?flag=Supply'},
                 ]
             }];
             var credits = {

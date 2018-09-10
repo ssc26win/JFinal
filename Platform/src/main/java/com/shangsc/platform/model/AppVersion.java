@@ -1,12 +1,12 @@
 /**
  * Copyright (c) 2011-2016, Eason Pan(pylxyhome@vip.qq.com).
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,71 +31,75 @@ import java.util.*;
  */
 @SuppressWarnings("serial")
 public class AppVersion extends BaseAppVersion<AppVersion> {
-	public static final AppVersion dao = new AppVersion();
-	public static final class OS {
-		public static final String android = "android";
-		public static final String ios = "ios";
-	}
+    public static final AppVersion dao = new AppVersion();
 
-	public void setVisible(List<Integer> idsList, int status) {
-		// TODO Auto-generated method stub
-		Set<Condition> conditions=new HashSet<Condition>();
-		conditions.add(new Condition("id", Operators.IN,idsList));
-		Map<String,Object> newValues=Maps.newHashMap();
-		newValues.put("status", status);
-		this.update(conditions, newValues);
-	}
+    public static final class OS {
+        public static final String android = "android";
+        public static final String ios = "ios";
+    }
 
-	public InvokeResult setVisible(String ids, int status) {
-		List<Integer> idsList=Lists.newArrayList();
-		for(String idstr : ids.split(",")){
-			if(StrKit.isBlank(idstr))continue;
-			idsList.add(Integer.valueOf(idstr));
-		}
-		AppVersion.dao.setVisible(idsList,status==0?0:1);
-		return InvokeResult.success();
-	}
+    public void setVisible(List<Integer> idsList, int status) {
+        Set<Condition> conditions = new HashSet<Condition>();
+        conditions.add(new Condition("id", Operators.IN, idsList));
+        Map<String, Object> newValues = Maps.newHashMap();
+        newValues.put("status", status);
+        this.update(conditions, newValues);
+    }
 
-	public InvokeResult saveAppVersion(AppVersion appVersion) {
-		if(appVersion.getInt("id")!=null){
-			appVersion.update();
-		}else{
-			appVersion.save();
-		}
-		return InvokeResult.success();
-	}
-	public InvokeResult saveAppVersion(Integer id,String content,String linkUrl,Integer natureNo,String os,
-			String url,String versionNo,Integer status,Integer isForce){
-		if(id!=null){
-			AppVersion appVersion=AppVersion.dao.findById(id);
-			appVersion.set("content", content).set("link_url", linkUrl).set("nature_no", natureNo)
-			.set("os", os).set("url", url).set("version_no", versionNo).set("status", status).set("is_force", isForce).update();
-		}else{
-			new AppVersion().set("content", content).set("link_url", linkUrl).set("nature_no", natureNo)
-			.set("os", os).set("url", url).set("version_no", versionNo).set("status", status)
-			.set("is_force", isForce).set("create_time", new Date()).save();
-		}
-		return InvokeResult.success();
-	} 
-	public AppVersion getNewsAppVersion(String os, String versionNo) {
-		// TODO Auto-generated method stub
-		AppVersion appVersion=this.getLastAppVersion(os, "miyue");
-		if(appVersion!=null&&!appVersion.getStr("version_no").equals(versionNo)){
-			return appVersion;
-		}
-		return null;
-	}
+    public InvokeResult setVisible(String ids, int status) {
+        List<Integer> idsList = Lists.newArrayList();
+        for (String idstr : ids.split(",")) {
+            if (StrKit.isBlank(idstr)) {
+                continue;
+            }
+            idsList.add(Integer.valueOf(idstr));
+        }
+        AppVersion.dao.setVisible(idsList, status == 0 ? 0 : 1);
+        return InvokeResult.success();
+    }
 
-	public AppVersion getLastAppVersion(String os, String appname) {
-		// TODO Auto-generated method stub 
-		Set<Condition> conditions=Sets.newHashSet();
-		conditions.add(new Condition("os",Operators.EQ,os));
-		conditions.add(new Condition("title",Operators.EQ,appname));
-		conditions.add(new Condition("visible",Operators.EQ,1));
-		LinkedHashMap<String, String> orderby=Maps.newLinkedHashMap();
-		orderby.put("nature_no", "desc");
-		List<AppVersion> list=AppVersion.dao.getList(1, 1, conditions, orderby);
-		if(list.size()>0)return list.get(0);
-		return null;
-	}
+    public InvokeResult saveAppVersion(AppVersion appVersion) {
+        if (appVersion.getInt("id") != null) {
+            appVersion.update();
+        } else {
+            appVersion.save();
+        }
+        return InvokeResult.success();
+    }
+
+    public InvokeResult saveAppVersion(Integer id, String content, String linkUrl, Integer natureNo, String os,
+                                       String url, String versionNo, Integer status, Integer isForce) {
+        if (id != null) {
+            AppVersion appVersion = AppVersion.dao.findById(id);
+            appVersion.set("content", content).set("link_url", linkUrl).set("nature_no", natureNo)
+                    .set("os", os).set("url", url).set("version_no", versionNo).set("status", status).set("is_force", isForce).update();
+        } else {
+            new AppVersion().set("content", content).set("link_url", linkUrl).set("nature_no", natureNo)
+                    .set("os", os).set("url", url).set("version_no", versionNo).set("status", status)
+                    .set("is_force", isForce).set("create_time", new Date()).save();
+        }
+        return InvokeResult.success();
+    }
+
+    public AppVersion getNewsAppVersion(String os, String versionNo) {
+        AppVersion appVersion = this.getLastAppVersion(os, "miyue");
+        if (appVersion != null && !appVersion.getStr("version_no").equals(versionNo)) {
+            return appVersion;
+        }
+        return null;
+    }
+
+    public AppVersion getLastAppVersion(String os, String appname) {
+        Set<Condition> conditions = Sets.newHashSet();
+        conditions.add(new Condition("os", Operators.EQ, os));
+        conditions.add(new Condition("title", Operators.EQ, appname));
+        conditions.add(new Condition("visible", Operators.EQ, 1));
+        LinkedHashMap<String, String> orderby = Maps.newLinkedHashMap();
+        orderby.put("nature_no", "desc");
+        List<AppVersion> list = AppVersion.dao.getList(1, 1, conditions, orderby);
+        if (list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
 }

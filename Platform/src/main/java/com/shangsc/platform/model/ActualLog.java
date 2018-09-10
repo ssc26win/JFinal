@@ -21,7 +21,7 @@ public class ActualLog extends BaseActualLog<ActualLog> {
     }
 
     public InvokeResult save(Long id, String srcType, Integer port, String ip, String content, String address, Date addTime) {
-        if (null != id && id > 0l) {
+        if (null != id && id > 0L) {
             ActualLog actualLog = this.findById(id);
             if (actualLog == null) {
                 return InvokeResult.failure("更新失败, 该记录不存在");
@@ -51,7 +51,7 @@ public class ActualLog extends BaseActualLog<ActualLog> {
 
     public Page<ActualLog> getLogPage(int page, int rows, String keyword, String srcType, String orderbyStr) {
 
-        String select="select c.*";
+        String select = "select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_log c ");
         sqlExceptSelect.append(" where 1=1 ");
         if (StringUtils.isNotEmpty(globalInnerCode)) {

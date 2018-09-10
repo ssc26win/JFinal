@@ -219,11 +219,15 @@ public class SysRes extends BaseSysRes<SysRes> {
         List<SysRes> resList = CacheKit.get(CacheName.userMenuCache, "getSysResList_" + uid + "_" + type);
         if (resList == null || resList.size() == 0) {
             List<SysRole> sysRoleIds = SysRole.me.getSysRoleIdList(uid);
-            if (sysRoleIds.size() == 0) return null;
+            if (sysRoleIds.size() == 0) {
+                return null;
+            }
             StringBuffer roleIds = new StringBuffer();
             boolean isAdmin = false;
             for (SysRole sysRole : sysRoleIds) {
-                if (sysRole.getId().equals(1)) isAdmin = true;
+                if (sysRole.getId().equals(1)) {
+                    isAdmin = true;
+                }
                 roleIds.append(sysRole.getInt("id")).append(",");
             }
             roleIds.deleteCharAt(roleIds.length() - 1);
@@ -246,7 +250,9 @@ public class SysRes extends BaseSysRes<SysRes> {
     }
 
     public List<SysRes> getTopSysResMenu(List<SysRole> sysRoleIds) {
-        if (sysRoleIds.size() == 0) return null;
+        if (sysRoleIds.size() == 0) {
+            return null;
+        }
         StringBuffer roleIds = new StringBuffer();
         for (SysRole sysRole : sysRoleIds) {
             roleIds.append(sysRole.getInt("id")).append(",");
@@ -256,7 +262,9 @@ public class SysRes extends BaseSysRes<SysRes> {
     }
 
     public List<SysRes> getSysResMenuByPid(List<SysRole> sysRoleIds, int pid) {
-        if (sysRoleIds.size() == 0) return null;
+        if (sysRoleIds.size() == 0) {
+            return null;
+        }
         StringBuffer roleIds = new StringBuffer();
         for (SysRole sysRole : sysRoleIds) {
             roleIds.append(sysRole.getInt("id")).append(",");

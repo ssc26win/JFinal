@@ -22,11 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by Administrator on 2017/8/26.
  */
 public class ChartController extends BaseController {
-    // 预警閥值
-    private static final BigDecimal THRESHOLD = new BigDecimal("2");
-
-    private AtomicInteger count = new AtomicInteger(0);
-
+    
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
     public void companiesByTerm() {
@@ -45,7 +41,7 @@ public class ChartController extends BaseController {
             JSONObject serObj = new JSONObject();
             serObj.put("name", termType.get(termKey.toString()) + "(" + termGroup.get(termKey).toString() + ")");
             serObj.put("y", (Long) termGroup.get(termKey));
-            serObj.put("url", context_path + "/basic/company/byTerm?term=" + termKey);
+            serObj.put("url", context_path + "/basic/company?term=" + termKey);
             array.add(serObj);
         }
         object.put("CompanyTermSerArray", array);
@@ -69,7 +65,7 @@ public class ChartController extends BaseController {
             JSONObject serObj = new JSONObject();
             serObj.put("name", termType.get(termKey.toString()) + "(" + termGroup.get(termKey).toString() + ")");
             serObj.put("y", (Long) termGroup.get(termKey));
-            serObj.put("url", context_path + "/basic/meter/byTerm?term=" + termKey);
+            serObj.put("url", context_path + "/basic/meter?term=" + termKey);
             array.add(serObj);
         }
         object.put("MeterTermSerArray", array);
@@ -93,9 +89,7 @@ public class ChartController extends BaseController {
         int normalTotal = total - warnOrExceptionCount - supplyCount;
 
         object.put("warnTotal", warnOrExceptionCount); //预警总数
-
         object.put("normalTotal", normalTotal);
-
         object.put("supplyTotal", supplyCount);
 
         int month = new Date().getMonth() + 1;
@@ -141,79 +135,6 @@ public class ChartController extends BaseController {
         object.put("disableTotal", disableTotal);
         object.put("exptionTotal", total - normalTotal - stopTotal - disableTotal);//异常水表
 
-        this.renderJson(object.toJSONString());
-    }
-
-    @Deprecated
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/chart"})
-    public void companyBak() {
-        JSONObject object = new JSONObject();
-        //取得用水指标数据
-        int total = Company.me.totalCount();
-        object.put("total", total);//单位总数
-        List<WaterIndex> waterIndices = WaterIndex.me.getAllList();
-        for (WaterIndex index : waterIndices) {
-            index.getWaterIndex();//年
-            WaterMeter waterMeter = WaterMeter.me.findByInnerCode(index.getInnerCode());
-            if (null != waterMeter) {
-                Record records1 = ActualData.me.getYearActual(index.getInnerCode());
-                if (null != records1) {
-                    if (records1.get("yearTotal") != null) {
-                        comp((BigDecimal) records1.get("yearTotal"), (BigDecimal) index.getWaterIndex());
-                    }
-                    List<Record> records = ActualData.me.getMonthActualDataPage(index.getInnerCode());
-                    for (int i = 0; i < records.size(); i++) {
-                        Record record = records.get(i);
-                        BigDecimal monthActTotal = new BigDecimal(record.get("total").toString());
-                        switch ((record.get("time").toString())) {
-                            case "01":
-                                comp(monthActTotal, index.getJanuary());
-                                break;
-                            case "02":
-                                comp(monthActTotal, index.getFebruary());
-                                break;
-                            case "03":
-                                comp(monthActTotal, index.getMarch());
-                                break;
-                            case "04":
-                                comp(monthActTotal, index.getApril());
-                                break;
-                            case "05":
-                                comp(monthActTotal, index.getMay());
-                                break;
-                            case "06":
-                                comp(monthActTotal, index.getJune());
-                                break;
-                            case "07":
-                                comp(monthActTotal, index.getJuly());
-                                break;
-                            case "08":
-                                comp(monthActTotal, index.getAugust());
-                                break;
-                            case "09":
-                                comp(monthActTotal, index.getSeptember());
-                                break;
-                            case "10":
-                                comp(monthActTotal, index.getOctober());
-                                break;
-                            case "11":
-                                comp(monthActTotal, index.getNovember());
-                                break;
-                            case "12":
-                                comp(monthActTotal, index.getDecember());
-                                break;
-                        }
-                    }
-                }
-            }
-        }
-        // 正常用水单位
-        int normalTotal = Company.me.hasActual();
-        object.put("normalTotal", normalTotal - count.get());
-        object.put("warnTotal", count); //预警总数
-        object.put("otherTotal", total - normalTotal);
-        object.put("supplyTotal", Company.me.getSupplyCompanyCount());
         this.renderJson(object.toJSONString());
     }
 
@@ -330,15 +251,6 @@ public class ChartController extends BaseController {
         }
         this.setAttr("companys", array.toJSONString());
         render("map.jsp");
-    }
-
-    private void comp(BigDecimal monthActTotal, BigDecimal moth) {
-        if (null == moth) {
-            moth = new BigDecimal(0);
-        }
-        if (moth.add(THRESHOLD).compareTo(monthActTotal) < 0) {
-            count.addAndGet(1);
-        }
     }
 
     @Clear(AuthorityInterceptor.class)

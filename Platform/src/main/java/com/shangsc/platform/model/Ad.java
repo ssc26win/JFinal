@@ -14,60 +14,60 @@ import java.util.List;
  */
 @SuppressWarnings("serial")
 public class Ad extends BaseAd<Ad> {
-	public static final Ad dao = new Ad();
+    public static final Ad dao = new Ad();
 
-	public InvokeResult save(Long id, String title, String content, String imgUrl, Integer status, String userName) {
-		if (null != id && id > 0L) {
-			Ad ad = this.findById(id);
-			if (ad == null) {
-				return InvokeResult.failure("更新广告失败, 该广告不存在");
-			}
-			ad = setProp(ad, title, content, imgUrl, status, userName);
-			if (YesOrNo.isYes(String.valueOf(status))) {
-				offPublishOther();
-			}
-			ad.update();
-		} else {
-			Ad ad = new Ad();
-			ad = setProp(ad, title, content, imgUrl, status, userName);
-			if (YesOrNo.isYes(String.valueOf(status))) {
-				offPublishOther();
-			}
-			ad.save();
-		}
-		return InvokeResult.success();
-	}
+    public InvokeResult save(Long id, String title, String content, String imgUrl, Integer status, String userName) {
+        if (null != id && id > 0L) {
+            Ad ad = this.findById(id);
+            if (ad == null) {
+                return InvokeResult.failure("更新广告失败, 该广告不存在");
+            }
+            ad = setProp(ad, title, content, imgUrl, status, userName);
+            if (YesOrNo.isYes(String.valueOf(status))) {
+                offPublishOther();
+            }
+            ad.update();
+        } else {
+            Ad ad = new Ad();
+            ad = setProp(ad, title, content, imgUrl, status, userName);
+            if (YesOrNo.isYes(String.valueOf(status))) {
+                offPublishOther();
+            }
+            ad.save();
+        }
+        return InvokeResult.success();
+    }
 
-	private void offPublishOther() {
-		Db.update("update t_ad set status=0 where 1=1");
-	}
+    private void offPublishOther() {
+        Db.update("update t_ad set status=0 where 1=1");
+    }
 
-	private Ad setProp(Ad ad, String title, String content, String imgUrl, Integer status, String userName) {
-		ad.setTitle(title);
-		ad.setContent(content);
-		ad.setImgUrl(imgUrl);
-		ad.setStatus(status);
+    private Ad setProp(Ad ad, String title, String content, String imgUrl, Integer status, String userName) {
+        ad.setTitle(title);
+        ad.setContent(content);
+        ad.setImgUrl(imgUrl);
+        ad.setStatus(status);
         ad.setCreateUser(userName);
         ad.setCreateTime(new Date());
-		return ad;
-	}
+        return ad;
+    }
 
-	public InvokeResult deleteData(String idStrs) {
-		List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
-		for (int i = 0; i < ids.size(); i++) {
-			this.deleteById(ids.get(i));
-		}
-		return InvokeResult.success();
-	}
+    public InvokeResult deleteData(String idStrs) {
+        List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
+        for (int i = 0; i < ids.size(); i++) {
+            this.deleteById(ids.get(i));
+        }
+        return InvokeResult.success();
+    }
 
-	public InvokeResult publish(Long id) {
-		Ad ad = this.findById(id);
-		if (ad == null) {
-			return InvokeResult.failure("更新广告失败, 该广告不存在");
-		}
-		ad.setStatus(1);
-		offPublishOther();
-		ad.update();
-		return InvokeResult.success();
-	}
+    public InvokeResult publish(Long id) {
+        Ad ad = this.findById(id);
+        if (ad == null) {
+            return InvokeResult.failure("更新广告失败, 该广告不存在");
+        }
+        ad.setStatus(1);
+        offPublishOther();
+        ad.update();
+        return InvokeResult.success();
+    }
 }

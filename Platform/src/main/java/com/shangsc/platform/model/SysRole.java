@@ -30,7 +30,7 @@ import java.util.*;
 
 /**
  * @author ssc
- * 系统角色
+ *         系统角色
  */
 public class SysRole extends BaseSysRole<SysRole> {
 
@@ -41,9 +41,9 @@ public class SysRole extends BaseSysRole<SysRole> {
     public static final SysRole me = new SysRole();
 
     /**
-     * @author ssc
      * @param uid
      * @return
+     * @author ssc
      */
     public List<SysRole> getSysRoleList(int uid) {
 
@@ -126,8 +126,9 @@ public class SysRole extends BaseSysRole<SysRole> {
             List<String> sqlList = Lists.newArrayList();
             for (String id : menuIds.split(",")) {
                 if (CommonUtils.isNotEmpty(id)) {
-                    if (!Integer.valueOf(id).equals(10000))
+                    if (!Integer.valueOf(id).equals(10000)) {
                         sqlList.add("insert into sys_role_res (role_id,res_id) values (" + roleId + "," + Integer.valueOf(id) + ")");
+                    }
                 }
             }
             Db.batch(sqlList, 50);
@@ -137,7 +138,6 @@ public class SysRole extends BaseSysRole<SysRole> {
     }
 
     public InvokeResult save(Integer id, String name, String des) {
-        // TODO Auto-generated method stub
         if (id != null) {
             SysRole role = this.findById(id);
             role.set("name", name).set("des", des).update();
