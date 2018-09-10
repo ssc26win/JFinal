@@ -104,7 +104,7 @@
             datatype: "json",
             colModel: [
                 { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
-                { label: '单位名称', name: 'companyName', width: 200, sortable:false},
+                { label: '单位名称', name: 'companyName', width: 220, sortable:false},
                 { label: '单位编号', name: 'real_code', width: 90, sortable:false},
                 { label: '水源类型', name: 'watersTypeName', width: 90, sortable:false},
                 { label: '年用水指标', name: 'water_index', width: 100,sortable:true},
