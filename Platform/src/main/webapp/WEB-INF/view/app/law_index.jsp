@@ -108,9 +108,9 @@
             datatype: "json",
             colModel: [
                 {label: '标题', name: 'title', width: 150, sortable: false},
-                {label: '内容', name: 'content', width: 350, sortable: false},
-                /*{ label: '图片地址', name: 'img_url', width: 100, sortable:false},*/
-                {label: '状态', name: 'statusName', width: 100, sortable: false},
+                {label: '内容', name: 'content', width: 200, sortable: false},
+                { label: '拍照图片', name: 'imgNames', width: 350, sortable:false},
+                {label: '创建人', name: 'create_user', width: 60, sortable: false},
                 {label: '创建时间', name: 'create_time', width: 100, sortable: false}
             ],
             viewrecords: true,

@@ -40,9 +40,17 @@ public class LawRecordsController extends BaseController {
         }
         Page<LawRecord> pageInfo = LawRecord.dao.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
         List<LawRecord> list = pageInfo.getList();
+        Set<Long> ids = new LinkedHashSet<>();
+        for (LawRecord lawRecord : list) {
+            ids.add(lawRecord.getId());
+        }
+        Map<Long, List<String>> map = Image.dao.findImgsByLawIds(new ArrayList<Long>(ids), "t_law_record");
         for (LawRecord lawRecord : list) {
             if (lawRecord.getStatus() != null) {
                 lawRecord.put("statusName", YesOrNo.getYesOrNoMap().get(String.valueOf(lawRecord.getStatus())));
+            }
+            if (map.containsKey(lawRecord.getId())) {
+                lawRecord.put("imgNames", StringUtils.join(map.get(lawRecord.getId()), ","));
             }
         }
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
@@ -53,10 +61,6 @@ public class LawRecordsController extends BaseController {
         Long id = this.getParaToLong("id");
         if (id != null) {
             this.setAttr("item", LawRecord.dao.findById(id));
-            Map<Long, List<String>> map = Image.dao.findImgsByLawIds(Arrays.asList(new Long[]{id}), "t_law_record");
-            if (map.containsKey(id)) {
-                this.setAttr("responseImgNames", StringUtils.join(map.get(id), ","));
-            }
         }
         this.setAttr("id", id);
         String action = "add";
