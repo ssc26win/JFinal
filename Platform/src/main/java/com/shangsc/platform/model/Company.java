@@ -605,7 +605,8 @@ public class Company extends BaseCompany<Company> {
             if (StringUtils.isNotEmpty(map.get(0))) {
                 realCode = map.get(0).toString();
             }
-            String innerCode = CodeNumUtil.genInnerCode();
+            //String innerCode = CodeNumUtil.genInnerCode();
+            String innerCode = realCode;
 
             if (StringUtils.isEmpty(realCode) || hasExistByRealCode(realCode)) {
                 continue;
