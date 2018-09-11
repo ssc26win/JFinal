@@ -257,10 +257,16 @@ public class SysUser extends BaseSysUser<SysUser> {
 
     public Page<SysUser> getSysUserPage(int page, int rows, String keyword, String innerCode, String orderbyStr) {
         String select = "select tc.name as companyName,su.*, (select group_concat(name) as roleNames from sys_role " +
-                " where id in(select role_id from sys_user_role where user_id=su.id)) as roleNames ";
+                " where id in (select role_id from sys_user_role where user_id=su.id)) as roleNames ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from sys_user su left join t_company tc on tc.inner_code=su.inner_code where 1=1 ");
         if (StringUtils.isNotEmpty(innerCode)) {
             sqlExceptSelect.append(" and su.inner_code='" + innerCode + "'");
+        }
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (su.name like '%" + keyword + "%' or tc.name like '% " + keyword + "%') ");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
         }
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }

@@ -32,7 +32,8 @@
                 <div class="row">
                   <div class="col-sm-12">
                     <form id="exportForm">
-                      <div class="input-group">
+                        <input type="text" style="display:none"/>
+                        <div class="input-group">
                         <input type="text" id="name" name="name" class="search-query" style="height: 34px;width: 400px;" placeholder="请输入关键字" />
                         <select id="srcType" name="srcType" style="height: 34px;width: 159px;margin-left: 5px;">
                           <option value="">请选择协议类型</option>
@@ -210,6 +211,16 @@
   function reloadGrid(){
     $("#grid-table").trigger("reloadGrid"); //重新载入
   }
+
+  jQuery(function($) {
+      document.onkeydown = function (e) {
+          var theEvent = window.event || e;
+          var code = theEvent.keyCode || theEvent.which;
+          if (code == 13) {
+              $('#btn_search').click();
+          }
+      }
+  })
 </script>
 
 </body>

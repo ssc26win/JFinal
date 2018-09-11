@@ -35,10 +35,10 @@ public class AdController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/ad"})
     public void getListData() {
-        String keyword = this.getPara("innerCode");
+        String keyword = this.getPara("name");
         Set<Condition> conditions = new HashSet<Condition>();
         if (CommonUtils.isNotEmpty(keyword)) {
-            conditions.add(new Condition("inner_code", Operators.LIKE, keyword));
+            conditions.add(new Condition("title", Operators.LIKE, keyword));
         }
         Page<Ad> pageInfo = Ad.dao.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
         List<Ad> list = pageInfo.getList();

@@ -33,6 +33,7 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <form id="exportForm" action="${context_path}/report/month/exportData" method="post">
+                                            <input type="text" style="display:none"/>
                                             <div class="input-group">
                                                 <select id="type" name="type" style="margin-left: 5px;width: 159px;height: 34px;"><option value="">请选择单位类型</option>
                                                     <option value="1">用水单位</option>
@@ -199,6 +200,15 @@
         $("#grid-table").trigger("reloadGrid"); //重新载入
     }
 
+    jQuery(function($) {
+        document.onkeydown = function (e) {
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which;
+            if (code == 13) {
+                $('#btn_search').click();
+            }
+        }
+    })
 </script>
 
 </body>

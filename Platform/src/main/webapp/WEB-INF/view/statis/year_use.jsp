@@ -33,6 +33,7 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <form id="exportForm" action="${context_path}/statis/year/exportData" method="post">
+                                            <input type="text" style="display:none"/>
                                             <div class="input-group">
                                                 日期时间（年）:
                                                 <input type="number" id="year" name="year" min="2017"/>
@@ -231,6 +232,16 @@
     }
     $(function(){
         getDictMapData();
+    })
+
+    jQuery(function($) {
+        document.onkeydown = function (e) {
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which;
+            if (code == 13) {
+                $('#btn_search').click();
+            }
+        }
     })
 </script>
 

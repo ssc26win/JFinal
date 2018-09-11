@@ -175,6 +175,16 @@
 				return '<span class="label label-sm label-success">启用</span>';
 			}
 		}
+
+        jQuery(function($) {
+            document.onkeydown = function (e) {
+                var theEvent = window.event || e;
+                var code = theEvent.keyCode || theEvent.which;
+                if (code == 13) {
+                    $('#btn_search').click();
+                }
+            }
+        })
    </script>
    		
 	</body>

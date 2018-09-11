@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <!-- PAGE CONTENT BEGINS -->
-                    <div class="widget-box">
+                   <div class="widget-box">
                         <div class="widget-header widget-header-small">
                             <h5 class="widget-title lighter">筛选</h5>
                         </div>
@@ -264,6 +264,16 @@
     function reloadGrid() {
         $("#grid-table").trigger("reloadGrid"); //重新载入
     }
+
+    jQuery(function($) {
+        document.onkeydown = function (e) {
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which;
+            if (code == 13) {
+                $('#btn_search').click();
+            }
+        }
+    })
 </script>
 
 </body>

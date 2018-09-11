@@ -99,7 +99,7 @@ public class DictController extends BaseController {
         String keyword = this.getPara("keyword");
         Set<Condition> conditions = new HashSet<Condition>();
         if (CommonUtils.isNotEmpty(keyword)) {
-            conditions.add(new Condition("name", Operators.LIKE, keyword));
+            conditions.add(new Condition("remark", Operators.LIKE, keyword));
         }
         Page<DictType> pageInfo = DictType.dao.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));

@@ -33,6 +33,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <form id="exportForm" action="${context_path}/basic/company/export" method="post">
+                                            <input type="text" style="display:none"/>
                                             <input type="hidden" id="flagType" name="flagType" value="${flag}"/>
                                             <div class="input-group">
                                                     <input type="text" id="name" name="name" class="search-query" style="height: 34px;width: 400px;" placeholder="请输入关键字" />
@@ -303,6 +304,16 @@
             content: '${context_path}/basic/company/importPage'
         });
     });
+
+    jQuery(function($) {
+        document.onkeydown = function (e) {
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which;
+            if (code == 13) {
+                $('#btn_search').click();
+            }
+        }
+    })
 </script>
 
 </body>

@@ -65,7 +65,6 @@
 			$(window).on('resize.jqGrid', function () {
 				$(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
 		    });
-//resize on sidebar collapse/expand
 				var parent_column = $(grid_selector).closest('[class*="col-"]');
 				$(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
 					if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
@@ -105,16 +104,7 @@
 				}
             });
 			$(window).triggerHandler('resize.jqGrid');
-			
-			$("#btn_search").click(function(){  
-			    //此处可以添加对查询数据的合法验证  
-			    var name = $("#name").val();  
-			    $("#grid-table").jqGrid('setGridParam',{  
-			        datatype:'json',  
-			        postData:{'name':name}, //发送数据  
-			        page:1  
-			    }).trigger("reloadGrid"); //重新载入  
-			}); 
+
 			$("#btn-add").click(function(){//添加页面
 				parent.layer.open({
 					title:'添加应用',
@@ -154,7 +144,7 @@
 			$("#btn-unvisible").click(function(){
 				setVisible(0);
 			});
-			
+
         });
       //replace icons with FontAwesome icons like above
 		function updatePagerIcons(table) {

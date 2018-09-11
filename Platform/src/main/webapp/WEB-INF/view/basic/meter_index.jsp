@@ -33,6 +33,7 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-8">
                                         <form id="exportForm" action="${context_path}/basic/meter/export" method="post">
+                                            <input type="text" style="display:none"/>
                                             <input type="hidden" id="flagType" name="flagType" value="${flag}"/>
                                             <div class="input-group">
                                                     <span class="input-group-addon">
@@ -293,6 +294,16 @@
             content: '${context_path}/basic/meter/importPage'
         });
     });
+
+    jQuery(function($) {
+        document.onkeydown = function (e) {
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which;
+            if (code == 13) {
+                $('#btn_search').click();
+            }
+        }
+    })
 </script>
 
 </body>

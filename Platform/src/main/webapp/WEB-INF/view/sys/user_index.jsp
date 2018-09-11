@@ -114,7 +114,7 @@
             colModel: [
                 {label: '用户名', name: 'name', width: 75},
                 {label: '联系电话', name: 'phone', width: 90, sortable: false},
-                {label: '邮箱', name: 'email', width: 90, sortable: false},
+                {label: '邮箱', name: 'email', width: 120, sortable: false},
                 {label: '拥有角色', name: 'roleNames', width: 200},
                 {label: '描述', name: 'des', width: 120, sortable: false},
                 {label: '注册时间', name: 'createdate', width: 120},
@@ -290,6 +290,17 @@
     function reloadGrid() {
         $("#grid-table").trigger("reloadGrid"); //重新载入
     }
+
+    jQuery(function($) {
+        document.onkeydown = function (e) {
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which;
+            if (code == 13) {
+                $('#btn_search').click();
+            }
+        }
+    })
+
 </script>
 
 </body>

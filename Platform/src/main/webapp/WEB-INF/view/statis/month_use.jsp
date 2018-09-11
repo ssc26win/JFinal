@@ -33,6 +33,7 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <form id="exportForm" action="${context_path}/statis/month/exportData" method="post">
+                                            <input type="text" style="display:none"/>
                                             <div class="input-group">
                                                 日期时间:
                                                 <input type="text" id="startTime" name="startTime" class="form_month" style="width: 100px;"/>~<input type="text" id="endTime" name="endTime" class="form_month"  style="width: 100px;"/>
@@ -246,6 +247,16 @@
     }
     $(function(){
         getDictMapData();
+    })
+
+    jQuery(function($) {
+        document.onkeydown = function (e) {
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which;
+            if (code == 13) {
+                $('#btn_search').click();
+            }
+        }
     })
 </script>
 

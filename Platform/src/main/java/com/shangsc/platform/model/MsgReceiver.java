@@ -1,6 +1,7 @@
 package com.shangsc.platform.model;
 
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.view.InvokeResult;
@@ -16,6 +17,24 @@ import java.util.*;
 @SuppressWarnings("serial")
 public class MsgReceiver extends BaseMsgReceiver<MsgReceiver> {
     public static final MsgReceiver dao = new MsgReceiver();
+
+    public Page<MsgReceiver> getPageInfo(int pageNo, int pageSize, Integer uId, String keyword, String orderBy) {
+        String select = "select tmr.*,tm.title,tm.content  ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_msg_receiver tmr ");
+        sqlExceptSelect.append(" left join t_message tm on tm.id=tmr.msg_id where 1=1");
+        if (uId != null && uId > 0L) {
+            sqlExceptSelect.append(" and tmr.receiver_id=" + uId);
+        }
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (title like '%" + keyword + "%' or content like '%" + keyword + "%') ");
+        }
+        if (StringUtils.isNotEmpty(orderBy)) {
+            sqlExceptSelect.append(orderBy);
+        } else {
+            sqlExceptSelect.append(" order by tmr.status asc, tmr.create_time desc");
+        }
+        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
 
     public InvokeResult save(Long mid, Long id, List<Long> userIds) {
         if (null != id && id > 0L) {

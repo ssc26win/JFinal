@@ -282,7 +282,18 @@
 		function reloadGrid(){
 			$("#grid-table").trigger("reloadGrid"); //重新载入
 		}
-   </script>
+
+        jQuery(function($) {
+            document.onkeydown = function (e) {
+                var theEvent = window.event || e;
+                var code = theEvent.keyCode || theEvent.which;
+                if (code == 13) {
+                    $('#btn_search').click();
+                }
+            }
+        })
+
+        </script>
    		
 	</body>
 </html>

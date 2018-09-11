@@ -56,6 +56,8 @@
 				left: 0;
 				color: #323232;
 				z-index: 9999;
+                max-height: 200px;
+                overflow-y: auto;
 				/*margin-left: 12px;*/
 			}
 			body.gray-bg-login {
@@ -66,7 +68,7 @@
 				-moz-background-size: cover;
 				-o-background-size: cover;
 				background-size: cover;
-				color: rgba(255,255,255,.95);
+				/*color: rgba(255,255,255,.95);*/
 			}
 		</style>
 	</head>
@@ -121,7 +123,7 @@
 													<div class="clearfix">
 														<label class="inline">
 																<input type="checkbox" class="ace" id="autoLogin">
-																<span class="lbl" style="color: red">&nbsp;下次自动登录</span>
+																<span class="lbl" style="color: red">&nbsp;自动登录</span>
 															</label>
 														<button type="button" id="login-btn" class="width-35 pull-right btn btn-sm btn-primary">
 															<i class="ace-icon fa fa-key"></i>
@@ -414,25 +416,31 @@
 				      var $password = $('#password');
 				      var $imgCode = $('#imgCode');
 				      if (!$loginname.val()) {
-				        layer.alert('请输入用户名！');
-				        $loginname.focus();
-				        return false;
+                          layer.alert('请输入用户名！', function () {
+                            $loginname.focus();
+                            layer.closeAll();
+                          });
+                          return false;
 				      }
 				      if (!$password.val()) {
-					  	layer.alert('请输入密码！');
-				        $password.focus();
-				        return false;
+                          layer.alert('请输入密码！', function () {
+                              $password.focus();
+                              layer.closeAll();
+                          });
+                          return false;
 				      }
 				      if (!$imgCode.val()) {
-						    layer.alert('请输入验证码！');
-					        $imgCode.focus();
-					        return false;
-					      }
+                          layer.alert('请输入验证码！', function () {
+                              $imgCode.focus();
+                              layer.closeAll();
+                          });
+                          return false;
+                      }
 				      var submitData = {
 				   		username : $loginname.val(),
 				      	password : $password.val(),
 				      	imageCode : $imgCode.val(),
-				      	autoLogin:$("#autoLogin").is(':checked') ==true?1:0,
+				      	autoLogin:$("#autoLogin").is(':checked')==true?1:0,
 				      	url:"${url}"
 				      };
 				      $btn.addClass("disabled");
@@ -460,38 +468,52 @@
                     var $r2password = $('#r2password');
 					var $innerCode = $('#innerCode');
 					if (!$innerCode.val()) {
-						layer.alert('请输入所属公司编码！');
-						$innerCode.focus();
+                        layer.alert('请输入所属单位名称！', function () {
+                            $innerCode.focus();
+                            layer.closeAll();
+                        });
 						return false;
 					}
                     if (!$rphone.val()) {
-                        layer.alert('请输入手机号！');
-                        $rphone.focus();
+                        layer.alert('请输入手机号！', function () {
+                            $rphone.focus();
+                            layer.closeAll();
+                        });
                         return false;
                     }
                     if (!$remail.val()) {
-                        layer.alert('请输入邮箱！');
-                        $remail.focus();
+                        layer.alert('请输入邮箱！', function () {
+                            $remail.focus();
+                            layer.closeAll();
+                        });
                         return false;
                     }
                     if (!$rusername.val()) {
-                        layer.alert('请输入用户名！');
-                        $rusername.focus();
+                        layer.alert('请输入用户名！', function () {
+                            $rusername.focus();
+                            layer.closeAll();
+                        });
                         return false;
                     }
                     if (!$rpassword.val()) {
-                        layer.alert('请输入密码！');
-                        $rpassword.focus();
+                        layer.alert('请输入密码！', function () {
+                            $rpassword.focus();
+                            layer.closeAll();
+                        });
                         return false;
                     }
                     if (!$r2password.val()) {
-                        layer.alert('请输入确认密码！');
-                        $r2password.focus();
+                        layer.alert('请输入确认密码！', function () {
+                            $r2password.focus();
+                            layer.closeAll();
+                        });
                         return false;
                     }
                     if ($rpassword.val() != $r2password.val()) {
-                        layer.alert('密码与确认密码不一致！');
-                        $r2password.focus();
+                        layer.alert('密码与确认密码不一致！', function () {
+                            $r2password.focus();
+                            layer.closeAll();
+                        });
                         return false;
                     }
                     var submitData = {
@@ -524,19 +546,23 @@
 					var $remailUName = $('#usernameEmail');
 					if (!$remailUName.val()) {
 						layer.close(index);
-						layer.alert('请输入用户名！');
-						$remailUName.focus();
+                        layer.alert('请输入用户名！', function () {
+                            $remailUName.focus();
+                            layer.closeAll();
+                        });
 						return false;
 					}
-					var $remail = $('#sendrePwdEmail');
-					if (!$remail.val()) {
+					var $rsemail = $('#sendrePwdEmail');
+					if (!$rsemail.val()) {
 						layer.close(index);
-						layer.alert('请输入邮箱！');
-						$remail.focus();
+                        layer.alert('请输入邮箱！', function () {
+                            $rsemail.focus();
+                            layer.closeAll();
+                        });
 						return false;
 					}
 					var submitData = {
-						email:$remail.val(), username:$remailUName.val()
+						email:$rsemail.val(), username:$remailUName.val()
 					};
 					$btn.addClass("disabled");
 					$.post("${context_path}/resetPwdSendEmail", submitData, function(data) {
@@ -562,18 +588,24 @@
 					var $rpassword = $('#reSetpassword');
 					var $r2password = $('#reSetpassword2');
 					if (!$rpassword.val()) {
-						layer.alert('请输入密码！');
-						$rpassword.focus();
+                        layer.alert('请输入密码！', function () {
+                            $rpassword.focus();
+                            layer.closeAll();
+                        });
 						return false;
 					}
 					if (!$r2password.val()) {
-						layer.alert('请输入确认密码！');
-						$r2password.focus();
+                        layer.alert('请输入确认密码！', function () {
+                            $r2password.focus();
+                            layer.closeAll();
+                        });
 						return false;
 					}
 					if ($rpassword.val() != $r2password.val()) {
-						layer.alert('密码与确认密码不一致！');
-						$r2password.focus();
+                        layer.alert('密码与确认密码不一致！', function () {
+                            $r2password.focus();
+                            layer.closeAll();
+                        });
 						return false;
 					}
 					var submitData = {
@@ -721,7 +753,6 @@
 					AutoComplete("auto_div", "companyName", name_list);
 				});
 				$("#auto_div").css("width" , $(".form-control").css("width"));
-
 			});
 
 		</script>

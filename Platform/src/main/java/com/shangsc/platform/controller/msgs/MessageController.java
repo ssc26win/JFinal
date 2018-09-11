@@ -1,17 +1,15 @@
 package com.shangsc.platform.controller.msgs;
 
 import com.alibaba.druid.support.json.JSONUtils;
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Maps;
-import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.upload.UploadFile;
 import com.shangsc.platform.code.YesOrNo;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
-import com.shangsc.platform.core.util.*;
+import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.IWebUtils;
+import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.Message;
@@ -20,7 +18,6 @@ import com.shangsc.platform.model.SysUser;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
 import java.util.*;
 
 /**
@@ -45,18 +42,20 @@ public class MessageController extends BaseController {
         }
         Page<Message> pageInfo = Message.dao.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
         List<Message> list = pageInfo.getList();
-        Set<Long> msgIds = new HashSet<>();
-        for (Message message : list) {
-            msgIds.add(message.getId());
-        }
-        Map<Long, List<String>> byMsgIds = MsgReceiver.dao.findReceiversByMsgIds(new ArrayList<Long>(msgIds));
-        for (Message message : list) {
-            if (message.getStatus() != null) {
-                message.put("statusName", YesOrNo.getYesOrNoMap().get(String.valueOf(message.getStatus())));
+        if (CollectionUtils.isNotEmpty(list)) {
+            Set<Long> msgIds = new HashSet<>();
+            for (Message message : list) {
+                msgIds.add(message.getId());
             }
-            List<String> receiverNames = byMsgIds.get(message.getId());
-            if (CollectionUtils.isNotEmpty(receiverNames)) {
-                message.put("MsgReceiverNames", StringUtils.join(receiverNames, ","));
+            Map<Long, List<String>> byMsgIds = MsgReceiver.dao.findReceiversByMsgIds(new ArrayList<Long>(msgIds));
+            for (Message message : list) {
+                if (message.getStatus() != null) {
+                    message.put("statusName", YesOrNo.getYesOrNoMap().get(String.valueOf(message.getStatus())));
+                }
+                List<String> receiverNames = byMsgIds.get(message.getId());
+                if (CollectionUtils.isNotEmpty(receiverNames)) {
+                    message.put("MsgReceiverNames", StringUtils.join(receiverNames, ","));
+                }
             }
         }
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));

@@ -33,6 +33,7 @@
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <form id="exportForm" action="${context_path}/report/street/exportData" method="post">
+                                            <input type="text" style="display:none"/>
                                             <div class="input-group">
                                                 <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;">
                                                     <option value="">请选择水源类型</option></select>
@@ -205,8 +206,19 @@
             }
         },"json");
     }
+
     $(function(){
         getDictMapData();
+    })
+
+    jQuery(function($) {
+        document.onkeydown = function (e) {
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which;
+            if (code == 13) {
+                $('#btn_search').click();
+            }
+        }
     })
 </script>
 

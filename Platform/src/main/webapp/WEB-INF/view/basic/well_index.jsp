@@ -33,6 +33,7 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-8">
                                         <form id="exportForm" action="${context_path}/basic/well/export" method="post">
+                                            <input type="text" style="display:none"/>
                                             <div class="input-group">
                                                     <span class="input-group-addon">
                                                         <i class="ace-icon fa fa-check"></i>
@@ -295,6 +296,16 @@
             content: '${context_path}/basic/well/importPage'
         });
     });
+
+    jQuery(function($) {
+        document.onkeydown = function (e) {
+            var theEvent = window.event || e;
+            var code = theEvent.keyCode || theEvent.which;
+            if (code == 13) {
+                $('#btn_search').click();
+            }
+        }
+    })
 </script>
 
 </body>
