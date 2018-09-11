@@ -297,9 +297,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
      */
     public static int[] saveBatch(List<WaterMeter> modelOrRecordList, int batchSize) {
         String sql = "insert into t_water_meter(inner_code,line_num,meter_num,meter_address,times,waters_type," +
-                "meter_attr,charge_type,billing_cycle,regist_date,vender,term) values (?,?,?,?,?,?,?,?,?,?,?,?)";
+                "meter_attr,charge_type,billing_cycle,regist_date,term,vender,memo) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
         String columns = "inner_code,line_num,meter_num,meter_address,times,waters_type," +
-                "meter_attr,charge_type,billing_cycle,regist_date,vender,term";
+                "meter_attr,charge_type,billing_cycle,regist_date,term,vender,memo";
         int[] result = Db.batch(sql, columns, modelOrRecordList, batchSize);
         return result;
     }
@@ -380,19 +380,23 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
                 registDate = DateUtils.getDate(ToolDateTime.format(new Date(), ToolDateTime.pattern_ymd_hms), ToolDateTime.pattern_ymd);
             }
             meter.setRegistDate(registDate);
-            String vender = null;
-            if (StringUtils.isNotEmpty(map.get(15))) {
-                vender = map.get(15).toString();
-            }
-            meter.setVender(vender);
             Integer term = null;
-            if (StringUtils.isNotEmpty(map.get(16))) {
-                term = termType.get(map.get(16).toString());
+            if (StringUtils.isNotEmpty(map.get(15))) {
+                term = termType.get(map.get(15).toString());
             }
             meter.setTerm(term);
+            String vender = null;
+            if (StringUtils.isNotEmpty(map.get(16))) {
+                vender = map.get(16).toString();
+            }
+            meter.setVender(vender);
+            String memo = null;
+            if (StringUtils.isNotEmpty(map.get(17))) {
+                memo = map.get(17).toString();
+            }
+            meter.setMemo(memo);
             lists.add(meter);
         }
-
         saveBatch(lists, lists.size());
     }
 

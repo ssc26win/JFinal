@@ -582,11 +582,11 @@ public class Company extends BaseCompany<Company> {
     public static int[] saveBatch(List<Company> modelOrRecordList, int batchSize) {
         String sql = "insert into t_company(inner_code,real_code,name,water_unit,county,street,street_src,address,customer_type,gb_industry," +
                 "main_industry,water_use_type,contact,phone,postal_code,department,well_count,first_watermeter_count," +
-                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type,memo,term)" +
+                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type,term,memo)" +
                 " values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         String columns = "inner_code,real_code,name,water_unit,county,street,street_src,address,customer_type,gb_industry," +
                 "main_industry,water_use_type,contact,phone,postal_code,department,well_count,first_watermeter_count," +
-                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type,memo,term";
+                "remotemeter_count,unit_type,longitude,latitude,self_well_price,surface_price,self_free_price,create_time,company_type,term,memo";
         int[] result = Db.batch(sql, columns, modelOrRecordList, batchSize);
         return result;
     }
@@ -706,13 +706,13 @@ public class Company extends BaseCompany<Company> {
                 }
                 createDate = DateUtils.getDate(date, ToolDateTime.pattern_ymd);
             }
-            String memo = null;
+            Integer term = 1;//默认1
             if (StringUtils.isNotEmpty(map.get(19))) {
-                memo = map.get(19).toString();
+                term = termType.get(map.get(19).toString());
             }
-            Integer term = null;
+            String memo = null;
             if (StringUtils.isNotEmpty(map.get(20))) {
-                term = termType.get(map.get(20).toString());
+                memo = map.get(20).toString();
             }
             setProp(company, name, realCode, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                     gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,

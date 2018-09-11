@@ -48,6 +48,7 @@ public class CompanyExportService extends ExportBaseService {
                 "水井数量",
                 "一级表数量",
                 "远传表数量",
+                "周期",
                 "备注"
         }));
 
@@ -78,6 +79,7 @@ public class CompanyExportService extends ExportBaseService {
                     company.getWellCount(),
                     company.getFirstWatermeterCount(),
                     company.getRemotemeterCount(),
+                    company.get("termName"),
                     company.getMemo()
             };
             objects.add(obj);

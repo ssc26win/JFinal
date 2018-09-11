@@ -159,16 +159,16 @@
                                         <option value="2">供水单位</option>
                                     </select>
                                 </div>
-                                <label class="col-sm-2 control-label" for="memo">备注信息：</label>
-                                <div class="col-sm-4">
-                                    <input type="text" id="memo" name="memo" value="${item.memo}" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group">
                                 <label class="col-sm-2 control-label" for="term">周期:</label>
                                 <div class="col-sm-4">
                                     <input  type="hidden" id="termInput" name="termInput" value="${item.term}" />
                                     <select id="term" name="term" value="${item.term}" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="memo">备注信息：</label>
+                                <div class="col-sm-4">
+                                    <input type="text" id="memo" name="memo" value="${item.memo}" class="form-control">
                                 </div>
                             </div>
                             <div class="clearfix form-actions" align="center">

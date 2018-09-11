@@ -9,16 +9,16 @@ insert into dict_data(dict_type_id, value, seq, update_time, name, remark) value
 
 alter table t_company add column `real_code` varchar(100) DEFAULT '' COMMENT '单位编号';
 alter table t_company modify column `inner_code` varchar(50) DEFAULT NULL COMMENT '内部编号';
-alter table t_company add column `term` tinyint DEFAULT '1' COMMENT '第几期';
+alter table t_company add column `term` tinyint DEFAULT '1' COMMENT '周期';
 alter table t_company add column `memo` varchar(255) DEFAULT '' COMMENT '备注';
 
 update t_company set real_code=inner_code where inner_code <>'' and inner_code is not null;
 
 alter table t_water_meter change `meter_attr` `meter_attr_src` varchar(50) DEFAULT NULL COMMENT '原水表属性';
 alter table t_water_meter add column `meter_attr` int(10) DEFAULT '1' COMMENT '水表属性';
-alter table t_water_meter add column `term` tinyint DEFAULT '1' COMMENT '第几期';
-alter table t_water_meter add column `memo` varchar(255) DEFAULT '' COMMENT '备注';
+alter table t_water_meter add column `term` tinyint DEFAULT '1' COMMENT '周期';
 alter table t_water_meter add column `vender` varchar(255) DEFAULT '' COMMENT '生产厂家';
+alter table t_water_meter add column `memo` varchar(255) DEFAULT '' COMMENT '备注';
 
 alter table app_version add column `wx_app_id` varchar(50) DEFAULT '' COMMENT '微信授权登录公钥';
 alter table app_version add column `wx_app_secret` varchar(100) DEFAULT '' COMMENT '微信授权登录私钥';

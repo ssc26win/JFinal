@@ -118,10 +118,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="memo">备注信息</label>
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="term">周期</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input type="text" id="memo" name="memo" value="${item.memo}" class="col-xs-12 col-sm-8">
+                                        <input  type="hidden" id="termInput" name="termInput" value="${item.term}" />
+                                        <select id="term" name="term" value="${item.term}" class="col-xs-12 col-sm-8"></select>
                                     </div>
                                 </div>
                             </div>
@@ -134,11 +135,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="term">周期</label>
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="memo">备注信息</label>
                                 <div class="col-xs-12 col-sm-9">
                                     <div class="clearfix">
-                                        <input  type="hidden" id="termInput" name="termInput" value="${item.term}" />
-                                        <select id="term" name="term" value="${item.term}" class="col-xs-12 col-sm-8"></select>
+                                        <input type="text" id="memo" name="memo" value="${item.memo}" class="col-xs-12 col-sm-8">
                                     </div>
                                 </div>
                             </div>

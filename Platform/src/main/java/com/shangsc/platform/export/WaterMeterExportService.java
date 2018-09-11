@@ -36,8 +36,10 @@ public class WaterMeterExportService extends ExportBaseService {
                 "收费类型",
                 "注册日期",
                 "计费周期",
+                "周期",
+                "生产厂家",
                 "备注",
-                "生产厂家"
+
         }));
 
         /**
@@ -47,24 +49,25 @@ public class WaterMeterExportService extends ExportBaseService {
         List<Object[]> objects = new ArrayList<Object[]>();
         for (WaterMeter waterMeter : waterMeters) {
             Object[] obj = new Object[]{
-                waterMeter.get("real_code"),
-                waterMeter.get("companyName"),
-                waterMeter.get("water_unit"),
-                waterMeter.get("county"),
-                waterMeter.getLineNum(),
-                waterMeter.getMeterAddress(),
-                waterMeter.getTimes(),
-                waterMeter.getMeterNum(),
-                waterMeter.get("watersTypeName"),
-                waterMeter.get("gb_industry"),
-                waterMeter.get("main_industry"),
-                waterMeter.get("waterUseTypeName"),
-                waterMeter.get("meterAttrName"),
-                waterMeter.get("chargeTypeName"),
-                ToolDateTime.format(waterMeter.getRegistDate(), ToolDateTime.pattern_ymd),
-                waterMeter.getBillingCycle(),
-                waterMeter.getMemo(),
-                waterMeter.getVender()
+                    waterMeter.get("real_code"),
+                    waterMeter.get("companyName"),
+                    waterMeter.get("water_unit"),
+                    waterMeter.get("county"),
+                    waterMeter.getLineNum(),
+                    waterMeter.getMeterAddress(),
+                    waterMeter.getTimes(),
+                    waterMeter.getMeterNum(),
+                    waterMeter.get("watersTypeName"),
+                    waterMeter.get("gb_industry"),
+                    waterMeter.get("main_industry"),
+                    waterMeter.get("waterUseTypeName"),
+                    waterMeter.get("meterAttrName"),
+                    waterMeter.get("chargeTypeName"),
+                    ToolDateTime.format(waterMeter.getRegistDate(), ToolDateTime.pattern_ymd),
+                    waterMeter.getBillingCycle(),
+                    waterMeter.get("termName"),
+                    waterMeter.getVender(),
+                    waterMeter.getMemo()
             };
             objects.add(obj);
         }
