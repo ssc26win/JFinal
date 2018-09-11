@@ -173,7 +173,7 @@
                 parent.layer.open({
                     title: '给消息【' + rowData.title + '】分配接收人',
                     type: 2,
-                    area: ['380px', '530px'],
+                    area: ['450px', '530px'],
                     fix: false, //不固定
                     maxmin: true,
                     content: '${context_path}/basic/msg/setReceiver?mid=' + rid

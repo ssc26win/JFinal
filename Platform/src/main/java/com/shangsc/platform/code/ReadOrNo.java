@@ -9,8 +9,8 @@ public class ReadOrNo {
     public static final String Read = "1";
     public static final String No = "0";
 
-    public static final String ReadStr = "已读";
-    public static final String NoStr = "未读";
+    public static final String ReadStr = "<span style='color:green;'>已读</span>";
+    public static final String NoStr = "<span style='color:red;'>未读</span>";
 
     public static Map<String, String> getMap() {
         Map<String, String> addType = new HashMap<String, String>();

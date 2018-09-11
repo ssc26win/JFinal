@@ -24,6 +24,7 @@ import com.jfinal.log.Log;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.auth.interceptor.SysLogInterceptor;
+import com.shangsc.platform.core.util.CookieUtils;
 import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.util.MyDigestUtils;
 import com.shangsc.platform.core.view.InvokeResult;
@@ -109,7 +110,7 @@ public class IndexController extends Controller {
             return;
         }
         Integer autoLogin = this.getParaToInt("autoLogin", 0);
-        IWebUtils.setCurrentLoginSysUser(this.getResponse(), this.getSession(), sysUser, autoLogin);
+        IWebUtils.setCurrentLoginSysUser(this.getRequest(), this.getResponse(), this.getSession(), sysUser, autoLogin);
         SysLoginRecord.dao.saveSysLoginRecord(sysUser.getId(), 1);
         this.renderJson(InvokeResult.success());
     }
@@ -160,7 +161,7 @@ public class IndexController extends Controller {
         String innerCode = this.getPara("innerCode");
         InvokeResult result = SysUser.me.regist(username, password, phone, email, innerCode);
         SysUser sysUser = SysUser.me.getByName(username);
-        IWebUtils.setCurrentLoginSysUser(this.getResponse(), this.getSession(), sysUser, 0);
+        IWebUtils.setCurrentLoginSysUser(this.getRequest(), this.getResponse(), this.getSession(), sysUser, 0);
         this.renderJson(result);
     }
 
@@ -186,7 +187,7 @@ public class IndexController extends Controller {
         content.append("&reUsernameEmail=" + username);
         content.append("&time=" + System.currentTimeMillis());
         content.append("' target='_blank' ><b>点击</b>重置密码(30分钟内有效)</a>");
-        this.setCookie("find_password_by_email", String.valueOf(System.currentTimeMillis()), 1000 * 60 * 30);
+        CookieUtils.addCookie(this.getResponse(), "find_password_by_email", String.valueOf(System.currentTimeMillis()), 60 * 30);
         try {
             //MailKit.send(email, null, subject, content.toString());
             log.info("重置密码发送邮件 toEmial=" + email);

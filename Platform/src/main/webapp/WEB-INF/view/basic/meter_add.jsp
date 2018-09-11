@@ -38,7 +38,7 @@
                                     <div class="clearfix">
                                         <input type="text" id="companyName" name="companyName" value="${companyName}" class="col-xs-12 col-sm-8 cnwth" autocomplete="off" >
                                     </div>
-                                    <div id="auto_div"></div>
+                                    <div id="auto_div" style="max-height: 200px; overflow-y: auto;"></div>
                                     <input type="hidden" id="innerCode" name="innerCode" value="${item.innerCode}">
                                 </div>
                             </div>

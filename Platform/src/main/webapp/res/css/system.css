@@ -17,6 +17,8 @@
     color: #323232;
     z-index: 9999;
     /*margin-left: 12px;*/
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 .search_switch {

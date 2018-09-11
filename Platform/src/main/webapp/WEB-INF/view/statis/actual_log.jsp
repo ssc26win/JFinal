@@ -100,8 +100,8 @@
       colModel: [
         { label: '协议类型', name: 'src_type', width: 50, sortable:false},
         { label: '端口', name: 'port', width: 50, sortable:false},
-        { label: 'IP', name: 'ip', width: 60, sortable:false},
-        { label: '上传内容', name: 'content', width: 500,sortable:false},
+        { label: '/水表IP : 端口', name: 'ip', width: 90, sortable:false},
+        { label: '上传内容', name: 'content', width: 450,sortable:false},
         { label: '表计地址', name: 'address', width: 80, sortable:false},
         { label: '采集时间', name: 'add_time', width: 120, sortable:true}
       ],

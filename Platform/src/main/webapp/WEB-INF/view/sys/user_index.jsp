@@ -156,7 +156,7 @@
             parent.layer.open({
                 title: '添加新用户',
                 type: 2,
-                area: ['770px', '480px'],
+                area: ['770px', '520px'],
                 fix: false, //不固定
                 maxmin: true,
                 content: '${context_path}/sys/user/add'
@@ -209,7 +209,7 @@
                 parent.layer.open({
                     title: '修改用户信息',
                     type: 2,
-                    area: ['770px', '480px'],
+                    area: ['770px', '520px'],
                     fix: false, //不固定
                     maxmin: true,
                     content: '${context_path}/sys/user/add?id=' + rid

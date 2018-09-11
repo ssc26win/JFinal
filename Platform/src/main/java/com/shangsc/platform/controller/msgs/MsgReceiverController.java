@@ -79,7 +79,7 @@ public class MsgReceiverController extends BaseController {
         for (MsgReceiver msgReceiver : list) {
             msgIds.add(msgReceiver.getMsgId());
         }
-        List<Message> msgs = Message.dao.find("select * from t_message where id in (?)", StringUtils.join(msgIds, ","));
+        List<Message> msgs = Message.dao.find("select * from t_message where id in (" +  StringUtils.join(msgIds, ",")  + ")");
         for (MsgReceiver msgReceiver : list) {
             if (msgReceiver.getStatus() != null) {
                 msgReceiver.put("statusName", ReadOrNo.getMap().get(String.valueOf(msgReceiver.getStatus())));

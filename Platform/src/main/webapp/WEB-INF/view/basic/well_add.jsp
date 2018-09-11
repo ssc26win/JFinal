@@ -30,7 +30,7 @@
                                 <label class="col-sm-3 control-label" for="companyName">单位名称:</label>
                                 <div class="col-sm-3 common-tip-append search">
                                     <input type="text" id="companyName" name="companyName" value="${companyName}" class="form-control cnwth" autocomplete="off">
-                                    <div id="auto_div"></div>
+                                    <div id="auto_div" style="max-height: 200px; overflow-y: auto;"></div>
                                     <input type="hidden" id="innerCode" name="innerCode" value="${item.innerCode}" class="form-control">
                                 </div>
                                 <label class="col-sm-3 control-label" for="wellNum">水井编号:</label>

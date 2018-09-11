@@ -190,11 +190,10 @@ public class SysUser extends BaseSysUser<SysUser> {
         return this.get(conditions);
     }
 
-    public InvokeResult save(Integer id, String username, String password, String des, String phone, String email, String innerCode) {
+    public InvokeResult save(Integer id, String username, String password, String des, String phone, String email, String innerCode, String wxAccount) {
         if (null != id) {
             SysUser sysUser = this.findById(id);
-            sysUser.set("des", des).set("phone", phone).set("email", email).set("inner_code", innerCode);
-            update();
+            sysUser.set("des", des).set("phone", phone).set("email", email).set("inner_code", innerCode).set("wx_account", wxAccount).update();
         } else {
             if (!Company.me.hasExistInnerCode(null, innerCode)) {
                 return InvokeResult.failure("公司编码不存在");
@@ -296,19 +295,28 @@ public class SysUser extends BaseSysUser<SysUser> {
         return list;
     }
 
-    public InvokeResult getUserZtreeViewList(Integer msgId) {
+    public InvokeResult getUserZtreeViewList(Integer msgId, String innerCode) {
         List<Record> receivers = Db.find("select receiver_id from t_msg_receiver where msg_id=" + msgId);
         List<Long> receiversIds = new ArrayList<>();
         for (Record record : receivers) {
             receiversIds.add(record.getLong("receiver_id"));
         }
-        List<Record> list = Db.find("select susr.id as id,susr.name as name,tc.name as companyName from sys_user susr left join t_company tc on tc.inner_code = susr.inner_code");
+        String sql = "select susr.id as id,susr.name as name,tc.name as companyName from sys_user susr " +
+                "left join t_company tc on tc.inner_code = susr.inner_code where 1=1 ";
+        if (StringUtils.isNotEmpty(innerCode)) {
+            sql = sql + " and susr.inner_code='" + innerCode + "'";
+        }
+        List<Record> list = Db.find(sql);
         List<ZtreeView> ztreeViews = new ArrayList<ZtreeView>();
         ztreeViews.add(new ZtreeView(10000, null, "用户列表", true));
         for (Record record : list) {
             ZtreeView ztreeView = new ZtreeView();
             ztreeView.setId(record.getInt("id"));
-            ztreeView.setName(record.getStr("name"));
+            if (StringUtils.isNotEmpty(record.getStr("companyName"))) {
+                ztreeView.setName(record.getStr("name") + "(" + record.getStr("companyName") + ")");
+            } else {
+                ztreeView.setName(record.getStr("name"));
+            }
             ztreeView.setOpen(true);
             ztreeView.setpId(10000);
             if (receiversIds.contains(Long.parseLong(record.getInt("id") + ""))) {

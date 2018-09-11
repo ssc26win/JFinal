@@ -1,5 +1,7 @@
 package com.shangsc.platform.controller.msgs;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
@@ -11,6 +13,7 @@ import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.*;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.Message;
 import com.shangsc.platform.model.MsgReceiver;
 import com.shangsc.platform.model.SysUser;
@@ -77,10 +80,23 @@ public class MessageController extends BaseController {
     @RequiresPermissions(value = {"/basic/msg"})
     public void setReceiver() {
         Integer id = this.getParaToInt("mid");
-        InvokeResult result = SysUser.me.getUserZtreeViewList(id);
+        InvokeResult result = SysUser.me.getUserZtreeViewList(id, "");
+        Map<String, String> nameList = Company.me.loadNameList();
+        Set<String> names = nameList.keySet();
+        this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
+        this.setAttr("names", JSONUtils.toJSONString(names));
+
         this.setAttr("mid", id);
         this.setAttr("jsonTree", result);
         render("receivers_add.jsp");
+    }
+
+    @RequiresPermissions(value = {"/basic/msg"})
+    public void findReceiverByCode() {
+        Integer id = this.getParaToInt("mid");
+        String innerCode = this.getPara("innerCode");
+        InvokeResult result = SysUser.me.getUserZtreeViewList(id, innerCode);
+        renderJson(result);
     }
 
     @RequiresPermissions(value = {"/basic/msg"})
@@ -108,24 +124,5 @@ public class MessageController extends BaseController {
         Long id = this.getParaToLong("id");
         InvokeResult result = Message.dao.publish(id);
         this.renderJson(result);
-    }
-
-    @RequiresPermissions(value = {"/basic/msg"})
-    public void uploadImg() {
-        String dataStr = DateUtils.format(new Date(), "yyyyMMddHHmm");
-        List<UploadFile> flist = this.getFiles("/temp", 1024 * 1024 * 50);
-        Map<String, Object> data = Maps.newHashMap();
-        if (flist.size() > 0) {
-            UploadFile uf = flist.get(0);
-            String status_url = PropKit.get("static_url");
-            String fileUrl = dataStr + "/" + uf.getFileName();
-            String newFile = PropKit.get("uploadAdImgPath") + fileUrl;
-            FileUtils.mkdir(newFile, false);
-            FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);
-            uf.getFile().delete();
-            data.put("staticUrl", status_url);
-            data.put("fileUrl", newFile);
-            renderJson(data);
-        }
     }
 }

@@ -101,7 +101,8 @@ public class UserController extends BaseController {
         Integer id = this.getParaToInt("id");
         String des = this.getPara("des");
         String innerCode = this.getPara("innerCode");
-        InvokeResult result = SysUser.me.save(id, username, password, des, phone, email, innerCode);
+        String wxAccount = this.getPara("wxAccount");
+        InvokeResult result = SysUser.me.save(id, username, password, des, phone, email, innerCode, wxAccount);
         this.renderJson(result);
     }
 

@@ -25,11 +25,12 @@ public class AuthorityInterceptor implements Interceptor {
                 SysUser sysUser = IWebUtils.getCurrentSysUser(inv.getController().getRequest());
                 if (sysUser == null) {//没有登陆
                     hasPermissions = false;
-                    if (StrKit.notBlank(inv.getActionKey()) && !inv.getActionKey().equals("/")) {
-                        inv.getController().redirect("/login?url=" + inv.getActionKey());
-                    } else {
-                        inv.getController().redirect("/login");
-                    }
+                    //if (StrKit.notBlank(inv.getActionKey()) && !inv.getActionKey().equals("/")) {
+                    //    inv.getController().redirect("/login?url=" + inv.getActionKey());
+                    //} else {
+                    //    inv.getController().redirect("/login");
+                    //}
+                    inv.getController().redirect("/login");
                 } else {
                     //判断是否有该资源的访问权限
                     String[] values = requiresPermissions.value();

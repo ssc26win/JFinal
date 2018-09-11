@@ -152,7 +152,10 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
     }
 
     public Set<String> findAddressByInnerCode(String innerCode) {
-        String sql = "SELECT * FROM t_Water_Meter WHERE inner_code='" + innerCode + "'";
+        String sql = "SELECT * FROM t_Water_Meter WHERE 1=1 ";
+        if (StringUtils.isNotEmpty(innerCode)) {
+            sql = sql + " and inner_code='" + innerCode + "'";
+        }
         List<WaterMeter> waterMeters = WaterMeter.me.find(sql);
         Set<String> addresss = new HashSet<>();
         for (WaterMeter meter : waterMeters) {

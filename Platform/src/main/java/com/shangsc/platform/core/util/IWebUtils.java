@@ -47,7 +47,7 @@ public class IWebUtils {
     //    setCurrentLoginSysUserToSession(httpSession, sysUser);
     //}
 
-    public static void setCurrentLoginSysUser(HttpServletResponse response, HttpSession httpSession, SysUser sysUser, Integer autoLogin) {
+    public static void setCurrentLoginSysUser(HttpServletRequest request, HttpServletResponse response, HttpSession httpSession, SysUser sysUser, Integer autoLogin) {
         setCurrentLoginSysUserToSession(httpSession, sysUser);
         if (autoLogin.equals(1)) {
             //保存7天
@@ -56,6 +56,8 @@ public class IWebUtils {
             String userInfo = MD5Utils.GetMD5Code(sysUser.getName() + sysUser.getPwd() + expireTime + PropKit.get("app_key"));
             String userBase64 = Base64.encodeBase64String(new String(sysUser.getName() + ":" + expireTime + ":" + userInfo).getBytes());
             CookieUtils.addCookie(response, "token", userBase64, 60 * 60 * 24 * 7);
+        } else {
+            CookieUtils.delCookieByName("/", "token", request, response);
         }
     }
 

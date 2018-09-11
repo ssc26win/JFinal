@@ -50,7 +50,7 @@
 												<div class="clearfix">
 													<input type="text" id="companyName" name="companyName" value="${item.companyName}" class="col-xs-12 col-sm-8 cnwth" autocomplete="off" >
 												</div>
-												<div id="auto_div"></div>
+												<div id="auto_div" style="max-height: 200px; overflow-y: auto;"></div>
 												<input type="hidden" id="innerCode" name="innerCode" value="${item.innerCode}">
 											</div>
 										</div>
@@ -78,7 +78,14 @@
 												</div>
 											</div>
 										</div>
-
+										<div class="form-group">
+											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="wxAccount">微信账号</label>
+											<div class="col-xs-12 col-sm-9">
+												<div class="clearfix">
+													<input type="text" id="wxAccount" name="wxAccount" value="${item.wxAccount}" class="col-xs-12 col-sm-8">
+												</div>
+											</div>
+										</div>
 										<div class="clearfix form-actions" align="center">
 											<div class="col-md-offset-3 col-md-9">
 												<button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">

@@ -25,7 +25,7 @@
                         <!-- PAGE CONTENT BEGINS -->
                         <!-- PAGE CONTENT BEGINS -->
                         <form class="form-horizontal" id="validation-form" method="post">
-                            <input name="id" type="hidden" value="${item.id}"/>
+                            <input id="id" name="id" type="hidden" value="${item.id}"/>
 
                             <div class="form-group">
                                 <%--<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="innerCode">单位编号</label>
@@ -39,11 +39,10 @@
 
                                 <div class="col-xs-12 col-sm-9 search">
                                     <div class="clearfix">
-                                        <input type="text" id="companyName" name="companyName"
-                                               value="${companyName}" ${id ne null?'readonly':'' }
+                                        <input type="text" id="companyName" name="companyName" value="${companyName}" ${id ne null?'readonly':'' }
                                                class="col-xs-12 col-sm-8 cnwth" autocomplete="off">
                                     </div>
-                                    <div id="auto_div"></div>
+                                    <div id="auto_div" style="max-height: 200px; overflow-y: auto;"></div>
                                     <input type="hidden" id="innerCode" name="innerCode"
                                            value="${item.innerCode}" ${id ne null?'readonly':'' } >
                                 </div>
@@ -57,7 +56,7 @@
                                         <input type="hidden" id="meterAddressInput" name="meterAddressInput"
                                                value="${item.meterAddress}"/>
                                         <select id="meterAddress" name="meterAddress"
-                                                class="col-xs-12 col-sm-8"></select>
+                                                class="col-xs-12 col-sm-8" ${id ne null?'readonly':'' }></select>
                                     </div>
                                 </div>
                             </div>
@@ -184,6 +183,7 @@
                     if ($("#companyName").val() == "") {
                         $("#innerCode").val("");
                     }
+                    getAddressData('');
                     $(this).css("background-color", "white");
                 });
                 //鼠标点击文字上屏
@@ -230,7 +230,7 @@
         $("#companyName").keyup(function () {
             AutoComplete("auto_div", "companyName", name_list);
         });
-        $("#auto_div").css("width" , $(".cnwth").css("width"));
+        $("#auto_div").css("width" , $("#companyName").css("width"));
 
     });
 
@@ -328,7 +328,9 @@
                 if ($("#meterAddressInput").val() == addressList[i]) {
                     $("#meterAddress").append("<option selected value='" + addressList[i] + "'>" + addressList[i] + "</option>");
                 } else {
-                    $("#meterAddress").append("<option value='" + addressList[i] + "'>" + addressList[i] + "</option>");
+                    if ($("#id").val() == '') {
+                        $("#meterAddress").append("<option value='" + addressList[i] + "'>" + addressList[i] + "</option>");
+                    }
                 }
             }
         }, "json");

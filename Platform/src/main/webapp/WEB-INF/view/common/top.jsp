@@ -38,8 +38,8 @@
 		</li>
 		<li class="light-blue">
 			<a href="#" onclick="getMsgList();">
-				<i class="fa fa-envelope-o" aria-hidden="true" style="margin-left: 10px;">
-					<span class="count" id="msgCount" style="display: inline;">0</span>
+				<i class="fa fa-envelope-o" aria-hidden="true" style="margin-left: 10px;margin-right: 10px;">
+					<span class="count" id="msgCount" style="display: inline;"></span>
 				</i>
 			</a>
 		</li>
@@ -53,7 +53,11 @@
 		var submitData = {};
 		$.post("${context_path}/basic/msgreceiver/msgCount", submitData, function(data) {
 			var count = data.msgCount;
-			$("#msgCount").text(count);
+			if (count != '' && parseInt(count) > 0) {
+				$("#msgCount").text(count);
+			} else {
+				$("#msgCount").remove();
+			}
 		});
 	});
     function getMsgList() {
