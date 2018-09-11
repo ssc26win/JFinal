@@ -58,10 +58,20 @@
 				z-index: 9999;
 				/*margin-left: 12px;*/
 			}
+			body.gray-bg-login {
+				background: #18c8f6;
+				height: auto;
+				background:url("/res/img/login-background.jpg") no-repeat center fixed;
+				-webkit-background-size: cover;
+				-moz-background-size: cover;
+				-o-background-size: cover;
+				background-size: cover;
+				color: rgba(255,255,255,.95);
+			}
 		</style>
 	</head>
 
-	<body class="login-layout light-login">
+	<body class="login-layout light-login gray-bg-login">
 		<div class="main-container">
 			<div class="main-content">
 				<div class="row">
@@ -75,9 +85,9 @@
 
 							<div class="space-6"></div>
 
-							<div class="position-relative">
+							<div class="position-relative" style="margin-top:200px;">
 								<div id="login-box" class="login-box visible widget-box no-border">
-									<div class="widget-body">
+									<div class="widget-body" style="border-radius:125px;">
 										<div class="widget-main">
 											<h4 class="header blue lighter bigger">
 												<i class="ace-icon fa fa-coffee green"></i>
@@ -111,7 +121,7 @@
 													<div class="clearfix">
 														<label class="inline">
 																<input type="checkbox" class="ace" id="autoLogin">
-																<span class="lbl">&nbsp;下次自动登录</span>
+																<span class="lbl" style="color: red">&nbsp;下次自动登录</span>
 															</label>
 														<button type="button" id="login-btn" class="width-35 pull-right btn btn-sm btn-primary">
 															<i class="ace-icon fa fa-key"></i>
