@@ -256,7 +256,13 @@ public class ChartController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
     public void useWaterLine() {
-        render("line_chart.jsp");
+        render("use_line_chart.jsp");
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/chart"})
+    public void supplyWaterLine() {
+        render("supply_line_chart.jsp");
     }
 
     @Clear(AuthorityInterceptor.class)

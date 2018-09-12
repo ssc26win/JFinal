@@ -11,43 +11,128 @@
     <script src="${res_url}js/charts/highcharts.js"></script>
 </head>
 <style type="text/css">
-    .adbody{font:13px/180% Arial,Lucida,Verdana,"宋体",Helvetica,sans-serif;color:#333;background:#fff;}
+    html {
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+
+    .adbody {
+        font: 13px/180% Arial, Lucida, Verdana, "宋体", Helvetica, sans-serif;
+        color: #333;
+        background: #fff;
+    }
+
     /* tipfloat */
-    .tipfloat,.tipfloat .close{background:url('${res_url}img/tipright.png') no-repeat;}
-    .tipfloat{display:none;z-index:999;position:fixed;_position:absolute;right:0px;bottom:0;width:236px;height:196px;overflow:hidden;}
-    .tipfloat .tiphead{height:30px;line-height:30px;overflow:hidden;padding:0 5px;}
-    .tipfloat .tiphead strong{float:left;color:#fff;font-size:14px;}
-    .tipfloat .tiphead .close{display:block;float:right;margin:5px 0 0 0;width:18px;height:18px;line-height:999em;overflow:hidden;cursor:pointer;background-position:-236px 0;}
+    .tipfloat, .tipfloat .close {
+        background: url('${res_url}img/tipright.png') no-repeat;
+    }
+
+    .tipfloat {
+        display: none;
+        z-index: 999;
+        position: fixed;
+        _position: absolute;
+        right: 0px;
+        bottom: 0;
+        width: 236px;
+        height: 196px;
+        overflow: hidden;
+    }
+
+    .tipfloat .tiphead {
+        height: 30px;
+        line-height: 30px;
+        overflow: hidden;
+        padding: 0 5px;
+    }
+
+    .tipfloat .tiphead strong {
+        float: left;
+        color: #fff;
+        font-size: 14px;
+    }
+
+    .tipfloat .tiphead .close {
+        display: block;
+        float: right;
+        margin: 5px 0 0 0;
+        width: 18px;
+        height: 18px;
+        line-height: 999em;
+        overflow: hidden;
+        cursor: pointer;
+        background-position: -236px 0;
+    }
+
     /* ranklist */
-    .ranklist{padding:10px 10px 10px 10px;}
-    .ranklist li{height:16px;line-height:16px;overflow:hidden;position:relative;padding:0 70px 0 30px;margin:0 0 10px 0;vertical-align:bottom;}
-    .ranklist li em{width:20px;height:16px;overflow:hidden;display:block;position:absolute;left:0;top:0;text-align:center;font-style:normal;color:#333;}
-    .ranklist li em{background-position:0 -16px;}
-    .ranklist li.top em{background-position:0 0;color:#fff;}
-    .ranklist li .num{position:absolute;right:0;top:0;color:#999;}
+    .ranklist {
+        padding: 10px 10px 10px 10px;
+    }
+
+    .ranklist li {
+        height: 16px;
+        line-height: 16px;
+        overflow: hidden;
+        position: relative;
+        padding: 0 70px 0 30px;
+        margin: 0 0 10px 0;
+        vertical-align: bottom;
+    }
+
+    .ranklist li em {
+        width: 20px;
+        height: 16px;
+        overflow: hidden;
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        text-align: center;
+        font-style: normal;
+        color: #333;
+    }
+
+    .ranklist li em {
+        background-position: 0 -16px;
+    }
+
+    .ranklist li.top em {
+        background-position: 0 0;
+        color: #fff;
+    }
+
+    .ranklist li .num {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: #999;
+    }
 </style>
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
     <div class="main-content" id="page-wrapper">
         <div class="page-content" id="page-content">
             <div class="row">
                 <div class="col-sm-6">
-                    <div id="containerCompaniesTerm" style="width: 60%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerCompaniesTerm" style="width: 50%; height: 25%; margin: 0 auto"></div>
                 </div>
                 <div class="col-sm-6">
-                    <div id="containerMetersTerm" style="width: 60%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerMetersTerm" style="width: 50%; height: 25%; margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6">
-                    <div id="containerCompany" style="width: 60%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerCompany" style="width: 50%; height: 25%; margin: 0 auto"></div>
                 </div>
                 <div class="col-sm-6">
-                    <div id="containerMeter" style="width: 60%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerMeter" style="width: 50%; height: 25%; margin: 0 auto"></div>
                 </div>
             </div>
             <div class="adbody" style="display: none;">
@@ -79,9 +164,9 @@
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
-                    events:{
-                        click:function (e) {
-                            location.href=e.point.url
+                    events: {
+                        click: function (e) {
+                            location.href = e.point.url
                         }
                     },
                     dataLabels: {
@@ -97,7 +182,7 @@
             }];
 
             var credits = {
-                enabled:false // 禁用版权信息
+                enabled: false // 禁用版权信息
             }
             var json1 = {};
             json1.chart = chart1;
@@ -105,7 +190,7 @@
             json1.tooltip = tooltip1;
             json1.series = series1;
             json1.plotOptions = plotOptions1;
-            json1.credits=credits;
+            json1.credits = credits;
             $('#containerMetersTerm').highcharts(json1);
         })
 
@@ -125,9 +210,9 @@
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
-                    events:{
-                        click:function (e) {
-                            location.href=e.point.url
+                    events: {
+                        click: function (e) {
+                            location.href = e.point.url
                         }
                     },
                     dataLabels: {
@@ -142,7 +227,7 @@
                 data: data.CompanyTermSerArray
             }];
             var credits = {
-                enabled:false // 禁用版权信息
+                enabled: false // 禁用版权信息
             }
             var json1 = {};
             json1.chart = chart1;
@@ -150,7 +235,7 @@
             json1.tooltip = tooltip1;
             json1.series = series1;
             json1.plotOptions = plotOptions1;
-            json1.credits=credits;
+            json1.credits = credits;
             $('#containerCompaniesTerm').highcharts(json1);
         })
         $.get("${context_path}/chart/meter", function (data) {
@@ -174,9 +259,9 @@
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
-                    events:{
-                        click:function (e) {
-                            location.href=e.point.url
+                    events: {
+                        click: function (e) {
+                            location.href = e.point.url
                         }
                     },
                     dataLabels: {
@@ -190,15 +275,27 @@
                 name: '水表数量（%）',
                 data: [
                     //{name:'远传水表总数量' + '(' + total + ')', y:total,url:'${context_path}/basic/meter'},
-                    {name:'正常表' + '(' + normalTotal + ')', y:normalTotal,url:'${context_path}/basic/meter?flag=Normal'},
-                    {name:'停用表' + '(' + stopTotal + ')', y:stopTotal,url:'${context_path}/basic/meter?flag=Stop'},
-                    {name:'备用表' + '(' + exptionTotal + ')', y:exptionTotal,url:'${context_path}/basic/meter?flag=Exception'},
-                    {name:'未启用表' + '(' + disableTotal + ')', y:disableTotal,url:'${context_path}/basic/meter?flag=Disable'},
+                    {
+                        name: '正常表' + '(' + normalTotal + ')',
+                        y: normalTotal,
+                        url: '${context_path}/basic/meter?flag=Normal'
+                    },
+                    {name: '停用表' + '(' + stopTotal + ')', y: stopTotal, url: '${context_path}/basic/meter?flag=Stop'},
+                    {
+                        name: '备用表' + '(' + exptionTotal + ')',
+                        y: exptionTotal,
+                        url: '${context_path}/basic/meter?flag=Exception'
+                    },
+                    {
+                        name: '未启用表' + '(' + disableTotal + ')',
+                        y: disableTotal,
+                        url: '${context_path}/basic/meter?flag=Disable'
+                    },
                 ]
             }];
 
             var credits = {
-                enabled:false // 禁用版权信息
+                enabled: false // 禁用版权信息
             }
             var json1 = {};
             json1.chart = chart1;
@@ -206,7 +303,7 @@
             json1.tooltip = tooltip1;
             json1.series = series1;
             json1.plotOptions = plotOptions1;
-            json1.credits=credits;
+            json1.credits = credits;
             $('#containerMeter').highcharts(json1);
         })
 
@@ -232,9 +329,9 @@
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
-                    events:{
-                        click:function (e) {
-                            location.href=e.point.url
+                    events: {
+                        click: function (e) {
+                            location.href = e.point.url
                         }
                     },
                     dataLabels: {
@@ -248,13 +345,25 @@
                 name: '单位数量（%）',
                 data: [
                     //{name:'单位总数量' + '(' + total2 + ')', y:total2,url:'${context_path}/basic/company'},
-                    {name:'用水单位' + '(' + normalTotal2 + ')', y:normalTotal2,url:'${context_path}/basic/company?flag=Normal'},
-                    {name: warnTitle + '单位' + '(' + warnTotal2 + ')', y:warnTotal2,url:'${context_path}/basic/company?flag=Warn'},
-                    {name:'供水单位' + '(' + supplyTotal + ')', y:supplyTotal,url:'${context_path}/basic/company?flag=Supply'},
+                    {
+                        name: '用水单位' + '(' + normalTotal2 + ')',
+                        y: normalTotal2,
+                        url: '${context_path}/basic/company?flag=Normal'
+                    },
+                    {
+                        name: warnTitle + '单位' + '(' + warnTotal2 + ')',
+                        y: warnTotal2,
+                        url: '${context_path}/basic/company?flag=Warn'
+                    },
+                    {
+                        name: '供水单位' + '(' + supplyTotal + ')',
+                        y: supplyTotal,
+                        url: '${context_path}/basic/company?flag=Supply'
+                    },
                 ]
             }];
             var credits = {
-                enabled:false // 禁用版权信息
+                enabled: false // 禁用版权信息
             }
             var json1 = {};
             json1.chart = chart1;
@@ -262,22 +371,22 @@
             json1.tooltip = tooltip1;
             json1.series = series1;
             json1.plotOptions = plotOptions1;
-            json1.credits=credits;
+            json1.credits = credits;
             $('#containerCompany').highcharts(json1);
         })
     })
-    $(function(){
-        var titHeight=$(".tiphead").height();
-        $(".tipfloat").animate({height:"show"}, 500);
-        $(".close").click(function(){
-            $(".tipfloat").animate({height:titHeight-50},1000,function(){
+    $(function () {
+        var titHeight = $(".tiphead").height();
+        $(".tipfloat").animate({height: "show"}, 500);
+        $(".close").click(function () {
+            $(".tipfloat").animate({height: titHeight - 50}, 1000, function () {
                 $(".tipfloat").hide();
             });
         });
     });
-    function getMsgData(){
+    function getMsgData() {
         var submitData = {};
-        $.post("${context_path}/chart/getNewsMsg", submitData, function(data) {
+        $.post("${context_path}/chart/getNewsMsg", submitData, function (data) {
             var title = data.title;
             var content = data.content;
             if (title == "" || title == undefined || content == "" || content == undefined) {
@@ -289,9 +398,9 @@
                 $("#adcontent").attr("title", content);
                 $(".adbody").show();
             }
-        },"json");
+        }, "json");
     }
-    $(function(){
+    $(function () {
         getMsgData();
     })
 </script>
