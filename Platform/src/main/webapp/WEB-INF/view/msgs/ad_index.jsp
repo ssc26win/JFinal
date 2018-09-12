@@ -12,6 +12,12 @@
   <!-- bootstrap & fontawesome -->
   <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
 </head>
+<style type="text/css">
+    html {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+</style>
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
@@ -90,7 +96,7 @@
       if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
         //setTimeout is for webkit only to give time for DOM changes and then redraw!!!
         setTimeout(function() {
-          $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+          $(grid_selector).jqGrid( 'setGridWidth', parent_column.width());
         }, 0);
       }
     });

@@ -57,7 +57,7 @@
         	//resize to fit page size
 			$(window).on('resize.jqGrid', function () {
 				$(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
-				$(grid_selector).jqGrid('setGridHeight', $(window).height() - 350);
+				$(grid_selector).jqGrid('setGridHeight', $(window).height() - 200);
 		    });
 //resize on sidebar collapse/expand
 				var parent_column = $(grid_selector).closest('[class*="col-"]');
