@@ -395,7 +395,7 @@
                     </div>
                     <!-- /.position-relative -->
 
-                    <div class="navbar-fixed-top align-right">
+                    <%--<div class="navbar-fixed-top align-right">
                         <br/>
                         &nbsp;
                         <a id="btn-login-dark" href="#">Dark</a>
@@ -408,7 +408,7 @@
                         &nbsp;
                         <a id="btn-login-light" href="#">Light</a>
                         &nbsp; &nbsp; &nbsp;
-                    </div>
+                    </div>--%>
                 </div>
             </div>
             <!-- /.col -->

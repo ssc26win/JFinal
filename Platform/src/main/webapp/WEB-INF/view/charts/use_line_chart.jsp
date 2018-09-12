@@ -12,8 +12,8 @@
 </head>
 <style type="text/css">
     html {
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow-x: auto;
+        overflow-y: hidden;
     }
 
     .adbody {

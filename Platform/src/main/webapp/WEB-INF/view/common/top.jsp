@@ -20,7 +20,8 @@
 				</span>
 			</a>
 
-			<ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+			<ul class="dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close"
+                    style="min-width: 110px;margin-right: 4px;padding-left: 5px;">
 				<li>
 					<a href="javascript:;" id="pwd-update">
 						<i class="ace-icon fa fa-cog"></i>

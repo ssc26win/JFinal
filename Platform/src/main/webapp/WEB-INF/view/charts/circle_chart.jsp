@@ -13,7 +13,7 @@
 <style type="text/css">
     html {
         overflow-x: hidden;
-        overflow-y: hidden;
+        overflow-y: auto;
     }
 
     .adbody {
@@ -121,18 +121,18 @@
         <div class="page-content" id="page-content">
             <div class="row">
                 <div class="col-sm-6">
-                    <div id="containerCompaniesTerm" style="width: 50%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerCompaniesTerm" style="margin: 0 auto"></div>
                 </div>
                 <div class="col-sm-6">
-                    <div id="containerMetersTerm" style="width: 50%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerMetersTerm" style="margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6">
-                    <div id="containerCompany" style="width: 50%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerCompany" style="margin: 0 auto"></div>
                 </div>
                 <div class="col-sm-6">
-                    <div id="containerMeter" style="width: 50%; height: 25%; margin: 0 auto"></div>
+                    <div id="containerMeter" style="margin: 0 auto"></div>
                 </div>
             </div>
             <div class="adbody" style="display: none;">
