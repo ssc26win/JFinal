@@ -13,10 +13,10 @@
 		<li class="light-blue">
 			<a data-toggle="dropdown" href="#" class="dropdown-toggle" style="white-space: nowrap;" >
 				<%--<!--  img class="nav-user-photo" src="${res_url}ace-1.3.3/assets/avatars/user.jpg" alt="Jason's Photo" /-->--%>
-			<i class="ace-icon fa fa-caret-down" ></i>
-				<span class="user-info" style="white-space: nowrap; ">
-					<small>欢迎,</small>
-					${sessionScope.sysUser.name}
+			<i class="fa fa-user"></i>
+				<span style="white-space: nowrap; ">
+					<small>欢迎，</small>
+					<b>${sessionScope.sysUser.name}</b>
 				</span>
 			</a>
 
@@ -39,7 +39,7 @@
 		<li class="light-blue">
 			<a href="#" onclick="getMsgList();">
 				<i class="fa fa-envelope-o" aria-hidden="true" style="margin-left: 10px;margin-right: 10px;">
-					<span class="count" id="msgCount" style="display: inline;"></span>
+					<span class="count" id="msgCount" style="display: none"></span>
 				</i>
 			</a>
 		</li>
@@ -55,6 +55,7 @@
 			var count = data.msgCount;
 			if (count != '' && parseInt(count) > 0) {
 				$("#msgCount").text(count);
+				$("#msgCount").show();
 			} else {
 				$("#msgCount").remove();
 			}

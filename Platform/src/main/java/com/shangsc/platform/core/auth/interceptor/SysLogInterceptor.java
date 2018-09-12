@@ -27,6 +27,7 @@ import java.io.StringWriter;
 
 /**
  * 日志拦截器
+ *
  * @author ssc
  */
 public class SysLogInterceptor implements Interceptor {

@@ -51,18 +51,18 @@
                 </div>
             </div>
             <div class="row" style="margin-top: 20px;">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <div id="containerUseD" style="margin: 0 auto"></div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <div id="containerUseM" style="margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row" style="margin-top: 20px;">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <div id="containerSupplyD" style="margin: 0 auto"></div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <div id="containerSupplyM" style="margin: 0 auto"></div>
                 </div>
             </div>
