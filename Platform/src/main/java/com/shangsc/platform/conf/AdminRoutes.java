@@ -72,7 +72,7 @@ public class AdminRoutes extends Routes {
         add("/statis/daily", DailyStatisController.class, "/WEB-INF/view/statis");
         add("/statis/month", MonthStatisController.class, "/WEB-INF/view/statis");
         add("/statis/year", YearStatisController.class, "/WEB-INF/view/statis");
-        add("/chart", ChartController.class, "/WEB-INF/view");
+        add("/chart", ChartController.class, "/WEB-INF/view/charts");
 
         add("/report/street", ReportStreetController.class, "/WEB-INF/view/report");
         add("/report/daily", ReportDailyController.class, "/WEB-INF/view/report");

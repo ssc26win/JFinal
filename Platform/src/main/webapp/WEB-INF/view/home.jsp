@@ -55,7 +55,7 @@
             <div class="page-content">
 
 
-                <jsp:include page="chart.jsp" flush="true"></jsp:include>
+                <jsp:include page="charts/circle_chart.jsp" flush="true"></jsp:include>
 
 
             </div><!-- /.page-content -->

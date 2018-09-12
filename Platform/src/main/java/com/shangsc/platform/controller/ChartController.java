@@ -255,6 +255,12 @@ public class ChartController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
+    public void useWaterLine() {
+        render("line_chart.jsp");
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/chart"})
     public void getNewsMsg() {
         Ad ad = Ad.dao.findFirst("select * from t_ad where status=1");
         if (ad != null) {
