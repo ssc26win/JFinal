@@ -22,7 +22,19 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Created by Administrator on 2017/8/26.
  */
 public class ChartController extends BaseController {
-    
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/chart"})
+    public void useWaterLine() {
+        render("use_line_chart.jsp");
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/chart"})
+    public void supplyWaterLine() {
+        render("supply_line_chart.jsp");
+    }
+
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/chart"})
     public void companiesByTerm() {
@@ -251,18 +263,6 @@ public class ChartController extends BaseController {
         }
         this.setAttr("companys", array.toJSONString());
         render("map.jsp");
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/chart"})
-    public void useWaterLine() {
-        render("use_line_chart.jsp");
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/chart"})
-    public void supplyWaterLine() {
-        render("supply_line_chart.jsp");
     }
 
     @Clear(AuthorityInterceptor.class)

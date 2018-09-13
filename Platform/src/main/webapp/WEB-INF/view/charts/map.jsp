@@ -14,6 +14,11 @@
         overflow-x: hidden;
         overflow-y: hidden;
     }
+    #searchResultPanel {
+        border:1px solid #C0C0C0;
+        height:auto;
+        display:none;
+    }
 </style>
 </head>
 <body>
@@ -72,7 +77,18 @@
         try{ace.settings.check('main-container' , 'fixed')}catch(e){}
     </script>
     <div class="main-content" id="page-wrapper">
-        <div class="row">
+        <%--<div class="row">
+            <div class="col-sm-12">
+                <div class="input-group" style="margin-right: 2px;">
+                    <span class="input-group-addon">
+                        <i class="ace-icon fa fa-check"></i>
+                    </span>
+                    <input type="text" id="suggestId" name="suggestId" class="form-control search-query" placeholder="请输入关键字" />
+                    <div id="searchResultPanel"></div>
+                </div>
+            </div>
+        </div>--%>
+        <div class="row" style="margin-top: 1px">
             <div class="col-sm-12">
                 <div style="height:0px;padding-bottom:47%;" id="map"></div>
             </div>
@@ -81,6 +97,23 @@
 </div>
 <script src="${res_url}js/charts/jquery.min.js"></script>
 <script type="text/javascript">
+    var map;
+    var myValue;
+    // 百度地图API功能
+    function G(id) {
+        return document.getElementById(id);
+    }
+    function setPlace(){
+        map.clearOverlays();    //清除地图上所有覆盖物
+        function myFun(){
+            var pp = local.getResults().getPoi(0).point;    //获取第一个智能搜索的结果
+            map.centerAndZoom(pp, 18);
+            map.addOverlay(new BMap.Marker(pp));    //添加标注
+        }
+        //智能搜索
+        var local = new BMap.LocalSearch(map, {onSearchComplete: myFun});
+        local.search(myValue);
+    }
     var markerArr;
     markerArr = JSON.parse('${companys}');
     var longitude = 116.66321;
@@ -92,7 +125,7 @@
     }
     function map_init() {
         //alert(JSON.stringify(markerArr));
-        var map = new BMap.Map("map"); // 创建Map实例
+        map = new BMap.Map("map"); // 创建Map实例
         var point = new BMap.Point(longitude, latitude); //地图中心点
         map.centerAndZoom(point, 15); // 初始化地图,设置中心点坐标和地图级别。
         map.enableScrollWheelZoom(true); //启用滚轮放大缩小
@@ -180,6 +213,33 @@
                 }
             })(i));
         }
+        /*//建立一个自动完成的对象
+        var ac = new BMap.Autocomplete({"input" : "suggestId", "location" : map});
+
+        ac.addEventListener("onhighlight", function(e) {  //鼠标放在下拉列表上的事件
+            var str = "";
+            var _value = e.fromitem.value;
+            var value = "";
+            if (e.fromitem.index > -1) {
+                value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+            }
+            str = "FromItem<br />index = " + e.fromitem.index + "<br />value = " + value;
+
+            value = "";
+            if (e.toitem.index > -1) {
+                _value = e.toitem.value;
+                value = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+            }
+            str += "<br />ToItem<br />index = " + e.toitem.index + "<br />value = " + value;
+            G("searchResultPanel").innerHTML = str;
+        });
+
+        ac.addEventListener("onconfirm", function(e) {    //鼠标点击下拉列表后的事件
+            var _value = e.item.value;
+            myValue = _value.province +  _value.city +  _value.district +  _value.street +  _value.business;
+            G("searchResultPanel").innerHTML ="onconfirm<br />index = " + e.item.index + "<br />myValue = " + myValue;
+            setPlace();
+        });*/
     }
     //异步调用百度js
     function map_load() {
