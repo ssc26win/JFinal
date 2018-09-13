@@ -12,6 +12,12 @@
     <!-- bootstrap & fontawesome -->
     <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true"/>
 </head>
+<style type="text/css">
+    html {
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+</style>
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">

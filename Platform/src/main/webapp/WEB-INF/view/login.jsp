@@ -443,7 +443,7 @@
 <script type="text/javascript">
     jQuery(function ($) {
         if ('1' == '${login_time_out}') {
-            layer.msg('登录超时', {time: 1000}, function () {
+            layer.msg('登录失效，请重新登录！', {time: 1000, area: ['210px','50px']}, function () {
                 parent.location.href = '${context_path}/login';
             });
         }

@@ -14,7 +14,7 @@
 </head>
 <style type="text/css">
     html {
-        overflow-x: auto;
+        overflow-x: hidden;
         overflow-y: hidden;
     }
 </style>
