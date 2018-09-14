@@ -28,7 +28,7 @@ public class AuthorityInterceptor implements Interceptor {
                     if (StrKit.notBlank(inv.getActionKey()) && !inv.getActionKey().equals("/")) {
                         inv.getController().redirect("/login?url=" + inv.getActionKey() + "&login_time_out=1");
                     } else {
-                        inv.getController().redirect("/login?login_time_out=1");
+                        inv.getController().redirect("/login");
                     }
                 } else {
                     //判断是否有该资源的访问权限
