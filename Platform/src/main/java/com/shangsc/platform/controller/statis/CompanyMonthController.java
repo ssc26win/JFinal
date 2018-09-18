@@ -8,8 +8,10 @@ import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
+import com.shangsc.platform.export.CompanyMonthExportService;
 import com.shangsc.platform.export.MonthExportService;
 import com.shangsc.platform.model.ActualData;
+import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
@@ -74,12 +76,10 @@ public class CompanyMonthController extends BaseController {
             e.printStackTrace();
         }
         String type = this.getPara("type");
-        Page<ActualData> pageInfo = ActualData.me.getMonthStatis(getPage(), getRows(), getOrderbyStr(),
+        Page<ActualData> pageInfo = ActualData.me.getCPAMonthStatis(getPage(), getRows(), getOrderbyStr(),
                 startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress, type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
-            Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
                 String monthTotal = "0";
@@ -87,17 +87,6 @@ public class CompanyMonthController extends BaseController {
                     monthTotal = co.get("monthTotal").toString();
                 }
                 co.put("monthTotal", monthTotal);
-                if (co.get("meter_attr") != null && StringUtils.isNotEmpty(co.get("meter_attr").toString())) {
-                    co.put("meterAttrName", String.valueOf(meterAttrType.get(String.valueOf(co.get("meter_attr")))));
-                }
-                if (co.get("waters_type") != null && StringUtils.isNotEmpty(co.get("waters_type").toString())) {
-                    String watersTypeStr = co.get("waters_type").toString();
-                    if (mapWatersType.get(watersTypeStr) != null) {
-                        co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
-                    }
-                } else {
-                    co.put("watersTypeName", "");
-                }
                 if (co.get("address") != null) {
                     co.put("addressMap", "<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
                             + co.get("inner_code") + "')\">" + co.get("address").toString() + "</a>");
@@ -141,12 +130,10 @@ public class CompanyMonthController extends BaseController {
             e.printStackTrace();
         }
         String type = this.getPara("type");
-        Page<ActualData> pageInfo = ActualData.me.getMonthStatis(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(),
+        Page<ActualData> pageInfo = ActualData.me.getCPAMonthStatis(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(),
                 startTime, endTime, name, innerCode, street, watersType, meterAttr, meterAddress, type);
         List<ActualData> list = pageInfo.getList();
         if (CommonUtils.isNotEmpty(list)) {
-            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
-            Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
             for (int i = 0; i < list.size(); i++) {
                 ActualData co = list.get(i);
                 String monthTotal = "0";
@@ -154,21 +141,10 @@ public class CompanyMonthController extends BaseController {
                     monthTotal = co.get("monthTotal").toString();
                 }
                 co.put("monthTotal", monthTotal);
-                if (co.get("meter_attr") != null && StringUtils.isNotEmpty(co.get("meter_attr").toString())) {
-                    co.put("meterAttrName", String.valueOf(meterAttrType.get(String.valueOf(co.get("meter_attr")))));
-                }
-                if (co.get("waters_type") != null && StringUtils.isNotEmpty(co.get("waters_type").toString())) {
-                    String watersTypeStr = co.get("waters_type").toString();
-                    if (mapWatersType.get(watersTypeStr) != null) {
-                        co.put("watersTypeName", String.valueOf(mapWatersType.get(watersTypeStr)));
-                    }
-                } else {
-                    co.put("watersTypeName", "");
-                }
                 list.set(i, co);
             }
         }
-        MonthExportService service = new MonthExportService();
+        CompanyMonthExportService service = new CompanyMonthExportService();
         String path = service.export(list, type);
         renderFile(new File(path));
     }

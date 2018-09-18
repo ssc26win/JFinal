@@ -61,7 +61,7 @@ public class MonthExportService extends ExportBaseService {
                     actualData.get("meter_num"),
                     actualData.get("watersTypeName"),
                     actualData.get("monthTotal"),
-                    actualData.get("meter_attr"),
+                    actualData.get("meterAttrName"),
                     actualData.getMeterAddress(),
                     actualData.get("billing_cycle"),
                     actualData.get("address"),

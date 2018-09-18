@@ -695,7 +695,7 @@ public class ActualData extends BaseActualData<ActualData> {
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
         } else {
-            sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m-%d') desc,tad.meter_address desc ");
+            sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m-%d') desc ");
         }
         logger.info("--- 日用水量sql开始 ---");
         logger.info(select);
@@ -782,7 +782,7 @@ public class ActualData extends BaseActualData<ActualData> {
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
         } else {
-            sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m') desc,tad.meter_address desc ");
+            sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m') desc ");
         }
         logger.info("--- 月用水量sql开始 ---");
         logger.info(select);
@@ -865,7 +865,7 @@ public class ActualData extends BaseActualData<ActualData> {
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
         } else {
-            sqlExceptSelect.append("order by date_format(tad.write_time, '%Y') desc,tad.meter_address desc");
+            sqlExceptSelect.append("order by date_format(tad.write_time, '%Y') desc");
         }
         logger.info("--- 年用水量sql开始 ---");
         logger.info(select);
