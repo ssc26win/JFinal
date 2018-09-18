@@ -84,7 +84,7 @@ public class SysUser extends BaseSysUser<SysUser> {
         //IWebUtils.setCurrentLoginSysUser(response,session,sysUser);
         Map<String, Object> data = new HashMap<String, Object>();
         data.put("url", url);
-        return InvokeResult.success(data);
+        return InvokeResult.success(data, "");
     }
 
     /**

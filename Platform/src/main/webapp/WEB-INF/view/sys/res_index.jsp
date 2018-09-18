@@ -201,9 +201,10 @@
 			
 			$.post("${context_path}/sys/res/setEnabled", submitData,function(data) {
 				if (data.code ==0) {
-					layer.msg(data.result, {
+					layer.msg(data.msg, {
         				icon: 1,
-        			    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+						area: ['150px','80px'],
+						time: 1000 //2秒关闭（如果不配置，默认是3秒）
         			},function(){
 						 $("#grid-table").trigger("reloadGrid"); //重新载入
 					});

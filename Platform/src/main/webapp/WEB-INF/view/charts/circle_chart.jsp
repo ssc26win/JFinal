@@ -282,7 +282,7 @@
                     },
                     {name: '停用表' + '(' + stopTotal + ')', y: stopTotal, url: '${context_path}/basic/meter?flag=Stop'},
                     {
-                        name: '备用表' + '(' + exptionTotal + ')',
+                        name: '异常表' + '(' + exptionTotal + ')',
                         y: exptionTotal,
                         url: '${context_path}/basic/meter?flag=Exception'
                     },

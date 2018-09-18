@@ -82,7 +82,7 @@ public class ResController extends BaseController {
         Integer resId = getParaToInt("resId");
         Integer status = getParaToInt("status");
         SysRes.me.setEnabled(resId, status);
-        this.renderJson(InvokeResult.success());
+        this.renderJson(InvokeResult.success(null, "操作成功"));
     }
 
 }

@@ -19,6 +19,9 @@ import com.jfinal.config.Routes;
 import com.shangsc.platform.controller.ChartController;
 import com.shangsc.platform.controller.ImageController;
 import com.shangsc.platform.controller.IndexController;
+import com.shangsc.platform.controller.actual.ActualController;
+import com.shangsc.platform.controller.actual.ActuallogController;
+import com.shangsc.platform.controller.actual.ReadnumStatisController;
 import com.shangsc.platform.controller.app.AppVersionController;
 import com.shangsc.platform.controller.app.LawRecordsController;
 import com.shangsc.platform.controller.basic.CompanyController;
@@ -63,15 +66,21 @@ public class AdminRoutes extends Routes {
         add("/basic/msg", MessageController.class, "/WEB-INF/view/msgs");
         add("/basic/msgreceiver", MsgReceiverController.class, "/WEB-INF/view/msgs");
 
-        add("/statis/actual", ActualController.class, "/WEB-INF/view/statis");
-        add("/statis/actuallog", ActuallogController.class, "/WEB-INF/view/statis");
+        add("/statis/actual", ActualController.class, "/WEB-INF/view/actual");
+        add("/statis/actuallog", ActuallogController.class, "/WEB-INF/view/actual");
 
         add("/statis/alarm", AlarmController.class, "/WEB-INF/view/statis");
 
-        add("/statis/readnum", ReadnumStatisController.class, "/WEB-INF/view/statis");
+        add("/statis/readnum", ReadnumStatisController.class, "/WEB-INF/view/actual");
         add("/statis/daily", DailyStatisController.class, "/WEB-INF/view/statis");
         add("/statis/month", MonthStatisController.class, "/WEB-INF/view/statis");
         add("/statis/year", YearStatisController.class, "/WEB-INF/view/statis");
+
+        add("/statis/cpadaily", CompanyDailyController.class, "/WEB-INF/view/statis");
+        add("/statis/cpamonth", CompanyMonthController.class, "/WEB-INF/view/statis");
+        add("/statis/cpayear", CompanyYearController.class, "/WEB-INF/view/statis");
+
+
         add("/chart", ChartController.class, "/WEB-INF/view/charts");
 
         add("/report/street", ReportStreetController.class, "/WEB-INF/view/report");

@@ -537,7 +537,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
-                " where inner_code in (select inner_code from t_company where company_type=1)" +
+                " where t.inner_code in (select inner_code from t_company where company_type=1)" +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time < '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
@@ -549,7 +549,9 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
-                " where inner_code in (select inner_code from t_company where company_type=1)" +
+                " where t.inner_code in (select inner_code from t_company where company_type=1)" +
+                " and t.write_time >= '" + start + "' " +
+                " and t.write_time < '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
         return Db.find(sql);
     }
@@ -559,7 +561,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
-                " where inner_code in (select inner_code from t_company where company_type=2)" +
+                " where t.inner_code in (select inner_code from t_company where company_type=2)" +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time < '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
@@ -571,7 +573,32 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
-                " where inner_code in (select inner_code from t_company where company_type=2)" +
+                " where t.inner_code in (select inner_code from t_company where company_type=2)" +
+                " and t.write_time >= '" + start + "' " +
+                " and t.write_time < '" + end + "' " +
+                " GROUP BY date_format(t.write_time, '%Y-%m')";
+        return Db.find(sql);
+    }
+
+
+    public List<Record> getCPADailyActualData() {
+        Map<String, String> map = ToolDateTime.getBefore30DateTime();
+        String start = map.get(MonthCode.warn_start_date);
+        String end = map.get(MonthCode.warn_end_date);
+        String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+                " where t.inner_code = '" + globalInnerCode + "'" +
+                " and t.write_time >= '" + start + "' " +
+                " and t.write_time < '" + end + "' " +
+                " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
+        return Db.find(sql);
+    }
+
+    public List<Record> getCPAMonthActualData() {
+        Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
+        String start = map.get(MonthCode.warn_start_date);
+        String end = map.get(MonthCode.warn_end_date);
+        String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+                " where t.inner_code = '" + globalInnerCode + "'" +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time < '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
@@ -594,4 +621,256 @@ public class ActualData extends BaseActualData<ActualData> {
         return exceptionMeterSql.toString();
     }
 
+    public Page<ActualData> getCPADailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
+                                              String name, String innerCode, Integer street, Integer watersType, String meterAttr, String meterAddress, String type) {
+        /*select tad.*,
+        tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
+				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.billing_cycle,
+				date_format(tad.write_time, '%Y-%m-%d') as todays
+
+		from t_actual_data tad
+		inner join t_company  tc on tad.inner_code=tc.inner_code
+		inner join t_water_meter twm on tad.meter_address=twm.meter_address
+		where 1=1
+
+		and tc.name like '%潞洲水务有限公司%'
+		and tad.write_time >= '2018-03-18 00:00:00' and tad.write_time < '2019-01-01 00:00:00'
+		group by tad.meter_address,date_format(tad.write_time, '%Y-%m-%d')
+		order by todays desc,tad.meter_address desc*/
+        String select = " select abs(tad.net_water) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
+                "tc.county,tc.company_type," +
+                /*"twm.waters_type,twm.meter_attr,twm.meter_address,twm.meter_num,twm.line_num,twm.billing_cycle," +*/
+                "date_format(tad.write_time, '%Y-%m-%d') as todays ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
+                " inner join t_company  tc on tad.inner_code=tc.inner_code " +
+                " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +
+                " where 1=1 ");
+        if (StringUtils.isNotEmpty(name)) {
+            name = StringUtils.trim(name);
+            if (StringUtils.isNotEmpty(name)) {
+                sqlExceptSelect.append(" and tc.name like '%" + name + "%' ");
+            }
+        }
+        if (StringUtils.isNotEmpty(type)) {
+            type = StringUtils.trim(type);
+            if (StringUtils.isNotEmpty(type)) {
+                sqlExceptSelect.append(" and tc.company_type=" + type + " ");
+            }
+        }
+        if (street != null && street > 0) {
+            sqlExceptSelect.append(" and tc.street=" + street);
+        }
+        if (StringUtils.isNotEmpty(innerCode)) {
+            innerCode = StringUtils.trim(innerCode);
+            if (StringUtils.isNotEmpty(innerCode)) {
+                sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "' ");
+            }
+        }
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+        }
+        if (startTime != null) {
+            sqlExceptSelect.append(" and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' ");
+        }
+        if (endTime != null) {
+            sqlExceptSelect.append(" and tad.write_time < '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' ");
+        }
+        if (StringUtils.isNotEmpty(meterAddress)) {
+            meterAddress = StringUtils.trim(meterAddress);
+            if (StringUtils.isNotEmpty(meterAddress)) {
+                sqlExceptSelect.append(" and tad.meter_address = '" + meterAddress + "'");
+            }
+        }
+
+        if (StringUtils.isNotEmpty(meterAttr)) {
+            meterAttr = StringUtils.trim(meterAttr);
+            if (StringUtils.isNotEmpty(meterAttr)) {
+                sqlExceptSelect.append(" and twm.meter_attr='" + meterAttr + "'");
+            }
+        }
+        if (watersType != null) {
+            sqlExceptSelect.append(" and twm.waters_type=" + watersType);
+        }
+        sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') ");
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        } else {
+            sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m-%d') desc,tad.meter_address desc ");
+        }
+        logger.info("--- 日用水量sql开始 ---");
+        logger.info(select);
+        logger.info(sqlExceptSelect.toString());
+        logger.info("--- 日用水量sql结束 ---");
+        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+
+    public Page<ActualData> getCPAMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
+                                           String name, String innerCode, Integer street, Integer watersType, String meterAttr,
+                                           String meterAddress, String type) {
+		/*select tad.*,
+		tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
+				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,
+				date_format(tad.write_time, '%Y-%m') as months,sum(tad.net_water) as monthTotal
+
+		from t_actual_data tad
+		inner join t_company  tc on tad.inner_code=tc.inner_code
+		inner join t_water_meter twm on tad.meter_address=twm.meter_address
+		where 1=1
+
+		and tc.name like '%潞洲水务有限公司%'
+		and tad.write_time >= '2018-02-01 00:00:00' and tad.write_time < '2019-01-01 00:00:00' and tad.meter_address = '201707000000936'
+		group by tad.meter_address,date_format(tad.write_time, '%Y-%m')
+		order by months desc,tad.meter_address desc*/
+
+        String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
+                /*"twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address," +*/
+                "date_format(tad.write_time, '%Y-%m') as months,sum(abs(tad.net_water)) as monthTotal";
+
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
+                " inner join t_company tc on tad.inner_code=tc.inner_code " +
+                " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +
+                " where 1=1 ");
+
+        if (StringUtils.isNotEmpty(name)) {
+            name = StringUtils.trim(name);
+            if (StringUtils.isNotEmpty(name)) {
+                sqlExceptSelect.append(" and tc.name like '%" + name + "%'");
+            }
+        }
+        if (StringUtils.isNotEmpty(type)) {
+            type = StringUtils.trim(type);
+            if (StringUtils.isNotEmpty(type)) {
+                sqlExceptSelect.append(" and tc.company_type=" + type + " ");
+            }
+        }
+        if (street != null && street > 0) {
+            sqlExceptSelect.append(" and tc.street=" + street);
+        }
+        if (StringUtils.isNotEmpty(innerCode)) {
+            innerCode = StringUtils.trim(innerCode);
+            if (StringUtils.isNotEmpty(innerCode)) {
+                sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "'");
+            }
+        }
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+        }
+
+        if (startTime != null) {
+            sqlExceptSelect.append(" and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "'");
+        }
+        if (endTime != null) {
+            sqlExceptSelect.append(" and tad.write_time < '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "'");
+        }
+        if (StringUtils.isNotEmpty(meterAddress)) {
+            meterAddress = StringUtils.trim(meterAddress);
+            if (StringUtils.isNotEmpty(meterAddress)) {
+                sqlExceptSelect.append(" and tad.meter_address = '" + meterAddress + "' ");
+            }
+        }
+
+        if (StringUtils.isNotEmpty(meterAttr)) {
+            meterAttr = StringUtils.trim(meterAttr);
+            if (StringUtils.isNotEmpty(meterAttr)) {
+                sqlExceptSelect.append(" and twm.meter_attr='" + meterAttr + "'");
+            }
+        }
+        if (watersType != null) {
+            sqlExceptSelect.append(" and twm.waters_type=" + watersType);
+        }
+        sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m') ");
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        } else {
+            sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m') desc,tad.meter_address desc ");
+        }
+        logger.info("--- 月用水量sql开始 ---");
+        logger.info(select);
+        logger.info(sqlExceptSelect.toString());
+        logger.info("--- 月用水量sql结束 ---");
+        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+
+    public Page<ActualData> getCPAYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year, String name,
+                                          String innerCode, Integer street, Integer watersType, String meterAttr,
+                                          String meterAddress, String type) {
+		/*select
+		tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
+				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address,
+				date_format(tad.write_time, '%Y') as years,sum(tad.net_water) as yearTotal
+
+		from t_actual_data tad
+		inner join t_company tc on tad.inner_code=tc.inner_code
+		inner join t_water_meter twm on tad.meter_address=twm.meter_address
+		where 1=1
+
+		and tc.name like '%潞洲水务有限公司%'
+		and tad.write_time >= '2017-01-01 00:00:00' and tad.write_time < '2019-01-01 00:00:00'
+		group by tad.meter_address,date_format(tad.write_time, '%Y')
+		order by years desc,tad.meter_address desc*/
+        String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type, " +
+                /*" twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address, " +*/
+                " date_format(tad.write_time, '%Y') as years,sum(abs(tad.net_water)) as yearTotal ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
+                " inner join t_company tc on tad.inner_code=tc.inner_code " +
+                " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +
+                " where 1=1 ");
+        if (StringUtils.isNotEmpty(name)) {
+            name = StringUtils.trim(name);
+            if (StringUtils.isNotEmpty(name)) {
+                sqlExceptSelect.append(" and tc.name like '%" + name + "%'");
+            }
+        }
+        if (street != null && street > 0) {
+            sqlExceptSelect.append(" and tc.street=" + street);
+        }
+        if (StringUtils.isNotEmpty(innerCode)) {
+            innerCode = StringUtils.trim(innerCode);
+            if (StringUtils.isNotEmpty(innerCode)) {
+                sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "'");
+            }
+        }
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+        }
+        if (StringUtils.isNotEmpty(type)) {
+            type = StringUtils.trim(type);
+            if (StringUtils.isNotEmpty(type)) {
+                sqlExceptSelect.append(" and tc.company_type=" + type + " ");
+            }
+        }
+
+        if (year != null && year > 0) {
+            String yearStart = String.valueOf(year) + "-01-01 00:00:00";
+            String yearEnd = String.valueOf(year + 1) + "-01-01 00:00:00";
+            sqlExceptSelect.append(" and tad.write_time >= '" + yearStart + "'");
+            sqlExceptSelect.append(" and tad.write_time < '" + yearEnd + "'");
+        }
+        if (StringUtils.isNotEmpty(meterAddress)) {
+            meterAddress = StringUtils.trim(meterAddress);
+            if (StringUtils.isNotEmpty(meterAddress)) {
+                sqlExceptSelect.append(" and tad.meter_address = '" + meterAddress + "'");
+            }
+        }
+        if (StringUtils.isNotEmpty(meterAttr)) {
+            meterAttr = StringUtils.trim(meterAttr);
+            if (StringUtils.isNotEmpty(meterAttr)) {
+                sqlExceptSelect.append(" and twm.meter_attr='" + meterAttr + "'");
+            }
+        }
+        if (watersType != null) {
+            sqlExceptSelect.append(" and twm.waters_type=" + watersType);
+        }
+        sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y') ");
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        } else {
+            sqlExceptSelect.append("order by date_format(tad.write_time, '%Y') desc,tad.meter_address desc");
+        }
+        logger.info("--- 年用水量sql开始 ---");
+        logger.info(select);
+        logger.info(sqlExceptSelect.toString());
+        logger.info("--- 年用水量sql结束 ---");
+        return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
 }

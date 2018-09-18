@@ -29,6 +29,14 @@ public class InvokeResult {
 
     private int code;
 
+    public static InvokeResult success(Object data, String msg) {
+        InvokeResult result = new InvokeResult();
+        result.data = data;
+        result.code = 0;
+        result.msg = msg;
+        return result;
+    }
+
     public static InvokeResult success(Object data) {
         InvokeResult result = new InvokeResult();
         result.data = data;
