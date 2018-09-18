@@ -10,6 +10,7 @@ import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.Image;
 import com.shangsc.platform.model.LawRecord;
 import com.shangsc.platform.model.SysUser;
@@ -32,12 +33,9 @@ public class LawRecordsController extends BaseController {
 
     @RequiresPermissions(value = {"/app/law"})
     public void getListData() {
+        LawRecord.dao.setGlobalInnerCode(getInnerCode());
         String keyword = this.getPara("name");
-        Set<Condition> conditions = new HashSet<Condition>();
-        if (CommonUtils.isNotEmpty(keyword)) {
-            conditions.add(new Condition("title", Operators.LIKE, keyword));
-        }
-        Page<LawRecord> pageInfo = LawRecord.dao.getPage(getPage(), this.getRows(), conditions, this.getOrderby());
+        Page<LawRecord> pageInfo = LawRecord.dao.getPageList(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<LawRecord> list = pageInfo.getList();
         if (CollectionUtils.isNotEmpty(list)) {
             Set<Long> ids = new LinkedHashSet<>();

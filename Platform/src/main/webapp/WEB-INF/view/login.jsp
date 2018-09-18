@@ -95,7 +95,7 @@
                                 <div class="widget-main">
                                     <h4 class="header blue lighter bigger">
                                         <i class="ace-icon fa fa-coffee green"></i>
-                                        通州区远传水表采集系统
+                                        通州区节水管理平台
                                     </h4>
 
                                     <div class="space-6"></div>
