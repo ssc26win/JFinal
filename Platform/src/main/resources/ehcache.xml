@@ -4,7 +4,7 @@
 	monitoring="autodetect">
 	<!-- 
 	<diskStore path="java.io.tmpdir" /> -->
-	<diskStore path="/tmp/ehcache/project/cachetmpdir"/>
+	<diskStore path="/platform/ehcache/project/cachetmpdir"/>
 	<defaultCache maxElementsInMemory="10000" eternal="false"
 		timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true"
 		maxElementsOnDisk="10000000" diskPersistent="false"
