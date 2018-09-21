@@ -114,8 +114,8 @@ public class GlobalConfig extends JFinalConfig implements Serializable {
         initMail();
 
         //开启实时数据监听
-        initActualUdp();
-        initActualTcp();
+        //initActualUdp();
+        //initActualTcp();
     }
 
     /**
