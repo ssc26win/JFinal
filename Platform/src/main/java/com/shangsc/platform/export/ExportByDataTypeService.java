@@ -67,27 +67,29 @@ public class ExportByDataTypeService extends ExportBaseService {
         listHeader.addAll(Arrays.asList(new String[]{
                 "所属乡镇",
                 "水源类型",
+                "总用水量",
         }));
         listHeader.addAll(colKeys);
 
         logger.info("导出" + fName + "信息导出条数为:{}", list.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (Company company : list) {
-            Object[] obj = new Object[columnsKey.size() + 2];
+            Object[] obj = new Object[columnsKey.size() + 3];
             obj[0] = company.get("streetName");
             obj[1] = company.get("watersTypeName");
+            obj[2] = company.get("watersUseTotal");
             for (int i = 0; i < columnsKey.size(); i++) {
                 BigDecimal targetTotal = new BigDecimal("0");
                 if (company.getBigDecimal(columnsKey.get(i)) != null) {
-                    obj[i + 2] = company.getBigDecimal(columnsKey.get(i));
+                    obj[i + 3] = company.getBigDecimal(columnsKey.get(i));
                 } else {
-                    obj[i + 2] = targetTotal;
+                    obj[i + 3] = targetTotal;
                 }
             }
             objects.add(obj);
         }
         Set<Integer> isNumTypeColSet = new HashSet<Integer>();
-        for (int i = 3; i < colKeys.size() + 2; i++) {
+        for (int i = 4; i < colKeys.size() + 3; i++) {
             isNumTypeColSet.add(i);
         }
         super.logger.info("导出" + fName + "信息结束");

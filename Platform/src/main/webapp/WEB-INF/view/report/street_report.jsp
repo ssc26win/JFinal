@@ -12,6 +12,11 @@
     <!-- bootstrap & fontawesome -->
     <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
 </head>
+<style type="text/css">
+    html {
+        overflow-y: hidden;
+    }
+</style>
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
@@ -66,7 +71,7 @@
 
                         <table id="grid-table"></table>
 
-                    <div id="grid-pager"></div>
+                    <%--<div id="grid-pager"></div>--%>
 
                     <script type="text/javascript">
                         var $path_base = "..";//in Ace demo this will be used for editurl parameter
@@ -105,15 +110,15 @@
             datatype: "json",
             colModel: jQuery.parseJSON('${columnsMeterAttr}'),
             viewrecords: true,
-            height: 560,
-            rowNum: 20,
+            height: 660,
+            rowNum: 65535,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
             shrinkToFit:false,
             autoScroll: true,
             recordtext:"{0} - {1} 共 {2} 条",
             pgtext:"第 {0} 页 共 {1} 页",
-            pager: pager_selector,
+            /*pager: pager_selector,*/
             loadComplete : function() {
                 var table = this;
                 setTimeout(function(){

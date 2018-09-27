@@ -48,6 +48,12 @@ public class ReportStreetController extends BaseController {
         company.put("width", "100");
         company.put("sortable", "false");
         array.add(company);
+        JSONObject waterUseTotal = new JSONObject();
+        waterUseTotal.put("label", "总用水量");
+        waterUseTotal.put("name", "watersUseTotal");
+        waterUseTotal.put("width", "100");
+        waterUseTotal.put("sortable", "false");
+        array.add(waterUseTotal);
         for (String value : meterAttrType.keySet()) {
             JSONObject column = new JSONObject();
             column.put("label", meterAttrType.get(value).toString());
@@ -78,7 +84,10 @@ public class ReportStreetController extends BaseController {
             watersType = Integer.parseInt(watersTypeStr);
         }
         String type = this.getPara("type");
-        Page<Company> pageInfo = ActualDataReport.me.getStreet(getPage(), getRows(), getOrderbyStr(), street, watersType, type);
+
+        List<Company> listFinal = new ArrayList<>();
+
+        Page<Company> pageInfo = ActualDataReport.me.getStreet(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, watersType, type);
         List<Company> list = pageInfo.getList();
 
         if (CollectionUtils.isNotEmpty(list)) {
@@ -98,8 +107,8 @@ public class ReportStreetController extends BaseController {
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
-                    " group by lsall.street,lsall.waters_type,lsall.meter_attr order by lsall.street asc";
+                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null" +
+                    " group by lsall.street,lsall.waters_type,lsall.meter_attr order by lsall.street asc,lsall.waters_type asc";
 
             List<Record> records = Db.find(sql);
 
@@ -113,6 +122,8 @@ public class ReportStreetController extends BaseController {
                 if (company.get("waters_type") != null) {
                     company.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(company.get("waters_type")))));
                 }
+                BigDecimal watersUseTotal = new BigDecimal("0");
+
                 for (String colKey : meterAttrType.keySet()) {
                     company.put(ReportColType.street_col + colKey, new BigDecimal("0"));
                 }
@@ -128,12 +139,131 @@ public class ReportStreetController extends BaseController {
                             colVal = record.getBigDecimal("TargetAttrTotal");
                         }
                         company.put(ReportColType.street_col + colStr, colVal);
+                        watersUseTotal = watersUseTotal.add(colVal);
                     }
                 }
+                company.put("watersUseTotal", watersUseTotal);
                 list.set(i, company);
             }
+
+            String sqlZongji = "select lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
+                    " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
+                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
+                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " group by lsall.meter_attr order by lsall.waters_type asc";
+            List<Record> recordsZongji = Db.find(sqlZongji);
+            Company companyZongji = new Company();
+            companyZongji.put("streetName", "合计");
+            companyZongji.put("watersTypeName", "小计");
+            for (String colKey : meterAttrType.keySet()) {
+                companyZongji.put(ReportColType.street_col + colKey, new BigDecimal("0"));
+            }
+            BigDecimal watersUseTotalAll = new BigDecimal("0");
+            for (Record record : recordsZongji) {
+                String colStr = record.getInt("meter_attr").toString();
+                BigDecimal colVal = new BigDecimal("0");
+                if (record.getBigDecimal("TargetAttrTotal") != null) {
+                    colVal = record.getBigDecimal("TargetAttrTotal");
+                }
+                companyZongji.put(ReportColType.street_col + colStr, colVal);
+                watersUseTotalAll = watersUseTotalAll.add(colVal);
+            }
+            companyZongji.put("watersUseTotal", watersUseTotalAll);
+            listFinal.add(companyZongji); // TODO 1
+
+
+            String sqlHejiWaterType = "select lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
+                    " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
+                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
+                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " group by lsall.waters_type,lsall.meter_attr order by lsall.waters_type asc";
+
+            List<Record> recordsHejiWaterType = Db.find(sqlHejiWaterType);
+
+            List<Record> listWaterType = Db.find("select waters_type from t_water_meter where waters_type is not null group by waters_type");
+
+            for (int i = 0; i < listWaterType.size(); i++) {
+                Record record = listWaterType.get(i);
+                Integer waterTypeTarget = record.getInt("waters_type");
+                Company companyHejiWaterType = new Company();
+                companyHejiWaterType.put("streetName", "合计");
+                if (record.get("waters_type") != null) {
+                    companyHejiWaterType.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(record.get("waters_type")))));
+                }
+                for (String colKey : meterAttrType.keySet()) {
+                    companyHejiWaterType.put(ReportColType.street_col + colKey, new BigDecimal("0"));
+                }
+                BigDecimal watersUseTotal = new BigDecimal("0");
+                for (Record recordC : recordsHejiWaterType) {
+                    Integer waters_type = recordC.getInt("waters_type");
+                    if (waterTypeTarget == waters_type.intValue()) {
+                        String colStr = recordC.getInt("meter_attr").toString();
+                        BigDecimal colVal = new BigDecimal("0");
+                        if (recordC.getBigDecimal("TargetAttrTotal") != null) {
+                            colVal = recordC.getBigDecimal("TargetAttrTotal");
+                        }
+                        companyHejiWaterType.put(ReportColType.street_col + colStr, colVal);
+                        watersUseTotal = watersUseTotal.add(colVal);
+                    }
+                }
+                companyHejiWaterType.put("watersUseTotal", watersUseTotal);
+                listFinal.add(companyHejiWaterType);//TODO 2
+            }
+
+            String sqlXiaoji = "select lsall.street,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
+                    " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
+                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
+                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " group by lsall.street,lsall.meter_attr order by lsall.street asc";
+
+            List<Record> recordsXiaoji = Db.find(sqlXiaoji);
+
+            List<Record> listStreet = Db.find("select street from t_company where street is not null group by street ");
+
+            for (int i = 0; i < listStreet.size(); i++) {
+                Record streetXiaoji = listStreet.get(i);
+                Integer streetTarget = streetXiaoji.getInt("street");
+                Company companyXiaoji = new Company();
+                if (streetTarget != null) {
+                    companyXiaoji.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(streetTarget))));
+                }
+                companyXiaoji.setStreet(streetTarget);
+                companyXiaoji.put("watersTypeName", "小计");
+                for (String colKey : meterAttrType.keySet()) {
+                    companyXiaoji.put(ReportColType.street_col + colKey, new BigDecimal("0"));
+                }
+                BigDecimal watersUseTotal = new BigDecimal("0");
+                for (Record record : recordsXiaoji) {
+                    Integer street_t = record.getInt("street");
+                    if (streetTarget == street_t.intValue()) {
+                        String colStr = record.getInt("meter_attr").toString();
+                        BigDecimal colVal = new BigDecimal("0");
+                        if (record.getBigDecimal("TargetAttrTotal") != null) {
+                            colVal = record.getBigDecimal("TargetAttrTotal");
+                        }
+                        companyXiaoji.put(ReportColType.street_col + colStr, colVal);
+                        watersUseTotal = watersUseTotal.add(colVal);
+                    }
+                }
+                companyXiaoji.put("watersUseTotal", watersUseTotal);
+                listFinal.add(companyXiaoji);
+                for (Company company : list) {// TODO 3
+                    if (streetTarget == company.getStreet().intValue()) {
+                        listFinal.add(company);
+                    }
+                }
+            }
         }
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, listFinal));
     }
 
     @RequiresPermissions(value = {"/report/street"})
@@ -150,10 +280,13 @@ public class ReportStreetController extends BaseController {
             watersType = Integer.parseInt(watersTypeStr);
         }
         String type = this.getPara("type");
-        Page<Company> pageInfo = ActualDataReport.me.getStreet(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, watersType, type);
-        List<Company> list = pageInfo.getList();
 
         Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
+
+        List<Company> listFinal = new ArrayList<>();
+
+        Page<Company> pageInfo = ActualDataReport.me.getStreet(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, watersType, type);
+        List<Company> list = pageInfo.getList();
 
         if (CollectionUtils.isNotEmpty(list)) {
             Set<Integer> streets = new HashSet<>();
@@ -172,10 +305,11 @@ public class ReportStreetController extends BaseController {
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
-                    " group by lsall.street,lsall.waters_type,lsall.meter_attr order by lsall.street asc";
+                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null" +
+                    " group by lsall.street,lsall.waters_type,lsall.meter_attr order by lsall.street asc,lsall.waters_type asc";
 
             List<Record> records = Db.find(sql);
+
             for (int i = 0; i < list.size(); i++) {
                 Company company = list.get(i);
                 if (company.getStreet() != null) {
@@ -184,6 +318,8 @@ public class ReportStreetController extends BaseController {
                 if (company.get("waters_type") != null) {
                     company.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(company.get("waters_type")))));
                 }
+                BigDecimal watersUseTotal = new BigDecimal("0");
+
                 for (String colKey : meterAttrType.keySet()) {
                     company.put(ReportColType.street_col + colKey, new BigDecimal("0"));
                 }
@@ -199,9 +335,128 @@ public class ReportStreetController extends BaseController {
                             colVal = record.getBigDecimal("TargetAttrTotal");
                         }
                         company.put(ReportColType.street_col + colStr, colVal);
+                        watersUseTotal = watersUseTotal.add(colVal);
                     }
                 }
+                company.put("watersUseTotal", watersUseTotal);
                 list.set(i, company);
+            }
+
+            String sqlZongji = "select lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
+                    " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
+                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
+                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " group by lsall.meter_attr order by lsall.waters_type asc";
+            List<Record> recordsZongji = Db.find(sqlZongji);
+            Company companyZongji = new Company();
+            companyZongji.put("streetName", "合计");
+            companyZongji.put("watersTypeName", "小计");
+            for (String colKey : meterAttrType.keySet()) {
+                companyZongji.put(ReportColType.street_col + colKey, new BigDecimal("0"));
+            }
+            BigDecimal watersUseTotalAll = new BigDecimal("0");
+            for (Record record : recordsZongji) {
+                String colStr = record.getInt("meter_attr").toString();
+                BigDecimal colVal = new BigDecimal("0");
+                if (record.getBigDecimal("TargetAttrTotal") != null) {
+                    colVal = record.getBigDecimal("TargetAttrTotal");
+                }
+                companyZongji.put(ReportColType.street_col + colStr, colVal);
+                watersUseTotalAll = watersUseTotalAll.add(colVal);
+            }
+            companyZongji.put("watersUseTotal", watersUseTotalAll);
+            listFinal.add(companyZongji); // TODO 1
+
+
+            String sqlHejiWaterType = "select lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
+                    " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
+                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
+                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " group by lsall.waters_type,lsall.meter_attr order by lsall.waters_type asc";
+
+            List<Record> recordsHejiWaterType = Db.find(sqlHejiWaterType);
+
+            List<Record> listWaterType = Db.find("select waters_type from t_water_meter where waters_type is not null group by waters_type");
+
+            for (int i = 0; i < listWaterType.size(); i++) {
+                Record record = listWaterType.get(i);
+                Integer waterTypeTarget = record.getInt("waters_type");
+                Company companyHejiWaterType = new Company();
+                companyHejiWaterType.put("streetName", "合计");
+                if (record.get("waters_type") != null) {
+                    companyHejiWaterType.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(record.get("waters_type")))));
+                }
+                for (String colKey : meterAttrType.keySet()) {
+                    companyHejiWaterType.put(ReportColType.street_col + colKey, new BigDecimal("0"));
+                }
+                BigDecimal watersUseTotal = new BigDecimal("0");
+                for (Record recordC : recordsHejiWaterType) {
+                    Integer waters_type = recordC.getInt("waters_type");
+                    if (waterTypeTarget == waters_type.intValue()) {
+                        String colStr = recordC.getInt("meter_attr").toString();
+                        BigDecimal colVal = new BigDecimal("0");
+                        if (recordC.getBigDecimal("TargetAttrTotal") != null) {
+                            colVal = recordC.getBigDecimal("TargetAttrTotal");
+                        }
+                        companyHejiWaterType.put(ReportColType.street_col + colStr, colVal);
+                        watersUseTotal = watersUseTotal.add(colVal);
+                    }
+                }
+                companyHejiWaterType.put("watersUseTotal", watersUseTotal);
+                listFinal.add(companyHejiWaterType);//TODO 2
+            }
+
+            String sqlXiaoji = "select lsall.street,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
+                    " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
+                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
+                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " group by lsall.street,lsall.meter_attr order by lsall.street asc";
+
+            List<Record> recordsXiaoji = Db.find(sqlXiaoji);
+
+            List<Record> listStreet = Db.find("select street from t_company where street is not null group by street ");
+
+            for (int i = 0; i < listStreet.size(); i++) {
+                Record streetXiaoji = listStreet.get(i);
+                Integer streetTarget = streetXiaoji.getInt("street");
+                Company companyXiaoji = new Company();
+                if (streetTarget != null) {
+                    companyXiaoji.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(streetTarget))));
+                }
+                companyXiaoji.setStreet(streetTarget);
+                companyXiaoji.put("watersTypeName", "小计");
+                for (String colKey : meterAttrType.keySet()) {
+                    companyXiaoji.put(ReportColType.street_col + colKey, new BigDecimal("0"));
+                }
+                BigDecimal watersUseTotal = new BigDecimal("0");
+                for (Record record : recordsXiaoji) {
+                    Integer street_t = record.getInt("street");
+                    if (streetTarget == street_t.intValue()) {
+                        String colStr = record.getInt("meter_attr").toString();
+                        BigDecimal colVal = new BigDecimal("0");
+                        if (record.getBigDecimal("TargetAttrTotal") != null) {
+                            colVal = record.getBigDecimal("TargetAttrTotal");
+                        }
+                        companyXiaoji.put(ReportColType.street_col + colStr, colVal);
+                        watersUseTotal = watersUseTotal.add(colVal);
+                    }
+                }
+                companyXiaoji.put("watersUseTotal", watersUseTotal);
+                listFinal.add(companyXiaoji);
+                for (Company company : list) {// TODO 3
+                    if (streetTarget == company.getStreet().intValue()) {
+                        listFinal.add(company);
+                    }
+                }
             }
         }
 
@@ -212,7 +467,7 @@ public class ReportStreetController extends BaseController {
             columnsKey.add(ReportColType.street_col + value);
         }
         ExportByDataTypeService service = new ExportByDataTypeService();
-        String path = service.exportStreetStatis(list, type, columnsTitle, new ArrayList<>(columnsKey), ReportTypeEnum.STREET);
+        String path = service.exportStreetStatis(listFinal, type, columnsTitle, new ArrayList<>(columnsKey), ReportTypeEnum.STREET);
         renderFile(new File(path));
     }
 }
