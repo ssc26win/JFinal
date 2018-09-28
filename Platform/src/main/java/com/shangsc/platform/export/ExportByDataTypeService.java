@@ -2,6 +2,7 @@ package com.shangsc.platform.export;
 
 import com.shangsc.platform.code.ReportTypeEnum;
 import com.shangsc.platform.model.Company;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -54,7 +55,7 @@ public class ExportByDataTypeService extends ExportBaseService {
         return super.export(fName + "信息导出", listHeader, objects, isNumTypeColSet);
     }
 
-    public String exportStreetStatis(List<Company> list, String type, Set<String> columnsTitle, List<String> columnsKey,ReportTypeEnum street) {
+    public String exportStreetStatis(List<Company> list, String type, Set<String> columnsTitle, List<String> columnsKey, ReportTypeEnum street) {
         String fName = "";
         if ("2".equals(type)) {
             fName = street.getNick() + "供水量";
@@ -93,6 +94,21 @@ public class ExportByDataTypeService extends ExportBaseService {
             isNumTypeColSet.add(i);
         }
         super.logger.info("导出" + fName + "信息结束");
-        return super.export(fName + "信息导出", listHeader, objects, isNumTypeColSet);
+
+
+        Set<String> notRepeat = new HashSet<>();
+
+        for (int i = 0; i < objects.size(); i++) {
+            notRepeat.add(ObjectUtils.toString(objects.get(i)[0]));
+        }
+
+        int[] mergeIndex = new int[notRepeat.size() + 1];
+        mergeIndex[0] = 0;
+
+        for (int i = 1; i < notRepeat.size() + 1; i++) {
+            mergeIndex[i] = i;
+        }
+
+        return super.export(fName + "信息导出", listHeader, objects, isNumTypeColSet, mergeIndex, true);
     }
 }
