@@ -315,6 +315,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         Map<String, Integer> termType = DictData.dao.getDictNameMap(DictCode.Term);
 
         //单位编号	单位名称	所属节水办	所属区县	路别	表计地址	最小单位	表号	水源类型	国标行业	主要行业	取水用途	水表属性	收费类型	注册日期
+
+        Set<String> checkRepeat = new HashSet<>();
+
         for (int i = 0; i < maps.size(); i++) {
             Map<Integer, String> map = maps.get(i);
             WaterMeter meter = new WaterMeter();
@@ -326,9 +329,13 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
 
             if (StringUtils.isNotEmpty(map.get(5))) {
                 meter.setMeterAddress(map.get(5));
-                if (hasExistAddress(null, StringUtils.trim(meter.getMeterAddress()))) {
+                if (hasExistAddress(null, StringUtils.trim(meter.getMeterAddress())) || checkRepeat.contains(meter.getMeterAddress())) {
                     continue;
+                } else {
+                    checkRepeat.add(meter.getMeterAddress());
                 }
+            } else {
+                continue;
             }
 
             if (StringUtils.isNotEmpty(map.get(6))) {

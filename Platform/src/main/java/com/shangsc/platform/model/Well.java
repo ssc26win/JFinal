@@ -22,45 +22,47 @@ import java.util.*;
 @SuppressWarnings("serial")
 public class Well extends BaseWell<Well> {
 
-	public static final Well me = new Well();
+    public static final Well me = new Well();
 
-	public Page<Well> getWellPage(int page, int rows, String keyword, String orderbyStr) {
-		String select = "select tw.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,tc.street";
-		StringBuffer sqlExceptSelect = new StringBuffer(" from t_well tw inner join " +
+    public Page<Well> getWellPage(int page, int rows, String keyword, String orderbyStr) {
+        String select = "select tw.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,tc.street";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_well tw inner join " +
                 " t_company tc on tw.inner_code=tc.inner_code ");
-		sqlExceptSelect.append(" where 1=1 ");
-		if (StringUtils.isNotEmpty(keyword)) {
-			keyword = StringUtils.trim(keyword);
-			if (StringUtils.isNotEmpty(keyword)) {
-				sqlExceptSelect.append(" and (tw.name like '%" + keyword + "%' " +" or tc.name like '%" + keyword + "%'"
-						+ " or tw.inner_code='" + keyword + "' or tw.well_num='" + keyword + "') ");
-			}
-		}
-		if (StringUtils.isNotEmpty(orderbyStr)) {
-			sqlExceptSelect.append(orderbyStr);
-		}
-		this.paginate(page, rows, select, sqlExceptSelect.toString());
-		return this.paginate(page, rows, select, sqlExceptSelect.toString());
-	}
-
-	/**
-	 * 水表编号是否已存在
-	 * @param wellNum
-	 * @return
-	 */
-	public boolean hasExist(String wellNum){
-		Set<Condition> conditions = new HashSet<Condition>();
-		conditions.add(new Condition("well_num", Operators.EQ, wellNum));
-		long num = this.getCount(conditions);
-		return num>0?true:false;
-	}
+        sqlExceptSelect.append(" where 1=1 ");
+        if (StringUtils.isNotEmpty(keyword)) {
+            keyword = StringUtils.trim(keyword);
+            if (StringUtils.isNotEmpty(keyword)) {
+                sqlExceptSelect.append(" and (tw.name like '%" + keyword + "%' " + " or tc.name like '%" + keyword + "%'"
+                        + " or tw.inner_code='" + keyword + "' or tw.well_num='" + keyword + "') ");
+            }
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        this.paginate(page, rows, select, sqlExceptSelect.toString());
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
 
     /**
      * 水表编号是否已存在
+     *
      * @param wellNum
      * @return
      */
-    public boolean hasExistWellNum(Long id, String wellNum){
+    public boolean hasExist(String wellNum) {
+        Set<Condition> conditions = new HashSet<Condition>();
+        conditions.add(new Condition("well_num", Operators.EQ, wellNum));
+        long num = this.getCount(conditions);
+        return num > 0 ? true : false;
+    }
+
+    /**
+     * 水表编号是否已存在
+     *
+     * @param wellNum
+     * @return
+     */
+    public boolean hasExistWellNum(Long id, String wellNum) {
         StringBuffer sqlSelect = new StringBuffer("select count(1) as existCount from t_well where 1=1 ");
         sqlSelect.append(" and well_num='" + wellNum + "'");
         if (id != null) {
@@ -74,83 +76,83 @@ public class Well extends BaseWell<Well> {
         }
     }
 
-	public InvokeResult save(Long id, String innerCode,	String name, String wellNum,
-							 String village, String address, BigDecimal wellDepth, BigDecimal groundDepth, String year, Integer oneselfWell,
-							 BigDecimal innerDiameter, String material,	String application,	Integer electromechanics, Integer calculateWater,
-							 String pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType, Integer groundType,
-							 String nameCode, String watersType, String useEfficiency, String method, Integer licence,
-							 String licenceCode, BigDecimal waterWithdrawals) {
-		if (!Company.me.hasExistCompany(innerCode)) {
-			return InvokeResult.failure("保存失败, 公司编号不存在");
-		}
+    public InvokeResult save(Long id, String innerCode, String name, String wellNum,
+                             String village, String address, BigDecimal wellDepth, BigDecimal groundDepth, String year, Integer oneselfWell,
+                             BigDecimal innerDiameter, String material, String application, Integer electromechanics, Integer calculateWater,
+                             String pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType, Integer groundType,
+                             String nameCode, String watersType, String useEfficiency, String method, Integer licence,
+                             String licenceCode, BigDecimal waterWithdrawals) {
+        if (!Company.me.hasExistCompany(innerCode)) {
+            return InvokeResult.failure("保存失败, 公司编号不存在");
+        }
         if (this.hasExistWellNum(id, wellNum)) {
             return InvokeResult.failure("保存失败, 水井编号已存在");
         }
-		if (null != id && id > 0L) {
-			Well well = this.findById(id);
-			if (well == null) {
-				return InvokeResult.failure("更新失败, 该水井不存在");
-			}
-			well = setProp(well, innerCode, name, wellNum, village, address, wellDepth, groundDepth, year, oneselfWell,
-					innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
-					groundType,	nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
-			well.update();
-		} else {
+        if (null != id && id > 0L) {
+            Well well = this.findById(id);
+            if (well == null) {
+                return InvokeResult.failure("更新失败, 该水井不存在");
+            }
+            well = setProp(well, innerCode, name, wellNum, village, address, wellDepth, groundDepth, year, oneselfWell,
+                    innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
+                    groundType, nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
+            well.update();
+        } else {
             Well well = new Well();
             well = setProp(well, innerCode, name, wellNum, village, address, wellDepth, groundDepth, year, oneselfWell,
                     innerDiameter, material, application, electromechanics, calculateWater, pumpModel, calculateType, aboveScale, geomorphicType,
-                    groundType,	nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
+                    groundType, nameCode, watersType, useEfficiency, method, licence, licenceCode, waterWithdrawals);
             well.save();
             Company.me.updateWellNum(innerCode, true);
-		}
-		return InvokeResult.success();
-	}
+        }
+        return InvokeResult.success();
+    }
 
-	private Well setProp(Well well, String innerCode, String name, String wellNum,
-			String village, String address, BigDecimal wellDepth, BigDecimal groundDepth, String year, Integer oneselfWell,
-			BigDecimal innerDiameter, String material,	String application,	Integer electromechanics, Integer calculateWater,
-			String pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType,Integer groundType,
-			String nameCode, String watersType, String useEfficiency, String method, Integer licence,
-			String licenceCode, BigDecimal waterWithdrawals) {
-		well.setInnerCode(innerCode);
-		well.setName(name);
-		well.setWellNum(wellNum);
-		well.setVillage(village);
-		well.setAddress(address);
-		well.setWellDepth(wellDepth);
-		well.setYear(year);
-		well.setGroundDepth(groundDepth);
-		well.setOneselfWell(oneselfWell);
-		well.setInnerDiameter(innerDiameter);
-		well.setMaterial(material);
-		well.setApplication(application);
-		well.setElectromechanics(electromechanics);
-		well.setCalculateWater(calculateWater);
-		well.setPumpModel(pumpModel);
-		well.setCalculateType(calculateType);
-		well.setAboveScale(aboveScale);
-		well.setGeomorphicType(geomorphicType);
-		well.setGroundType(groundType);
-		well.setNameCode(nameCode);
-		well.setWatersType(watersType);
-		well.setUseEfficiency(useEfficiency);
-		well.setMethod(method);
-		well.setLicence(licence);
-		well.setLicenceCode(licenceCode);
-		well.setWaterWithdrawals(waterWithdrawals);
-		return well;
-	}
+    private Well setProp(Well well, String innerCode, String name, String wellNum,
+                         String village, String address, BigDecimal wellDepth, BigDecimal groundDepth, String year, Integer oneselfWell,
+                         BigDecimal innerDiameter, String material, String application, Integer electromechanics, Integer calculateWater,
+                         String pumpModel, Integer calculateType, Integer aboveScale, Integer geomorphicType, Integer groundType,
+                         String nameCode, String watersType, String useEfficiency, String method, Integer licence,
+                         String licenceCode, BigDecimal waterWithdrawals) {
+        well.setInnerCode(innerCode);
+        well.setName(name);
+        well.setWellNum(wellNum);
+        well.setVillage(village);
+        well.setAddress(address);
+        well.setWellDepth(wellDepth);
+        well.setYear(year);
+        well.setGroundDepth(groundDepth);
+        well.setOneselfWell(oneselfWell);
+        well.setInnerDiameter(innerDiameter);
+        well.setMaterial(material);
+        well.setApplication(application);
+        well.setElectromechanics(electromechanics);
+        well.setCalculateWater(calculateWater);
+        well.setPumpModel(pumpModel);
+        well.setCalculateType(calculateType);
+        well.setAboveScale(aboveScale);
+        well.setGeomorphicType(geomorphicType);
+        well.setGroundType(groundType);
+        well.setNameCode(nameCode);
+        well.setWatersType(watersType);
+        well.setUseEfficiency(useEfficiency);
+        well.setMethod(method);
+        well.setLicence(licence);
+        well.setLicenceCode(licenceCode);
+        well.setWaterWithdrawals(waterWithdrawals);
+        return well;
+    }
 
-	public InvokeResult deleteData(String idStrs) {
-		List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
-		for (int i = 0; i < ids.size(); i++) {
+    public InvokeResult deleteData(String idStrs) {
+        List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
+        for (int i = 0; i < ids.size(); i++) {
             Well well = Well.me.findById(ids.get(i));
             Company.me.updateWellNum(well.getInnerCode(), false);
-			this.deleteById(ids.get(i));
+            this.deleteById(ids.get(i));
 
-		}
-		return InvokeResult.success();
-	}
+        }
+        return InvokeResult.success();
+    }
 
     public static int[] saveBatch(List<Well> modelOrRecordList, int batchSize) {
         String sql = "insert into t_well(well_num,name,inner_code,village,address,year,well_depth,ground_depth," +
@@ -173,12 +175,17 @@ public class Well extends BaseWell<Well> {
         Map<String, Integer> dictCalculateType = DictData.dao.getDictNameMap(DictCode.CalculateType);
         Map<String, Integer> dictGeomorphicType = DictData.dao.getDictNameMap(DictCode.GeomorphicType);
         Map<String, Integer> dictGroundType = DictData.dao.getDictNameMap(DictCode.GroundType);
+
+        Set<String> checkRepeat = new HashSet<>();
+
         for (int i = 0; i < maps.size(); i++) {
             Map<Integer, String> map = maps.get(i);
             Well well = new Well();
             String wellNum = StringUtils.trim(map.get(0));
-            if (StringUtils.isEmpty(wellNum) || hasExistWellNum(null, wellNum)) {
+            if (StringUtils.isEmpty(wellNum) || hasExistWellNum(null, wellNum) || checkRepeat.contains(wellNum)) {
                 continue;
+            } else {
+                checkRepeat.add(wellNum);
             }
             if (StringUtils.isNotEmpty(wellNum)) {
                 well.setWellNum(wellNum);
@@ -230,23 +237,23 @@ public class Well extends BaseWell<Well> {
             }
             if (StringUtils.isNotEmpty(map.get(17)) && YesOrNo.YesStr.equals(StringUtils.trim(map.get(17).toString()))) {
                 well.setElectromechanics(Integer.parseInt(YesOrNo.Yes));
-            } else{
+            } else {
                 well.setElectromechanics(Integer.parseInt(YesOrNo.No));
             }
             if (StringUtils.isNotEmpty(map.get(18)) && YesOrNo.YesStr.equals(StringUtils.trim(map.get(18).toString()))) {
                 well.setCalculateWater(Integer.parseInt(YesOrNo.Yes));
-            } else{
+            } else {
                 well.setCalculateWater(Integer.parseInt(YesOrNo.No));
             }
-            if (map.get(19)!=null) {
+            if (map.get(19) != null) {
                 well.setPumpModel(map.get(19));
             }
-            if (map.get(20)!=null) {
+            if (map.get(20) != null) {
                 well.setCalculateType(dictCalculateType.get(map.get(20)));
             }
             if (StringUtils.isNotEmpty(map.get(21)) && YesOrNo.YesStr.equals(StringUtils.trim(map.get(21).toString()))) {
                 well.setAboveScale(Integer.parseInt(YesOrNo.Yes));
-            } else{
+            } else {
                 well.setAboveScale(Integer.parseInt(YesOrNo.No));
             }
             if (StringUtils.isNotEmpty(map.get(22))) {
@@ -266,7 +273,7 @@ public class Well extends BaseWell<Well> {
             }
             if (StringUtils.isNotEmpty(map.get(27)) && YesOrNo.YesStr.equals(StringUtils.trim(map.get(27).toString()))) {
                 well.setLicence(Integer.parseInt(YesOrNo.Yes));
-            } else{
+            } else {
                 well.setLicence(Integer.parseInt(YesOrNo.No));
             }
             if (StringUtils.isNotEmpty(map.get(28))) {

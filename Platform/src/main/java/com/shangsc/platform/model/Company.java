@@ -597,6 +597,7 @@ public class Company extends BaseCompany<Company> {
         Map<String, Integer> dictStreet = DictData.dao.getDictNameMap(DictCode.Street);
         Map<String, Integer> dictWaterUseType = DictData.dao.getDictNameMap(DictCode.WaterUseType);
         Map<String, Integer> termType = DictData.dao.getDictNameMap(DictCode.Term);
+        Set<String> checkRepeat = new HashSet<>();
         for (int i = 0; i < maps.size(); i++) {
             Company company = new Company();
             Integer company_type = CompanyType.COMPANY;
@@ -608,8 +609,10 @@ public class Company extends BaseCompany<Company> {
             //String innerCode = CodeNumUtil.genInnerCode();
             String innerCode = realCode;
 
-            if (StringUtils.isEmpty(realCode) || hasExistByRealCode(realCode)) {
+            if (StringUtils.isEmpty(realCode) || hasExistByRealCode(realCode) || checkRepeat.contains(realCode)) {
                 continue;
+            } else {
+                checkRepeat.add(realCode);
             }
             String name = null;
             if (StringUtils.isNotEmpty(map.get(1))) {
