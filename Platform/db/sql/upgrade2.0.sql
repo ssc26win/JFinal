@@ -2,6 +2,7 @@
 alter table sys_user add column `inner_code` varchar(50) DEFAULT '' COMMENT '所属公司编码';
 alter table sys_user add column `wx_account` varchar(100) DEFAULT '' COMMENT '微信账号';
 alter table sys_user add column `wx_memo` varchar(100) DEFAULT '' COMMENT '微信账号备用';
+alter table sys_user modify column `token` varchar(255) DEFAULT NULL COMMENT 'cookieid';
 
 insert into dict_type(id, name, remark, update_time) values (16, 'TERM', '周期', 1524777777) ;
 insert into dict_data(dict_type_id, value, seq, update_time, name, remark) values (16, 1, 1, 1524777777,'第一期','第一期');

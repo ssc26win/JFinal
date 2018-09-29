@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>微信定义接口</title>
+    <style type = "text/css">
+        body { text-align: left; font-family:"宋体", arial;margin:0; padding:0; background: #FFF; font-size:14px; color:#000;}
+        a:link {color: #1f3a87; text-decoration:none;}
+        a:visited {color: #83006f;text-decoration:none;}
+        a:hover {color: #bc2931; text-decoration:underline;}
+        a:active {color: #bc2931;}
+        table, table tr td {border:1px solid #0094ff;}
+    </style>
+</head>
+<body>
+<div style="margin-top:10px; color: red;">首次登录接口:
+    <a target="_blank" href="http://localhost/wxapp/log/doLoginWxApp?wxAccount=ssc23win&username=admin&password=123456">
+        http://localhost/wxapp/log/doLoginWxApp?wxAccount=ssc23win&username=admin&password=123456</a>
+</div>
+<div style="margin-top:10px; color: red;">个人信息接口:
+    <a target="_blank" href="http://localhost/wxapp/log/findMemberInfo?wxAccount=ssc23win">
+        http://localhost/wxapp/log/findMemberInfo?wxAccount=ssc23win</a>
+</div>
+<div style="margin-top:10px; color: red;">公告接口:
+    <a target="_blank" href="http://localhost/wxapp/ad/find?wxAccount=ssc23win">
+        http://localhost/wxapp/ad/find?wxAccount=ssc23win</a>
+</div>
+
+<div style="margin-top:10px; color: red;">消息滚动列表接口:
+    <a target="_blank" href="http://localhost/wxapp/msg/findRollList?wxAccount=ssc23win&limit=1">
+        http://localhost/wxapp/msg/findRollList?wxAccount=ssc23win&limit=1</a>
+</div>
+<table style="width: 800px;margin-top: 5px;">
+    <tr><td colspan="3" style="color: #880000">入参</td></tr>
+
+    <tr><td>参数名称</td><td>说明</td><td>备注</td></tr>
+    <tr><td>wxAccount</td><td>微信账号</td><td>必须</td></tr>
+    <tr><td>limit</td><td>所需条数</td><td>可选</td></tr>
+
+    <tr><td colspan="3" style="color: #880000">出参</td></tr>
+
+    <tr><td>参数名称</td><td>说明</td><td>备注</td></tr>
+    <tr><td>id</td><td>id</td><td></td></tr>
+    <tr><td>title</td><td>标题</td><td></td></tr>
+    <tr><td>content</td><td>内容</td><td></td></tr>
+    <tr><td>create_time</td><td>发送时间</td><td></td></tr>
+</table>
+<div style="margin-top:10px; color: red;">消息列表接口:
+    <a target="_blank" href="http://localhost/wxapp/msg/findList?wxAccount=ssc23win&page=1&rows=10">
+        http://localhost/wxapp/msg/findList?wxAccount=ssc23win&page=1&rows=10</a>
+</div>
+<table style="width: 800px;margin-top: 5px;">
+    <tr><td colspan="3" style="color: #880000">入参</td></tr>
+
+    <tr><td>参数名称</td><td>说明</td><td>备注</td></tr>
+    <tr><td>wxAccount</td><td>微信账号</td><td>必须</td></tr>
+    <tr><td>page</td><td>第几页</td><td>可选</td></tr>
+    <tr><td>rows</td><td>每页条数</td><td>可选默认10条</td></tr>
+
+    <tr><td colspan="3" style="color: #880000">出参</td></tr>
+
+    <tr><td>参数名称</td><td>说明</td><td>备注</td></tr>
+    <tr><td>id</td><td>id</td><td></td></tr>
+    <tr><td>title</td><td>标题</td><td></td></tr>
+    <tr><td>content</td><td>内容</td><td></td></tr>
+    <tr><td>create_time</td><td>发送时间</td><td></td></tr>
+</table>
+<div style="margin-top:10px; color: red;">消息详情接口:
+    <a target="_blank" href="http://localhost/wxapp/msg/findById?wxAccount=ssc23win&id=1">
+        http://localhost/wxapp/msg/findById?wxAccount=ssc23win&id=1</a>
+</div>
+</body>
+</html>

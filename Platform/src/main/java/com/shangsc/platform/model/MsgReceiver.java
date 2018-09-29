@@ -160,4 +160,41 @@ public class MsgReceiver extends BaseMsgReceiver<MsgReceiver> {
         }
         return msgReceiversMap;
     }
+
+
+    /********************************* WxApp use  ***************************************/
+
+    /**
+     * @param pageNo
+     * @param pageSize
+     * @param uId
+     * @return
+     */
+    public Page<Message> getWxPageList(int pageNo, int pageSize, Integer uId) {
+        String select = "select tm.id,tm.title,tm.content,tmr.status,tmr.create_time ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_msg_receiver tmr ");
+        sqlExceptSelect.append(" inner join t_message tm on tm.id=tmr.msg_id where tmr.receiver_id=" + uId);
+        sqlExceptSelect.append(" order by tmr.status asc, tmr.create_time desc");
+        return Message.dao.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+
+    /**
+     *
+     * @param uId
+     * @return
+     */
+    public List<Message> getWxRollList(Integer uId, Integer limit) {
+        String select = "select tm.id,tm.title,tm.content,tmr.status,tmr.create_time ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_msg_receiver tmr ");
+        sqlExceptSelect.append(" inner join t_message tm on tm.id=tmr.msg_id where tmr.receiver_id=" + uId);
+        sqlExceptSelect.append(" order by tmr.status asc, tmr.create_time desc ");
+        if (limit != null && limit > 0) {
+            sqlExceptSelect.append(" limit " + limit);
+        } else {
+            sqlExceptSelect.append(" limit 10 ");
+        }
+        List<Message> messages = Message.dao.find(select + sqlExceptSelect.toString());
+        return messages;
+    }
+
 }

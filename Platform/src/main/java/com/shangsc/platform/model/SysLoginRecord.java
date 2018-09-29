@@ -57,4 +57,17 @@ public class SysLoginRecord extends BaseSysLoginRecord<SysLoginRecord> {
         }
         return false;
     }
+
+
+    /*********************************WxApp use***************************************/
+    /**
+     * WxApp 判断当天是否超出登陆出错次数
+     */
+    public boolean wxhasOverLoginErrTimes(Integer sysUid) {
+        SysLoginRecord sysLoginRecord = getLastSysLoginRecord(sysUid);
+        if (sysLoginRecord != null && sysLoginRecord.getLoginErrTimes() >= 10) {
+            return true;
+        }
+        return false;
+    }
 }

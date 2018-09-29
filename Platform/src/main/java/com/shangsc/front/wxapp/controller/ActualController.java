@@ -66,14 +66,14 @@ public class ActualController extends BaseController {
                 companyName = data.get("companyName");
             }
             JSONObject object = new JSONObject();
-            object.put("表计地址：", data.get("meter_address"));
-            object.put("净用水量：", data.get("net_water"));
-            object.put("累计用水量：", data.get("sum_water"));
-            object.put("最新上报时间：", data.get("write_time"));
+            object.put("meter_address", data.get("meter_address"));
+            object.put("net_water", data.get("net_water"));
+            object.put("sum_water", data.get("sum_water"));
+            object.put("write_time", data.get("write_time"));
             array.add(object);
         }
-        result.put("单位名称：", companyName);
-        result.put("用水信息：", array);
+        result.put("companyName", companyName);
+        result.put("waterUseInfo", array);
         renderJson(result);
     }
 }
