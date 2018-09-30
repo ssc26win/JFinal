@@ -8,6 +8,7 @@ import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseLawRecord;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,12 +29,12 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
     public InvokeResult save(Long id, String title, String content, Integer status, String innerCode, String userName) {
         if (null != id && id > 0L) {
             LawRecord lawRecord = this.findById(id);
-            lawRecord = setProp(lawRecord, title, content, status, innerCode, userName);
+            lawRecord = setProp(lawRecord, title, content, status, innerCode, null, null);
             lawRecord.setUpdateTime(new Date());
             lawRecord.update();
         } else {
             LawRecord lawRecord = new LawRecord();
-            lawRecord = setProp(lawRecord, title, content, status, innerCode, userName);
+            lawRecord = setProp(lawRecord, title, content, status, innerCode, null, null);
             lawRecord.setCreateUser(userName);
             lawRecord.setCreateTime(new Date());
             lawRecord.save();
@@ -45,10 +46,13 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
         Db.update("update t_law_record set status=0 where 1=1");
     }
 
-    private LawRecord setProp(LawRecord lawRecord, String title, String content, Integer status, String innerCode, String userName) {
+    private LawRecord setProp(LawRecord lawRecord, String title, String content, Integer status, String innerCode,
+                              BigDecimal longitude, BigDecimal latitude) {
         lawRecord.setTitle(title);
         lawRecord.setContent(content);
         lawRecord.setStatus(status);
+        lawRecord.setLongitude(longitude);
+        lawRecord.setLatitude(latitude);
         lawRecord.setMemo("");
         lawRecord.setInnerCode(innerCode);
         return lawRecord;
@@ -74,6 +78,45 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
+        }
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
+
+    /**********************************
+     * WxApp use
+     ***************************************/
+
+    public InvokeResult saveWx(Long id, String title, String content, Integer status,
+                               BigDecimal longitude, BigDecimal latitude,
+                               String innerCode, String userName) {
+        if (null != id && id > 0L) {
+            LawRecord lawRecord = this.findById(id);
+            lawRecord = setProp(lawRecord, title, content, status, innerCode, longitude, latitude);
+            lawRecord.setUpdateTime(new Date());
+            lawRecord.update();
+        } else {
+            LawRecord lawRecord = new LawRecord();
+            lawRecord = setProp(lawRecord, title, content, status, innerCode, longitude, latitude);
+            lawRecord.setCreateUser(userName);
+            lawRecord.setCreateTime(new Date());
+            lawRecord.save();
+            id = lawRecord.getLong("id");
+        }
+        return InvokeResult.success(id);
+    }
+
+    public Page<LawRecord> findWxList(int page, int rows, String keyword, String wxInnerCode, Integer userId) {
+        String select = " select tlr.* ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_law_record tlr where 1=1 ");
+
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (tlr.title like '%" + StringUtils.trim(keyword) + "%' or tlr.content like '%" + keyword + "%')");
+        }
+        if (StringUtils.isNotEmpty(wxInnerCode)) {
+            sqlExceptSelect.append(" and tlr.inner_code='" + StringUtils.trim(wxInnerCode) + "' ");
+        }
+        if (userId != null) {
+            sqlExceptSelect.append(" and tlr.user_id=" + userId);
         }
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }

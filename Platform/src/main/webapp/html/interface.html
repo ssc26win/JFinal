@@ -5,32 +5,34 @@
     <title>微信定义接口</title>
     <style type = "text/css">
         body { text-align: left; font-family:"宋体", arial;margin:0; padding:0; background: #FFF; font-size:14px; color:#000;}
+        div {margin-top:10px; color: red;}
         a:link {color: #1f3a87; text-decoration:none;}
         a:visited {color: #83006f;text-decoration:none;}
         a:hover {color: #bc2931; text-decoration:underline;}
         a:active {color: #bc2931;}
         table, table tr td {border:1px solid #0094ff;}
+        table {width: 800px;margin-top: 5px;}
     </style>
 </head>
 <body>
-<div style="margin-top:10px; color: red;">首次登录接口:
+<div>首次登录接口:
     <a target="_blank" href="http://jieshui.satcom.cc:8081/wxapp/log/doLoginWxApp?wxAccount=ssc23win&username=admin&password=123456">
         http://jieshui.satcom.cc:8081/wxapp/log/doLoginWxApp?wxAccount=ssc23win&username=admin&password=123456</a>
 </div>
-<div style="margin-top:10px; color: red;">个人信息接口:
+<div>个人信息接口:
     <a target="_blank" href="http://jieshui.satcom.cc:8081/wxapp/log/findMemberInfo?wxAccount=ssc23win">
         http://jieshui.satcom.cc:8081/wxapp/log/findMemberInfo?wxAccount=ssc23win</a>
 </div>
-<div style="margin-top:10px; color: red;">公告接口:
+<div>公告接口:
     <a target="_blank" href="http://jieshui.satcom.cc:8081/wxapp/ad/find?wxAccount=ssc23win">
         http://jieshui.satcom.cc:8081/wxapp/ad/find?wxAccount=ssc23win</a>
 </div>
 
-<div style="margin-top:10px; color: red;">消息滚动列表接口:
+<div>消息滚动列表接口:
     <a target="_blank" href="http://jieshui.satcom.cc:8081/wxapp/msg/findRollList?wxAccount=ssc23win&limit=1">
         http://jieshui.satcom.cc:8081/wxapp/msg/findRollList?wxAccount=ssc23win&limit=1</a>
 </div>
-<table style="width: 800px;margin-top: 5px;">
+<table>
     <tr><td colspan="3" style="color: #880000">入参</td></tr>
 
     <tr><td>参数名称</td><td>说明</td><td>备注</td></tr>
@@ -45,11 +47,11 @@
     <tr><td>content</td><td>内容</td><td></td></tr>
     <tr><td>create_time</td><td>发送时间</td><td></td></tr>
 </table>
-<div style="margin-top:10px; color: red;">消息列表接口:
+<div>消息列表接口:
     <a target="_blank" href="http://jieshui.satcom.cc:8081/wxapp/msg/findList?wxAccount=ssc23win&page=1&rows=10">
         http://jieshui.satcom.cc:8081/wxapp/msg/findList?wxAccount=ssc23win&page=1&rows=10</a>
 </div>
-<table style="width: 800px;margin-top: 5px;">
+<table>
     <tr><td colspan="3" style="color: #880000">入参</td></tr>
 
     <tr><td>参数名称</td><td>说明</td><td>备注</td></tr>
@@ -65,9 +67,67 @@
     <tr><td>content</td><td>内容</td><td></td></tr>
     <tr><td>create_time</td><td>发送时间</td><td></td></tr>
 </table>
-<div style="margin-top:10px; color: red;">消息详情接口:
+<div>消息详情接口:
     <a target="_blank" href="http://jieshui.satcom.cc:8081/wxapp/msg/findById?wxAccount=ssc23win&id=1">
         http://jieshui.satcom.cc:8081/wxapp/msg/findById?wxAccount=ssc23win&id=1</a>
+</div>
+<div>执法上报接口:
+    <a target="_blank" href="http://localhost/wxapp/law/save?wxAccount=ssc23win">
+        http://localhost/wxapp/law/findList?wxAccount=ssc23win</a>
+</div>
+<table>
+    <tr><td colspan="3" style="color: #880000">入参</td></tr>
+    <tr><td>参数名称</td><td>说明</td><td>备注</td></tr>
+    <tr><td>wxAccount</td><td>微信账号</td><td>必须</td></tr>
+    <tr><td>title</td><td>标题</td><td>必须</td></tr>
+    <tr><td>content</td><td>内容</td><td>必须</td></tr>
+    <tr><td>longitude</td><td>经度</td><td>必须</td></tr>
+    <tr><td>latitude</td><td>纬度</td><td>必须</td></tr>
+    <tr><td>imagefileList</td><td>拍照图片</td><td>必须</td></tr>
+</table>
+<div>执法上报列表接口:
+    <a target="_blank" href="http://localhost/wxapp/law/findList?wxAccount=ssc23win">
+        http://localhost/wxapp/law/findList?wxAccount=ssc23win</a>
+</div>
+<div>执法上报详情接口:
+    <a target="_blank" href="http://localhost/wxapp/law/findById?wxAccount=ssc23win&id=1">
+        http://localhost/wxapp/law/findById?wxAccount=ssc23win&id=1</a>
+</div>
+<div>执法上报记录删除接口:
+    <a target="_blank" href="http://localhost/wxapp/law/deleteLaw?wxAccount=ssc23win&id=1">
+        http://localhost/wxapp/law/deleteLaw?wxAccount=ssc23win&id=1</a>
+</div>
+<div>执法上报记录删除图片接口:
+    <a target="_blank" href="http://localhost/wxapp/law/deleteImg?wxAccount=ssc23win&id=1&imgId=1">
+        http://localhost/wxapp/law/deleteImg?wxAccount=ssc23win&id=1&imgId=1</a>
+</div>
+<div>单位列表接口:
+    <a target="_blank" href="http://localhost/wxapp/company/findList?wxAccount=ssc23win&name=&companyType=">
+        http://localhost/wxapp/company/findList?wxAccount=ssc23win&name=&companyType=</a>
+</div>
+<div>单位下水表表计地址接口:
+    <a target="_blank" href="http://localhost/wxapp/company/findMeterList?wxAccount=ssc23win&name=&companyType=&innerCode=">
+        http://localhost/wxapp/company/findMeterList?wxAccount=ssc23win</a>
+</div>
+<div>实时数据接口:
+    <a target="_blank" href="http://localhost/wxapp/actual/findLatestData?wxAccount=ssc23win">
+        http://localhost/wxapp/actual/findLatestData?wxAccount=ssc23win</a>
+</div>
+<div>读数查询接口:
+    <a target="_blank" href="http://localhost/wxapp/actual/readSearchList?wxAccount=ssc23win&meterAddress=">
+        http://localhost/wxapp/actual/findLatestData?wxAccount=ssc23win</a>
+</div>
+<div>日用水量查询接口:
+    <a target="_blank" href="http://localhost/wxapp/actual/daily?wxAccount=ssc23win">
+        http://localhost/wxapp/actual/daily?wxAccount=ssc23win</a>
+</div>
+<div>月用水量查询接口:
+    <a target="_blank" href="http://localhost/wxapp/actual/month?wxAccount=ssc23win">
+        http://localhost/wxapp/actual/month?wxAccount=ssc23win</a>
+</div>
+<div>年用水量查询接口:
+    <a target="_blank" href="http://localhost/wxapp/actual/year?wxAccount=ssc23win">
+        http://localhost/wxapp/actual/year?wxAccount=ssc23win</a>
 </div>
 </body>
 </html>

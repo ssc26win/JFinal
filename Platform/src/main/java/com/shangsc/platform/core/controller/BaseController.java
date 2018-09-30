@@ -101,6 +101,13 @@ public abstract class BaseController extends Controller {
                 + wxAccount + "' and token <>'' and token is not null");
         return sysUser;
     }
+
+    public String getWxInnerCode() {
+        String wxAccount = this.getPara("wxAccount");
+        SysUser sysUser = SysUser.me.findFirst("select * from sys_user where wx_account='"
+                + wxAccount + "' and token <>'' and token is not null");
+        return sysUser.getInnerCode();
+    }
 }
 
 

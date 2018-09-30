@@ -317,7 +317,7 @@ public class ActualData extends BaseActualData<ActualData> {
     public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
                                            String name, String innerCode, Integer street, Integer watersType, String meterAttr,
                                            String meterAddress, String type) {
-		/*select tad.*,
+        /*select tad.*,
 		tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,
 				date_format(tad.write_time, '%Y-%m') as months,sum(tad.net_water) as monthTotal
@@ -705,8 +705,8 @@ public class ActualData extends BaseActualData<ActualData> {
     }
 
     public Page<ActualData> getCPAMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-                                           String name, String innerCode, Integer street, Integer watersType, String meterAttr,
-                                           String meterAddress, String type) {
+                                              String name, String innerCode, Integer street, Integer watersType, String meterAttr,
+                                              String meterAddress, String type) {
 		/*select tad.*,
 		tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,
@@ -792,8 +792,8 @@ public class ActualData extends BaseActualData<ActualData> {
     }
 
     public Page<ActualData> getCPAYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year, String name,
-                                          String innerCode, Integer street, Integer watersType, String meterAttr,
-                                          String meterAddress, String type) {
+                                             String innerCode, Integer street, Integer watersType, String meterAttr,
+                                             String meterAddress, String type) {
 		/*select
 		tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address,
@@ -872,5 +872,71 @@ public class ActualData extends BaseActualData<ActualData> {
         logger.info(sqlExceptSelect.toString());
         logger.info("--- 年用水量sql结束 ---");
         return this.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+
+    /********************************** WxApp use ***************************************/
+
+    /**
+     * @return
+     */
+    public List<Record> getWxDailyActualData(String wxInnerCode) {
+        Map<String, String> map = ToolDateTime.getBefore30DateTime();
+        String start = map.get(MonthCode.warn_start_date);
+        String end = map.get(MonthCode.warn_end_date);
+        String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+                " where t.inner_code = '" + wxInnerCode + "'" +
+                " and t.write_time >= '" + start + "' " +
+                " and t.write_time < '" + end + "' " +
+                " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
+        return Db.find(sql);
+    }
+
+    public List<Record> getWxMonthActualData(String wxInnerCode) {
+        Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
+        String start = map.get(MonthCode.warn_start_date);
+        String end = map.get(MonthCode.warn_end_date);
+        String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+                " where t.inner_code = '" + wxInnerCode + "'" +
+                " and t.write_time >= '" + start + "' " +
+                " and t.write_time < '" + end + "' " +
+                " GROUP BY date_format(t.write_time, '%Y-%m')";
+        return Db.find(sql);
+    }
+
+    public List<ActualData> findWxReadSeach(Date startTime, Date endTime, String innerCode, String meterAddress, String companyType) {
+        String select = " select twm.*,tc.name,tc.real_code,tc.address,tc.street,tc.water_unit,tc.county,tc.company_type,tm.waters_type,tm.meter_attr," +
+                "tm.meter_address,tm.meter_num,tm.line_num ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data twm inner join " +
+                " t_company tc on twm.inner_code=tc.inner_code " +
+                " left join t_water_meter tm on twm.meter_address=tm.meter_address");
+        sqlExceptSelect.append(" where 1=1 ");
+        if (startTime != null) {
+            sqlExceptSelect.append(" and twm.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "'");
+        }
+        if (endTime != null) {
+            sqlExceptSelect.append(" and twm.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "'");
+        }
+        if (StringUtils.isNotEmpty(meterAddress)) {
+            meterAddress = StringUtils.trim(meterAddress);
+            if (StringUtils.isNotEmpty(meterAddress)) {
+                sqlExceptSelect.append(" and tm.meter_address like '%" + meterAddress + "%'");
+            }
+        }
+        if (StringUtils.isNotEmpty(companyType)) {
+            companyType = StringUtils.trim(companyType);
+            if (StringUtils.isNotEmpty(companyType)) {
+                sqlExceptSelect.append(" and tc.company_type=" + companyType + " ");
+            }
+        }
+
+        if (StringUtils.isNotEmpty(innerCode)) {
+            innerCode = StringUtils.trim(innerCode);
+            if (StringUtils.isNotEmpty(innerCode)) {
+                sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
+            }
+        }
+        sqlExceptSelect.append(" group by twm.write_time ");
+        sqlExceptSelect.append(" order by twm.write_time asc ");
+        return this.find(select + sqlExceptSelect.toString());
     }
 }

@@ -81,4 +81,11 @@ public class Image extends BaseImage<Image> {
         }
         return msgReceiversMap;
     }
+
+    /********************************** WxApp use ***************************************/
+
+    public InvokeResult deleteByRelaIdWx(Long relaId) {
+        int delete = this.delete(CommonUtils.getConditions(new Condition("rela_id", Operators.EQ, relaId)));
+        return InvokeResult.success();
+    }
 }

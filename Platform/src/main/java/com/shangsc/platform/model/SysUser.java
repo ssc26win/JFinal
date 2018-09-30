@@ -335,10 +335,14 @@ public class SysUser extends BaseSysUser<SysUser> {
         return InvokeResult.success(JsonKit.toJson(ztreeViews));
     }
 
-    /*********************************
-     * WxApp use
-     ***************************************/
+    /********************************** WxApp use ***************************************/
 
+    /**
+     *
+     * @param userId
+     * @param wxAccount
+     * @param token
+     */
     public void updateByWxLogin(Integer userId, String wxAccount, String token) {
         Db.update("update sys_user set wx_account='" + wxAccount + "',token='" + token + "' where id=" + userId);
     }

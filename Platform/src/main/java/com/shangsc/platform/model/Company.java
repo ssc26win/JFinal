@@ -754,4 +754,20 @@ public class Company extends BaseCompany<Company> {
         }
         return result;
     }
+
+    /*********************************** WxApp use ***************************************/
+
+    public Page<Company> findWxList(int page, int rows, String keyword, String companyType) {
+        String select = "select c.*, (select count(net_water) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
+        sqlExceptSelect.append(" where 1=1 ");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+                    + "' or contact='" + StringUtils.trim(keyword) + "') ");
+        }
+        if (StringUtils.isNotEmpty(companyType)) {
+            sqlExceptSelect.append(" and company_type=" + companyType);
+        }
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
 }
