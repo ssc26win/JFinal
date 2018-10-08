@@ -40,6 +40,7 @@ public class ActualController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     public void findLatestData() {
+        SysUser byWxAccount = findByWxAccount();
         String companyName = getPara("companyName");
         Company first = Company.me.findFirst("select * from t_company where name=?", companyName);
         if (StringUtils.isNotEmpty(companyName) && first == null) {
@@ -51,6 +52,9 @@ public class ActualController extends BaseController {
         String innerCode = "";
         if (first != null) {
             innerCode = first.getInnerCode();
+        }
+        if (StringUtils.isEmpty(innerCode)) {
+            innerCode = byWxAccount.getInnerCode();
         }
         String meterAddress = getPara("meterAddress");
 
@@ -91,7 +95,7 @@ public class ActualController extends BaseController {
     }
 
     @Clear(AuthorityInterceptor.class)
-    public void findCompanyDaily() {
+    public void daily() {
         SysUser byWxAccount = findByWxAccount();
         if (byWxAccount == null) {
             this.renderJson(InvokeResult.failure("未找到该微信账号"));
@@ -124,7 +128,7 @@ public class ActualController extends BaseController {
     }
 
     @Clear(AuthorityInterceptor.class)
-    public void findCompanyMonth() {
+    public void month() {
         SysUser byWxAccount = findByWxAccount();
         if (byWxAccount == null) {
             this.renderJson(InvokeResult.failure("未找到该微信账号"));

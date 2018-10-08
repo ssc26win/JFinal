@@ -551,7 +551,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
                 " where t.inner_code in (select inner_code from t_company where company_type=1)" +
                 " and t.write_time >= '" + start + "' " +
-                " and t.write_time < '" + end + "' " +
+                " and t.write_time <= '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
         return Db.find(sql);
     }
@@ -575,7 +575,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
                 " where t.inner_code in (select inner_code from t_company where company_type=2)" +
                 " and t.write_time >= '" + start + "' " +
-                " and t.write_time < '" + end + "' " +
+                " and t.write_time <= '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
         return Db.find(sql);
     }
@@ -600,7 +600,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
                 " where t.inner_code = '" + globalInnerCode + "'" +
                 " and t.write_time >= '" + start + "' " +
-                " and t.write_time < '" + end + "' " +
+                " and t.write_time <= '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
         return Db.find(sql);
     }
@@ -886,7 +886,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
                 " where t.inner_code = '" + wxInnerCode + "'" +
                 " and t.write_time >= '" + start + "' " +
-                " and t.write_time < '" + end + "' " +
+                " and t.write_time <= '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
         return Db.find(sql);
     }
@@ -898,7 +898,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
                 " where t.inner_code = '" + wxInnerCode + "'" +
                 " and t.write_time >= '" + start + "' " +
-                " and t.write_time < '" + end + "' " +
+                " and t.write_time <= '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
         return Db.find(sql);
     }

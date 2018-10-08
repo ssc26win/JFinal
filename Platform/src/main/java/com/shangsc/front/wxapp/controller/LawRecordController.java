@@ -65,11 +65,13 @@ public class LawRecordController extends BaseController {
             this.renderJson(InvokeResult.failure("id不存在"));
         }
         LawRecord lawRecord = LawRecord.dao.findById(this.getParaToLong("id"));
-        List<Image> images = Image.dao.find("select * from t_image where rela_id=? and rela_type=?", lawRecord.getId(), "t_law_record");
+        if (sysUser != null && sysUser.getId() != lawRecord.getUserId().intValue()) {
+            this.renderJson(InvokeResult.failure("id不存在"));
+        }
+        List<Image> images = Image.dao.find("select * from t_image where rela_id=? and rela_type=? ", lawRecord.getId(), "t_law_record");
         lawRecord.put("images", images);
         this.renderJson(lawRecord);
     }
-
 
     @Clear(AuthorityInterceptor.class)
     public void save() {
@@ -85,7 +87,7 @@ public class LawRecordController extends BaseController {
         String content = this.getPara("content");
         BigDecimal longitude = StringUtils.isEmpty(getPara("longitude")) ? null : CodeNumUtil.getBigDecimal(getPara("longitude"), 6);
         BigDecimal latitude = StringUtils.isEmpty(getPara("latitude")) ? null : CodeNumUtil.getBigDecimal(getPara("latitude"), 6);
-        InvokeResult result = LawRecord.dao.saveWx(id, title, content, null, longitude, latitude, sysUser.getInnerCode(), sysUser.getName());
+        InvokeResult result = LawRecord.dao.saveWx(id, title, content, null, sysUser.getId(), longitude, latitude, sysUser.getInnerCode(), sysUser.getName());
         Long relaId = Long.parseLong(result.getData().toString());
 
         List<UploadFile> flist = this.getFiles("/temp", 1024 * 1024 * 100);

@@ -77,7 +77,7 @@ public class LawRecordsController extends BaseController {
         String title = this.getPara("title");
         String content = this.getPara("content");
         Integer status = this.getParaToInt("status");
-        InvokeResult result = LawRecord.dao.save(id, title, content, status, sysUser.getInnerCode(), sysUser.getName());
+        InvokeResult result = LawRecord.dao.save(id, title, content, status, sysUser.getId(), sysUser.getInnerCode(), sysUser.getName());
         this.renderJson(result);
     }
 

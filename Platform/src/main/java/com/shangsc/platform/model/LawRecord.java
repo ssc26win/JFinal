@@ -26,15 +26,15 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
         this.globalInnerCode = globalInnerCode;
     }
 
-    public InvokeResult save(Long id, String title, String content, Integer status, String innerCode, String userName) {
+    public InvokeResult save(Long id, String title, String content, Integer status, Integer uId, String innerCode, String userName) {
         if (null != id && id > 0L) {
             LawRecord lawRecord = this.findById(id);
-            lawRecord = setProp(lawRecord, title, content, status, innerCode, null, null);
+            lawRecord = setProp(lawRecord, title, content, status, uId, innerCode, null, null);
             lawRecord.setUpdateTime(new Date());
             lawRecord.update();
         } else {
             LawRecord lawRecord = new LawRecord();
-            lawRecord = setProp(lawRecord, title, content, status, innerCode, null, null);
+            lawRecord = setProp(lawRecord, title, content, status, uId,innerCode, null, null);
             lawRecord.setCreateUser(userName);
             lawRecord.setCreateTime(new Date());
             lawRecord.save();
@@ -46,7 +46,7 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
         Db.update("update t_law_record set status=0 where 1=1");
     }
 
-    private LawRecord setProp(LawRecord lawRecord, String title, String content, Integer status, String innerCode,
+    private LawRecord setProp(LawRecord lawRecord, String title, String content, Integer status, Integer uId, String innerCode,
                               BigDecimal longitude, BigDecimal latitude) {
         lawRecord.setTitle(title);
         lawRecord.setContent(content);
@@ -54,6 +54,7 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
         lawRecord.setLongitude(longitude);
         lawRecord.setLatitude(latitude);
         lawRecord.setMemo("");
+        lawRecord.setUserId(uId);
         lawRecord.setInnerCode(innerCode);
         return lawRecord;
     }
@@ -86,17 +87,17 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
      * WxApp use
      ***************************************/
 
-    public InvokeResult saveWx(Long id, String title, String content, Integer status,
+    public InvokeResult saveWx(Long id, String title, String content, Integer status, Integer uId,
                                BigDecimal longitude, BigDecimal latitude,
                                String innerCode, String userName) {
         if (null != id && id > 0L) {
             LawRecord lawRecord = this.findById(id);
-            lawRecord = setProp(lawRecord, title, content, status, innerCode, longitude, latitude);
+            lawRecord = setProp(lawRecord, title, content, status, uId, innerCode, longitude, latitude);
             lawRecord.setUpdateTime(new Date());
             lawRecord.update();
         } else {
             LawRecord lawRecord = new LawRecord();
-            lawRecord = setProp(lawRecord, title, content, status, innerCode, longitude, latitude);
+            lawRecord = setProp(lawRecord, title, content, status, uId, innerCode, longitude, latitude);
             lawRecord.setCreateUser(userName);
             lawRecord.setCreateTime(new Date());
             lawRecord.save();
