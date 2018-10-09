@@ -31,7 +31,6 @@ import java.util.Map;
  */
 public class CompanyDailyController extends BaseController {
 
-    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/statis/cpadaily"})
     public void index() {
         String time = this.getPara("time");
@@ -46,7 +45,6 @@ public class CompanyDailyController extends BaseController {
         render("company_daily_use.jsp");
     }
 
-    @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/statis/cpadaily"})
     public void getListData() {
         ActualData.me.setGlobalInnerCode(getInnerCode());

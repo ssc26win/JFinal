@@ -24,6 +24,7 @@
         <a class="menu-toggler" id="menu-toggler" href="#">
             <span class="menu-text"></span>
         </a>
+
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">
                 <script type="text/javascript">
@@ -39,7 +40,8 @@
                         <a href="#">首页</a>
                     </li>
                     <li class="active">控制台</li>
-                </ul><!-- .breadcrumb -->
+                </ul>
+                <!-- .breadcrumb -->
 
                 <%--<div class="nav-search" id="nav-search">
                     <form class="form-search">
@@ -55,29 +57,32 @@
             <div class="page-content">
 
 
-                <jsp:include page="charts/circle_chart.jsp" flush="true"></jsp:include>
+                <%--<jsp:include page="charts/circle_chart.jsp" flush="true"></jsp:include>--%>
+
+                <div class="row" style="text-align: center"><h1 style="color: red">${title}</h1></div>
+
+                <div class="row" style="font-size: 18px; text-indent:2em; color: green; margin: 40px;"><p>公告内容：${content}</p></div>
+
+                <div class="row" style="font-size: 18px; text-indent:2em; color: blue; margin: 40px;"><p>发布时间：${createTime}</p></div>
+            </div>
+            <!-- /.page-content -->
 
 
-            </div><!-- /.page-content -->
+        </div>
+        <!-- /.main-content -->
 
+    </div>
+    <!-- /.main-container-inner -->
 
-
-
-
-        </div><!-- /.main-content -->
-
-    </div><!-- /.main-container-inner -->
-
-   <%-- <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
-        <i class="icon-double-angle-up icon-only bigger-110"></i>
-    </a>--%>
+    <%-- <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+         <i class="icon-double-angle-up icon-only bigger-110"></i>
+     </a>--%>
 </div>
 
 
 </div><!-- /.main-container -->
 <!-- basic scripts -->
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true"/>
-
 </body>
 </html>
 

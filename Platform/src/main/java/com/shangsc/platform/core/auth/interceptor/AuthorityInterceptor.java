@@ -39,7 +39,7 @@ public class AuthorityInterceptor implements Interceptor {
                         }
                         if (!sysUser.getPermissionSets().contains(values[0]) && !sysUser.isAdmin()) {
                             hasPermissions = false;
-                            inv.getController().renderJson("没有权限");
+                            inv.getController().renderJson("对不起，您访问的资源没有权限");
                         }
                     } else {
                         if (requiresPermissions.logical().equals(Logical.AND)) {

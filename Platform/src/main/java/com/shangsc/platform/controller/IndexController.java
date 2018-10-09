@@ -16,6 +16,7 @@
 package com.shangsc.platform.controller;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
@@ -29,6 +30,7 @@ import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.util.MyDigestUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.mail.MailKit;
+import com.shangsc.platform.model.Ad;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.SysLoginRecord;
 import com.shangsc.platform.model.SysUser;
@@ -55,6 +57,12 @@ public class IndexController extends Controller {
     }
 
     public void home() {
+        Ad ad = Ad.dao.findFirst("select * from t_ad where status=1");
+
+        this.setAttr("title", ad.getTitle());
+        this.setAttr("content", ad.getContent());
+        this.setAttr("createTime", ad.getCreateTime());
+
         render("home.jsp");
     }
 

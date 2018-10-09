@@ -135,20 +135,20 @@
                     <div id="containerMeter" style="margin: 0 auto"></div>
                 </div>
             </div>
-            <div class="adbody" style="display: none;">
+            <%--<div class="adbody" style="display: none;">
                 <div class="tipfloat" style="display: block;">
                     <div class="tiphead"><strong id="adtitle"></strong><span title="关闭" class="close">关闭</span></div>
                     <div class="ranklist">
                         <p style="text-indent:2em;" id="adcontent"></p>
                     </div>
                 </div>
-            </div>
+            </div>--%>
         </div>
     </div>
 </div>
 <script language="JavaScript">
     $(document).ready(function () {
-        $.get("${context_path}/chart/metersByTerm", function (data) {
+        $.get("${context_path}/chart/circleStatus/metersByTerm", function (data) {
             var chart1 = {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -194,7 +194,7 @@
             $('#containerMetersTerm').highcharts(json1);
         })
 
-        $.get("${context_path}/chart/companiesByTerm", function (data) {
+        $.get("${context_path}/chart/circleStatus/companiesByTerm", function (data) {
             var chart1 = {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
@@ -238,7 +238,7 @@
             json1.credits = credits;
             $('#containerCompaniesTerm').highcharts(json1);
         })
-        $.get("${context_path}/chart/meter", function (data) {
+        $.get("${context_path}/chart/circleStatus/meter", function (data) {
             var total = data.total;
             var normalTotal = data.normalTotal;
             var exptionTotal = data.exptionTotal;
@@ -307,7 +307,7 @@
             $('#containerMeter').highcharts(json1);
         })
 
-        $.get("${context_path}/chart/company", function (data) {
+        $.get("${context_path}/chart/circleStatus/company", function (data) {
             var total2 = data.total;
             var warnTotal2 = data.warnTotal;
             var normalTotal2 = data.normalTotal;
@@ -384,7 +384,7 @@
             });
         });
     });
-    function getMsgData() {
+    /*function getMsgData() {
         var submitData = {};
         $.post("${context_path}/chart/getNewsMsg", submitData, function (data) {
             var title = data.title;
@@ -399,7 +399,7 @@
                 $(".adbody").show();
             }
         }, "json");
-    }
+    }*/
     $(function () {
         getMsgData();
     })

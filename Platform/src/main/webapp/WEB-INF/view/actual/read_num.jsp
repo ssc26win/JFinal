@@ -77,9 +77,9 @@
                 <div class="col-xs-12" style="margin-bottom: 5px;">
                     <div class="row-fluid" style="margin-bottom: 5px;">
                         <div class="span12 control-group">
-                            <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
-                            <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
-                            <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
+                            <jc:button className="btn btn-primary" id="btn-add" textName="添加" permission="/statis/actual/save"/>
+                            <jc:button className="btn btn-info" id="btn-edit" textName="编辑" permission="/statis/actual/save"/>
+                            <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除" permission="/statis/actual/delete"/>
                         </div>
                     </div>
                     <!-- PAGE CONTENT BEGINS -->

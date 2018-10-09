@@ -132,7 +132,7 @@
 </div>
 <script language="JavaScript">
     $(document).ready(function () {
-        $.get("${context_path}/chart/getSupplyDay", function (data) {
+        $.get("${context_path}/chart/supplyWaterLine/getSupplyDay", function (data) {
             var title = {
                 text: ''
             };
@@ -203,7 +203,7 @@
             $('#containerSupplyD').highcharts(json);
         });
 
-        $.get("${context_path}/chart/getSupplyMonth", function (data) {
+        $.get("${context_path}/chart/supplyWaterLine/getSupplyMonth", function (data) {
             var title = {
                 text: ''
             };

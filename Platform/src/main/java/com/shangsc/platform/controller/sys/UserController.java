@@ -51,8 +51,11 @@ public class UserController extends BaseController {
     @RequiresPermissions(value = {"/sys/user"})
     public void getListData() {
         SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
+        if ("admin".equals(sysUser.getName())) {
+
+        }
         String keyword = this.getPara("name");
-        Page<SysUser> pageInfo = SysUser.me.getSysUserPage(getPage(), this.getRows(), keyword, sysUser.getInnerCode(), this.getOrderbyStr());
+        Page<SysUser> pageInfo = SysUser.me.getSysUserPage(getPage(), this.getRows(), keyword, "", this.getOrderbyStr());
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
     }
 

@@ -24,6 +24,7 @@ import java.lang.annotation.Target;
 
 /**
  * 需要拥有资源的访问权限时，才能执行被该注解标注的方法。
+ *
  * @author ssc
  */
 @Target({ElementType.TYPE, ElementType.METHOD})

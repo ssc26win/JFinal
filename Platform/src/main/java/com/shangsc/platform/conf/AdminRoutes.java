@@ -16,9 +16,9 @@
 package com.shangsc.platform.conf;
 
 import com.jfinal.config.Routes;
-import com.shangsc.platform.controller.ChartController;
 import com.shangsc.platform.controller.ImageController;
 import com.shangsc.platform.controller.IndexController;
+import com.shangsc.platform.controller.MapController;
 import com.shangsc.platform.controller.actual.ActualController;
 import com.shangsc.platform.controller.actual.ActuallogController;
 import com.shangsc.platform.controller.actual.ReadnumStatisController;
@@ -28,6 +28,10 @@ import com.shangsc.platform.controller.basic.CompanyController;
 import com.shangsc.platform.controller.basic.MeterController;
 import com.shangsc.platform.controller.basic.WaterIndexController;
 import com.shangsc.platform.controller.basic.WellController;
+import com.shangsc.platform.controller.chart.CircleStatusController;
+import com.shangsc.platform.controller.chart.CompanyWaterController;
+import com.shangsc.platform.controller.chart.SupplyWaterController;
+import com.shangsc.platform.controller.chart.UseWaterController;
 import com.shangsc.platform.controller.msgs.AdController;
 import com.shangsc.platform.controller.msgs.MessageController;
 import com.shangsc.platform.controller.msgs.MsgReceiverController;
@@ -80,8 +84,12 @@ public class AdminRoutes extends Routes {
         add("/statis/cpamonth", CompanyMonthController.class, "/WEB-INF/view/statis");
         add("/statis/cpayear", CompanyYearController.class, "/WEB-INF/view/statis");
 
+        add("/map/baidu", MapController.class, "/WEB-INF/view/charts");
 
-        add("/chart", ChartController.class, "/WEB-INF/view/charts");
+        add("/chart/circleStatus", CircleStatusController.class, "/WEB-INF/view/charts");
+        add("/chart/companyWaterLine", CompanyWaterController.class, "/WEB-INF/view/charts");
+        add("/chart/supplyWaterLine", SupplyWaterController.class, "/WEB-INF/view/charts");
+        add("/chart/useWaterLine", UseWaterController.class, "/WEB-INF/view/charts");
 
         add("/report/street", ReportStreetController.class, "/WEB-INF/view/report");
         add("/report/daily", ReportDailyController.class, "/WEB-INF/view/report");

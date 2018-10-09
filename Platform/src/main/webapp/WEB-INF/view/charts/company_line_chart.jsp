@@ -132,7 +132,7 @@
 </div>
 <script language="JavaScript">
   $(document).ready(function () {
-    $.get("${context_path}/chart/getCPADaily", function (data) {
+    $.get("${context_path}/chart/companyWaterLine/getCPADaily", function (data) {
       var title = {
         text: ''
       };
@@ -204,7 +204,7 @@
       $('#companyUseD').highcharts(json);
     });
 
-    $.get("${context_path}/chart/getCPAMonth", function (data) {
+    $.get("${context_path}/chart/companyWaterLine/getCPAMonth", function (data) {
       var title = {
         text: ''
       };

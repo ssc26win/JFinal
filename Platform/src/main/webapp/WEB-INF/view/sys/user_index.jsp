@@ -130,7 +130,7 @@
             ],
             viewrecords: true,
             height: 560,
-            rowNum: 10,
+            rowNum: 20,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
             recordtext: "{0} - {1} 共 {2} 条",
