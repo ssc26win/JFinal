@@ -35,10 +35,7 @@ import com.shangsc.platform.controller.chart.UseWaterController;
 import com.shangsc.platform.controller.msgs.AdController;
 import com.shangsc.platform.controller.msgs.MessageController;
 import com.shangsc.platform.controller.msgs.MsgReceiverController;
-import com.shangsc.platform.controller.report.ReportDailyController;
-import com.shangsc.platform.controller.report.ReportMonthController;
-import com.shangsc.platform.controller.report.ReportStreetController;
-import com.shangsc.platform.controller.report.ReportYearController;
+import com.shangsc.platform.controller.report.*;
 import com.shangsc.platform.controller.statis.*;
 import com.shangsc.platform.controller.sys.*;
 
@@ -95,6 +92,11 @@ public class AdminRoutes extends Routes {
         add("/report/daily", ReportDailyController.class, "/WEB-INF/view/report");
         add("/report/month", ReportMonthController.class, "/WEB-INF/view/report");
         add("/report/year", ReportYearController.class, "/WEB-INF/view/report");
+
+
+        add("/report/street/chart", ReportStreetChartController.class, "/WEB-INF/view/report");
+        add("/report/company/chart", ReportCompanyChartController.class, "/WEB-INF/view/report");
+
     }
 
 }

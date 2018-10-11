@@ -91,13 +91,13 @@ public class ActualData extends BaseActualData<ActualData> {
         //	sqlExceptSelect.append(orderbyStr);
         //}
         String select = "select * ";
-        StringBuffer sqlExceptSelect = new StringBuffer("from (" +
+        StringBuffer sqlExceptSelect = new StringBuffer(" from (" +
                 "select tad.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,twm.line_num,twm.waters_type   from (select * from t_actual_data order by write_time desc)  tad " +
                 "left join  t_company tc on tad.inner_code=tc.inner_code " +
                 "left join t_water_meter twm on tad.meter_address=twm.meter_address where 1=1 group by tad.meter_address " +
                 "union all (SELECT tad.id,tc.inner_code,tm.meter_address,tad.alarm,tad.net_water,tad.sum_water,tad.state," +
-                "tad.write_time,tad.voltage,companyName,tc.water_unit,tc.county,tm.line_num,tm.waters_type FROM t_water_meter tm " +
-                "left join (select name as companyName,water_unit,county,inner_code from t_company) tc on tm.inner_code=tc.inner_code " +
+                "tad.write_time,tad.voltage,companyName,tc.real_code,tc.water_unit,tc.county,tm.line_num,tm.waters_type FROM t_water_meter tm " +
+                "left join (select name as companyName,water_unit,county,inner_code,real_code from t_company) tc on tm.inner_code=tc.inner_code " +
                 "left join t_actual_data tad on tad.meter_address=tm.meter_address " +
                 "where tm.meter_address not in (select meter_address from t_actual_data))) alld");
         sqlExceptSelect.append(" where 1=1");

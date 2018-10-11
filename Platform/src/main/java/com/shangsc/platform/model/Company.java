@@ -565,7 +565,9 @@ public class Company extends BaseCompany<Company> {
         List<Record> records = Db.find(sql);
         Set<String> set = new HashSet<>();
         for (Record record : records) {
-            set.add(record.get("inner_code").toString());
+            if (record.get("inner_code") != null) {
+                set.add(record.get("inner_code").toString());
+            }
         }
         return set;
     }
