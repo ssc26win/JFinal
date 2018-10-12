@@ -34,9 +34,14 @@ public class ReportStreetChartController extends BaseController {
 
     @RequiresPermissions(value = {"/report/street/chart"})
     public void index() {
-        List<ActualData> datas = ActualData.me.find("select date_format(write_time, '%Y') as yearTime from t_actual_data group by yearTime order by yearTime asc");
+        String path = this.getRequest().getServletContext().getContextPath();
+        String contextPath = path.equals("/") ? "" : path;
+
+        List<ActualData> datas = ActualData.me.find("select date_format(write_time, '%Y') as yearTime from t_actual_data" +
+                " group by yearTime order by yearTime asc");
         String streetTitle = "各乡镇用水统计图表";
-        String meterAttrTitle = "按水表属性用水量统计图表";
+        String meterAttrTitle = "根据水表属性用水量统计图表";
+        String watersTypeTitle = "根据水源类型统计用水量占比";
         if (CollectionUtils.isNotEmpty(datas)) {
             String strYear = "";
             if (datas.size() == 1) {
@@ -46,9 +51,11 @@ public class ReportStreetChartController extends BaseController {
             }
             streetTitle = strYear + " 年 " + streetTitle;
             meterAttrTitle = strYear + " 年 " + meterAttrTitle;
+            watersTypeTitle = strYear + " 年 " + watersTypeTitle;
         }
         this.setAttr("streetTitle", streetTitle);
         this.setAttr("meterAttrTitle", meterAttrTitle);
+        this.setAttr("watersTypeTitle", watersTypeTitle);
 
         //seriesJsonData
         Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
@@ -115,10 +122,6 @@ public class ReportStreetChartController extends BaseController {
 
         this.setAttr("drilldownJsonData", drilldownJsonData);
 
-
-        /**
-         *
-         */
         Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
         JSONArray meterAttrName = new JSONArray();
         for (String key : meterAttrType.keySet()) {
@@ -145,13 +148,56 @@ public class ReportStreetChartController extends BaseController {
             }
         }
         this.setAttr("meterAttrSeris", meterAttrSeris);
+
+        Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
+
+        JSONArray watersTypeSeris = new JSONArray();
+
+        String sqlWatersType = "select sum(lsall.net_water) as TargetAttrTotal,lsall.waters_type from " +
+                "(select tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
+                " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
+                " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
+                " where 1=1 " +
+                //" and lsall.waters_type<>'' and lsall.waters_type is not null " +
+                " group by lsall.waters_type order by TargetAttrTotal desc";
+        List<Record> recordsWatersType = Db.find(sqlWatersType);
+
+        for (int i = 0; i < recordsWatersType.size(); i++) {
+            Record record = recordsWatersType.get(i);
+            if (record.get("waters_type") != null) {
+                record.set("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(record.get("waters_type")))));
+            } else {
+                record.set("watersTypeName", "其他");
+            }
+            recordsWatersType.set(i, record);
+        }
+
+
+        for (int i = 0; i < recordsWatersType.size(); i++) {
+            Record record = recordsWatersType.get(i);
+            Object waters_type = record.get("waters_type");
+            if (waters_type == null) {
+                waters_type = "0";
+            }
+            if (i == 0) {
+                JSONObject data = new JSONObject();
+                data.put("name", record.getStr("watersTypeName"));
+                data.put("y", record.getBigDecimal("TargetAttrTotal"));
+                data.put("url", contextPath + "/#/report/street");
+                data.put("sliced", true);
+                data.put("selected", true);
+                watersTypeSeris.add(data);
+            } else {
+                JSONObject data = new JSONObject();
+                data.put("name", record.getStr("watersTypeName"));
+                data.put("y", record.getBigDecimal("TargetAttrTotal"));
+                data.put("url", contextPath + "/#/report/street");
+                data.put("sliced", false);
+                data.put("selected", false);
+                watersTypeSeris.add(data);
+            }
+        }
+        this.setAttr("watersTypeSeris", watersTypeSeris);
         render("street_chart.jsp");
-    }
-
-    @RequiresPermissions(value = {"/report/street/chart"})
-    public void columnar() {
-
-        renderJson("");
-
     }
 }

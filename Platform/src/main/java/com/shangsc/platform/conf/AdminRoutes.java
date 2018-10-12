@@ -88,6 +88,7 @@ public class AdminRoutes extends Routes {
         add("/chart/supplyWaterLine", SupplyWaterController.class, "/WEB-INF/view/charts");
         add("/chart/useWaterLine", UseWaterController.class, "/WEB-INF/view/charts");
 
+        add("/report/company", ReportCompanyController.class, "/WEB-INF/view/report");
         add("/report/street", ReportStreetController.class, "/WEB-INF/view/report");
         add("/report/daily", ReportDailyController.class, "/WEB-INF/view/report");
         add("/report/month", ReportMonthController.class, "/WEB-INF/view/report");

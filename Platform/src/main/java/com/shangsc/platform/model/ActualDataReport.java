@@ -63,6 +63,39 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         return Company.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
 
+    public Page<Company> getCompany(int pageNo, int pageSize, String orderbyStr, Integer street, String innerCode, Integer watersType, String type) {
+        String select = " select tc.water_unit,tc.name,tc.inner_code,tc.real_code,tc.street,twm.waters_type ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm " +
+                " inner join t_company tc on twm.inner_code=tc.inner_code " +
+                " where (tc.street<>'' or tc.street is not null) and (twm.waters_type<>'' or twm.waters_type is not null) ");
+        if (StringUtils.isNotEmpty(innerCode)) {
+            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(innerCode) + "' ");
+        }
+        if (street != null && street > 0) {
+            sqlExceptSelect.append(" and tc.street=" + street);
+        }
+        if (StringUtils.isNotEmpty(type)) {
+            type = StringUtils.trim(type);
+            if (StringUtils.isNotEmpty(type)) {
+                sqlExceptSelect.append(" and tc.company_type=" + type + " ");
+            }
+        }
+        if (watersType != null) {
+            sqlExceptSelect.append(" and twm.waters_type=" + watersType);
+        }
+        sqlExceptSelect.append(" group by tc.inner_code,twm.waters_type ");
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        } else {
+            sqlExceptSelect.append("order by tc.inner_code asc");
+        }
+        logger.info("--- 所属单位用水量sql开始 ---");
+        logger.info(select);
+        logger.info(sqlExceptSelect.toString());
+        logger.info("--- 所属单位用水量sql结束 ---");
+        return Company.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+
     public Map<String, String> getYearColumns() {
         String sql = "select date_format(tad.write_time, '%Y') as years from (select write_time from t_actual_data order by write_time asc) tad " +
                 " GROUP BY date_format(tad.write_time, '%Y')";

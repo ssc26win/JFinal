@@ -9,6 +9,7 @@
     <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true"/>
     <script src="${res_url}js/charts/jquery.min.js"></script>
     <script src="https://img.hcharts.cn/highcharts/highcharts.js"></script>
+    <script src="https://img.hcharts.cn/highcharts/highcharts-3d.js"></script>
     <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
     <script src="https://img.hcharts.cn/highcharts/modules/drilldown.js"></script>
     <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
@@ -31,6 +32,9 @@
                 </div>
                 <div class="col-sm-12">
                     <div id="meterAttrUse" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                </div>
+                <div class="col-sm-12">
+                    <div id="watersTypeUse" style="height: 400px"></div>
                 </div>
             </div>
         </div>
@@ -72,8 +76,8 @@
                 }
             },
             tooltip: {
-                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b> of total<br/>'
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br/>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
             },
             series: [{
                 name: '所属乡镇',
@@ -120,7 +124,7 @@
                 }
             },
             series: [{
-                name: '用水量',
+                name: '<span title="根据水表属性统计">用水量</span>',
                 data: JSON.parse('${meterAttrSeris}')
             }],
             responsive: {
@@ -139,6 +143,44 @@
             }
         });
 
+        Highcharts.chart('watersTypeUse', {
+            chart: {
+                type: 'pie',
+                options3d: {
+                    enabled: true,
+                    alpha: 45,
+                    beta: 0
+                }
+            },
+            title: {
+                text: '${watersTypeTitle}'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage}</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    depth: 35,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name}'
+                    },
+                    events: {
+                        click: function (e) {
+                            parent.location.href = e.point.url;
+                            parent.location.reload();
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: '根据水源类型统计用水量占比',
+                data: JSON.parse('${watersTypeSeris}')
+            }]
+        });
     })
 </script>
 </body>
