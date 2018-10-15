@@ -4,12 +4,14 @@ import com.alibaba.druid.support.json.JSONUtils;
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.code.ActualState;
 import com.shangsc.platform.code.DictCode;
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.export.ActualExportService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
@@ -17,6 +19,7 @@ import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -59,6 +62,40 @@ public class ActualController extends BaseController {
             pageInfo = ActualData.me.getActualDataPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         }
         List<ActualData> list = pageInfo.getList();
+        setVoProp(list, exceptionTime);
+        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
+    }
+
+    @RequiresPermissions(value = {"/basic/actual"})
+    public void exportData() {
+        ActualExportService service = new ActualExportService();
+        ActualData.me.setGlobalInnerCode(getInnerCode());
+        String keyword = this.getPara("name");
+        String status = this.getPara("status", "-1");
+        Page<ActualData> pageInfo = new Page<>();
+        int exceptionTime = 24;
+        Map<String, Object> dictMap = DictData.dao.getDictMap(null, DictCode.ACTUAL_EXCEPTION_TIME_OUT);
+        if (dictMap.size() == 1) {
+            Object[] objects = dictMap.keySet().toArray();
+            String num = objects[0].toString();
+            if (NumberUtils.isDigits(num)) {
+                exceptionTime = Integer.parseInt(num);
+            }
+        }
+        if (ActualState.Actual_List().contains(status)) {
+            pageInfo = ActualData.me.getActualDataPageByStatus(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr(), status, exceptionTime);
+        } else if (ActualState.DISABLE.equals(status)) {
+            pageInfo = ActualData.me.getActualDataPageByDisable(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        } else {
+            pageInfo = ActualData.me.getActualDataPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
+        }
+        List<ActualData> list = pageInfo.getList();
+        setVoProp(list, exceptionTime);
+        String path = service.export(list);
+        renderFile(new File(path));
+    }
+
+    private void setVoProp(List<ActualData> list, int exceptionTime) {
         Map<String, String> stateMap = ActualState.getMap();
         long dayTime = exceptionTime * 60 * 60 * 1000;
         Date now = new Date();
@@ -89,10 +126,12 @@ public class ActualController extends BaseController {
                     co.setState(Integer.parseInt(ActualState.DISABLE));
                 }
                 co.put("stateName", stateMap.get(String.valueOf(co.getState())));
+                if (co.getWriteTime() == null) {
+                    co.setWriteTime(DateUtils.parseDate("0001-01-01 00:00:00"));
+                }
                 list.set(i, co);
             }
         }
-        this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
     }
 
     /**

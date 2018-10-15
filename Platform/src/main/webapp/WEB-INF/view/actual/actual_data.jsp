@@ -36,11 +36,9 @@
             <div class="widget-body">
               <div class="widget-main">
                 <div class="row">
-                  <div class="col-xs-12 col-sm-8">
+                  <div class="col-xs-12 col-sm-9">
                     <div class="input-group">
-                          <span class="input-group-addon">
-                              <i class="ace-icon fa fa-check"></i>
-                          </span>
+                      <form id="exportForm" action="${context_path}/statis/actual/exportData" method="post">
                             <input type="text" id="name" name="name" class="search-query" style="height: 34px;width: 400px;" placeholder="请输入关键字" />
                             <select id="status" name="status" style="height: 34px;width: 159px;margin-left: 5px;">
                               <option value="-1" selected>请选择表状态</option>
@@ -54,7 +52,11 @@
                                 <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                 搜索
                               </button>
+                              <button type="button" id="btn-exportData" class="btn btn-success btn-sm" style="margin-left:10px;">
+                                导出
+                              </button>
                           </span>
+                        </form>
                     </div>
                   </div>
                 </div>
@@ -189,6 +191,9 @@
           content: '${context_path}/statis/actual/add?id='+rid
         });
       }
+    });
+    $("#btn-exportData").click(function(){
+      $("#exportForm").submit();
     });
   });
   //replace icons with FontAwesome icons like above

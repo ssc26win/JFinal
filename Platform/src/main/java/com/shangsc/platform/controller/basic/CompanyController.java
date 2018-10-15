@@ -60,7 +60,7 @@ public class CompanyController extends BaseController {
         Integer term = this.getParaToInt("term");
         Page<Company> pageInfo = Company.me.getCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), companyType, term);
         List<Company> companies = pageInfo.getList();
-        setVoProp(companies);
+        setVoProp(companies, true);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
     }
 
@@ -70,7 +70,7 @@ public class CompanyController extends BaseController {
         String keyword = this.getPara("name");
         Page<Company> pageInfo = Company.me.getNormalCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
-        setVoProp(companies);
+        setVoProp(companies, true);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
     }
 
@@ -79,7 +79,7 @@ public class CompanyController extends BaseController {
         String keyword = this.getPara("name");
         Page<Company> pageInfo = Company.me.getWarnCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
-        setVoProp(companies);
+        setVoProp(companies, true);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
     }
 
@@ -89,7 +89,7 @@ public class CompanyController extends BaseController {
         String keyword = this.getPara("name");
         Page<Company> pageInfo = Company.me.getOtherCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
-        setVoProp(companies);
+        setVoProp(companies, true);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
     }
 
@@ -99,7 +99,7 @@ public class CompanyController extends BaseController {
         String keyword = this.getPara("name");
         Page<Company> pageInfo = Company.me.getSupplyCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
-        setVoProp(companies);
+        setVoProp(companies, true);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, companies));
     }
 
@@ -207,12 +207,12 @@ public class CompanyController extends BaseController {
             pageInfo = Company.me.getCompanyPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr(), companyType, null);
         }
         List<Company> companies = pageInfo.getList();
-        setVoProp(companies);
+        setVoProp(companies, false);
         String path = service.export(companies);
         renderFile(new File(path));
     }
 
-    private void setVoProp(List<Company> companies) {
+    private void setVoProp(List<Company> companies, boolean changeAddress) {
         if (CommonUtils.isNotEmpty(companies)) {
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
             Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
@@ -236,7 +236,7 @@ public class CompanyController extends BaseController {
                 if (co.getTerm() != null && termType.size() > 0) {
                     co.put("termName", String.valueOf(termType.get(String.valueOf(co.getTerm()))));
                 }
-                if (StringUtils.isNotEmpty(co.getAddress())) {
+                if (changeAddress && StringUtils.isNotEmpty(co.getAddress())) {
                     co.setAddress("<a href='#' title='点击查看导航地图' style='cursor: pointer' onclick=\"openMap('"
                             + co.get("inner_code") + "')\">" + co.getAddress() + "</a>");
                 }
