@@ -64,7 +64,7 @@ public class MsgReceiverController extends BaseController {
         List<MsgReceiver> list = pageInfo.getList();
         for (MsgReceiver msgReceiver : list) {
             if (msgReceiver.getStatus() != null) {
-                msgReceiver.put("statusName", ReadOrNo.getMap().get(String.valueOf(msgReceiver.getStatus())));
+                msgReceiver.put("statusName", ReadOrNo.getColorMap().get(String.valueOf(msgReceiver.getStatus())));
             }
         }
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
