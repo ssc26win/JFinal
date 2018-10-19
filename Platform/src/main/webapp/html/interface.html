@@ -28,25 +28,25 @@
         http://jieshui.satcom.cc:8081/wxapp/ad/find?wxAccount=ssc23win</a>
 </div>
 
-<div>消息滚动列表接口:
-    <a target="_blank" href="http://jieshui.satcom.cc:8081/wxapp/msg/findRollList?wxAccount=ssc23win&limit=1">
-        http://jieshui.satcom.cc:8081/wxapp/msg/findRollList?wxAccount=ssc23win&limit=1</a>
-</div>
-<table>
-    <tr><td colspan="3" style="color: #880000">入参</td></tr>
+<!--<div>消息滚动列表接口:-->
+    <!--<a target="_blank" href="http://jieshui.satcom.cc:8081/wxapp/msg/findRollList?wxAccount=ssc23win&limit=1">-->
+        <!--http://jieshui.satcom.cc:8081/wxapp/msg/findRollList?wxAccount=ssc23win&limit=1</a>-->
+<!--</div>-->
+<!--<table>-->
+    <!--<tr><td colspan="3" style="color: #880000">入参</td></tr>-->
 
-    <tr><td>参数名称</td><td>说明</td><td>备注</td></tr>
-    <tr><td>wxAccount</td><td>微信账号</td><td>必须</td></tr>
-    <tr><td>limit</td><td>所需条数</td><td>可选</td></tr>
+    <!--<tr><td>参数名称</td><td>说明</td><td>备注</td></tr>-->
+    <!--<tr><td>wxAccount</td><td>微信账号</td><td>必须</td></tr>-->
+    <!--<tr><td>limit</td><td>所需条数</td><td>可选</td></tr>-->
 
-    <tr><td colspan="3" style="color: #880000">出参</td></tr>
+    <!--<tr><td colspan="3" style="color: #880000">出参</td></tr>-->
 
-    <tr><td>参数名称</td><td>说明</td><td>备注</td></tr>
-    <tr><td>id</td><td>id</td><td></td></tr>
-    <tr><td>title</td><td>标题</td><td></td></tr>
-    <tr><td>content</td><td>内容</td><td></td></tr>
-    <tr><td>create_time</td><td>发送时间</td><td></td></tr>
-</table>
+    <!--<tr><td>参数名称</td><td>说明</td><td>备注</td></tr>-->
+    <!--<tr><td>id</td><td>id</td><td></td></tr>-->
+    <!--<tr><td>title</td><td>标题</td><td></td></tr>-->
+    <!--<tr><td>content</td><td>内容</td><td></td></tr>-->
+    <!--<tr><td>create_time</td><td>发送时间</td><td></td></tr>-->
+<!--</table>-->
 <div>消息列表接口:
     <a target="_blank" href="http://jieshui.satcom.cc:8081/wxapp/msg/findList?wxAccount=ssc23win&page=1&rows=10">
         http://jieshui.satcom.cc:8081/wxapp/msg/findList?wxAccount=ssc23win&page=1&rows=10</a>
@@ -83,11 +83,16 @@
     <tr><td>content</td><td>内容</td><td>必须</td></tr>
     <tr><td>longitude</td><td>经度</td><td>必须</td></tr>
     <tr><td>latitude</td><td>纬度</td><td>必须</td></tr>
-    <tr><td>imagefileList</td><td>拍照图片</td><td>必须</td></tr>
+    <!--<tr><td>imagefileList</td><td>拍照图片</td><td>必须</td></tr>-->
+    <tr><td>imageIds</td><td>拍照图片Id 多个用逗号隔开 (上传图片时我返给你)</td><td>必须</td></tr>
 </table>
 <div>执法上报列表接口:
     <a target="_blank" href="http://jieshui.satcom.cc:8081/wxapp/law/findList?wxAccount=ssc23win">
         http://jieshui.satcom.cc:8081/wxapp/law/findList?wxAccount=ssc23win</a>
+</div>
+<div>执法上报上传图片接口:
+    <a target="_blank" href="http://jieshui.satcom.cc:8081/wxapp/law/uploadImg?wxAccount=ssc23win">
+        http://jieshui.satcom.cc:8081/wxapp/law/uploadImg?wxAccount=ssc23win</a>
 </div>
 <div>执法上报详情接口:
     <a target="_blank" href="http://jieshui.satcom.cc:8081/wxapp/law/findById?wxAccount=ssc23win&id=1">

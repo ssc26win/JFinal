@@ -1,5 +1,6 @@
 package com.shangsc.platform.model;
 
+import com.jfinal.plugin.activerecord.Db;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
@@ -82,10 +83,17 @@ public class Image extends BaseImage<Image> {
         return msgReceiversMap;
     }
 
-    /********************************** WxApp use ***************************************/
+    /**********************************
+     * WxApp use
+     ***************************************/
 
     public InvokeResult deleteByRelaIdWx(Long relaId) {
         int delete = this.delete(CommonUtils.getConditions(new Condition("rela_id", Operators.EQ, relaId)));
         return InvokeResult.success();
     }
+
+    public void updateBatch(String ids, Long relaId, String relaTable) {
+        Db.update(" update t_image set rela_id=" + relaId + ",rela_table=" + relaTable + " where id in (" + ids + ");");
+    }
+
 }
