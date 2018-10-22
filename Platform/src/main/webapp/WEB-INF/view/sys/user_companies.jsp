@@ -49,6 +49,10 @@
     <script src="${res_url}ace-1.3.3/assets/js/respond.js"></script>
     <![endif]-->
     <style>
+        html {
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
         body {
             background-color: #ffffff;
         }
@@ -65,7 +69,7 @@
             margin-top: 10px;
             top: 30px;
             left: 20px;
-            width: 358px;
+            /*width: 358px;*/
             overflow-y: auto;
         }
         .tree-menu {
@@ -132,16 +136,16 @@
 </head>
 
 <body>
-<div class="search">
-    <input type="text" id="companyName" name="companyName" value="${companyName}" class="cnwth" style="width: 300px;"
+<div class="search" style="display: none;">
+    <input type="text" id="companyName" name="companyName" value="${companyName}" class="cnwth" style="width: 400px;"
            autocomplete="off" placeholder="请输入单位...">
-    <div id="auto_div" style="max-height: 200px; overflow-y: auto;"></div>
+    <div id="auto_div" style="max-height: 300px; overflow-y: auto;"></div>
     <input type="hidden" id="innerCode" name="innerCode" value="">
 </div>
 <div class="left">
     <ul id="treeDemo" class="ztree"></ul>
 </div>
-<div class="actions" style="margin-left: 300px;margin-top: 30px;">
+<div class="actions" style="margin-left: 330px;margin-top: 30px;">
     <jc:button className="btn btn-big btn-primary" id="btn_saveOrder" textName="保存"/>
 </div>
 <!-- basic scripts -->
@@ -211,15 +215,15 @@
             var selectIds = "";
             for (var index in nodes) {
                 var item = nodes[index];
-                if (item.id == '10000')continue;
+                if (item.id == '0' || parseInt(item.id) > 100000000)continue;
                 selectIds += item.id + ",";
             }
 
             var submitData = {
-                "receiverIds": selectIds,
-                "mid": "${mid}"
+                "companiesIds": selectIds,
+                "uId": "${uId}"
             }
-            $.post("${context_path}/basic/msgreceiver/save", submitData,
+            $.post("${context_path}/sys/user/saveCompanies", submitData,
                     function (data) {
                         $("#btn_saveOrder").removeAttr("disabled");
                         if (data.code == 0) {
@@ -385,7 +389,7 @@
             var submitData = {
                 "innerCode": $("#innerCode").val()
             };
-            $.post("${context_path}/basic/msg/findReceiverByCode", submitData,
+            $.post("${context_path}/sys/user/setCompanies", submitData,
                     function (data) {
                         var filterzNodes = data.data;
                         if (filterzNodes != '') {

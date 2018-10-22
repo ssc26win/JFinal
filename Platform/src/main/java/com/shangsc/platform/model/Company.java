@@ -1,5 +1,6 @@
 package com.shangsc.platform.model;
 
+import com.jfinal.kit.JsonKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -11,6 +12,7 @@ import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.core.view.ZtreeView;
 import com.shangsc.platform.model.base.BaseCompany;
 import com.shangsc.platform.util.CodeNumUtil;
 import com.shangsc.platform.util.ToolDateTime;
@@ -254,7 +256,7 @@ public class Company extends BaseCompany<Company> {
             select = select + " and c.inner_code='" + innerCode + "'";
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            select = select + " and c.inner_code='" + globalInnerCode + "'";
+            select = select + " and c.inner_code in (" + globalInnerCode + ")";
         }
         return Db.find(select);
     }
@@ -757,7 +759,87 @@ public class Company extends BaseCompany<Company> {
         return result;
     }
 
-    /*********************************** WxApp use ***************************************/
+    public InvokeResult getUserZtreeViewList(String innerCodes, String keywords) {
+        Set<String> innerCodeList = new HashSet<>();
+        if (StringUtils.isNotEmpty(innerCodes)) {
+            innerCodeList = new HashSet<>(Arrays.asList(innerCodes.split(",")));
+        }
+        String sql = "select * from t_company where street is not null ";
+        if (StringUtils.isNotEmpty(keywords)) {
+            sql = sql + " and name in ('" + keywords + "')";
+        }
+        List<Company> list = Company.me.find(sql);
+        Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
+        for (int i = 0; i < list.size(); i++) {
+            Company co = list.get(i);
+            if (co.getStreet() != null && mapStreetType.size() > 0) {
+                co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.getStreet()))));
+            }
+            list.set(i, co);
+        }
+        List<ZtreeView> ztreeViews = new ArrayList<ZtreeView>();
+        if (CollectionUtils.isNotEmpty(innerCodeList)) {
+            ztreeViews.add(new ZtreeView(0, null, "管辖范围", true, true));
+        } else {
+            ztreeViews.add(new ZtreeView(0, null, "管辖范围", true, false));
+        }
+        Set<Integer> streetList = new HashSet<>();
+        if (StringUtils.isNotEmpty(innerCodes)) {
+            String sqlStreet = "select street from t_company where street is not null ";
+            sqlStreet = sqlStreet + " and inner_code in (" + innerCodes + ")";
+            List<Company> companiesExistStreet = Company.me.find(sqlStreet);
+            for (Company c : companiesExistStreet) {
+                streetList.add(c.getStreet());
+            }
+        }
+        String sqlStreet = "select street from t_company where street is not null ";
+        if (StringUtils.isNotEmpty(keywords)) {
+            sqlStreet = sqlStreet + " and name in ('" + keywords + "')";
+        }
+        sqlStreet = sqlStreet + " group by street";
+        List<Company> listStreet = Company.me.find(sqlStreet);
+        for (int i = 0; i < listStreet.size(); i++) {
+            Company co = listStreet.get(i);
+            if (co.getStreet() != null && mapStreetType.size() > 0) {
+                co.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(co.getStreet()))));
+            }
+            listStreet.set(i, co);
+        }
+
+        for (Company record : listStreet) {
+            ZtreeView ztreeView = new ZtreeView();
+            int id = 100000000 + record.getStreet();
+            ztreeView.setId(id);
+            ztreeView.setName(record.getStr("streetName"));
+            ztreeView.setOpen(true);
+            ztreeView.setpId(0);
+            if (streetList.contains(record.getStreet())) {
+                ztreeView.setChecked(true);
+            } else {
+                ztreeView.setChecked(false);
+            }
+            ztreeViews.add(ztreeView);
+        }
+
+        for (Company record : list) {
+            ZtreeView ztreeView = new ZtreeView();
+            ztreeView.setId(Integer.parseInt(record.getId() + ""));
+            ztreeView.setName(record.getName());
+            ztreeView.setOpen(false);
+            ztreeView.setpId(100000000 + record.getStreet());
+            if (innerCodeList.contains("'" + record.getInnerCode() + "'")) {
+                ztreeView.setChecked(true);
+            } else {
+                ztreeView.setChecked(false);
+            }
+            ztreeViews.add(ztreeView);
+        }
+        return InvokeResult.success(JsonKit.toJson(ztreeViews));
+    }
+
+    /***********************************
+     * WxApp use
+     ***************************************/
 
     public Page<Company> findWxList(int page, int rows, String keyword, String companyType) {
         String select = "select c.*, (select count(net_water) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum";

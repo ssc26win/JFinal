@@ -272,7 +272,7 @@ public class SysUser extends BaseSysUser<SysUser> {
     }
 
     public InvokeResult regist(String username, String password, String phone, String email, String innerCode) {
-        if (!Company.me.hasExistInnerCode(null, innerCode)) {
+        if (StringUtils.isNotEmpty(innerCode) && !Company.me.hasExistInnerCode(null, innerCode)) {
             return InvokeResult.failure("公司编码不存在");
         }
         if (this.hasExist(username)) {
@@ -285,7 +285,7 @@ public class SysUser extends BaseSysUser<SysUser> {
             sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date())
                     .set("phone", phone).set("email", email).set("inner_code", innerCode).save();
             List<String> sqlList = Lists.newArrayList();
-            for (String roleId : "57".split(",")) {
+            for (String roleId : "63".split(",")) {
                 if (CommonUtils.isNotEmpty(roleId)) {
                     sqlList.add("insert into sys_user_role (user_id,role_id) values (" + sysUser.getId() + "," + Integer.valueOf(roleId) + ")");
                 }
@@ -338,7 +338,6 @@ public class SysUser extends BaseSysUser<SysUser> {
     /********************************** WxApp use ***************************************/
 
     /**
-     *
      * @param userId
      * @param wxAccount
      * @param token

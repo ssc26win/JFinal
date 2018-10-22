@@ -20,6 +20,7 @@ import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.CompanyExportService;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.model.SysUser;
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;

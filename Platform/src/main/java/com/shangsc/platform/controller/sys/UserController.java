@@ -20,6 +20,8 @@ import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
+import com.jfinal.template.ext.directive.Str;
+import com.shangsc.front.util.JsonUtil;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.IWebUtils;
@@ -29,6 +31,7 @@ import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.SysRole;
 import com.shangsc.platform.model.SysUser;
 import com.shangsc.platform.vo.SysUserVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -138,6 +141,59 @@ public class UserController extends BaseController {
             users.add(vo);
         }
         this.renderJson(list);
+    }
+
+
+    @RequiresPermissions(value = {"/sys/user"})
+    public void setCompanies() {
+        Integer uId = this.getParaToInt("uId");
+        SysUser byId = SysUser.me.findById(uId);
+        String innerCodes = byId.getInnerCode();
+        String innerCodesResult = "";
+        if (StringUtils.isNotEmpty(innerCodes)) {
+            String[] split = innerCodes.split(",");
+            for (int i = 0; i < split.length; i++) {
+                split[i] = "'" + split[i] + "'";
+            }
+            innerCodesResult = StringUtils.join(split, ",");
+        }
+        InvokeResult result = Company.me.getUserZtreeViewList(innerCodesResult, "");
+        this.setAttr("jsonTree", result);
+        Map<String, String> nameList = Company.me.loadNameList();
+        Set<String> names = nameList.keySet();
+        this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
+        this.setAttr("names", JSONUtils.toJSONString(names));
+        this.setAttr("uId", this.getParaToInt("uId"));
+        render("user_companies.jsp");
+    }
+
+    @RequiresPermissions(value = {"/sys/user"})
+    public void saveCompanies() {
+        Integer uId = this.getParaToInt("uId");
+        String innerCodes = "";
+        String companiesIds = this.getPara("companiesIds");
+        String[] split = StringUtils.split(companiesIds, ",");
+        List<Integer> cIdsList = new ArrayList<>();
+        for (String cid : split) {
+            Integer targetId = Integer.valueOf(cid);
+            if (targetId > 0 && targetId < 100000000) {
+                cIdsList.add(targetId);
+            }
+        }
+        if (CollectionUtils.isNotEmpty(cIdsList)) {
+            List<Company> companies = Company.me.find("select * from t_company where id in (" + StringUtils.join(cIdsList, ",") + ")");
+            if (CollectionUtils.isNotEmpty(companies)) {
+                List<String> innerCodesList = new ArrayList<>();
+                for (Company c : companies) {
+                    innerCodesList.add(c.getInnerCode());
+                }
+                innerCodes = StringUtils.join(innerCodesList, ",");
+            }
+        }
+        SysUser byId = SysUser.me.findById(uId);
+        byId.setInnerCode(innerCodes);
+        byId.update();
+        renderJson(InvokeResult.success());
     }
 }
 

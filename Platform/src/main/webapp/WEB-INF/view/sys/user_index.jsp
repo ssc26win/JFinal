@@ -70,6 +70,7 @@
                             <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
                             <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
                             <jc:button className="btn" id="bnt-grant" textName="分配角色" permission="/sys/user"/>
+                            <jc:button className="btn btn-warning" id="btn-grant-manage" textName="分配管辖范围"/>
                         </div>
                     </div>
                     <!-- PAGE CONTENT BEGINS -->
@@ -126,7 +127,7 @@
                 {label: '注册时间', name: 'createdate', width: 120},
                 {label: '状态', name: 'status', formatter: fmatterStatus, width: 50},
                 {label: '微信账号', name: 'wx_account', width: 80},
-                {label: '所属单位', name: 'companyName', width: 200},
+                /*{label: '所属单位', name: 'companyName', width: 200},*/
             ],
             viewrecords: true,
             height: 560,
@@ -192,6 +193,30 @@
                 });
             }
         });
+        $("#btn-grant-manage").click(function () {
+            var rid = getOneSelectedRows();
+            if (rid == -1) {
+                layer.msg("请选择一个用户", {
+                    icon: 2,
+                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                });
+            } else if (rid == -2) {
+                layer.msg("只能选择一个用户", {
+                    icon: 2,
+                    time: 1000 //2秒关闭（如果不配置，默认是3秒）
+                });
+            } else {
+                var rowData = $("#grid-table").jqGrid('getRowData', rid);
+                parent.layer.open({
+                    title: '给用户【' + rowData.name + '】分配管辖范围',
+                    type: 2,
+                    area: ['450px', '530px'],
+                    fix: false, //不固定
+                    maxmin: true,
+                    content: '${context_path}/sys/user/setCompanies?uId=' + rid
+                });
+            }
+        });
         $("#btn-visible").click(function () {
             setVisible(1);
         });
@@ -215,7 +240,7 @@
                 parent.layer.open({
                     title: '修改用户信息',
                     type: 2,
-                    area: ['770px', '520px'],
+                    area: ['770px', '620px'],
                     fix: false, //不固定
                     maxmin: true,
                     content: '${context_path}/sys/user/add?id=' + rid

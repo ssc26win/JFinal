@@ -41,7 +41,7 @@ public class ActualController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/actual"})
     public void getListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         String status = this.getPara("status", "-1");
         Page<ActualData> pageInfo = new Page<>();
@@ -69,7 +69,7 @@ public class ActualController extends BaseController {
     @RequiresPermissions(value = {"/basic/actual"})
     public void exportData() {
         ActualExportService service = new ActualExportService();
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         String status = this.getPara("status", "-1");
         Page<ActualData> pageInfo = new Page<>();

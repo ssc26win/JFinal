@@ -24,10 +24,10 @@ public class CompanyWaterController extends BaseController {
     }
 
     @RequiresPermissions(value = {"/chart/companyWaterLine"})
-    public void getCPADaily() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+    public void getCPADailyChart() {
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         List<Record> records = ActualData.me.getCPADailyActualData();
-        Company byInnerCode = Company.me.findByInnerCode(getInnerCode());
+        Company byInnerCode = Company.me.findByInnerCode(getInnerCodesSQLStr());
         String subtitle = "日用水量";
         String seriesName = "日用水量";
         Integer type = 1;

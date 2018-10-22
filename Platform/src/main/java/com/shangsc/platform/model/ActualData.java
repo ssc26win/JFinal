@@ -100,13 +100,13 @@ public class ActualData extends BaseActualData<ActualData> {
                 "left join (select name as companyName,water_unit,county,inner_code,real_code from t_company) tc on tm.inner_code=tc.inner_code " +
                 "left join t_actual_data tad on tad.meter_address=tm.meter_address " +
                 "where tm.meter_address not in (select meter_address from t_actual_data))) alld");
-        sqlExceptSelect.append(" where 1=1");
+        sqlExceptSelect.append(" where 1=1 ");
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
                     + "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and alld.inner_code='" + StringUtils.trim(globalInnerCode) + "'");
+            sqlExceptSelect.append(" and alld.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
@@ -127,7 +127,7 @@ public class ActualData extends BaseActualData<ActualData> {
                     + "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and alld.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+            sqlExceptSelect.append(" and alld.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
@@ -158,7 +158,7 @@ public class ActualData extends BaseActualData<ActualData> {
                     + "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and alld.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+            sqlExceptSelect.append(" and alld.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
         sqlExceptSelect.append(" group by alld.meter_address ");
         if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -217,7 +217,7 @@ public class ActualData extends BaseActualData<ActualData> {
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and twm.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+            sqlExceptSelect.append(" and twm.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
         if (watersType != null) {
             sqlExceptSelect.append(" and tm.waters_type=" + watersType);
@@ -277,7 +277,7 @@ public class ActualData extends BaseActualData<ActualData> {
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
         if (startTime != null) {
             sqlExceptSelect.append(" and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' ");
@@ -363,7 +363,7 @@ public class ActualData extends BaseActualData<ActualData> {
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
 
         if (startTime != null) {
@@ -441,7 +441,7 @@ public class ActualData extends BaseActualData<ActualData> {
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
         if (StringUtils.isNotEmpty(type)) {
             type = StringUtils.trim(type);
@@ -586,7 +586,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
-                " where t.inner_code = '" + globalInnerCode + "'" +
+                " where t.inner_code in (" + globalInnerCode + ") " +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time < '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
@@ -598,7 +598,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
-                " where t.inner_code = '" + globalInnerCode + "'" +
+                " where t.inner_code in (" + globalInnerCode + ") " +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time <= '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
@@ -667,7 +667,7 @@ public class ActualData extends BaseActualData<ActualData> {
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
         if (startTime != null) {
             sqlExceptSelect.append(" and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' ");
@@ -753,7 +753,7 @@ public class ActualData extends BaseActualData<ActualData> {
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
 
         if (startTime != null) {
@@ -831,7 +831,7 @@ public class ActualData extends BaseActualData<ActualData> {
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
         if (StringUtils.isNotEmpty(type)) {
             type = StringUtils.trim(type);

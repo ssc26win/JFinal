@@ -18,6 +18,7 @@ import com.shangsc.platform.export.WaterIndexExportService;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.model.WaterIndex;
+import com.shangsc.platform.model.WaterMeter;
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -43,6 +44,7 @@ public class WaterIndexController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/waterindex"})
     public void getListData() {
+        WaterIndex.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Page<WaterIndex> pageInfo = WaterIndex.me.getWaterIndexPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<WaterIndex> list = pageInfo.getList();
@@ -123,6 +125,7 @@ public class WaterIndexController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/waterindex"})
     public void export() {
+        WaterIndex.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Page<WaterIndex> pageInfo = WaterIndex.me.getWaterIndexPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
         List<WaterIndex> list = pageInfo.getList();

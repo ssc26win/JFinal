@@ -34,7 +34,7 @@ public class ReadnumStatisController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/readnum"})
     public void getListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         Integer street = null;
@@ -93,7 +93,7 @@ public class ReadnumStatisController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/readnum"})
     public void exportData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         Integer street = null;

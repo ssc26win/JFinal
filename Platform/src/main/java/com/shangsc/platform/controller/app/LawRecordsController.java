@@ -33,7 +33,7 @@ public class LawRecordsController extends BaseController {
 
     @RequiresPermissions(value = {"/app/law"})
     public void getListData() {
-        LawRecord.dao.setGlobalInnerCode(getInnerCode());
+        //TODO LawRecord.dao.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Page<LawRecord> pageInfo = LawRecord.dao.getPageList(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<LawRecord> list = pageInfo.getList();

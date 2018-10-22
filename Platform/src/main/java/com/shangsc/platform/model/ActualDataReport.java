@@ -36,7 +36,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
                 " inner join t_company tc on twm.inner_code=tc.inner_code " +
                 " where (tc.street<>'' or tc.street is not null) and (twm.waters_type<>'' or twm.waters_type is not null) ");
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
         if (street != null && street > 0) {
             sqlExceptSelect.append(" and tc.street=" + street);
@@ -68,6 +68,9 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm " +
                 " inner join t_company tc on twm.inner_code=tc.inner_code " +
                 " where (tc.street<>'' or tc.street is not null) and (twm.waters_type<>'' or twm.waters_type is not null) ");
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
+        }
         if (StringUtils.isNotEmpty(innerCode)) {
             sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(innerCode) + "' ");
         }
@@ -158,7 +161,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         } else {
             if (StringUtils.isNotEmpty(innerCode)) {
                 sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(innerCode) + "' ");

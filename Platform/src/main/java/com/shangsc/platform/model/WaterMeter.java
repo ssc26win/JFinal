@@ -22,11 +22,20 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
 
     public static final WaterMeter me = new WaterMeter();
 
+    public String globalInnerCode;
+
+    public void setGlobalInnerCode(String globalInnerCode) {
+        this.globalInnerCode = globalInnerCode;
+    }
+
     public Page<WaterMeter> getWaterMeterPage(int page, int rows, String keyword, String orderbyStr, Integer term) {
         String select = "select twm.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,tc.gb_industry,tc.main_industry,tc.water_use_type";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm inner join " +
                 " t_company tc on twm.inner_code=tc.inner_code ");
         sqlExceptSelect.append(" where 1=1 ");
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and twm.inner_code in (" + globalInnerCode + ")");
+        }
         if (term != null) {
             sqlExceptSelect.append("and twm.term=" + term);
         }
@@ -202,6 +211,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
                 actualMeterSql + ")) twm, t_company tc ");
         sqlExceptSelect.append("where 1=1 and twm.inner_code=tc.inner_code");
         sqlExceptSelect.append(" and twm.meter_address not in (" + disableMeterConditionSql() + ") ");
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and twm.inner_code in (" + globalInnerCode + ")");
+        }
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
@@ -222,7 +234,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT t.* FROM t_Water_Meter t WHERE t.meter_address NOT in " +
                 "(select meter_address from t_actual_data)) twm, t_company tc ");
         sqlExceptSelect.append("where 1=1 and twm.inner_code=tc.inner_code");
-
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and twm.inner_code in (" + globalInnerCode + ")");
+        }
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
@@ -244,6 +258,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT t.* FROM t_Water_Meter t WHERE t.meter_address in (" +
                 normalMeterSql + ")) twm, t_company tc ");
         sqlExceptSelect.append("where 1=1 and twm.inner_code=tc.inner_code");
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and twm.inner_code in (" + globalInnerCode + ")");
+        }
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
@@ -265,6 +282,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT t.* FROM t_Water_Meter t WHERE t.meter_address in (" +
                 normalMeterSql + ")) twm, t_company tc ");
         sqlExceptSelect.append("where 1=1 and twm.inner_code=tc.inner_code");
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and twm.inner_code in (" + globalInnerCode + ")");
+        }
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
@@ -418,13 +438,13 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return result;
     }
 
-    public Page<WaterMeter> findWxList(int page, int rows, String innerCode) {
+    public Page<WaterMeter> findWxList(int page, int rows, String innerCodeSQLStr) {
         String select = "select twm.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,tc.gb_industry,tc.main_industry,tc.water_use_type";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm inner join " +
                 " t_company tc on twm.inner_code=tc.inner_code ");
         sqlExceptSelect.append(" where 1=1 ");
-        if (StringUtils.isNotEmpty(innerCode)) {
-            sqlExceptSelect.append(" and twm.inner_code='" + innerCode + "'");
+        if (StringUtils.isNotEmpty(innerCodeSQLStr)) {
+            sqlExceptSelect.append(" and twm.inner_code in (" + innerCodeSQLStr + ")");
         }
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }

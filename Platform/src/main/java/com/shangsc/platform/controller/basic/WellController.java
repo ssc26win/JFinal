@@ -18,6 +18,7 @@ import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.export.WellExportService;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.model.WaterMeter;
 import com.shangsc.platform.model.Well;
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -44,6 +45,7 @@ public class WellController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/well"})
     public void getListData() {
+        Well.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Page<Well> pageInfo = Well.me.getWellPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Well> list = pageInfo.getList();
@@ -142,6 +144,7 @@ public class WellController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/well"})
     public void export() {
+        Well.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Page<Well> pageInfo = Well.me.getWellPage(getPage(), GlobalConfig.EXPORT_SUM, keyword, this.getOrderbyStr());
         List<Well> list = pageInfo.getList();

@@ -25,7 +25,7 @@ public class ActuallogController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/statis/actuallog"})
     public void getListData() {
-        ActualLog.dao.setGlobalInnerCode(getInnerCode());
+        ActualLog.dao.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         String srcType = this.getPara("srcType");
         Page<ActualLog> pageInfo = ActualLog.dao.getLogPage(getPage(), this.getRows(), keyword, srcType, this.getOrderbyStr());

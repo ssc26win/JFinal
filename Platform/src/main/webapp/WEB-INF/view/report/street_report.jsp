@@ -40,14 +40,19 @@
                                         <form id="exportForm" action="${context_path}/report/street/exportData" method="post">
                                             <input type="text" style="display:none"/>
                                             <div class="input-group">
-                                                <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;">
-                                                    <option value="">请选择水源类型</option></select>
-                                                <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
-                                                    <option value="">所属乡镇或街道</option>
-                                                </select>
+                                                日期时间:
+                                                <input type="text" id="startTime" name="startTime" value="" class="form_date" style="width: 100px;"/>~<input type="text" id="endTime" name="endTime" value="" class="form_date" style="width: 100px;"/>
                                                 <select id="type" name="type" style="margin-left: 5px;width: 159px;height: 34px;"><option value="">请选择单位类型</option>
                                                     <option value="1">用水单位</option>
                                                     <option value="2">供水单位</option>
+                                                </select>
+                                                <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                    <option value="">请选择水源类型</option></select>
+                                                <select id="meterAttr" name="meterAttr" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                    <option value="">请选择水表属性</option>
+                                                </select>
+                                                <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                    <option value="">所属乡镇或街道</option>
                                                 </select>
                                                 <span class="input-group-btn">
                                                     <button type="button" id="btn_search" class="btn btn-purple btn-sm">

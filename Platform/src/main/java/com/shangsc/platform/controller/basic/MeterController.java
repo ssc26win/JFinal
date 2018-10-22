@@ -49,6 +49,7 @@ public class MeterController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
     public void getListData() {
+        WaterMeter.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Integer term = this.getParaToInt("term");
         Page<WaterMeter> pageInfo = WaterMeter.me.getWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), term);
@@ -60,6 +61,7 @@ public class MeterController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
     public void getExceptionListData() {
+        WaterMeter.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Page<WaterMeter> pageInfo = WaterMeter.me.getExceptionWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<WaterMeter> list = pageInfo.getList();
@@ -70,6 +72,7 @@ public class MeterController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
     public void getStopListData() {
+        WaterMeter.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Page<WaterMeter> pageInfo = WaterMeter.me.getStopMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<WaterMeter> list = pageInfo.getList();
@@ -80,6 +83,7 @@ public class MeterController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
     public void getDisableListData() {
+        WaterMeter.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Page<WaterMeter> pageInfo = WaterMeter.me.getDisableWaterMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<WaterMeter> list = pageInfo.getList();
@@ -90,6 +94,7 @@ public class MeterController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/meter"})
     public void getNormalListData() {
+        WaterMeter.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Page<WaterMeter> pageInfo = WaterMeter.me.getNormalMeterPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<WaterMeter> list = pageInfo.getList();
@@ -157,6 +162,7 @@ public class MeterController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/meter"})
     public void export() {
+        WaterMeter.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         String flagType = this.getPara("flagType");
         Set<Condition> conditions = new HashSet<Condition>();

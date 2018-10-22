@@ -25,7 +25,7 @@ public class MapController extends BaseController {
 
     @RequiresPermissions(value = {"/map/baidu"})
     public void index() {
-        Company.me.setGlobalInnerCode(getInnerCode());
+        Company.me.setGlobalInnerCode(getInnerCodesSQLStr());
         List<Record> records = new ArrayList<>();
         JSONArray array = new JSONArray();
         String type = this.getPara("type");

@@ -19,6 +19,7 @@ import com.jfinal.core.Controller;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.model.SysUser;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.LinkedHashMap;
 
@@ -88,11 +89,24 @@ public abstract class BaseController extends Controller {
         return sysUser.getInnerCode();
     }
 
+    public String getInnerCodesSQLStr() {
+        SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
+        String innerCodes = sysUser.getInnerCode();
+        if (StringUtils.isNotEmpty(innerCodes)) {
+            String[] split = innerCodes.split(",");
+            for (int i = 0; i < split.length; i++) {
+                split[i] = "'" + split[i] + "'";
+            }
+            String result = StringUtils.join(split, ",");
+            return result;
+        }
+        return "";
+    }
+
 
     /********************************* WxApp use  ***************************************/
 
     /**
-     *
      * @return
      */
     public SysUser findByWxAccount() {
@@ -107,6 +121,22 @@ public abstract class BaseController extends Controller {
         SysUser sysUser = SysUser.me.findFirst("select * from sys_user where wx_account='"
                 + wxAccount + "' and token <>'' and token is not null");
         return sysUser.getInnerCode();
+    }
+
+    public String getWxInnerCodeSQLStr() {
+        String wxAccount = this.getPara("wxAccount");
+        SysUser sysUser = SysUser.me.findFirst("select * from sys_user where wx_account='"
+                + wxAccount + "' and token <>'' and token is not null");
+        String innerCodes = sysUser.getInnerCode();
+        if (StringUtils.isNotEmpty(innerCodes)) {
+            String[] split = innerCodes.split(",");
+            for (int i = 0; i < split.length; i++) {
+                split[i] = "'" + split[i] + "'";
+            }
+            String result = StringUtils.join(split, ",");
+            return result;
+        }
+        return "";
     }
 }
 

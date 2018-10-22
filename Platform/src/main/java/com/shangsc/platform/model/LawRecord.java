@@ -74,9 +74,9 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (tlr.title like '%" + StringUtils.trim(keyword) + "%' or tlr.content like '%" + keyword + "%')");
         }
-        if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append(" and tlr.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
-        }
+        //if (StringUtils.isNotEmpty(globalInnerCode)) {
+        //    sqlExceptSelect.append(" and tlr.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
+        //}
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
         }

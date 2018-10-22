@@ -55,7 +55,7 @@ public class ActualLog extends BaseActualLog<ActualLog> {
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_log c ");
         sqlExceptSelect.append(" where 1=1 ");
         if (StringUtils.isNotEmpty(globalInnerCode)) {
-            sqlExceptSelect.append("and c.address in (select meter_address from t_water_meter where inner_code='" + globalInnerCode + "') ");
+            sqlExceptSelect.append("and c.address in (select meter_address from t_water_meter where inner_code in (" + globalInnerCode + ")) ");
         }
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);

@@ -33,7 +33,7 @@ public class ComanyController extends BaseController {
         Page<Company> pageInfo = Company.me.findWxList(getPage(), this.getRows(), keyword, companyType);
         List<Company> companies = pageInfo.getList();
         setVoProp(companies);
-        this.renderJson(companies);
+        this.renderJson(pageInfo);
     }
 
     @Clear(AuthorityInterceptor.class)
@@ -68,12 +68,7 @@ public class ComanyController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     public void findMeterList() {
-        SysUser byWxAccount = findByWxAccount();
-        String innerCode = this.getPara("innerCode");
-        if (StringUtils.isEmpty(innerCode)) {
-            innerCode = byWxAccount.getInnerCode();
-        }
-        Page<WaterMeter> pageInfo = WaterMeter.me.findWxList(getPage(), this.getRows(), innerCode);
+        Page<WaterMeter> pageInfo = WaterMeter.me.findWxList(getPage(), this.getRows(), getWxInnerCodeSQLStr());
         List<WaterMeter> waterMeters = pageInfo.getList();
         this.renderJson(waterMeters);
     }
