@@ -73,7 +73,7 @@ public class ReportStreetController extends BaseController {
 
     @RequiresPermissions(value = {"/report/street"})
     public void getListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {
             String streetStr = StringUtils.trim(this.getPara("street"));
@@ -271,7 +271,7 @@ public class ReportStreetController extends BaseController {
 
     @RequiresPermissions(value = {"/report/street"})
     public void exportData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {
             String streetStr = StringUtils.trim(this.getPara("street"));

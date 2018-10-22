@@ -68,7 +68,7 @@ public class ReportDailyController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/report/daily"})
     public void getListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String type = this.getPara("type");
@@ -113,7 +113,7 @@ public class ReportDailyController extends BaseController {
 
     @RequiresPermissions(value = {"/report/daily"})
     public void exportData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String type = this.getPara("type");

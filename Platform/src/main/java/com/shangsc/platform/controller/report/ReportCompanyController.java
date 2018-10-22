@@ -85,6 +85,7 @@ public class ReportCompanyController extends BaseController {
 
     @RequiresPermissions(value = {"/report/company"})
     public void getListData() {
+        ActualDataReport.me.setGlobalInnerCode(getInnerCodesSQLStr());
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {
             String streetStr = StringUtils.trim(this.getPara("street"));
@@ -96,10 +97,11 @@ public class ReportCompanyController extends BaseController {
             watersType = Integer.parseInt(watersTypeStr);
         }
         String type = this.getPara("type");
+        String innerCode = this.getPara("innerCode");
 
         List<Company> listFinal = new ArrayList<>();
 
-        Page<Company> pageInfo = ActualDataReport.me.getCompany(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, getInnerCode(), watersType, type);
+        Page<Company> pageInfo = ActualDataReport.me.getCompany(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, innerCode, watersType, type);
         List<Company> list = pageInfo.getList();
         Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
 
@@ -284,6 +286,7 @@ public class ReportCompanyController extends BaseController {
 
     @RequiresPermissions(value = {"/report/company"})
     public void exportData() {
+        ActualDataReport.me.setGlobalInnerCode(getInnerCodesSQLStr());
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {
             String streetStr = StringUtils.trim(this.getPara("street"));
@@ -295,10 +298,11 @@ public class ReportCompanyController extends BaseController {
             watersType = Integer.parseInt(watersTypeStr);
         }
         String type = this.getPara("type");
+        String innerCode = this.getPara("innerCode");
 
         List<Company> listFinal = new ArrayList<>();
 
-        Page<Company> pageInfo = ActualDataReport.me.getCompany(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, getInnerCode(), watersType, type);
+        Page<Company> pageInfo = ActualDataReport.me.getCompany(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, innerCode, watersType, type);
         List<Company> list = pageInfo.getList();
         Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
 

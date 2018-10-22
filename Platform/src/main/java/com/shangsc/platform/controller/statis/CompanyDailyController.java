@@ -47,7 +47,7 @@ public class CompanyDailyController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/cpadaily"})
     public void getListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String meterAddress = this.getPara("meterAddress");
@@ -93,7 +93,7 @@ public class CompanyDailyController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/cpadaily"})
     public void exportData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String meterAddress = this.getPara("meterAddress");

@@ -31,7 +31,7 @@ public class YearStatisController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/year"})
     public void getListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         Integer year = null;
@@ -88,7 +88,7 @@ public class YearStatisController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/year"})
     public void exportData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         Integer year = null;

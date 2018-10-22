@@ -100,7 +100,7 @@ public class ActualData extends BaseActualData<ActualData> {
                 "left join (select name as companyName,water_unit,county,inner_code,real_code from t_company) tc on tm.inner_code=tc.inner_code " +
                 "left join t_actual_data tad on tad.meter_address=tm.meter_address " +
                 "where tm.meter_address not in (select meter_address from t_actual_data))) alld");
-        sqlExceptSelect.append(" where 1=1 ");
+        sqlExceptSelect.append(" where 1=1");
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
                     + "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
@@ -318,7 +318,7 @@ public class ActualData extends BaseActualData<ActualData> {
                                            String name, String innerCode, Integer street, Integer watersType, String meterAttr,
                                            String meterAddress, String type) {
         /*select tad.*,
-		tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
+        tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,
 				date_format(tad.write_time, '%Y-%m') as months,sum(tad.net_water) as monthTotal
 
@@ -404,7 +404,7 @@ public class ActualData extends BaseActualData<ActualData> {
     public Page<ActualData> getYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year, String name,
                                           String innerCode, Integer street, Integer watersType, String meterAttr,
                                           String meterAddress, String type) {
-		/*select
+        /*select
 		tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address,
 				date_format(tad.write_time, '%Y') as years,sum(tad.net_water) as yearTotal
@@ -586,7 +586,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
-                " where t.inner_code in (" + globalInnerCode + ") " +
+                " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time < '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
@@ -598,7 +598,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
-                " where t.inner_code in (" + globalInnerCode + ") " +
+                " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time <= '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";

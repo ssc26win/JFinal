@@ -45,7 +45,7 @@ public class CompanyMonthController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/cpamonth"})
     public void getListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String meterAddress = this.getPara("meterAddress");
@@ -99,7 +99,7 @@ public class CompanyMonthController extends BaseController {
 
     @RequiresPermissions(value = {"/statis/cpamonth"})
     public void exportData() {
-        ActualData.me.setGlobalInnerCode(getInnerCode());
+        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         String meterAddress = this.getPara("meterAddress");
