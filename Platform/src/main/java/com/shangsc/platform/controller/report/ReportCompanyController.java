@@ -112,11 +112,16 @@ public class ReportCompanyController extends BaseController {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
             watersType = Integer.parseInt(watersTypeStr);
         }
+        Integer meterAttr = null;
+        if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
+            String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
+            meterAttr = Integer.parseInt(meterAttrStr);
+        }
         String type = this.getPara("type");
 
         List<Company> listFinal = new ArrayList<>();
 
-        Page<Company> pageInfo = ActualDataReport.me.getCompany(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, innerCode, watersType, type);
+        Page<Company> pageInfo = ActualDataReport.me.getCompany(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, name, innerCode, watersType, type);
         List<Company> list = pageInfo.getList();
         Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
 
@@ -132,12 +137,15 @@ public class ReportCompanyController extends BaseController {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
 
             String sql = "select lsall.name,lsall.inner_code,lsall.street,lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
-                    "(select tc.name,tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.name,tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where lsall.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null" +
+                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                    (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.inner_code,lsall.waters_type,lsall.meter_attr order by lsall.street asc,lsall.waters_type asc";
 
             List<Record> records = Db.find(sql);
@@ -175,12 +183,15 @@ public class ReportCompanyController extends BaseController {
             }
 
             String sqlZongji = "select lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where lsall.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                    (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.meter_attr order by lsall.waters_type asc";
             List<Record> recordsZongji = Db.find(sqlZongji);
             Company companyZongji = new Company();
@@ -205,12 +216,15 @@ public class ReportCompanyController extends BaseController {
 
 
             String sqlHejiWaterType = "select lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where lsall.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                    (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.waters_type,lsall.meter_attr order by lsall.waters_type asc";
 
             List<Record> recordsHejiWaterType = Db.find(sqlHejiWaterType);
@@ -249,12 +263,15 @@ public class ReportCompanyController extends BaseController {
             }
 
             String sqlXiaoji = "select lsall.water_unit,lsall.name,lsall.real_code,lsall.inner_code,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
-                    "(select tc.water_unit,tc.name,tc.real_code,tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.water_unit,tc.name,tc.real_code,tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where lsall.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                    (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.inner_code,lsall.meter_attr order by lsall.inner_code asc";
 
             List<Record> recordsXiaoji = Db.find(sqlXiaoji);
@@ -302,6 +319,20 @@ public class ReportCompanyController extends BaseController {
     @RequiresPermissions(value = {"/report/company"})
     public void exportData() {
         ActualDataReport.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        String name = this.getPara("name");
+        String innerCode = this.getPara("innerCode");
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {
             String streetStr = StringUtils.trim(this.getPara("street"));
@@ -312,12 +343,16 @@ public class ReportCompanyController extends BaseController {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
             watersType = Integer.parseInt(watersTypeStr);
         }
+        Integer meterAttr = null;
+        if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
+            String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
+            meterAttr = Integer.parseInt(meterAttrStr);
+        }
         String type = this.getPara("type");
-        String innerCode = this.getPara("innerCode");
 
         List<Company> listFinal = new ArrayList<>();
 
-        Page<Company> pageInfo = ActualDataReport.me.getCompany(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, innerCode, watersType, type);
+        Page<Company> pageInfo = ActualDataReport.me.getCompany(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, name, innerCode, watersType, type);
         List<Company> list = pageInfo.getList();
         Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
 
@@ -333,12 +368,15 @@ public class ReportCompanyController extends BaseController {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
 
             String sql = "select lsall.name,lsall.inner_code,lsall.street,lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
-                    "(select tc.name,tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.name,tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where lsall.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null" +
+                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                    (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.inner_code,lsall.waters_type,lsall.meter_attr order by lsall.street asc,lsall.waters_type asc";
 
             List<Record> records = Db.find(sql);
@@ -376,12 +414,15 @@ public class ReportCompanyController extends BaseController {
             }
 
             String sqlZongji = "select lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where lsall.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                    (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.meter_attr order by lsall.waters_type asc";
             List<Record> recordsZongji = Db.find(sqlZongji);
             Company companyZongji = new Company();
@@ -406,12 +447,15 @@ public class ReportCompanyController extends BaseController {
 
 
             String sqlHejiWaterType = "select lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where lsall.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                    (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.waters_type,lsall.meter_attr order by lsall.waters_type asc";
 
             List<Record> recordsHejiWaterType = Db.find(sqlHejiWaterType);
@@ -450,12 +494,15 @@ public class ReportCompanyController extends BaseController {
             }
 
             String sqlXiaoji = "select lsall.water_unit,lsall.name,lsall.real_code,lsall.inner_code,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
-                    "(select tc.water_unit,tc.name,tc.real_code,tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.water_unit,tc.name,tc.real_code,tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where lsall.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                    (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.inner_code,lsall.meter_attr order by lsall.inner_code asc";
 
             List<Record> recordsXiaoji = Db.find(sqlXiaoji);

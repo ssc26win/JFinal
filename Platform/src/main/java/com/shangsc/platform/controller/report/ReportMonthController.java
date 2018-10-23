@@ -10,20 +10,19 @@ import com.shangsc.platform.code.ReportTypeEnum;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.ExportByDataTypeService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.ActualDataReport;
 import com.shangsc.platform.model.Company;
+import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author ssc
@@ -68,8 +67,36 @@ public class ReportMonthController extends BaseController {
         ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Integer street = null;
+        if (StringUtils.isNotEmpty(this.getPara("street"))) {
+            String streetStr = StringUtils.trim(this.getPara("street"));
+            street = Integer.parseInt(streetStr);
+        }
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
+        Integer meterAttr = null;
+        if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
+            String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
+            meterAttr = Integer.parseInt(meterAttrStr);
+        }
         String type = this.getPara("type");
-        Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), getRows(), getOrderbyStr(), name, innerCode, type);
+
+        Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), getRows(), getOrderbyStr(), street, name, innerCode, type);
         List<Company> list = pageInfo.getList();
         Map<String, String> monthColumns = ActualDataReport.me.getMonthColumns();
         if (CollectionUtils.isNotEmpty(list)) {
@@ -78,7 +105,14 @@ public class ReportMonthController extends BaseController {
                 innerCodes.add("'" + company.getInnerCode() + "'");
             }
             String sql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m') as TargetDT, sum(tad.net_water) as TargetTotal " +
-                    " from t_actual_data tad where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
+                    " from t_actual_data tad left join (select meter_address,waters_type,meter_attr from  t_water_meter) twm on twm.meter_address=tad.meter_address " +
+                    " where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
+
+                    (watersType != null ? " and twm.waters_type" + watersType : "") +
+                    (meterAttr != null ? " and twm.meter_attr" + meterAttr : "") +
+                    (startTime != null ? " and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                    (endTime != null ? " and tad.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+
                     " group by tad.inner_code,date_format(tad.write_time, '%Y-%m') order by tad.inner_code asc,TargetDT asc";
 
             List<Record> records = Db.find(sql);
@@ -110,8 +144,36 @@ public class ReportMonthController extends BaseController {
         ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Integer street = null;
+        if (StringUtils.isNotEmpty(this.getPara("street"))) {
+            String streetStr = StringUtils.trim(this.getPara("street"));
+            street = Integer.parseInt(streetStr);
+        }
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
+        Integer meterAttr = null;
+        if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
+            String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
+            meterAttr = Integer.parseInt(meterAttrStr);
+        }
         String type = this.getPara("type");
-        Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), name, innerCode, type);
+
+        Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, name, innerCode, type);
         List<Company> list = pageInfo.getList();
         Map<String, String> monthColumns = ActualDataReport.me.getMonthColumns();
         if (CollectionUtils.isNotEmpty(list)) {
@@ -120,7 +182,14 @@ public class ReportMonthController extends BaseController {
                 innerCodes.add("'" + company.getInnerCode() + "'");
             }
             String sql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m') as TargetDT, sum(tad.net_water) as TargetTotal " +
-                    " from t_actual_data tad where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
+                    " from t_actual_data tad left join (select meter_address,waters_type,meter_attr from  t_water_meter) twm on twm.meter_address=tad.meter_address " +
+                    " where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
+
+                    (watersType != null ? " and twm.waters_type" + watersType : "") +
+                    (meterAttr != null ? " and twm.meter_attr" + meterAttr : "") +
+                    (startTime != null ? " and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                    (endTime != null ? " and tad.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+
                     " group by tad.inner_code,date_format(tad.write_time, '%Y-%m') order by TargetDT asc";
             List<Record> records = Db.find(sql);
             for (int i = 0; i < list.size(); i++) {

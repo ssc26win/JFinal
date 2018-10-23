@@ -63,7 +63,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         return Company.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
 
-    public Page<Company> getCompany(int pageNo, int pageSize, String orderbyStr, Integer street, String innerCode, Integer watersType, String type) {
+    public Page<Company> getCompany(int pageNo, int pageSize, String orderbyStr, Integer street, String name, String innerCode, Integer watersType, String type) {
         String select = " select tc.water_unit,tc.name,tc.inner_code,tc.real_code,tc.street,twm.waters_type ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm " +
                 " inner join t_company tc on twm.inner_code=tc.inner_code " +
@@ -76,6 +76,9 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         }
         if (street != null && street > 0) {
             sqlExceptSelect.append(" and tc.street=" + street);
+        }
+        if (StringUtils.isNotEmpty(name)) {
+            sqlExceptSelect.append(" and tc.name='" + name + "'");
         }
         if (StringUtils.isNotEmpty(type)) {
             type = StringUtils.trim(type);
@@ -150,7 +153,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         return days;
     }
 
-    public Page<Company> getCompanies(int pageNo, int pageSize, String orderbyStr, String name, String innerCode, String type) {
+    public Page<Company> getCompanies(int pageNo, int pageSize, String orderbyStr, Integer street, String name, String innerCode, String type) {
         String select = "select tc.name as companyName,tc.inner_code,tc.real_code ";
 
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company tc where 1=1 ");
@@ -172,6 +175,9 @@ public class ActualDataReport extends BaseActualData<ActualData> {
             if (StringUtils.isNotEmpty(type)) {
                 sqlExceptSelect.append(" and tc.company_type=" + type + " ");
             }
+        }
+        if (street != null) {
+            sqlExceptSelect.append(" and tc.street=" + street + " ");
         }
         sqlExceptSelect.append(" group by tc.inner_code");
         sqlExceptSelect.append(" order by tc.inner_code asc");

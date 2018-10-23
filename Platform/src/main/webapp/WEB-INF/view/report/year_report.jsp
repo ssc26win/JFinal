@@ -234,6 +234,28 @@
         $("#grid-table").trigger("reloadGrid"); //重新载入
     }
 
+    function getDictMapData() {
+        var submitData = {};
+        $.post("${context_path}/dict/getSearchStatisUseDict", submitData, function (data) {
+            var watersType = data.WatersType;
+            for (var i = 0; i < watersType.length; i++) {
+                $("#watersType").append("<option value='" + watersType[i].value + "'>" + watersType[i].name + "</option>");
+            }
+            var street = data.Street;
+            for (var i = 0; i < street.length; i++) {
+                $("#street").append("<option value='" + street[i].value + "'>" + street[i].name + "</option>");
+            }
+            var meterAttr = data.MeterAttr;
+            for (var i = 0; i < meterAttr.length; i++) {
+                $("#meterAttr").append("<option value='" + meterAttr[i].value + "'>" + meterAttr[i].name + "</option>");
+            }
+        }, "json");
+    }
+
+    $(function () {
+        getDictMapData();
+    })
+
     jQuery(function ($) {
         document.onkeydown = function (e) {
             var theEvent = window.event || e;

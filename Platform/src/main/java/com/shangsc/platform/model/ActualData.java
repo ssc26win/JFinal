@@ -528,7 +528,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
-                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where t.inner_code in (select inner_code from t_company where company_type=1)" +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time < '" + end + "' " +
@@ -541,7 +541,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
-                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where t.inner_code in (select inner_code from t_company where company_type=1)" +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time <= '" + end + "' " +
@@ -554,7 +554,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
-                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where t.inner_code in (select inner_code from t_company where company_type=2)" +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time < '" + end + "' " +
@@ -567,7 +567,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
-                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where t.inner_code in (select inner_code from t_company where company_type=2)" +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time <= '" + end + "' " +
@@ -580,7 +580,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
-                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time < '" + end + "' " +
@@ -593,7 +593,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
-                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time <= '" + end + "' " +
@@ -603,7 +603,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
     public List<Record> getCPAYearActualData() {
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
-                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 " GROUP BY date_format(t.write_time, '%Y')";
         return Db.find(sql);
@@ -677,7 +677,7 @@ public class ActualData extends BaseActualData<ActualData> {
             sqlExceptSelect.append(" and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' ");
         }
         if (endTime != null) {
-            sqlExceptSelect.append(" and tad.write_time < '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' ");
+            sqlExceptSelect.append(" and tad.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' ");
         }
         if (StringUtils.isNotEmpty(meterAddress)) {
             meterAddress = StringUtils.trim(meterAddress);
@@ -762,7 +762,7 @@ public class ActualData extends BaseActualData<ActualData> {
             sqlExceptSelect.append(" and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "'");
         }
         if (endTime != null) {
-            sqlExceptSelect.append(" and tad.write_time < '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "'");
+            sqlExceptSelect.append(" and tad.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "'");
         }
         if (StringUtils.isNotEmpty(meterAddress)) {
             meterAddress = StringUtils.trim(meterAddress);
@@ -843,7 +843,7 @@ public class ActualData extends BaseActualData<ActualData> {
             String yearStart = String.valueOf(year) + "-01-01 00:00:00";
             String yearEnd = String.valueOf(year + 1) + "-01-01 00:00:00";
             sqlExceptSelect.append(" and tad.write_time >= '" + yearStart + "'");
-            sqlExceptSelect.append(" and tad.write_time < '" + yearEnd + "'");
+            sqlExceptSelect.append(" and tad.write_time <= '" + yearEnd + "'");
         }
         if (StringUtils.isNotEmpty(meterAddress)) {
             meterAddress = StringUtils.trim(meterAddress);

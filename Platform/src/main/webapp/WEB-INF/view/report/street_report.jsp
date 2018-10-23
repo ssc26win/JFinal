@@ -245,6 +245,10 @@
             for (var i = 0; i < street.length; i++) {
                 $("#street").append("<option value='" + street[i].value + "'>" + street[i].name + "</option>");
             }
+            var meterAttr = data.MeterAttr;
+            for (var i = 0; i < meterAttr.length; i++) {
+                $("#meterAttr").append("<option value='" + meterAttr[i].value + "'>" + meterAttr[i].name + "</option>");
+            }
         }, "json");
     }
 
