@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html style="min-width: 5000px;">
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
   <meta charset="utf-8"/>
@@ -31,74 +31,146 @@
   </script>
   <div class="main-content" id="page-wrapper">
     <div class="page-content" id="page-content">
-      <div class="row" style="margin-top: 20px;">
+      <div class="row" style="">
         <div class="col-sm-12">
-          <div id="companyUseD" style="margin: 0 auto"></div>
+          <div id="companyUseDAll" style="min-width: 5000px;margin: 0 auto"></div>
+        </div>
+      </div>
+      <div class="row" style="">
+        <div class="col-sm-12">
+          <div id="companyUseD" style="min-width: 5000px; margin: 0 auto"></div>
         </div>
       </div>
     </div>
   </div>
 </div>
 <script language="JavaScript">
-  var chart = Highcharts.chart('companyUseD', {
-    title: {
-      text: '${companyTitle}'
-    },
-    subtitle: {
-      text: '数据来源：通州节水办'
-    },
-    xAxis: {
-      categories: JSON.parse('${days}')
-    },
-    yAxis: {
+  $(document).ready(function () {
+    Highcharts.chart('companyUseDAll', {
+      chart: {
+        type: 'column'
+      },
       title: {
-        text: '用水量'
-      }
-    },
-    legend: {
-      layout: 'vertical',
-      align: 'right',
-      verticalAlign: 'middle'
-    },
-    plotOptions: {
-      series: {
-        label: {
-          connectorAllowed: false
-        },
-        pointStart: 2010
-      }
-    },
-    series: [{
-      name: '安装，实施人员',
-      data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
-    }, {
-      name: '工人',
-      data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
-    }, {
-      name: '销售',
-      data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
-    }, {
-      name: '项目开发',
-      data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
-    }, {
-      name: '其他',
-      data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
-    }],
-    responsive: {
-      rules: [{
-        condition: {
-          maxWidth: 500
-        },
-        chartOptions: {
-          legend: {
-            layout: 'horizontal',
-            align: 'center',
-            verticalAlign: 'bottom'
+        text: '${companyTitle}'
+      },
+      subtitle: {
+        text: '数据来源：通州节水办。（点击可查看各单位具体的用水量）'
+      },
+      xAxis: {
+        type: 'category'
+      },
+      yAxis: {
+        title: {
+          text: '管辖范围内总的用水量.单位（立方米）'
+        }
+      },
+      legend: {
+        enabled: false
+      },
+      credits: {
+        enabled: false // 禁用版权信息
+      },
+      plotOptions: {
+        series: {
+          borderWidth: 0,
+          dataLabels: {
+            enabled: true,
+            format: '{point.y}'
           }
         }
-      }]
-    }
-  });
+      },
+      tooltip: {
+        headerFormat: '<span style="font-size:11px">{series.name}(<span style="color: red;">点击查看该日</span>)</span><br/>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
+      },
+      series: [{
+        name: '日期',
+        colorByPoint: true,
+        data: JSON.parse('${seriesJsonData}'),
+        events: {
+          click: function (data) {
+            var date = data.point.name;
+            if (date != "") {
+              setOne(date);
+            }
+          }
+        }
+      }],
+    });
+    var myDate = new Date();
+    var time = myDate.toLocaleDateString().split('/').join('-');
+    setOne(time);
+  })
+  function setOne(date) {
+    console.log(date);
+    $.get("${context_path}/report/daily/chart/setOneDaily?date=" + date, function (data) {
+      var title = {
+        text: ''
+      };
+      var subtitle = {
+        text: '用水量'
+      };
+      var xAxis = {
+        categories: data.companies
+      };
+      var yAxis = {
+        title: {
+          text: '水量单位（立方米）'
+        },
+        plotLines: [{
+          value: 0,
+          width: 10
+        }]
+      };
+      var tooltip = {
+        valueSuffix: ''
+      }
+      var legend = {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle',
+        borderWidth: 0
+      };
+      var series = [
+        {
+          name: '各单位用水量',
+          data: data.sumWater
+        }
+      ];
+      var plotOptions = {
+        spline: {
+          shadow: true,
+          animation: true,
+          lineWidth: 1
+        },
+        series: {
+          color: '#00b16a',
+          lineWidth: 4,
+          cursor: 'pointer',
+          events: {
+            click: function (event) {
+              var time = event.point.category;
+              window.location.href = "${context_path}/report/daily";
+            }
+          }
+        }
+      };
+      var credits = {
+        enabled: false // 禁用版权信息
+      }
+      var json = {};
+      json.title = title;
+      json.subtitle = subtitle;
+      json.xAxis = xAxis;
+      json.yAxis = yAxis;
+      json.tooltip = tooltip;
+      json.legend = legend;
+      json.series = series;
+      json.plotOptions = plotOptions;
+      json.credits = credits;
+      $('#companyUseD').highcharts(json);
+    });
+  }
 </script>
 </body>
 </html>

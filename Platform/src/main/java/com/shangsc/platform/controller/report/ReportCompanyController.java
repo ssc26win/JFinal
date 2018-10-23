@@ -11,12 +11,14 @@ import com.shangsc.platform.code.ReportTypeEnum;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.ExportByDataTypeService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.ActualDataReport;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -86,6 +88,20 @@ public class ReportCompanyController extends BaseController {
     @RequiresPermissions(value = {"/report/company"})
     public void getListData() {
         ActualDataReport.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        String name = this.getPara("name");
+        String innerCode = this.getPara("innerCode");
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {
             String streetStr = StringUtils.trim(this.getPara("street"));
@@ -97,7 +113,6 @@ public class ReportCompanyController extends BaseController {
             watersType = Integer.parseInt(watersTypeStr);
         }
         String type = this.getPara("type");
-        String innerCode = this.getPara("innerCode");
 
         List<Company> listFinal = new ArrayList<>();
 

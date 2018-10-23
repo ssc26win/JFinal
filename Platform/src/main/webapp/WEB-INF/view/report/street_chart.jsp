@@ -50,7 +50,7 @@
                 text: '${streetTitle}'
             },
             subtitle: {
-                text: '点击可查看各乡镇具体的用水量，数据来源通州节水办.'
+                text: '数据来源：通州节水办。（点击可查看各乡镇具体的用水量）'
             },
             xAxis: {
                 type: 'category'
@@ -125,7 +125,12 @@
             },
             series: [{
                 name: '<span title="根据水表属性统计">用水量</span>',
-                data: JSON.parse('${meterAttrSeris}')
+                data: JSON.parse('${meterAttrSeris}'),
+                events: {
+                    click: function (event) {
+                        window.location.href = "${context_path}/report/street";
+                    }
+                }
             }],
             responsive: {
                 rules: [{

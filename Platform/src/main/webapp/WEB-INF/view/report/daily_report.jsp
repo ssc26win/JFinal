@@ -1,22 +1,25 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
-<%@ include file="/WEB-INF/taglib.jsp"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ include file="/WEB-INF/taglib.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta charset="utf-8"/>
     <title>后台管理系统</title>
 
-    <meta name="description" content="overview &amp; stats" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="description" content="overview &amp; stats"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
     <!-- bootstrap & fontawesome -->
-    <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
+    <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true"/>
 </head>
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.check('main-container' , 'fixed')}catch(e){}
+        try {
+            ace.settings.check('main-container', 'fixed')
+        } catch (e) {
+        }
     </script>
     <div class="main-content" id="page-wrapper">
         <div class="page-content" id="page-content">
@@ -32,23 +35,36 @@
                             <div class="widget-main">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <form id="exportForm" action="${context_path}/report/daily/exportData" method="post">
+                                        <form id="exportForm" action="${context_path}/report/daily/exportData"
+                                              method="post">
                                             <input type="text" style="display:none"/>
+
                                             <div class="input-group">
                                                 日期时间:
-                                                <input type="text" id="startTime" name="startTime" value="" class="form_date" style="width: 100px;"/>~<input type="text" id="endTime" name="endTime" value="" class="form_date" style="width: 100px;"/>
-                                                <select id="type" name="type" style="margin-left: 5px;width: 159px;height: 34px;"><option value="">请选择单位类型</option>
+                                                <input type="text" id="startTime" name="startTime" value=""
+                                                       class="form_date" style="width: 100px;"/>~
+                                                <input type="text" id="endTime" name="endTime" value=""
+                                                       class="form_date" style="width: 100px;"/>
+                                                <select id="type" name="type"
+                                                        style="margin-left: 5px;width: 159px;height: 34px;">
+                                                    <option value="">请选择单位类型</option>
                                                     <option value="1">用水单位</option>
                                                     <option value="2">供水单位</option>
                                                 </select>
-                                                <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
-                                                <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
-                                                <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;">
-                                                    <option value="">请选择水源类型</option></select>
-                                                <select id="meterAttr" name="meterAttr" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                <input type="text" id="name" name="name" class="" placeholder="请输入单位名称"
+                                                       style="margin-left: 5px;"/>
+                                                <input type="text" id="innerCode" name="innerCode" class=""
+                                                       placeholder="请输入单位编号" style="margin-left: 5px;"/>
+                                                <select id="watersType" name="watersType"
+                                                        style="margin-left: 5px;width: 159px; height: 34px;">
+                                                    <option value="">请选择水源类型</option>
+                                                </select>
+                                                <select id="meterAttr" name="meterAttr"
+                                                        style="margin-left: 5px;width: 159px; height: 34px;">
                                                     <option value="">请选择水表属性</option>
                                                 </select>
-                                                <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                <select id="street" name="street"
+                                                        style="margin-left: 5px;width: 159px; height: 34px;">
                                                     <option value="">所属乡镇或街道</option>
                                                 </select>
                                                 <span class="input-group-btn">
@@ -56,8 +72,13 @@
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                                         搜索
                                                     </button>
-                                                    <button type="button" id="btn-exportData" class="btn btn-success btn-sm" style="margin-left:10px;">
+                                                    <button type="button" id="btn-exportData"
+                                                            class="btn btn-success btn-sm" style="margin-left:10px;">
                                                         导出
+                                                    </button>
+                                                    <button type="button" id="btn-chart" class="btn btn-primary btn-sm"
+                                                            style="margin-left:10px;">
+                                                        查看图表
                                                     </button>
                                                 </span>
                                             </div>
@@ -79,13 +100,16 @@
                     </script>
 
                     <!-- PAGE CONTENT ENDS -->
-                </div><!-- /.col -->
-            </div><!-- /.row -->
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
         </div>
     </div>
-</div><!-- /.main-container -->
+</div>
+<!-- /.main-container -->
 <!-- basic scripts -->
-<jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
+<jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true"/>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -94,69 +118,72 @@
         var pager_selector = "#grid-pager";
         //resize to fit page size
         $(window).on('resize.jqGrid', function () {
-            $(grid_selector).jqGrid( 'setGridWidth', $(".page-content").width() );
+            $(grid_selector).jqGrid('setGridWidth', $(".page-content").width());
         });
         var parent_column = $(grid_selector).closest('[class*="col-"]');
-        $(document).on('settings.ace.jqGrid' , function(ev, event_name, collapsed) {
-            if( event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed' ) {
+        $(document).on('settings.ace.jqGrid', function (ev, event_name, collapsed) {
+            if (event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed') {
                 //setTimeout is for webkit only to give time for DOM changes and then redraw!!!
-                setTimeout(function() {
-                    $(grid_selector).jqGrid( 'setGridWidth', parent_column.width() );
+                setTimeout(function () {
+                    $(grid_selector).jqGrid('setGridWidth', parent_column.width());
                 }, 0);
             }
         });
 
         var url = '${context_path}/report/daily/getListData';
-        var startTime = '${startTime}';
-        var endTime = '${endTime}';
-        var type = '${type}';
-        if((startTime!=undefined&&startTime!=null&&startTime!='') && (endTime!=undefined&&endTime!=null&&endTime!='')){
-            var startTime = $("#startTime").val(startTime);
-            var endTime = $("#endTime").val(endTime);
-            url= '${context_path}/report/daily/getListData?startTime=${startTime}&endTime=${endTime}';
-            if (type != '' && type != undefined) {
-                $("#type").val(type);
-                url = url + '&type=${type}';
-            }
-        }
+
         $("#grid-table").jqGrid({
-            url:url,
+            url: url,
             mtype: "GET",
             datatype: "json",
-            colModel:  JSON.parse('${columnsDay}'),
+            colModel: JSON.parse('${columnsDay}'),
             viewrecords: true,
             height: 560,
             rowNum: 20,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
             autoScroll: true,
-            recordtext:"{0} - {1} 共 {2} 条",
-            pgtext:"第 {0} 页 共 {1} 页",
+            recordtext: "{0} - {1} 共 {2} 条",
+            pgtext: "第 {0} 页 共 {1} 页",
             pager: pager_selector,
-            loadComplete : function() {
+            loadComplete: function () {
                 var table = this;
-                setTimeout(function(){
+                setTimeout(function () {
                     updatePagerIcons(table);
                 }, 0);
             }
         });
         $(window).triggerHandler('resize.jqGrid');
 
-        $(window).bind('resize', function() {
-            $("#jqgrid").setGridWidth($(window).width()*0.75);
-            $("#grid-table").setGridHeight($(window).height()-200);
+        $(window).bind('resize', function () {
+            $("#jqgrid").setGridWidth($(window).width() * 0.75);
+            $("#grid-table").setGridHeight($(window).height() - 200);
         });
-        $("#btn_search").click(function(){
+        $("#btn_search").click(function () {
             //此处可以添加对查询数据的合法验证
+            var street = $("#street").val();
+            var watersType = $("#watersType").val();
+            var type = $("#type").val();
+
             var name = $("#name").val();
             var innerCode = $("#innerCode").val();
-            var type2 = $("#type").val();
-            $("#grid-table").jqGrid('setGridParam',{datatype:'json',
-                postData:{'name':name,'innerCode': innerCode,'type':type2}, //发送数据
-                page:1
+            var startTime = $("#startTime").val();
+            var endTime = $("#endTime").val();
+            var meterAttr = $("#meterAttr").val();
+
+            $("#grid-table").jqGrid('setGridParam', {
+                datatype: 'json',
+                postData: {
+                    'street': street, 'watersType': watersType, 'type': type, 'name': name, 'innerCode': innerCode,
+                    'startTime': startTime, 'endTime': endTime, 'meterAttr': meterAttr
+                }, //发送数据
+                page: 1
             }).trigger("reloadGrid"); //重新载入
         });
-        $("#btn-exportData").click(function(){
+        $("#btn-chart").click(function () {
+            window.location.href = "${context_path}/report/daily/chart";
+        });
+        $("#btn-exportData").click(function () {
             $("#exportForm").submit();
         });
     });
@@ -164,15 +191,15 @@
     function updatePagerIcons(table) {
         var replacement =
         {
-            'ui-icon-seek-first' : 'ace-icon fa fa-angle-double-left bigger-140',
-            'ui-icon-seek-prev' : 'ace-icon fa fa-angle-left bigger-140',
-            'ui-icon-seek-next' : 'ace-icon fa fa-angle-right bigger-140',
-            'ui-icon-seek-end' : 'ace-icon fa fa-angle-double-right bigger-140'
+            'ui-icon-seek-first': 'ace-icon fa fa-angle-double-left bigger-140',
+            'ui-icon-seek-prev': 'ace-icon fa fa-angle-left bigger-140',
+            'ui-icon-seek-next': 'ace-icon fa fa-angle-right bigger-140',
+            'ui-icon-seek-end': 'ace-icon fa fa-angle-double-right bigger-140'
         };
-        $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function(){
+        $('.ui-pg-table:not(.navtable) > tbody > tr > .ui-pg-button > .ui-icon').each(function () {
             var icon = $(this);
             var $class = $.trim(icon.attr('class').replace('ui-icon', ''));
-            if($class in replacement) icon.attr('class', 'ui-icon '+replacement[$class]);
+            if ($class in replacement) icon.attr('class', 'ui-icon ' + replacement[$class]);
         })
     }
 
@@ -195,23 +222,23 @@
     function getOneSelectedRows() {
         var grid = $("#grid-table");
         var rowKey = grid.getGridParam("selrow");
-        if (!rowKey){
+        if (!rowKey) {
             return "-1";
-        }else {
+        } else {
             var selectedIDs = grid.getGridParam("selarrrow");
-            if(selectedIDs.length==1){
+            if (selectedIDs.length == 1) {
                 return selectedIDs[0];
-            }else{
+            } else {
                 return "-2";
             }
         }
     }
 
-    function reloadGrid(){
+    function reloadGrid() {
         $("#grid-table").trigger("reloadGrid"); //重新载入
     }
 
-    jQuery(function($) {
+    jQuery(function ($) {
         document.onkeydown = function (e) {
             var theEvent = window.event || e;
             var code = theEvent.keyCode || theEvent.which;

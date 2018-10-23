@@ -49,11 +49,11 @@
                                                 </select>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
-                                                <%--<input type="text" id="meterAddress" name="meterAddress" class="" placeholder="请输入表计地址" style="margin-left: 5px;"/>
-                                                <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;"><option value="">请选择水源类型</option></select>
+                                                <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                    <option value="">请选择水源类型</option></select>
                                                 <select id="meterAttr" name="meterAttr" style="margin-left: 5px;width: 159px; height: 34px;">
                                                     <option value="">请选择水表属性</option>
-                                                </select>--%>
+                                                </select>
                                                 <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
                                                     <option value="">所属乡镇或街道</option>
                                                 </select>
@@ -237,18 +237,18 @@
     function getDictMapData(){
         var submitData = {};
         $.post("${context_path}/dict/getSearchStatisUseDict", submitData, function(data) {
-            /*var watersType = data.WatersType;
+            var watersType = data.WatersType;
             for(var i = 0;i<watersType.length;i++) {
                 $("#watersType").append("<option value='" + watersType[i].value + "'>"+watersType[i].name+"</option>");
-            }*/
+            }
             var street = data.Street;
             for(var i = 0;i<street.length;i++) {
                 $("#street").append("<option value='" + street[i].value + "'>"+street[i].name+"</option>");
             }
-            /*var meterAttr = data.MeterAttr;
+            var meterAttr = data.MeterAttr;
             for(var i = 0;i<meterAttr.length;i++) {
                 $("#meterAttr").append("<option value='" + meterAttr[i].value + "'>"+meterAttr[i].name+"</option>");
-            }*/
+            }
         },"json");
     }
     $(function(){

@@ -56,7 +56,11 @@ public class CompanyDailyController extends BaseController {
             String streetStr = StringUtils.trim(this.getPara("street"));
             street = Integer.parseInt(streetStr);
         }
-        String meterAttr = this.getPara("meterAttr");
+        Integer meterAttr = null;
+        if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
+            String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
+            meterAttr = Integer.parseInt(meterAttrStr);
+        }
         Integer watersType = null;
         if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
@@ -102,7 +106,11 @@ public class CompanyDailyController extends BaseController {
             String streetStr = StringUtils.trim(this.getPara("street"));
             street = Integer.parseInt(streetStr);
         }
-        String meterAttr = this.getPara("meterAttr");
+        Integer meterAttr = null;
+        if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
+            String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
+            meterAttr = Integer.parseInt(meterAttrStr);
+        }
         Integer watersType = null;
         if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
             String watersTypeStr = StringUtils.trim(this.getPara("watersType"));

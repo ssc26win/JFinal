@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.shangsc.front.util.JsonUtil;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.ReportColType;
 import com.shangsc.platform.code.ReportTypeEnum;
@@ -121,6 +122,8 @@ public class ReportStreetChartController extends BaseController {
         }
 
         this.setAttr("drilldownJsonData", drilldownJsonData);
+
+        System.out.println(JsonUtil.obj2Json(drilldownJsonData));
 
         Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
         JSONArray meterAttrName = new JSONArray();

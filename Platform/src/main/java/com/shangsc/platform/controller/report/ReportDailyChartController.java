@@ -1,30 +1,23 @@
 package com.shangsc.platform.controller.report;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.shangsc.front.util.JsonUtil;
 import com.shangsc.platform.code.MonthCode;
-import com.shangsc.platform.code.ReportTypeEnum;
-import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
-import com.shangsc.platform.core.util.JqGridModelUtils;
-import com.shangsc.platform.export.ExportByDataTypeService;
 import com.shangsc.platform.model.ActualData;
-import com.shangsc.platform.model.ActualDataReport;
-import com.shangsc.platform.model.Company;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author ssc
@@ -37,35 +30,71 @@ public class ReportDailyChartController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/report/daily/chart"})
     public void index() {
-        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
-
-        String path = this.getRequest().getServletContext().getContextPath();
-        String contextPath = path.equals("/") ? "" : path;
-
-        List<ActualData> datas = ActualData.me.find("select date_format(write_time, '%Y') as yearTime from t_actual_data" +
-                " group by yearTime order by yearTime asc");
-        String companyTitle = "各单位用水统计图表";
+        String globalInnerCode = getInnerCodesSQLStr();
+        ActualData.me.setGlobalInnerCode(globalInnerCode);
+        Map<String, String> map = ToolDateTime.getBefore30DateTime();
+        String start = map.get(MonthCode.warn_start_date);
+        String end = map.get(MonthCode.warn_end_date);
+        List<ActualData> datas = ActualData.me.find("select date_format(write_time, '%Y-%m-%d') as targetTime from t_actual_data " +
+                " where write_time is not null and write_time<>'' " +
+                " and write_time >= '" + start + "' " +
+                " and write_time < '" + end + "' " +
+                " group by targetTime order by targetTime asc");
+        String companyTitle = " 各单位用水统计图表";
         if (CollectionUtils.isNotEmpty(datas)) {
-            String strYear = "";
+            String strTime = "";
             if (datas.size() == 1) {
-                strYear = datas.get(0).get("yearTime");
+                strTime = datas.get(0).get("targetTime");
             } else {
-                strYear = datas.get(0).get("yearTime") + "—" + datas.get(datas.size() - 1).get("yearTime");
+                strTime = datas.get(0).get("targetTime") + "—" + datas.get(datas.size() - 1).get("targetTime");
             }
-            companyTitle = strYear + " 年 " + companyTitle;
+            companyTitle = strTime + companyTitle;
         }
-        this.setAttr("streetTitle", companyTitle);
-
-
-        List<Record> records = ActualData.me.getCPADailyActualData();
-
-        List<String> day = new ArrayList<String>();
-        for (Record record : records) {
-            day.add(record.get("DAY").toString());
+        this.setAttr("companyTitle", companyTitle);
+        List<Record> recordsSeries = ActualData.me.getCPADailyActualData();
+        JSONArray seriesJsonData = new JSONArray();
+        for (Record record : recordsSeries) {
+            JSONObject data = new JSONObject();
+            data.put("name", record.getStr("DAY"));
+            data.put("y", record.getBigDecimal("sumWater"));
+            data.put("drilldown", record.getStr("DAY"));
+            seriesJsonData.add(data);
         }
-        this.setAttr("days", day);
+
+        this.setAttr("seriesJsonData", JsonUtil.obj2Json(seriesJsonData));
+
         render("daily_report_chart.jsp");
     }
 
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/report/daily/chart"})
+    public void setOneDaily() {
+        String globalInnerCode = getInnerCodesSQLStr();
+        Map<String, String> map = ToolDateTime.getBefore30DateTime();
+        String start = map.get(MonthCode.warn_start_date);
+        String end = map.get(MonthCode.warn_end_date);
+        String date = this.getPara("date");
+        String sqlSeriesDay = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.*,tc.name from t_actual_data t " +
+                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
+                " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                " and t.write_time >= '" + start + "' " +
+                " and t.write_time < '" + end + "' " +
+                " and date_format(t.write_time, '%Y-%m-%d') = '" + date + "' " +
+                " group by t.inner_code";
+
+        List<Record> recordsSeriesCompany = Db.find(sqlSeriesDay);
+
+        List<String> companies = new ArrayList<String>();
+        JSONArray sumWater = new JSONArray();
+        for (Record record : recordsSeriesCompany) {
+            sumWater.add(record.get("sumWater"));
+            companies.add(record.get("name").toString());
+        }
+
+        JSONObject obj = new JSONObject();
+        obj.put("sumWater", sumWater);
+        obj.put("companies", companies);
+        this.renderJson(obj);
+    }
 
 }

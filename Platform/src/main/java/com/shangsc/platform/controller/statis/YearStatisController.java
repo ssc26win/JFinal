@@ -39,7 +39,11 @@ public class YearStatisController extends BaseController {
             String yearStr = StringUtils.trim(this.getPara("year"));
             year = Integer.parseInt(yearStr);
         }
-        String meterAttr = this.getPara("meterAttr");
+        Integer meterAttr = null;
+        if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
+            String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
+            meterAttr = Integer.parseInt(meterAttrStr);
+        }
         String meterAddress = this.getPara("meterAddress");
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {
@@ -96,7 +100,11 @@ public class YearStatisController extends BaseController {
             String yearStr = StringUtils.trim(this.getPara("year"));
             year = Integer.parseInt(yearStr);
         }
-        String meterAttr = this.getPara("meterAttr");
+        Integer meterAttr = null;
+        if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
+            String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
+            meterAttr = Integer.parseInt(meterAttrStr);
+        }
         String meterAddress = this.getPara("meterAddress");
         Integer street = null;
         if (StringUtils.isNotEmpty(this.getPara("street"))) {

@@ -233,7 +233,7 @@ public class ActualData extends BaseActualData<ActualData> {
     }
 
     public Page<ActualData> getDailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-                                           String name, String innerCode, Integer street, Integer watersType, String meterAttr, String meterAddress, String type) {
+                                           String name, String innerCode, Integer street, Integer watersType, Integer meterAttr, String meterAddress, String type) {
         /*select tad.*,
         tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.billing_cycle,
@@ -292,11 +292,8 @@ public class ActualData extends BaseActualData<ActualData> {
             }
         }
 
-        if (StringUtils.isNotEmpty(meterAttr)) {
-            meterAttr = StringUtils.trim(meterAttr);
-            if (StringUtils.isNotEmpty(meterAttr)) {
-                sqlExceptSelect.append(" and twm.meter_attr='" + meterAttr + "'");
-            }
+        if (meterAttr != null) {
+            sqlExceptSelect.append(" and twm.meter_attr=" + meterAttr + "");
         }
         if (watersType != null) {
             sqlExceptSelect.append(" and twm.waters_type=" + watersType);
@@ -315,7 +312,7 @@ public class ActualData extends BaseActualData<ActualData> {
     }
 
     public Page<ActualData> getMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-                                           String name, String innerCode, Integer street, Integer watersType, String meterAttr,
+                                           String name, String innerCode, Integer street, Integer watersType, Integer meterAttr,
                                            String meterAddress, String type) {
         /*select tad.*,
         tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
@@ -379,11 +376,8 @@ public class ActualData extends BaseActualData<ActualData> {
             }
         }
 
-        if (StringUtils.isNotEmpty(meterAttr)) {
-            meterAttr = StringUtils.trim(meterAttr);
-            if (StringUtils.isNotEmpty(meterAttr)) {
-                sqlExceptSelect.append(" and twm.meter_attr='" + meterAttr + "'");
-            }
+        if (meterAttr != null) {
+            sqlExceptSelect.append(" and twm.meter_attr=" + meterAttr + "");
         }
         if (watersType != null) {
             sqlExceptSelect.append(" and twm.waters_type=" + watersType);
@@ -402,7 +396,7 @@ public class ActualData extends BaseActualData<ActualData> {
     }
 
     public Page<ActualData> getYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year, String name,
-                                          String innerCode, Integer street, Integer watersType, String meterAttr,
+                                          String innerCode, Integer street, Integer watersType, Integer meterAttr,
                                           String meterAddress, String type) {
         /*select
 		tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
@@ -462,11 +456,8 @@ public class ActualData extends BaseActualData<ActualData> {
                 sqlExceptSelect.append(" and tad.meter_address = '" + meterAddress + "'");
             }
         }
-        if (StringUtils.isNotEmpty(meterAttr)) {
-            meterAttr = StringUtils.trim(meterAttr);
-            if (StringUtils.isNotEmpty(meterAttr)) {
-                sqlExceptSelect.append(" and twm.meter_attr='" + meterAttr + "'");
-            }
+        if (meterAttr != null) {
+            sqlExceptSelect.append(" and twm.meter_attr=" + meterAttr + "");
         }
         if (watersType != null) {
             sqlExceptSelect.append(" and twm.waters_type=" + watersType);
@@ -537,6 +528,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where t.inner_code in (select inner_code from t_company where company_type=1)" +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time < '" + end + "' " +
@@ -549,6 +541,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where t.inner_code in (select inner_code from t_company where company_type=1)" +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time <= '" + end + "' " +
@@ -561,6 +554,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where t.inner_code in (select inner_code from t_company where company_type=2)" +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time < '" + end + "' " +
@@ -573,6 +567,7 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where t.inner_code in (select inner_code from t_company where company_type=2)" +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time <= '" + end + "' " +
@@ -580,12 +575,12 @@ public class ActualData extends BaseActualData<ActualData> {
         return Db.find(sql);
     }
 
-
     public List<Record> getCPADailyActualData() {
         Map<String, String> map = ToolDateTime.getBefore30DateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time < '" + end + "' " +
@@ -598,10 +593,19 @@ public class ActualData extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time <= '" + end + "' " +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
+        return Db.find(sql);
+    }
+
+    public List<Record> getCPAYearActualData() {
+        String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
+                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
+                " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                " GROUP BY date_format(t.write_time, '%Y')";
         return Db.find(sql);
     }
 
@@ -622,7 +626,7 @@ public class ActualData extends BaseActualData<ActualData> {
     }
 
     public Page<ActualData> getCPADailyStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-                                              String name, String innerCode, Integer street, Integer watersType, String meterAttr, String meterAddress, String type) {
+                                              String name, String innerCode, Integer street, Integer watersType, Integer meterAttr, String meterAddress, String type) {
         /*select tad.*,
         tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.billing_cycle,
@@ -682,12 +686,10 @@ public class ActualData extends BaseActualData<ActualData> {
             }
         }
 
-        if (StringUtils.isNotEmpty(meterAttr)) {
-            meterAttr = StringUtils.trim(meterAttr);
-            if (StringUtils.isNotEmpty(meterAttr)) {
-                sqlExceptSelect.append(" and twm.meter_attr='" + meterAttr + "'");
-            }
+        if (meterAttr != null) {
+            sqlExceptSelect.append(" and twm.meter_attr=" + meterAttr + "");
         }
+
         if (watersType != null) {
             sqlExceptSelect.append(" and twm.waters_type=" + watersType);
         }
@@ -705,7 +707,7 @@ public class ActualData extends BaseActualData<ActualData> {
     }
 
     public Page<ActualData> getCPAMonthStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
-                                              String name, String innerCode, Integer street, Integer watersType, String meterAttr,
+                                              String name, String innerCode, Integer street, Integer watersType, Integer meterAttr,
                                               String meterAddress, String type) {
 		/*select tad.*,
 		tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
@@ -769,11 +771,8 @@ public class ActualData extends BaseActualData<ActualData> {
             }
         }
 
-        if (StringUtils.isNotEmpty(meterAttr)) {
-            meterAttr = StringUtils.trim(meterAttr);
-            if (StringUtils.isNotEmpty(meterAttr)) {
-                sqlExceptSelect.append(" and twm.meter_attr='" + meterAttr + "'");
-            }
+        if (meterAttr != null) {
+            sqlExceptSelect.append(" and twm.meter_attr=" + meterAttr + "");
         }
         if (watersType != null) {
             sqlExceptSelect.append(" and twm.waters_type=" + watersType);
@@ -792,7 +791,7 @@ public class ActualData extends BaseActualData<ActualData> {
     }
 
     public Page<ActualData> getCPAYearStatis(int pageNo, int pageSize, String orderbyStr, Integer year, String name,
-                                             String innerCode, Integer street, Integer watersType, String meterAttr,
+                                             String innerCode, Integer street, Integer watersType, Integer meterAttr,
                                              String meterAddress, String type) {
 		/*select
 		tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
@@ -852,11 +851,8 @@ public class ActualData extends BaseActualData<ActualData> {
                 sqlExceptSelect.append(" and tad.meter_address = '" + meterAddress + "'");
             }
         }
-        if (StringUtils.isNotEmpty(meterAttr)) {
-            meterAttr = StringUtils.trim(meterAttr);
-            if (StringUtils.isNotEmpty(meterAttr)) {
-                sqlExceptSelect.append(" and twm.meter_attr='" + meterAttr + "'");
-            }
+        if (meterAttr != null) {
+            sqlExceptSelect.append(" and twm.meter_attr=" + meterAttr + "");
         }
         if (watersType != null) {
             sqlExceptSelect.append(" and twm.waters_type=" + watersType);
