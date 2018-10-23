@@ -130,6 +130,14 @@
         });
 
         var url = '${context_path}/report/month/getListData';
+        var sTime = '${startTime}';
+        var eTime = '${endTime}';
+        var type = '${type}';
+        if ((sTime != undefined && sTime != null && sTime != '') && (eTime != undefined && eTime != null && eTime != '')) {
+            $("#startTime").val(sTime);
+            $("#endTime").val(eTime);
+            url = '${context_path}/report/month/getListData?startTime=${startTime}&endTime=${endTime}';
+        }
 
         $("#grid-table").jqGrid({
             url: url,

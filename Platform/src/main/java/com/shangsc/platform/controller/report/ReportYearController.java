@@ -51,10 +51,6 @@ public class ReportYearController extends BaseController {
             array.add(column);
         }
         this.setAttr("columnsYear", array);
-        Map<String, String> nameList = Company.me.loadNameList();
-        Set<String> names = nameList.keySet();
-        this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
-        this.setAttr("names", JSONUtils.toJSONString(names));
         render("year_report.jsp");
     }
 

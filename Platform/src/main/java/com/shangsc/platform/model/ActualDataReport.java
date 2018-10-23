@@ -135,12 +135,16 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         return months;
     }
 
-    public Map<String, String> getDayColumns() {
+    public Map<String, String> getDayColumns(Date startTime, Date endTime) {
         Map<String, String> monthDateStartAndEnd = ToolDateTime.getMonthDateStartAndEnd(new Date());
         String start = monthDateStartAndEnd.get(MonthCode.warn_start_date);
         String end = monthDateStartAndEnd.get(MonthCode.warn_end_date);
         String sql = "select date_format(tad.write_time, '%Y-%m-%d') as days from (select write_time from t_actual_data order by write_time asc) tad " +
-                " where tad.write_time >='" + start + "' and tad.write_time <='" + end + "'" +
+                " where 1=1 " +
+
+                (startTime != null ? " and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and tad.write_time >='" + start + "'") +
+                (endTime != null ? " and tad.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and tad.write_time <='" + end + "'") +
+
                 " GROUP BY date_format(tad.write_time, '%Y-%m-%d')";
         List<Record> records = Db.find(sql);
         Map<String, String> days = new LinkedHashMap<>();

@@ -55,10 +55,6 @@ public class ReportMonthController extends BaseController {
         if (StringUtils.isNotEmpty(type)) {
             this.setAttr("type", type);
         }
-        Map<String, String> nameList = Company.me.loadNameList();
-        Set<String> names = nameList.keySet();
-        this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
-        this.setAttr("names", JSONUtils.toJSONString(names));
         render("month_report.jsp");
     }
 

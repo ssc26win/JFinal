@@ -129,8 +129,18 @@
             }
         });
 
+        var url = '${context_path}/report/year/getListData';
+        var sTime = '${startTime}';
+        var eTime = '${endTime}';
+        var type = '${type}';
+        if ((sTime != undefined && sTime != null && sTime != '') && (eTime != undefined && eTime != null && eTime != '')) {
+            $("#startTime").val(sTime);
+            $("#endTime").val(eTime);
+            url = '${context_path}/report/year/getListData?startTime=${startTime}&endTime=${endTime}';
+        }
+
         $("#grid-table").jqGrid({
-            url: '${context_path}/report/year/getListData',
+            url: url,
             mtype: "GET",
             datatype: "json",
             colModel: JSON.parse('${columnsYear}'),

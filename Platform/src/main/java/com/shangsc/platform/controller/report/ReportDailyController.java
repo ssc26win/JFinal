@@ -39,7 +39,19 @@ public class ReportDailyController extends BaseController {
     @RequiresPermissions(value = {"/report/daily"})
     public void index() {
         JSONArray array = new JSONArray();
-        Map<String, String> days = ActualDataReport.me.getDayColumns();
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Map<String, String> days = ActualDataReport.me.getDayColumns(startTime, endTime);
         JSONObject company = new JSONObject();
         company.put("label", "单位名称");
         company.put("name", "companyName");
@@ -59,10 +71,6 @@ public class ReportDailyController extends BaseController {
         if (StringUtils.isNotEmpty(type)) {
             this.setAttr("type", type);
         }
-        Map<String, String> nameList = Company.me.loadNameList();
-        Set<String> names = nameList.keySet();
-        this.setAttr("nameCodeMap", JSONUtils.toJSONString(nameList));
-        this.setAttr("names", JSONUtils.toJSONString(names));
         render("daily_report.jsp");
     }
 
@@ -103,7 +111,7 @@ public class ReportDailyController extends BaseController {
 
         Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), getRows(), getOrderbyStr(), street, name, innerCode, type);
         List<Company> list = pageInfo.getList();
-        Map<String, String> dayColumns = ActualDataReport.me.getDayColumns();
+        Map<String, String> dayColumns = ActualDataReport.me.getDayColumns(startTime, endTime);
         if (CollectionUtils.isNotEmpty(list)) {
             Set<String> innerCodes = new HashSet<>();
             for (Company company : list) {
@@ -182,7 +190,7 @@ public class ReportDailyController extends BaseController {
 
         Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, name, innerCode, type);
         List<Company> list = pageInfo.getList();
-        Map<String, String> dayColumns = ActualDataReport.me.getDayColumns();
+        Map<String, String> dayColumns = ActualDataReport.me.getDayColumns(startTime, endTime);
         if (CollectionUtils.isNotEmpty(list)) {
             Set<String> innerCodes = new HashSet<>();
             for (Company company : list) {
