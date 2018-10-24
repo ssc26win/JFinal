@@ -12,6 +12,7 @@ import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.model.ActualData;
+import com.shangsc.platform.model.ActualDataReport;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -70,8 +71,10 @@ public class ReportDailyChartController extends BaseController {
         String end = map.get(MonthCode.warn_end_date);
         List<ActualData> datas = ActualData.me.find("select date_format(write_time, '%Y-%m-%d') as targetTime from t_actual_data " +
                 " where write_time is not null and write_time<>'' " +
-                " and write_time >= '" + start + "' " +
-                " and write_time < '" + end + "' " +
+
+                (startTime != null ? " and write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and write_time >='" + start + "'") +
+                (endTime != null ? " and write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and write_time <='" + end + "'") +
+
                 " group by targetTime order by targetTime asc");
         String companyTitle = " 各单位用水统计图表";
         if (CollectionUtils.isNotEmpty(datas)) {
@@ -84,7 +87,7 @@ public class ReportDailyChartController extends BaseController {
             companyTitle = strTime + companyTitle;
         }
         this.setAttr("companyTitle", companyTitle);
-        List<Record> recordsSeries = ActualData.me.getCPADailyActualData();
+        List<Record> recordsSeries = ActualDataReport.me.getCPADailyActualData(name, innerCode, street, startTime, endTime, watersType, meterAttr, type);
         JSONArray seriesJsonData = new JSONArray();
         for (Record record : recordsSeries) {
             JSONObject data = new JSONObject();
@@ -139,10 +142,17 @@ public class ReportDailyChartController extends BaseController {
         String end = map.get(MonthCode.warn_end_date);
         String date = this.getPara("date");
         String sqlSeriesDay = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.*,tc.name from t_actual_data t " +
-                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
-                " and t.write_time >= '" + start + "' " +
-                " and t.write_time < '" + end + "' " +
+                (StringUtils.isNotEmpty(name) ? " and tc.name='" + name + "'" : "") +
+                (StringUtils.isNotEmpty(innerCode) ? " and tc.inner_code='" + innerCode + "'" : "") +
+                (street != null ? " and tc.street=" + street : "") +
+                (startTime != null ? " and t.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time >='" + start + "'") +
+                (endTime != null ? " and t.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time <='" + end + "'") +
+                (type != null ? " and tc.company_type=" + type : "") +
+                (meterAttr != null ? " and twm.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and twm.waters_type=" + watersType : "") +
                 " and date_format(t.write_time, '%Y-%m-%d') = '" + date + "' " +
                 " group by t.inner_code";
 

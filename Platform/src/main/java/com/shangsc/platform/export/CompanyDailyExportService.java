@@ -38,14 +38,14 @@ public class CompanyDailyExportService extends ExportBaseService {
         logger.info("导出" + fName + "信息导出条数为:{}", list.size());
         List<Object[]> objects = new ArrayList<Object[]>();
         for (ActualData actualData : list) {
-            if (actualData.get("net_water") == null) {
-                actualData.set("net_water", 0);
+            if (actualData.get("absNetWater") == null) {
+                actualData.set("absNetWater", 0);
             }
             Object[] obj = new Object[]{
                     actualData.get("water_unit"),
                     actualData.get("real_code"),
                     actualData.get("name"),
-                    actualData.get("net_water"),
+                    actualData.get("absNetWater"),
                     actualData.get("address"),
                     actualData.get("todays")
             };

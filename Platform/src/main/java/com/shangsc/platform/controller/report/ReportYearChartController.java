@@ -12,6 +12,7 @@ import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.model.ActualData;
+import com.shangsc.platform.model.ActualDataReport;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +26,6 @@ import java.util.*;
  * @Desc
  */
 public class ReportYearChartController extends BaseController {
-
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/report/year/chart"})
@@ -65,6 +65,10 @@ public class ReportYearChartController extends BaseController {
         ActualData.me.setGlobalInnerCode(globalInnerCode);
         List<ActualData> datas = ActualData.me.find("select date_format(write_time, '%Y') as targetTime from t_actual_data " +
                 " where write_time is not null and write_time<>'' " +
+
+                (startTime != null ? " and write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                (endTime != null ? " and write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+
                 " group by targetTime order by targetTime asc");
         String companyTitle = " 各单位用水统计图表";
         if (CollectionUtils.isNotEmpty(datas)) {
@@ -77,7 +81,7 @@ public class ReportYearChartController extends BaseController {
             companyTitle = strTime + companyTitle;
         }
         this.setAttr("companyTitle", companyTitle);
-        List<Record> recordsSeries = ActualData.me.getCPAYearActualData();
+        List<Record> recordsSeries = ActualDataReport.me.getCPAYearActualData(name, innerCode, street, startTime, endTime, watersType, meterAttr, type);
         JSONArray seriesJsonData = new JSONArray();
         for (Record record : recordsSeries) {
             JSONObject data = new JSONObject();
@@ -93,7 +97,7 @@ public class ReportYearChartController extends BaseController {
     }
 
     @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/report/daily/chart"})
+    @RequiresPermissions(value = {"/report/year/chart"})
     public void setOneYear() {
         String name = this.getUrlUtf8Para("name");
         String innerCode = this.getUrlUtf8Para("innerCode");
@@ -125,17 +129,20 @@ public class ReportYearChartController extends BaseController {
             meterAttr = Integer.parseInt(meterAttrStr);
         }
         String type = this.getPara("type");
-
         String globalInnerCode = getInnerCodesSQLStr();
-        Map<String, String> map = ToolDateTime.getBefore30DateTime();
-        String start = map.get(MonthCode.warn_start_date);
-        String end = map.get(MonthCode.warn_end_date);
         String date = this.getPara("date");
-        String sqlSeriesDay = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y') as DAY,t.*,tc.name from t_actual_data t " +
-                " inner join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
+        String sqlSeriesDay = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y') as year,t.*,tc.name from t_actual_data t " +
+                " left join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
-                " and t.write_time >= '" + start + "' " +
-                " and t.write_time < '" + end + "' " +
+                (StringUtils.isNotEmpty(name) ? " and tc.name='" + name + "'" : "") +
+                (StringUtils.isNotEmpty(innerCode) ? " and tc.inner_code='" + innerCode + "'" : "") +
+                (street != null ? " and tc.street=" + street : "") +
+                (startTime != null ? " and t.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " ") +
+                (endTime != null ? " and t.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " ") +
+                (type != null ? " and tc.company_type=" + type : "") +
+                (meterAttr != null ? " and twm.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and twm.waters_type=" + watersType : "") +
                 " and date_format(t.write_time, '%Y') = '" + date + "' " +
                 " group by t.inner_code";
 

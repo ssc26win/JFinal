@@ -191,4 +191,71 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         logger.info("--- 单位用水量sql结束 ---");
         return Company.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
+
+
+    public List<Record> getCPADailyActualData(String name, String innerCode, Integer street, Date startTime, Date endTime,
+                                              Integer watersType, Integer meterAttr, String type) {
+        Map<String, String> map = ToolDateTime.getBefore30DateTime();
+        String start = map.get(MonthCode.warn_start_date);
+        String end = map.get(MonthCode.warn_end_date);
+        String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+                " left join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
+                " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                (StringUtils.isNotEmpty(name) ? " and tc.name='" + name + "'" : "") +
+                (StringUtils.isNotEmpty(innerCode) ? " and tc.inner_code='" + innerCode + "'" : "") +
+                (street != null ? " and tc.street=" + street : "") +
+                (startTime != null ? " and t.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time >='" + start + "'") +
+                (endTime != null ? " and t.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time <='" + end + "'") +
+                (type != null ? " and tc.company_type=" + type : "") +
+                (meterAttr != null ? " and twm.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and twm.waters_type=" + watersType : "") +
+                " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
+        return Db.find(sql);
+    }
+
+    public List<Record> getCPAMonthActualData(String name, String innerCode, Integer street, Date startTime, Date endTime,
+                                              Integer watersType, Integer meterAttr, String type) {
+        Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
+        String start = map.get(MonthCode.warn_start_date);
+        String end = map.get(MonthCode.warn_end_date);
+        String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+                " left join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
+                " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+
+                (StringUtils.isNotEmpty(name) ? " and tc.name='" + name + "'" : "") +
+                (StringUtils.isNotEmpty(innerCode) ? " and tc.inner_code='" + innerCode + "'" : "") +
+                (street != null ? " and tc.street=" + street : "") +
+                (startTime != null ? " and t.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time >='" + start + "'") +
+                (endTime != null ? " and t.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time <='" + end + "'") +
+                (type != null ? " and tc.company_type=" + type : "") +
+                (meterAttr != null ? " and twm.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and twm.waters_type=" + watersType : "") +
+
+                " GROUP BY date_format(t.write_time, '%Y-%m')";
+        return Db.find(sql);
+    }
+
+    public List<Record> getCPAYearActualData(String name, String innerCode, Integer street, Date startTime, Date endTime,
+                                             Integer watersType, Integer meterAttr, String type) {
+        String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
+                " left join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
+                " left join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
+                " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+
+                (StringUtils.isNotEmpty(name) ? " and tc.name='" + name + "'" : "") +
+                (StringUtils.isNotEmpty(innerCode) ? " and tc.inner_code='" + innerCode + "'" : "") +
+                (street != null ? " and tc.street=" + street : "") +
+                (startTime != null ? " and t.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " ") +
+                (endTime != null ? " and t.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " ") +
+                (type != null ? " and tc.company_type=" + type : "") +
+                (meterAttr != null ? " and twm.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and twm.waters_type=" + watersType : "") +
+
+                " GROUP BY date_format(t.write_time, '%Y')";
+        return Db.find(sql);
+    }
+
+
 }
