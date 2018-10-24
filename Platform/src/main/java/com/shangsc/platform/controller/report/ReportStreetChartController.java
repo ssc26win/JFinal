@@ -12,12 +12,14 @@ import com.shangsc.platform.code.ReportTypeEnum;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.export.ExportByDataTypeService;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.ActualDataReport;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,6 +37,36 @@ public class ReportStreetChartController extends BaseController {
 
     @RequiresPermissions(value = {"/report/street/chart"})
     public void index() {
+
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Integer street = null;
+        if (StringUtils.isNotEmpty(this.getPara("street"))) {
+            String streetStr = StringUtils.trim(this.getPara("street"));
+            street = Integer.parseInt(streetStr);
+        }
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
+        Integer meterAttr = null;
+        if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
+            String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
+            meterAttr = Integer.parseInt(meterAttrStr);
+        }
+        String type = this.getPara("type");
+
         String path = this.getRequest().getServletContext().getContextPath();
         String contextPath = path.equals("/") ? "" : path;
 

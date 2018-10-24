@@ -101,7 +101,7 @@ String.prototype.trim = function() {
         <%--});--%>
     <%--}--%>
     function openMap(innerCode) {
-        window.location.href="${context_path}/chart/baiduMap?innerCode="+innerCode;
+        window.location.href="${context_path}/map/baidu?innerCode="+innerCode;
     }
     $(function () {
         $(".form_datetime").datetimepicker({

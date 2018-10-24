@@ -124,8 +124,8 @@ public class ReportDailyController extends BaseController {
                     " from t_actual_data tad left join (select meter_address,waters_type,meter_attr from  t_water_meter) twm on twm.meter_address=tad.meter_address " +
                     "where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
 
-                    (watersType != null ? " and twm.waters_type" + watersType : "") +
-                    (meterAttr != null ? " and twm.meter_attr" + meterAttr : "") +
+                    (watersType != null ? " and twm.waters_type=" + watersType : "") +
+                    (meterAttr != null ? " and twm.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and tad.write_time >='" + start + "'") +
                     (endTime != null ? " and tad.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and tad.write_time <='" + end + "'") +
 
@@ -203,8 +203,8 @@ public class ReportDailyController extends BaseController {
                     " from t_actual_data tad left join (select meter_address,waters_type,meter_attr from  t_water_meter) twm on twm.meter_address=tad.meter_address " +
                     " where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
 
-                    (watersType != null ? " and twm.waters_type" + watersType : "") +
-                    (meterAttr != null ? " and twm.meter_attr" + meterAttr : "") +
+                    (watersType != null ? " and twm.waters_type=" + watersType : "") +
+                    (meterAttr != null ? " and twm.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and tad.write_time >='" + start + "'") +
                     (endTime != null ? " and tad.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and tad.write_time <='" + end + "'") +
 

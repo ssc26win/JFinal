@@ -138,6 +138,16 @@ public abstract class BaseController extends Controller {
         }
         return "";
     }
+
+    public String getUrlUtf8Para(String key) {
+        String value = null;
+        try {
+            value = new String(this.getPara(key).getBytes("ISO8859-1"), "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return value;
+    }
 }
 
 

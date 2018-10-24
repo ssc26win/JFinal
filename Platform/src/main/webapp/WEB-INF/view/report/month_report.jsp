@@ -188,7 +188,43 @@
             }).trigger("reloadGrid"); //重新载入
         });
         $("#btn-chart").click(function () {
-            window.location.href = "${context_path}/report/month/chart";
+            var street = $("#street").val();
+            var watersType = $("#watersType").val();
+            var type = $("#type").val();
+
+            var name = $("#name").val();
+            var innerCode = $("#innerCode").val();
+            var startTime = $("#startTime").val();
+            var endTime = $("#endTime").val();
+            var meterAttr = $("#meterAttr").val();
+
+            var url = "${context_path}/report/month/chart?time=" + new Date().getMilliseconds();
+
+            if (street != "" && street != undefined) {
+                url = url + "&street=" + street;
+            }
+            if (watersType != "" && watersType != undefined) {
+                url = url + "&watersType=" + watersType;
+            }
+            if (type != "" && type != undefined) {
+                url = url + "&type=" + type;
+            }
+            if (name != "" && name != undefined) {
+                url = url + "&name=" + name;
+            }
+            if (innerCode != "" && innerCode != undefined) {
+                url = url + "&innerCode=" + innerCode;
+            }
+            if (startTime != "" && startTime != undefined) {
+                url = url + "&startTime=" + startTime;
+            }
+            if (endTime != "" && endTime != undefined) {
+                url = url + "&endTime=" + endTime;
+            }
+            if (meterAttr != "" && meterAttr != undefined) {
+                url = url + "&meterAttr=" + meterAttr;
+            }
+            window.location.href = encodeURI(url);
         });
         $("#btn-exportData").click(function () {
             $("#exportForm").submit();

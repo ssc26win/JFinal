@@ -10,12 +10,14 @@ import com.shangsc.platform.code.MonthCode;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +32,37 @@ public class ReportDailyChartController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/report/daily/chart"})
     public void index() {
+        String name = this.getUrlUtf8Para("name");
+        String innerCode = this.getUrlUtf8Para("innerCode");
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Integer street = null;
+        if (StringUtils.isNotEmpty(this.getPara("street"))) {
+            String streetStr = StringUtils.trim(this.getPara("street"));
+            street = Integer.parseInt(streetStr);
+        }
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
+        Integer meterAttr = null;
+        if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
+            String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
+            meterAttr = Integer.parseInt(meterAttrStr);
+        }
+        String type = this.getPara("type");
+
         String globalInnerCode = getInnerCodesSQLStr();
         ActualData.me.setGlobalInnerCode(globalInnerCode);
         Map<String, String> map = ToolDateTime.getBefore30DateTime();
@@ -69,6 +102,37 @@ public class ReportDailyChartController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/report/daily/chart"})
     public void setOneDaily() {
+        String name = this.getUrlUtf8Para("name");
+        String innerCode = this.getUrlUtf8Para("innerCode");
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Integer street = null;
+        if (StringUtils.isNotEmpty(this.getPara("street"))) {
+            String streetStr = StringUtils.trim(this.getPara("street"));
+            street = Integer.parseInt(streetStr);
+        }
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
+        Integer meterAttr = null;
+        if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
+            String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
+            meterAttr = Integer.parseInt(meterAttrStr);
+        }
+        String type = this.getPara("type");
+
         String globalInnerCode = getInnerCodesSQLStr();
         Map<String, String> map = ToolDateTime.getBefore30DateTime();
         String start = map.get(MonthCode.warn_start_date);

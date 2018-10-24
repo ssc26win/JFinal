@@ -128,7 +128,8 @@ public class ReportStreetController extends BaseController {
                     " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null" +
-                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (watersType != null ? " and lsall.waters_type=" + watersType : "") +
+                    (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.street,lsall.waters_type,lsall.meter_attr order by lsall.street asc,lsall.waters_type asc";
@@ -176,7 +177,8 @@ public class ReportStreetController extends BaseController {
                     " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
-                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (watersType != null ? " and lsall.waters_type=" + watersType : "") +
+                    (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.meter_attr order by lsall.waters_type asc";
@@ -208,7 +210,8 @@ public class ReportStreetController extends BaseController {
                     " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
-                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (watersType != null ? " and lsall.waters_type=" + watersType : "") +
+                    (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.waters_type,lsall.meter_attr order by lsall.waters_type asc";
@@ -254,7 +257,8 @@ public class ReportStreetController extends BaseController {
                     " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
-                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (watersType != null ? " and lsall.waters_type=" + watersType : "") +
+                    (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.street,lsall.meter_attr order by lsall.street asc";
@@ -357,7 +361,8 @@ public class ReportStreetController extends BaseController {
                     " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null" +
-                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (watersType != null ? " and lsall.waters_type=" + watersType : "") +
+                    (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.street,lsall.waters_type,lsall.meter_attr order by lsall.street asc,lsall.waters_type asc";
@@ -403,7 +408,8 @@ public class ReportStreetController extends BaseController {
                     " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
-                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (watersType != null ? " and lsall.waters_type=" + watersType : "") +
+                    (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.meter_attr order by lsall.waters_type asc";
@@ -436,7 +442,8 @@ public class ReportStreetController extends BaseController {
                     " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
-                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (watersType != null ? " and lsall.waters_type=" + watersType : "") +
+                    (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.waters_type,lsall.meter_attr order by lsall.waters_type asc";
@@ -480,7 +487,8 @@ public class ReportStreetController extends BaseController {
                     " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
-                    (meterAttr != null ? " and lsall.meter_attr" + meterAttr : "") +
+                    (watersType != null ? " and lsall.waters_type=" + watersType : "") +
+                    (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                     " group by lsall.street,lsall.meter_attr order by lsall.street asc";

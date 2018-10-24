@@ -5,13 +5,16 @@ import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.DictCode;
-import com.shangsc.platform.code.ReportColType;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,10 +27,44 @@ public class ReportCompanyChartController extends BaseController {
 
     @RequiresPermissions(value = {"/report/company/chart"})
     public void index() {
+        String name = this.getUrlUtf8Para("name");
+        String innerCode = this.getUrlUtf8Para("innerCode");
+        Date startTime = null;
+        Date endTime = null;
+        try {
+            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            }
+            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Integer street = null;
+        if (StringUtils.isNotEmpty(this.getPara("street"))) {
+            String streetStr = StringUtils.trim(this.getPara("street"));
+            street = Integer.parseInt(streetStr);
+        }
+        Integer watersType = null;
+        if (StringUtils.isNotEmpty(this.getPara("watersType"))) {
+            String watersTypeStr = StringUtils.trim(this.getPara("watersType"));
+            watersType = Integer.parseInt(watersTypeStr);
+        }
+        Integer meterAttr = null;
+        if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
+            String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
+            meterAttr = Integer.parseInt(meterAttrStr);
+        }
+        String type = this.getPara("type");
+
         String path = this.getRequest().getServletContext().getContextPath();
         String contextPath = path.equals("/") ? "" : path;
 
         List<ActualData> datas = ActualData.me.find("select date_format(write_time, '%Y') as yearTime from t_actual_data" +
+                " where 1=1" +
+                (startTime != null ? " and write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                (endTime != null ? " and write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by yearTime order by yearTime asc");
         String streetTitle = "各单位用水统计图表";
         String meterAttrTitle = "根据水表属性用水量统计图表";
@@ -50,10 +87,18 @@ public class ReportCompanyChartController extends BaseController {
         //seriesJsonData
 
         String sqlSeries = "select lsall.name,lsall.inner_code,sum(lsall.net_water) as TargetAttrTotal from " +
-                "(select tc.name,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where lsall.inner_code<>'' and lsall.inner_code is not null " +
+                (StringUtils.isNotEmpty(name) ? " and lsall.name='" + name + "'": "") +
+                (StringUtils.isNotEmpty(innerCode) ? " and lsall.inner_code='" + innerCode + "'": "") +
+                (street != null ? " and lsall.street=" + street : "") +
+                (type != null ? " and lsall.company_type=" + type : "") +
+                (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.inner_code order by lsall.inner_code asc";
 
         List<Record> recordsSeries = Db.find(sqlSeries);
@@ -72,10 +117,18 @@ public class ReportCompanyChartController extends BaseController {
         //drilldownJsonData
 
         String sqlSeriesMeter = "select lsall.meter_address,lsall.street,lsall.name,lsall.inner_code,sum(lsall.net_water) as TargetAttrTotal from " +
-                "(select tc.street,tc.name,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,twm.meter_address from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,twm.meter_address from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
+                (StringUtils.isNotEmpty(name) ? " and lsall.name='" + name + "'": "") +
+                (StringUtils.isNotEmpty(innerCode) ? " and lsall.inner_code='" + innerCode + "'": "") +
+                (street != null ? " and lsall.street=" + street : "") +
+                (type != null ? " and lsall.company_type=" + type : "") +
+                (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.meter_address order by lsall.meter_address asc";
 
         List<Record> recordsSeriesMeter = Db.find(sqlSeriesMeter);
@@ -114,11 +167,18 @@ public class ReportCompanyChartController extends BaseController {
         JSONArray meterAttrSeris = new JSONArray();
 
         String sqlMeterAttr = "select sum(lsall.net_water) as TargetAttrTotal from " +
-                "(select tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
-                " where 1=1 " +
-                " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                " where lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                (StringUtils.isNotEmpty(name) ? " and lsall.name='" + name + "'": "") +
+                (StringUtils.isNotEmpty(innerCode) ? " and lsall.inner_code='" + innerCode + "'": "") +
+                (street != null ? " and lsall.street=" + street : "") +
+                (type != null ? " and lsall.company_type=" + type : "") +
+                (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.meter_attr order by lsall.write_time asc";
         List<Record> recordsMeterAttr = Db.find(sqlMeterAttr);
 
@@ -134,11 +194,18 @@ public class ReportCompanyChartController extends BaseController {
         JSONArray watersTypeSeris = new JSONArray();
 
         String sqlWatersType = "select sum(lsall.net_water) as TargetAttrTotal,lsall.waters_type from " +
-                "(select tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
-                " where 1=1 " +
-                //" and lsall.waters_type<>'' and lsall.waters_type is not null " +
+                " where lsall.waters_type<>'' and lsall.waters_type is not null " +
+                (StringUtils.isNotEmpty(name) ? " and lsall.name='" + name + "'": "") +
+                (StringUtils.isNotEmpty(innerCode) ? " and lsall.inner_code='" + innerCode + "'": "") +
+                (street != null ? " and lsall.street=" + street : "") +
+                (type != null ? " and lsall.company_type=" + type : "") +
+                (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.waters_type order by TargetAttrTotal desc";
         List<Record> recordsWatersType = Db.find(sqlWatersType);
 
