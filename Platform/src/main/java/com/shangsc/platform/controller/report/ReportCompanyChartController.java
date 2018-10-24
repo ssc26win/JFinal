@@ -86,8 +86,8 @@ public class ReportCompanyChartController extends BaseController {
 
         //seriesJsonData
 
-        String sqlSeries = "select lsall.name,lsall.inner_code,sum(lsall.net_water) as TargetAttrTotal from " +
-                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+        String sqlSeries = "select lsall.*,sum(lsall.net_water) as TargetAttrTotal from " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where lsall.inner_code<>'' and lsall.inner_code is not null " +
@@ -116,8 +116,8 @@ public class ReportCompanyChartController extends BaseController {
 
         //drilldownJsonData
 
-        String sqlSeriesMeter = "select lsall.meter_address,lsall.street,lsall.name,lsall.inner_code,sum(lsall.net_water) as TargetAttrTotal from " +
-                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,twm.meter_address from t_actual_data tad " +
+        String sqlSeriesMeter = "select lsall.*,sum(lsall.net_water) as TargetAttrTotal from " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,twm.waters_type,twm.meter_attr,twm.meter_address from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
@@ -166,8 +166,8 @@ public class ReportCompanyChartController extends BaseController {
 
         JSONArray meterAttrSeris = new JSONArray();
 
-        String sqlMeterAttr = "select sum(lsall.net_water) as TargetAttrTotal from " +
-                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
+        String sqlMeterAttr = "select lsall.*,sum(lsall.net_water) as TargetAttrTotal from " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where lsall.meter_attr<>'' and lsall.meter_attr is not null " +
@@ -193,8 +193,8 @@ public class ReportCompanyChartController extends BaseController {
 
         JSONArray watersTypeSeris = new JSONArray();
 
-        String sqlWatersType = "select sum(lsall.net_water) as TargetAttrTotal,lsall.waters_type from " +
-                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
+        String sqlWatersType = "select lsall.*,sum(lsall.net_water) as TargetAttrTotal,lsall.waters_type from " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where lsall.waters_type<>'' and lsall.waters_type is not null " +
