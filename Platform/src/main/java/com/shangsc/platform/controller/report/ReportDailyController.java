@@ -41,15 +41,21 @@ public class ReportDailyController extends BaseController {
         JSONArray array = new JSONArray();
         Date startTime = null;
         Date endTime = null;
-        try {
-            if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
-                startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+        if (StringUtils.isEmpty(this.getUrlUtf8Para("date"))) {
+            try {
+                if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                    startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+                }
+                if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                    endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
-                endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else {
+            String date = this.getUrlUtf8Para("date");
+            startTime = DateUtils.getDate(date + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            endTime = DateUtils.getDate(date + " 23:59:59", ToolDateTime.pattern_ymd_hms);
         }
         Map<String, String> days = ActualDataReport.me.getDayColumns(startTime, endTime);
         JSONObject company = new JSONObject();
@@ -71,6 +77,8 @@ public class ReportDailyController extends BaseController {
         if (StringUtils.isNotEmpty(type)) {
             this.setAttr("type", type);
         }
+        this.setAttr("date", this.getUrlUtf8Para("date"));
+        this.setAttr("companyName", this.getUrlUtf8Para("companyName"));
         render("daily_report.jsp");
     }
 
@@ -79,6 +87,9 @@ public class ReportDailyController extends BaseController {
     public void getListData() {
         ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
+        if (StringUtils.isNotEmpty(this.getPara("byName")) && "yes".equals(this.getPara("byName"))) {
+            name = this.getUrlUtf8Para("name");
+        }
         String innerCode = this.getPara("innerCode");
         Date startTime = null;
         Date endTime = null;

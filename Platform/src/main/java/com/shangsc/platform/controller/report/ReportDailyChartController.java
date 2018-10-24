@@ -16,6 +16,8 @@ import com.shangsc.platform.model.ActualDataReport;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +31,8 @@ import java.util.Map;
  * @Desc
  */
 public class ReportDailyChartController extends BaseController {
+
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/report/daily/chart"})
@@ -142,8 +146,8 @@ public class ReportDailyChartController extends BaseController {
         String end = map.get(MonthCode.warn_end_date);
         String date = this.getPara("date");
         String sqlSeriesDay = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.*,tc.name from t_actual_data t " +
-                " left join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
-                " left join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
+                " inner join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
+                " inner join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(name) ? " and tc.name='" + name + "'" : "") +
                 (StringUtils.isNotEmpty(innerCode) ? " and tc.inner_code='" + innerCode + "'" : "") +
@@ -168,6 +172,9 @@ public class ReportDailyChartController extends BaseController {
         JSONObject obj = new JSONObject();
         obj.put("sumWater", sumWater);
         obj.put("companies", companies);
+
+        logger.info("--【日用水量明细】 -- \n{}" , JsonUtil.obj2Json(obj));
+
         this.renderJson(obj);
     }
 

@@ -184,7 +184,7 @@
             var endTime = $("#endTime").val();
             var meterAttr = $("#meterAttr").val();
 
-            var url = "${context_path}/report/street/chart?time=" + new Date().getMilliseconds();
+            var url = "${context_path}/report/street/chart?time=" + new Date().getTime();
 
             if (street != "" && street != undefined) {
                 url = url + "&street=" + street;

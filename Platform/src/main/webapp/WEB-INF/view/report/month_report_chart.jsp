@@ -91,7 +91,7 @@
           click: function (data) {
             var date = data.point.name;
             if (date != "") {
-              setOne(date);
+              setOneMonth(date);
             }
           }
         }
@@ -100,9 +100,9 @@
     var myDate = new Date();
     var time = myDate.toLocaleDateString().split('/').join('-');
     time = time.substr(0, time.lastIndexOf('-'));
-    setOne(time);
+    setOneMonth(time);
   })
-  function setOne(date) {
+  function setOneMonth(date) {
     console.log(date);
     $.get("${context_path}/report/month/chart/setOneMonth?date=" + date, function (data) {
       var title = {
@@ -150,8 +150,8 @@
           cursor: 'pointer',
           events: {
             click: function (event) {
-              var time = event.point.category;
-              window.location.href = "${context_path}/report/month";
+              var companyName = event.point.category;
+              window.location.href = encodeURI("${context_path}/report/month?companyName=" + companyName + "&date=" + date);
             }
           }
         }

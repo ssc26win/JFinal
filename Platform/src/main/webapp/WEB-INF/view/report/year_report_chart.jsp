@@ -31,9 +31,9 @@
   </script>
   <div class="main-content" id="page-wrapper">
     <div class="page-content" id="page-content">
-      <div class="row" style="max-width: 1000px;">
+      <div class="row" style="max-width: 1200px;">
         <div class="col-sm-12">
-          <div id="companyUseDAll" style="width: 1000px;margin: 0 auto"></div>
+          <div id="companyUseDAll" style="width: 1200px;margin: 0 auto"></div>
         </div>
       </div>
       <div class="row" style="">
@@ -91,7 +91,7 @@
           click: function (data) {
             var date = data.point.name;
             if (date != "") {
-              setOne(date);
+              setOneYear(date);
             }
           }
         }
@@ -100,9 +100,9 @@
     var myDate = new Date();
     var time = myDate.toLocaleDateString().split('/').join('-');
     time = time.substr(0, 4);
-    setOne(time);
+    setOneYear(time);
   })
-  function setOne(date) {
+  function setOneYear(date) {
     console.log(date);
     $.get("${context_path}/report/year/chart/setOneYear?date=" + date, function (data) {
       var title = {
@@ -150,8 +150,8 @@
           cursor: 'pointer',
           events: {
             click: function (event) {
-              var time = event.point.category;
-              window.location.href = "${context_path}/report/year";
+              var companyName = event.point.category;
+              window.location.href = encodeURI("${context_path}/report/year?companyName=" + companyName + "&date=" + date);
             }
           }
         }

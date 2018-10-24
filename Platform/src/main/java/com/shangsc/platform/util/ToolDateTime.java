@@ -40,6 +40,14 @@ public abstract class ToolDateTime {
     public static final String pattern_ymd_hms_s2 = "yyyy/MM/dd HH:mm:ss:SSS"; // pattern_ymd timeMillisecond
     public static final int pattern_ymd_hms_s_length = 23;
 
+    public static int getMaxDay(int year, int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month - 1);
+        System.out.println(format(calendar.getTime(), pattern_ymd_hms_s));
+        return calendar.getActualMaximum(Calendar.DATE);
+    }
+
     public static boolean isOddMonth(Date date) {
         int month = date.getMonth();
         if (CodeNumUtil.isOdd(month)) {
@@ -107,12 +115,13 @@ public abstract class ToolDateTime {
 
     public static void main(String[] args) {
         String str1 = ToolDateTime.format(new Date(), ToolDateTime.pattern_ymd_hms);
-        System.out.println(str1);
-        String str2 = ToolDateTime.format(getYesterday(new Date()), ToolDateTime.pattern_ymd_hms);
-        System.out.println(str2);
-        System.out.println(getMonthDateStartAndEnd(new Date()));
-        System.out.println(get2MonthDateBetween(new Date()));
+        //System.out.println(str1);
+        //String str2 = ToolDateTime.format(getYesterday(new Date()), ToolDateTime.pattern_ymd_hms);
+        //System.out.println(str2);
+        //System.out.println(getMonthDateStartAndEnd(new Date()));
+        //System.out.println(get2MonthDateBetween(new Date()));
 
+        System.out.println(getMaxDay(2018, 1));
 
         System.out.println(getBefore30DateTime());
         System.out.println(getBefore12MonthDateTime());

@@ -102,8 +102,13 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         return Company.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
 
-    public Map<String, String> getYearColumns() {
+    public Map<String, String> getYearColumns(Date startTime, Date endTime) {
         String sql = "select date_format(tad.write_time, '%Y') as years from (select write_time from t_actual_data order by write_time asc) tad " +
+                " where 1=1 " +
+
+                (startTime != null ? " and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " ") +
+                (endTime != null ? " and tad.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " ") +
+
                 " GROUP BY date_format(tad.write_time, '%Y')";
         List<Record> records = Db.find(sql);
         Map<String, String> years = new LinkedHashMap<>();
@@ -115,13 +120,18 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         return years;
     }
 
-    public Map<String, String> getMonthColumns() {
+    public Map<String, String> getMonthColumns(Date startTime, Date endTime) {
         Calendar date = Calendar.getInstance();
         Integer year = Integer.valueOf(date.get(Calendar.YEAR));
         String start = String.valueOf(year) + "-01-01 00:00:00";
         String end = String.valueOf(year + 1) + "-01-01 00:00:00";
+
         String sql = "select date_format(tad.write_time, '%Y-%m') as months from (select write_time from t_actual_data order by write_time asc) tad " +
-                " where tad.write_time >='" + start + "' and tad.write_time <='" + end + "'" +
+                " where 1=1 " +
+
+                (startTime != null ? " and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and tad.write_time >='" + start + "'") +
+                (endTime != null ? " and tad.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and tad.write_time <'" + end + "'") +
+
                 " GROUP BY date_format(tad.write_time, '%Y-%m')";
         List<Record> records = Db.find(sql);
 
@@ -199,8 +209,8 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
-                " left join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
-                " left join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
+                " inner join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
+                " inner join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(name) ? " and tc.name='" + name + "'" : "") +
                 (StringUtils.isNotEmpty(innerCode) ? " and tc.inner_code='" + innerCode + "'" : "") +
@@ -220,8 +230,8 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
-                " left join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
-                " left join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
+                " inner join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
+                " inner join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
 
                 (StringUtils.isNotEmpty(name) ? " and tc.name='" + name + "'" : "") +
@@ -240,8 +250,8 @@ public class ActualDataReport extends BaseActualData<ActualData> {
     public List<Record> getCPAYearActualData(String name, String innerCode, Integer street, Date startTime, Date endTime,
                                              Integer watersType, Integer meterAttr, String type) {
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
-                " left join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
-                " left join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
+                " inner join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
+                " inner join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
 
                 (StringUtils.isNotEmpty(name) ? " and tc.name='" + name + "'" : "") +

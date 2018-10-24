@@ -35,7 +35,14 @@ public class ReportYearController extends BaseController {
     @RequiresPermissions(value = {"/report/year"})
     public void index() {
         JSONArray array = new JSONArray();
-        Map<String, String> years = ActualDataReport.me.getYearColumns();
+        Date startTime = null;
+        Date endTime = null;
+        if (StringUtils.isNotEmpty(this.getUrlUtf8Para("date"))) {
+            String date = this.getUrlUtf8Para("date");
+            startTime = DateUtils.getDate(date + "-01-01 00:00:00", ToolDateTime.pattern_ymd_hms);
+            endTime = DateUtils.getDate(date + "-12-31 23:59:59", ToolDateTime.pattern_ymd_hms);
+        }
+        Map<String, String> years = ActualDataReport.me.getYearColumns(startTime, endTime);
         JSONObject company = new JSONObject();
         company.put("label", "单位名称");
         company.put("name", "companyName");
@@ -51,6 +58,8 @@ public class ReportYearController extends BaseController {
             array.add(column);
         }
         this.setAttr("columnsYear", array);
+        this.setAttr("date", this.getUrlUtf8Para("date"));
+        this.setAttr("companyName", this.getUrlUtf8Para("companyName"));
         render("year_report.jsp");
     }
 
@@ -58,6 +67,9 @@ public class ReportYearController extends BaseController {
     public void getListData() {
         ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
+        if (StringUtils.isNotEmpty(this.getPara("byName")) && "yes".equals(this.getPara("byName"))) {
+            name = this.getUrlUtf8Para("name");
+        }
         String innerCode = this.getPara("innerCode");
         Date startTime = null;
         Date endTime = null;
@@ -90,7 +102,7 @@ public class ReportYearController extends BaseController {
 
         Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), getRows(), getOrderbyStr(), street, name, innerCode, type);
         List<Company> list = pageInfo.getList();
-        Map<String, String> yearColumns = ActualDataReport.me.getYearColumns();
+        Map<String, String> yearColumns = ActualDataReport.me.getYearColumns(startTime, endTime);
         if (CollectionUtils.isNotEmpty(list)) {
             Set<String> innerCodes = new HashSet<>();
             for (Company company : list) {
@@ -166,7 +178,7 @@ public class ReportYearController extends BaseController {
 
         Page<Company> pageInfo = ActualDataReport.me.getCompanies(getPage(), GlobalConfig.EXPORT_SUM, getOrderbyStr(), street, name, innerCode, type);
         List<Company> list = pageInfo.getList();
-        Map<String, String> yearColumns = ActualDataReport.me.getYearColumns();
+        Map<String, String> yearColumns = ActualDataReport.me.getYearColumns(startTime, endTime);
         if (CollectionUtils.isNotEmpty(list)) {
             Set<String> innerCodes = new HashSet<>();
             for (Company company : list) {

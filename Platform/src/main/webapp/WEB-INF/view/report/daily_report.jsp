@@ -131,13 +131,20 @@
         });
 
         var url = '${context_path}/report/daily/getListData';
-        var sTime = '${startTime}';
-        var eTime = '${endTime}';
-        var type = '${type}';
+        var sTime = '${date}';
+        var eTime = '${date}';
+        var companyName = '${companyName}';
         if ((sTime != undefined && sTime != null && sTime != '') && (eTime != undefined && eTime != null && eTime != '')) {
+            var sTime = '${date}' + ' 00:00:00';
+            var eTime = '${date}' + ' 23:59:59';
             $("#startTime").val(sTime);
             $("#endTime").val(eTime);
-            url = '${context_path}/report/daily/getListData?startTime=${startTime}&endTime=${endTime}';
+            url = '${context_path}/report/daily/getListData?time=' + new Date().getTime();
+            url = url + '&startTime=' + sTime + '&endTime=' + eTime;
+        }
+        if (companyName != undefined && companyName != null && companyName != '') {
+            $("#name").val(companyName);
+            url = encodeURI(url + '&byName=yes&name=' + companyName);
         }
 
         $("#grid-table").jqGrid({
@@ -199,7 +206,7 @@
             var endTime = $("#endTime").val();
             var meterAttr = $("#meterAttr").val();
 
-            var url = "${context_path}/report/daily/chart?time=" + new Date().getMilliseconds();
+            var url = "${context_path}/report/daily/chart?time=" + new Date().getTime();
 
             if (street != "" && street != undefined) {
                 url = url + "&street=" + street;
