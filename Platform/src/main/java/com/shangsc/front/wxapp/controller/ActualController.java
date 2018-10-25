@@ -5,26 +5,31 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.jfinal.aop.Clear;
 import com.jfinal.kit.PropKit;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 import com.shangsc.front.validate.bean.CommonDes;
+import com.shangsc.platform.code.ActualState;
+import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
+import com.shangsc.platform.core.util.CommonUtils;
+import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.FileUtils;
 import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.view.InvokeResult;
-import com.shangsc.platform.model.ActualData;
-import com.shangsc.platform.model.Company;
-import com.shangsc.platform.model.Image;
-import com.shangsc.platform.model.SysUser;
+import com.shangsc.platform.model.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -95,13 +100,116 @@ public class ActualController extends BaseController {
     }
 
     @Clear(AuthorityInterceptor.class)
-    public void daily() {
-        SysUser byWxAccount = findByWxAccount();
-        if (byWxAccount == null) {
-            this.renderJson(InvokeResult.failure("未找到该微信账号"));
+    public void actualChart() {
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        String meterAddress = this.getPara("meterAddress");
+        List<Record> records = ActualDataWx.me.findWxActualChart(wxInnerCodeSQLStr, meterAddress);
+        Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
+        String subtitle = "日用水量";
+        String seriesName = "日用水量";
+        Integer type = 1;
+        if (byInnerCode != null) {
+            type = byInnerCode.getCompanyType();
+            if (type == 2) {
+                subtitle = "日供水量";
+                seriesName = "日供水量";
+            }
         }
-        List<Record> records = ActualData.me.getWxDailyActualData(byWxAccount.getInnerCode());
-        Company byInnerCode = Company.me.findByInnerCode(byWxAccount.getInnerCode());
+        JSONObject obj = new JSONObject();
+        JSONArray sumWater = new JSONArray();
+        List<String> day = new ArrayList<String>();
+        for (Record record : records) {
+            sumWater.add(record.get("sumWater"));
+            day.add(record.get("DAY").toString());
+        }
+        obj.put("sumWater", sumWater);
+        obj.put("day", day);
+        obj.put("subtitle", subtitle);
+        obj.put("seriesName", seriesName);
+        obj.put("type", type);
+        this.renderJson(obj);
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    public void findActualList() {
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        String keyword = this.getPara("keyword");
+        String status = this.getPara("status", "-1");
+        Page<ActualData> pageInfo = new Page<>();
+        int exceptionTime = 24;
+        Map<String, Object> dictMap = DictData.dao.getDictMap(null, DictCode.ACTUAL_EXCEPTION_TIME_OUT);
+        if (dictMap.size() == 1) {
+            Object[] objects = dictMap.keySet().toArray();
+            String num = objects[0].toString();
+            if (NumberUtils.isDigits(num)) {
+                exceptionTime = Integer.parseInt(num);
+            }
+        }
+        pageInfo = ActualDataWx.me.finWxActualData(getPage(), getRows(), keyword, wxInnerCodeSQLStr);
+        List<ActualData> list = pageInfo.getList();
+        setVoProp(list, exceptionTime);
+        this.renderJson(pageInfo);
+    }
+
+    private void setVoProp(List<ActualData> list, int exceptionTime) {
+        Map<String, String> stateMap = ActualState.getMap();
+        long dayTime = exceptionTime * 60 * 60 * 1000;
+        Date now = new Date();
+        if (CommonUtils.isNotEmpty(list)) {
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
+            for (int i = 0; i < list.size(); i++) {
+                ActualData co = list.get(i);
+                if (co.get("waters_type") != null) {
+                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.get("waters_type")))));
+                }
+                //co.put("alarm", YesOrNo.getYesOrNoMap().get(String.valueOf(co.getAlarm())));
+                // 正常 异常（24小时内没有数据传回来时是异常） 停用（一天传回来数没有增量是停用）
+                if (co.getNetWater() != null && co.getNetWater().compareTo(new BigDecimal(0.00)) == 0) {
+                    co.setState(Integer.parseInt(ActualState.STOP));
+                }
+                if (co.getWriteTime() != null) {
+                    long target = now.getTime() - co.getWriteTime().getTime();
+                    if (target > dayTime) {
+                        co.setState(Integer.parseInt(ActualState.EXCEPTION));
+                    }
+                } else {
+                    co.setState(Integer.parseInt(ActualState.EXCEPTION));
+                }
+                if (co.getNetWater() != null && co.getNetWater().compareTo(new BigDecimal(0.00)) < 0) {
+                    co.setState(Integer.parseInt(ActualState.EXCEPTION));
+                }
+                if (co.getId() == null) {
+                    co.setState(Integer.parseInt(ActualState.DISABLE));
+                }
+                co.put("stateName", stateMap.get(String.valueOf(co.getState())));
+                if (co.getWriteTime() == null) {
+                    co.setWriteTime(DateUtils.parseDate("0001-01-01 00:00:00"));
+                }
+                list.set(i, co);
+            }
+        }
+    }
+
+
+    @Clear(AuthorityInterceptor.class)
+    public void readSearchList() {
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        String keyword = this.getPara("keyword");
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxReadSearchList(getPage(), getRows(), null, null, keyword, wxInnerCodeSQLStr);
+        this.renderJson(pageInfo);
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    public void readSearchChart() {
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        String date = this.getPara("date");
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    public void daily() {
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        List<Record> records = ActualDataWx.me.getWxDailyActualData(wxInnerCodeSQLStr);
+        Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
         String subtitle = "日用水量";
         String seriesName = "日用水量";
         Integer type = 1;
@@ -129,12 +237,9 @@ public class ActualController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     public void month() {
-        SysUser byWxAccount = findByWxAccount();
-        if (byWxAccount == null) {
-            this.renderJson(InvokeResult.failure("未找到该微信账号"));
-        }
-        List<Record> records = ActualData.me.getWxMonthActualData(byWxAccount.getInnerCode());
-        Company byInnerCode = Company.me.findByInnerCode(byWxAccount.getInnerCode());
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        List<Record> records = ActualDataWx.me.getWxMonthActualData(wxInnerCodeSQLStr);
+        Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
         Integer type = 1;
         String subtitle = "月用水量";
         String seriesName = "月用水量";
@@ -163,18 +268,59 @@ public class ActualController extends BaseController {
     }
 
     @Clear(AuthorityInterceptor.class)
-    public void readSearchList() {
-        SysUser byWxAccount = findByWxAccount();
-        if (byWxAccount == null) {
-            this.renderJson(InvokeResult.failure("未找到该微信账号"));
+    public void year() {
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        List<Record> records = ActualDataWx.me.getWxYearActualData(wxInnerCodeSQLStr);
+        Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
+        Integer type = 1;
+        String subtitle = "月用水量";
+        String seriesName = "月用水量";
+        if (byInnerCode != null) {
+            type = byInnerCode.getCompanyType();
+            subtitle = "月用水量";
+            seriesName = "月用水量";
+            if (type == 2) {
+                subtitle = "月供水量";
+                seriesName = "月供水量";
+            }
         }
+        JSONObject obj = new JSONObject();
+        JSONArray sumWater = new JSONArray();
+        List<String> year = new ArrayList<String>();
+        for (Record record : records) {
+            sumWater.add(record.get("sumWater"));
+            year.add(record.get("year").toString());
+        }
+        obj.put("sumWater", sumWater);
+        obj.put("year", year);
+        obj.put("subtitle", subtitle);
+        obj.put("seriesName", seriesName);
+        obj.put("type", type);
+        this.renderJson(obj);
     }
 
     @Clear(AuthorityInterceptor.class)
-    public void readSearchChart() {
-        SysUser byWxAccount = findByWxAccount();
-        if (byWxAccount == null) {
-            this.renderJson(InvokeResult.failure("未找到该微信账号"));
-        }
+    public void dailyList() {
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        String keyword = this.getPara("keyword");
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxDailyList(getPage(), this.getRows(), null, null, keyword, wxInnerCodeSQLStr);
+        this.renderJson(pageInfo);
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    public void monthList() {
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        String keyword = this.getPara("keyword");
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxMonthList(getPage(), this.getRows(), null, null, keyword, wxInnerCodeSQLStr);
+        this.renderJson(pageInfo);
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    public void yearList() {
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        String keyword = this.getPara("keyword");
+        Integer year = this.getParaToInt("year");
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxYearList(getPage(), this.getRows(), year, keyword, wxInnerCodeSQLStr);
+        this.renderJson(pageInfo);
     }
 }

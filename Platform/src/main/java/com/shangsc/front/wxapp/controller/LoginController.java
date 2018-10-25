@@ -30,6 +30,19 @@ import java.util.Date;
 public class LoginController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
+    public void binding() {
+        SysUser byWxAccount = findByWxAccount();
+        InvokeResult result = InvokeResult.success(Boolean.FALSE, "未绑定微信账号");
+        if (byWxAccount != null && byWxAccount.getStatus() == 1) {
+            result = InvokeResult.success(Boolean.TRUE, "已绑定微信账号");
+        }
+        if (byWxAccount != null && byWxAccount.getStatus() == 0) {
+            result = InvokeResult.success(Boolean.FALSE, "该账号已停用");
+        }
+        this.renderJson(result);
+    }
+
+    @Clear(AuthorityInterceptor.class)
     public void doLoginWxApp() {
         SysUser sysUser = SysUser.me.getByName(this.getPara("username"));
         if (sysUser == null) {

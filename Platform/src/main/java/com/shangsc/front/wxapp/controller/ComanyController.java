@@ -28,9 +28,8 @@ public class ComanyController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     public void findList() {
-        String keyword = this.getPara("name");
-        String companyType = this.getPara("companyType");
-        Page<Company> pageInfo = Company.me.findWxList(getPage(), this.getRows(), keyword, companyType);
+        String keyword = this.getPara("keyword");
+        Page<Company> pageInfo = Company.me.findWxList(getPage(), this.getRows(), keyword, getWxInnerCodeSQLStr());
         List<Company> companies = pageInfo.getList();
         setVoProp(companies);
         this.renderJson(pageInfo);
@@ -68,8 +67,8 @@ public class ComanyController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     public void findMeterList() {
-        Page<WaterMeter> pageInfo = WaterMeter.me.findWxList(getPage(), this.getRows(), getWxInnerCodeSQLStr());
-        List<WaterMeter> waterMeters = pageInfo.getList();
-        this.renderJson(waterMeters);
+        String keyword = this.getPara("name");
+        Page<WaterMeter> pageInfo = WaterMeter.me.findWxList(getPage(), this.getRows(), keyword, getWxInnerCodeSQLStr());
+        this.renderJson(pageInfo);
     }
 }
