@@ -96,8 +96,8 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
-                (startTime != null ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
-                (endTime != null ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
+                (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
+                (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
                 " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
         return Db.find(sql);
     }
@@ -108,8 +108,8 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
-                (startTime != null ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
-                (endTime != null ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
+                (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
+                (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
         return Db.find(sql);
     }
@@ -117,8 +117,8 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
     public List<Record> getWxYearActualData(String wxInnerCode, String startTime, String endTime) {
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
-                (startTime != null ? " and t.write_time >= '" + startTime + "'" : " ") +
-                (endTime != null ? " and t.write_time <= '" + endTime + "'" : " ") +
+                (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " ") +
+                (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " ") +
                 " GROUP BY date_format(t.write_time, '%Y')";
         return Db.find(sql);
     }
@@ -201,9 +201,9 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
-                " and t.meter_address = '" + meterAddress + "'" +
-                (startTime != null ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
-                (endTime != null ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
+                (StringUtils.isNotEmpty(meterAddress) ? " and t.meter_address = '" + meterAddress + "'" : " ") +
+                (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
+                (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
                 " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
         return Db.find(sql);
     }
@@ -214,9 +214,9 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
-                " and t.meter_address = '" + meterAddress + "'" +
-                (startTime != null ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
-                (endTime != null ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
+                (StringUtils.isNotEmpty(meterAddress) ? " and t.meter_address = '" + meterAddress + "'" : " ") +
+                (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
+                (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
         return Db.find(sql);
     }
@@ -224,9 +224,9 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
     public List<Record> getWxMeterYearActualData(String wxInnerCode, String meterAddress, String startTime, String endTime) {
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
-                " and t.meter_address = '" + meterAddress + "'" +
-                (startTime != null ? " and t.write_time >= '" + startTime + "'" : " ") +
-                (endTime != null ? " and t.write_time <= '" + endTime + "'" : " ") +
+                (StringUtils.isNotEmpty(meterAddress) ? " and t.meter_address = '" + meterAddress + "'" : " ") +
+                (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " ") +
+                (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " ") +
                 " GROUP BY date_format(t.write_time, '%Y')";
         return Db.find(sql);
     }
@@ -248,7 +248,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         if (StringUtils.isNotEmpty(startTime)) {
             sqlExceptSelect.append(" and tad.write_time >= '" + startTime + "' ");
         }
-        if (endTime != null) {
+        if (StringUtils.isNotEmpty(endTime)) {
             sqlExceptSelect.append(" and tad.write_time <= '" + endTime + "' ");
         }
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') ");
@@ -276,7 +276,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         if (StringUtils.isNotEmpty(startTime)) {
             sqlExceptSelect.append(" and tad.write_time >= '" + startTime + "'");
         }
-        if (endTime != null) {
+        if (StringUtils.isNotEmpty(endTime)) {
             sqlExceptSelect.append(" and tad.write_time <= '" + endTime + "'");
         }
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m') ");
@@ -303,7 +303,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         if (StringUtils.isNotEmpty(startTime)) {
             sqlExceptSelect.append(" and tad.write_time >= '" + startTime + "'");
         }
-        if (endTime != null) {
+        if (StringUtils.isNotEmpty(endTime)) {
             sqlExceptSelect.append(" and tad.write_time <= '" + endTime + "'");
         }
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y') ");

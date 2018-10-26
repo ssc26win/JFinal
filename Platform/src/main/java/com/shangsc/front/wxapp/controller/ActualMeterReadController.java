@@ -10,6 +10,8 @@ import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.ActualDataWx;
 import com.shangsc.platform.model.Company;
+import com.shangsc.platform.model.WaterMeter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,11 @@ public class ActualMeterReadController extends BaseController {
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
         List<Record> records = ActualDataWx.me.getWxMeterDailyActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
-        Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
+        WaterMeter byMeterAddress = WaterMeter.me.findByMeterAddress(meterAddress);
+        Company byInnerCode = null;
+        if (byMeterAddress != null && StringUtils.isNotEmpty(byMeterAddress.getInnerCode())) {
+            byInnerCode = Company.me.findByInnerCode(byMeterAddress.getInnerCode());
+        }
         String subtitle = "日用水量";
         String seriesName = "日用水量";
         Integer type = 1;
@@ -61,7 +67,11 @@ public class ActualMeterReadController extends BaseController {
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
         List<Record> records = ActualDataWx.me.getWxMeterMonthActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
-        Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
+        WaterMeter byMeterAddress = WaterMeter.me.findByMeterAddress(meterAddress);
+        Company byInnerCode = null;
+        if (byMeterAddress != null && StringUtils.isNotEmpty(byMeterAddress.getInnerCode())) {
+            byInnerCode = Company.me.findByInnerCode(byMeterAddress.getInnerCode());
+        }
         Integer type = 1;
         String subtitle = "月用水量";
         String seriesName = "月用水量";
@@ -96,7 +106,11 @@ public class ActualMeterReadController extends BaseController {
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
         List<Record> records = ActualDataWx.me.getWxMeterYearActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
-        Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
+        WaterMeter byMeterAddress = WaterMeter.me.findByMeterAddress(meterAddress);
+        Company byInnerCode = null;
+        if (byMeterAddress != null && StringUtils.isNotEmpty(byMeterAddress.getInnerCode())) {
+            byInnerCode = Company.me.findByInnerCode(byMeterAddress.getInnerCode());
+        }
         Integer type = 1;
         String subtitle = "月用水量";
         String seriesName = "月用水量";
