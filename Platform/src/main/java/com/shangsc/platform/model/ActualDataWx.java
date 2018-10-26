@@ -23,7 +23,9 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
     public static final ActualDataWx me = new ActualDataWx();
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    /********************************** WxApp use ***************************************/
+    /**********************************
+     * WxApp use
+     ***************************************/
 
     public Page<ActualData> finWxActualDataByStatus(int page, int rows, String keyword, String wxInnerCode, String status, int exceptionTime) {
         String select = "select * ";
@@ -88,39 +90,40 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         return Db.find(sql);
     }
 
-    public List<Record> getWxDailyActualData(String wxInnerCode) {
+    public List<Record> getWxDailyActualData(String wxInnerCode, String startTime, String endTime) {
         Map<String, String> map = ToolDateTime.getBefore30DateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
-                " and t.write_time >= '" + start + "' " +
-                " and t.write_time <= '" + end + "' " +
+                (startTime != null ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
+                (endTime != null ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
                 " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
         return Db.find(sql);
     }
 
-    public List<Record> getWxMonthActualData(String wxInnerCode) {
+    public List<Record> getWxMonthActualData(String wxInnerCode, String startTime, String endTime) {
         Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
-                " and t.write_time >= '" + start + "' " +
-                " and t.write_time <= '" + end + "' " +
+                (startTime != null ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
+                (endTime != null ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
         return Db.find(sql);
     }
 
-    public List<Record> getWxYearActualData(String wxInnerCode) {
+    public List<Record> getWxYearActualData(String wxInnerCode, String startTime, String endTime) {
         String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
+                (startTime != null ? " and t.write_time >= '" + startTime + "'" : " ") +
+                (endTime != null ? " and t.write_time <= '" + endTime + "'" : " ") +
                 " GROUP BY date_format(t.write_time, '%Y')";
         return Db.find(sql);
     }
 
-
-    public Page<ActualData> findWxDailyList(int pageNo, int pageSize, Date startTime, Date endTime, String keyword, String wxInnerCode) {
+    public Page<ActualData> findWxDailyList(int pageNo, int pageSize, String startTime, String endTime, String keyword, String wxInnerCode) {
         String select = " select abs(tad.net_water) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
                 "tc.county,tc.company_type," +
                 "date_format(tad.write_time, '%Y-%m-%d') as todays ";
@@ -131,18 +134,18 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         if (StringUtils.isNotEmpty(wxInnerCode)) {
             sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
         }
-        if (startTime != null) {
-            sqlExceptSelect.append(" and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' ");
+        if (StringUtils.isNotEmpty(startTime)) {
+            sqlExceptSelect.append(" and tad.write_time >= '" + startTime + "' ");
         }
-        if (endTime != null) {
-            sqlExceptSelect.append(" and tad.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' ");
+        if (StringUtils.isNotEmpty(endTime)) {
+            sqlExceptSelect.append(" and tad.write_time <= '" + endTime + "' ");
         }
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') ");
         sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m-%d') desc ");
         return ActualData.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
 
-    public Page<ActualData> findWxMonthList(int pageNo, int pageSize, Date startTime, Date endTime, String keyword, String wxInnerCode) {
+    public Page<ActualData> findWxMonthList(int pageNo, int pageSize, String startTime, String endTime, String keyword, String wxInnerCode) {
 
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
                 /*"twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address," +*/
@@ -156,11 +159,11 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
             sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
         }
 
-        if (startTime != null) {
-            sqlExceptSelect.append(" and tad.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "'");
+        if (StringUtils.isNotEmpty(startTime)) {
+            sqlExceptSelect.append(" and tad.write_time >= '" + startTime + "'");
         }
-        if (endTime != null) {
-            sqlExceptSelect.append(" and tad.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "'");
+        if (StringUtils.isNotEmpty(endTime)) {
+            sqlExceptSelect.append(" and tad.write_time <= '" + endTime + "'");
         }
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m') ");
         sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m') desc ");
@@ -168,7 +171,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         return ActualData.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
 
-    public Page<ActualData> findWxYearList(int pageNo, int pageSize, Integer year, String keyword, String wxInnerCode) {
+    public Page<ActualData> findWxYearList(int pageNo, int pageSize, String startTime, String endTime, String keyword, String wxInnerCode) {
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type, " +
                 /*" twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address, " +*/
                 " date_format(tad.write_time, '%Y') as years,sum(abs(tad.net_water)) as yearTotal ";
@@ -180,11 +183,11 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
             sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
         }
 
-        if (year != null && year > 0) {
-            String yearStart = String.valueOf(year) + "-01-01 00:00:00";
-            String yearEnd = String.valueOf(year + 1) + "-01-01 00:00:00";
-            sqlExceptSelect.append(" and tad.write_time >= '" + yearStart + "'");
-            sqlExceptSelect.append(" and tad.write_time < '" + yearEnd + "'");
+        if (StringUtils.isNotEmpty(startTime)) {
+            sqlExceptSelect.append(" and tad.write_time >= '" + startTime + "'");
+        }
+        if (endTime != null) {
+            sqlExceptSelect.append(" and tad.write_time <= '" + endTime + "'");
         }
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y') ");
         sqlExceptSelect.append("order by date_format(tad.write_time, '%Y') desc");
@@ -192,6 +195,122 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         return ActualData.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
 
+    public List<Record> getWxMeterDailyActualData(String wxInnerCode, String meterAddress, String startTime, String endTime) {
+        Map<String, String> map = ToolDateTime.getBefore30DateTime();
+        String start = map.get(MonthCode.warn_start_date);
+        String end = map.get(MonthCode.warn_end_date);
+        String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+                " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
+                " and t.meter_address = '" + meterAddress + "'" +
+                (startTime != null ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
+                (endTime != null ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
+                " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
+        return Db.find(sql);
+    }
+
+    public List<Record> getWxMeterMonthActualData(String wxInnerCode, String meterAddress, String startTime, String endTime) {
+        Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
+        String start = map.get(MonthCode.warn_start_date);
+        String end = map.get(MonthCode.warn_end_date);
+        String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+                " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
+                " and t.meter_address = '" + meterAddress + "'" +
+                (startTime != null ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
+                (endTime != null ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
+                " GROUP BY date_format(t.write_time, '%Y-%m')";
+        return Db.find(sql);
+    }
+
+    public List<Record> getWxMeterYearActualData(String wxInnerCode, String meterAddress, String startTime, String endTime) {
+        String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
+                " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
+                " and t.meter_address = '" + meterAddress + "'" +
+                (startTime != null ? " and t.write_time >= '" + startTime + "'" : " ") +
+                (endTime != null ? " and t.write_time <= '" + endTime + "'" : " ") +
+                " GROUP BY date_format(t.write_time, '%Y')";
+        return Db.find(sql);
+    }
+
+    public Page<ActualData> findWxMeterDailyList(int pageNo, int pageSize, String startTime, String endTime, String keyword, String wxInnerCode, String meterAddress) {
+        String select = " select abs(tad.net_water) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
+                "tc.county,tc.company_type," +
+                "date_format(tad.write_time, '%Y-%m-%d') as todays ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
+                " inner join t_company  tc on tad.inner_code=tc.inner_code " +
+                " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +
+                " where 1=1 ");
+        if (StringUtils.isNotEmpty(wxInnerCode)) {
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
+        }
+        if (StringUtils.isNotEmpty(meterAddress)) {
+            sqlExceptSelect.append(" and tad.meter_address ='" + meterAddress + "'");
+        }
+        if (StringUtils.isNotEmpty(startTime)) {
+            sqlExceptSelect.append(" and tad.write_time >= '" + startTime + "' ");
+        }
+        if (endTime != null) {
+            sqlExceptSelect.append(" and tad.write_time <= '" + endTime + "' ");
+        }
+        sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') ");
+        sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m-%d') desc ");
+        return ActualData.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+
+    public Page<ActualData> findWxMeterMonthList(int pageNo, int pageSize, String startTime, String endTime, String keyword, String wxInnerCode, String meterAddress) {
+
+        String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
+                /*"twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address," +*/
+                "date_format(tad.write_time, '%Y-%m') as months,sum(abs(tad.net_water)) as monthTotal";
+
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
+                " inner join t_company tc on tad.inner_code=tc.inner_code " +
+                " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +
+                " where 1=1 ");
+        if (StringUtils.isNotEmpty(wxInnerCode)) {
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
+        }
+        if (StringUtils.isNotEmpty(meterAddress)) {
+            sqlExceptSelect.append(" and tad.meter_address ='" + meterAddress + "'");
+        }
+
+        if (StringUtils.isNotEmpty(startTime)) {
+            sqlExceptSelect.append(" and tad.write_time >= '" + startTime + "'");
+        }
+        if (endTime != null) {
+            sqlExceptSelect.append(" and tad.write_time <= '" + endTime + "'");
+        }
+        sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m') ");
+        sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m') desc ");
+
+        return ActualData.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
+
+    public Page<ActualData> findWxMeterYearList(int pageNo, int pageSize, String startTime, String endTime, String keyword, String wxInnerCode, String meterAddress) {
+        String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type, " +
+                /*" twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address, " +*/
+                " date_format(tad.write_time, '%Y') as years,sum(abs(tad.net_water)) as yearTotal ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
+                " inner join t_company tc on tad.inner_code=tc.inner_code " +
+                " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +
+                " where 1=1 ");
+        if (StringUtils.isNotEmpty(wxInnerCode)) {
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
+        }
+        if (StringUtils.isNotEmpty(meterAddress)) {
+            sqlExceptSelect.append(" and tad.meter_address ='" + meterAddress + "'");
+        }
+
+        if (StringUtils.isNotEmpty(startTime)) {
+            sqlExceptSelect.append(" and tad.write_time >= '" + startTime + "'");
+        }
+        if (endTime != null) {
+            sqlExceptSelect.append(" and tad.write_time <= '" + endTime + "'");
+        }
+        sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y') ");
+        sqlExceptSelect.append("order by date_format(tad.write_time, '%Y') desc");
+
+        return ActualData.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
 
     public Page<ActualData> findWxReadSearchList(int pageNo, int pageSize, Date startTime, Date endTime, String keyword, String wxInnerCode) {
         String select = " select twm.*,tc.name,tc.real_code,tc.address,tc.street,tc.water_unit,tc.county,tc.company_type,tm.waters_type,tm.meter_attr," +

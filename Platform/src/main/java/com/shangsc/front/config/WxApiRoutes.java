@@ -31,6 +31,7 @@ public class WxApiRoutes extends Routes {
         add("/wxapp/msg", MsgController.class);
         add("/wxapp/law", LawRecordController.class);
         add("/wxapp/actual", ActualController.class);
+        add("/wxapp/meter", ActualMeterReadController.class);
         add("/wxapp/ad", AdController.class);
         add("/wxapp/company", ComanyController.class);
     }

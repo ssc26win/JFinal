@@ -207,8 +207,10 @@ public class ActualController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     public void daily() {
+        String startTime = this.getPara("startTime");
+        String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
-        List<Record> records = ActualDataWx.me.getWxDailyActualData(wxInnerCodeSQLStr);
+        List<Record> records = ActualDataWx.me.getWxDailyActualData(wxInnerCodeSQLStr, startTime, endTime);
         Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
         String subtitle = "日用水量";
         String seriesName = "日用水量";
@@ -237,8 +239,10 @@ public class ActualController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     public void month() {
+        String startTime = this.getPara("startTime");
+        String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
-        List<Record> records = ActualDataWx.me.getWxMonthActualData(wxInnerCodeSQLStr);
+        List<Record> records = ActualDataWx.me.getWxMonthActualData(wxInnerCodeSQLStr, startTime, endTime);
         Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
         Integer type = 1;
         String subtitle = "月用水量";
@@ -269,8 +273,10 @@ public class ActualController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     public void year() {
+        String startTime = this.getPara("startTime");
+        String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
-        List<Record> records = ActualDataWx.me.getWxYearActualData(wxInnerCodeSQLStr);
+        List<Record> records = ActualDataWx.me.getWxYearActualData(wxInnerCodeSQLStr, startTime, endTime);
         Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
         Integer type = 1;
         String subtitle = "月用水量";
@@ -301,26 +307,31 @@ public class ActualController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
     public void dailyList() {
+        String startTime = this.getPara("startTime");
+        String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
         String keyword = this.getPara("keyword");
-        Page<ActualData> pageInfo = ActualDataWx.me.findWxDailyList(getPage(), this.getRows(), null, null, keyword, wxInnerCodeSQLStr);
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxDailyList(getPage(), this.getRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
         this.renderJson(pageInfo);
     }
 
     @Clear(AuthorityInterceptor.class)
     public void monthList() {
+        String startTime = this.getPara("startTime");
+        String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
         String keyword = this.getPara("keyword");
-        Page<ActualData> pageInfo = ActualDataWx.me.findWxMonthList(getPage(), this.getRows(), null, null, keyword, wxInnerCodeSQLStr);
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxMonthList(getPage(), this.getRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
         this.renderJson(pageInfo);
     }
 
     @Clear(AuthorityInterceptor.class)
     public void yearList() {
+        String startTime = this.getPara("startTime");
+        String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
         String keyword = this.getPara("keyword");
-        Integer year = this.getParaToInt("year");
-        Page<ActualData> pageInfo = ActualDataWx.me.findWxYearList(getPage(), this.getRows(), year, keyword, wxInnerCodeSQLStr);
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxYearList(getPage(), this.getRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
         this.renderJson(pageInfo);
     }
 }
