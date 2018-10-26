@@ -8,6 +8,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
+import com.shangsc.front.code.DateType;
 import com.shangsc.front.validate.bean.CommonDes;
 import com.shangsc.platform.code.ActualState;
 import com.shangsc.platform.code.DictCode;
@@ -333,5 +334,67 @@ public class ActualController extends BaseController {
         String keyword = this.getPara("keyword");
         Page<ActualData> pageInfo = ActualDataWx.me.findWxYearList(getPage(), this.getRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
         this.renderJson(pageInfo);
+    }
+
+
+    @Clear(AuthorityInterceptor.class)
+    public void searchMine() {
+        int dateType = this.getParaToInt("dateType", 1).intValue();
+        String startTime = this.getPara("startTime");
+        String endTime = this.getPara("endTime");
+        String keyword = this.getPara("keyword");
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        String subtitle = "用水量";
+        String seriesName = "用水量";
+        JSONObject obj = new JSONObject();
+        JSONArray sumWater = new JSONArray();
+        if (DateType.YEAR == dateType) {
+            List<Record> records = ActualDataWx.me.getWxYearActualData(wxInnerCodeSQLStr, startTime, endTime);
+            List<String> year = new ArrayList<String>();
+            for (Record record : records) {
+                sumWater.add(record.get("sumWater"));
+                year.add(record.get("year").toString());
+            }
+            obj.put("sumWater", sumWater);
+            obj.put("year", year);
+            obj.put("subtitle", subtitle);
+            obj.put("seriesName", seriesName);
+
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxYearList(getPage(), this.getWxRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
+            obj.put("jsonList", pageInfo);
+            this.renderJson(obj);
+        } else if (DateType.MONTH == dateType) {
+            List<Record> records = ActualDataWx.me.getWxMonthActualData(wxInnerCodeSQLStr, startTime, endTime);
+            List<String> month = new ArrayList<String>();
+            for (Record record : records) {
+                sumWater.add(record.get("sumWater"));
+                month.add(record.get("month").toString());
+            }
+            obj.put("sumWater", sumWater);
+            obj.put("month", month);
+            obj.put("subtitle", subtitle);
+            obj.put("seriesName", seriesName);
+
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxMonthList(getPage(), this.getWxRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
+            obj.put("jsonList", pageInfo);
+            this.renderJson(obj);
+        } else if (DateType.YEAR == dateType) {
+            List<Record> records = ActualDataWx.me.getWxDailyActualData(wxInnerCodeSQLStr, startTime, endTime);
+            List<String> day = new ArrayList<String>();
+            for (Record record : records) {
+                sumWater.add(record.get("sumWater"));
+                day.add(record.get("DAY").toString());
+            }
+            obj.put("sumWater", sumWater);
+            obj.put("day", day);
+            obj.put("subtitle", subtitle);
+            obj.put("seriesName", seriesName);
+
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxDailyList(getPage(), this.getWxRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
+            obj.put("jsonList", pageInfo);
+            this.renderJson(obj);
+        } else {
+            this.renderJson(InvokeResult.failure("错误日期类型"));
+        }
     }
 }

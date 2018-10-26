@@ -62,8 +62,12 @@ public class AppVersionController extends BaseController {
         String versionNo = getPara("versionNo");
         Integer status = getParaToInt("status");
         Integer isForce = getParaToInt("isForce");
+
+        String wxAppId = this.getPara("wxAppId");
+        String wxAppSecret = this.getPara("wxAppSecret");
+
         InvokeResult result = AppVersion.dao.saveAppVersion(id, content, linkUrl,
-                natureNo, os, url, versionNo, status, isForce);
+                natureNo, os, url, versionNo, status, isForce, wxAppId, wxAppSecret);
         this.renderJson(result);
     }
 

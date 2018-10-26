@@ -114,7 +114,7 @@
 				parent.layer.open({
 					title:'添加应用',
 				    type: 2,
-				    area: ['770px', '720px'],
+				    area: ['770px', '780px'],
 				    fix: false, //不固定
 				    maxmin: true,
 				    content: '/app/addApp'
@@ -136,7 +136,7 @@
 					parent.layer.open({
 						title:'修改应用',
 					    type: 2,
-					    area: ['770px', '720px'],
+					    area: ['770px', '780px'],
 					    fix: false, //不固定
 					    maxmin: true,
 					    content: '/app/addApp?id='+rid

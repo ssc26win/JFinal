@@ -84,6 +84,14 @@ public abstract class BaseController extends Controller {
         return rows;
     }
 
+    protected int getWxRows() {
+        int rows = this.getParaToInt("rows", 30);
+        if (rows > 31) {
+            rows = 31;
+        }
+        return rows;
+    }
+
     public String getInnerCode() {
         SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
         return sysUser.getInnerCode();

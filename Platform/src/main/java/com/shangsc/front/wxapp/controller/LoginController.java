@@ -1,22 +1,23 @@
 package com.shangsc.front.wxapp.controller;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
 import com.jfinal.kit.PropKit;
-import com.shangsc.front.util.JsonUtil;
-import com.shangsc.front.validate.bean.CommonDes;
+import com.shangsc.front.util.HttpUtils;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.DateUtils;
-import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.util.MD5Utils;
 import com.shangsc.platform.core.util.MyDigestUtils;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.model.AppVersion;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.SysLoginRecord;
 import com.shangsc.platform.model.SysUser;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
 
@@ -83,6 +84,30 @@ public class LoginController extends BaseController {
         }
         data.put("roleType", roleType);
         this.renderJson(InvokeResult.success(data, "登录成功"));
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    public void loginWxServer() {
+        AppVersion appVersion = AppVersion.dao.findwxLastAppVersion();
+        if (appVersion != null) {
+            String appid = appVersion.getWxAppId();
+            String secret = appVersion.getWxAppSecret();
+            String code = this.getPara("code");
+            if (StringUtils.isNotEmpty(code) && StringUtils.isNotEmpty(appid) && StringUtils.isNotEmpty(secret)) {
+                String apiUrl = "https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code";
+                apiUrl = apiUrl + "&appid=" + appid;
+                apiUrl = apiUrl + "&secret=" + secret;
+                apiUrl = apiUrl + "&js_code=" + code;
+                byte[] bytes = HttpUtils.doGet(apiUrl);
+                String result = new String(bytes);
+                Object parse = JSONObject.parse(result);
+                this.renderJson(parse);
+            } else {
+                this.renderJson(InvokeResult.failure("未获取微信授权code"));
+            }
+        } else {
+            this.renderJson(InvokeResult.failure("未获取微信appid，secret"));
+        }
     }
 
     @Clear(AuthorityInterceptor.class)

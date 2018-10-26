@@ -68,15 +68,18 @@ public class AppVersion extends BaseAppVersion<AppVersion> {
     }
 
     public InvokeResult saveAppVersion(Integer id, String content, String linkUrl, Integer natureNo, String os,
-                                       String url, String versionNo, Integer status, Integer isForce) {
+                                       String url, String versionNo, Integer status, Integer isForce,
+                                       String wxAppId, String wxAppSecret) {
         if (id != null) {
             AppVersion appVersion = AppVersion.dao.findById(id);
             appVersion.set("content", content).set("link_url", linkUrl).set("nature_no", natureNo)
-                    .set("os", os).set("url", url).set("version_no", versionNo).set("status", status).set("is_force", isForce).update();
+                    .set("os", os).set("url", url).set("version_no", versionNo).set("status", status).set("is_force", isForce)
+                    .set("wx_app_id", wxAppId).set("wx_app_secret", wxAppSecret).update();
         } else {
             new AppVersion().set("content", content).set("link_url", linkUrl).set("nature_no", natureNo)
                     .set("os", os).set("url", url).set("version_no", versionNo).set("status", status)
-                    .set("is_force", isForce).set("create_time", new Date()).save();
+                    .set("is_force", isForce).set("create_time", new Date())
+                    .set("wx_app_id", wxAppId).set("wx_app_secret", wxAppSecret).save();
         }
         return InvokeResult.success();
     }
@@ -102,4 +105,9 @@ public class AppVersion extends BaseAppVersion<AppVersion> {
         }
         return null;
     }
+
+    public AppVersion findwxLastAppVersion() {
+        return AppVersion.dao.findFirst("select * from app_version where os='Weixin' order by nature_no desc limit 1");
+    }
+
 }
