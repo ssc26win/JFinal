@@ -12,6 +12,7 @@ import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.FileUtils;
 import com.shangsc.platform.core.util.IWebUtils;
+import com.shangsc.platform.core.util.RandomUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Image;
 import com.shangsc.platform.model.LawRecord;
@@ -86,10 +87,11 @@ public class LawRecordController extends BaseController {
         Long id = this.getParaToLong("id");
         String title = this.getPara("title");
         String content = this.getPara("content");
+        String memo = this.getPara("memo");
         String imageIds = this.getPara("imageIds");
         BigDecimal longitude = StringUtils.isEmpty(getPara("longitude")) ? null : CodeNumUtil.getBigDecimal(getPara("longitude"), 6);
         BigDecimal latitude = StringUtils.isEmpty(getPara("latitude")) ? null : CodeNumUtil.getBigDecimal(getPara("latitude"), 6);
-        InvokeResult result = LawRecord.dao.saveWx(id, title, content, null, userId, longitude, latitude, sysUser.getInnerCode(), userName);
+        InvokeResult result = LawRecord.dao.saveWx(id, title, content, null, userId, longitude, latitude, sysUser.getInnerCode(), userName, memo);
         Long relaId = Long.parseLong(result.getData().toString());
         if (StringUtils.isEmpty(imageIds)) {
             Image.dao.updateBatch(imageIds, relaId, "t_law_record");
@@ -108,7 +110,7 @@ public class LawRecordController extends BaseController {
         }
         String memo = this.getPara("memo");
         List<UploadFile> flist = this.getFiles("/temp", 1024 * 1024 * 100);
-        //String targetName = RandomUtils.getRandomDigit(10);
+        String targetName = RandomUtils.getRandomDigit(10);
         Map<String, Object> data = Maps.newHashMap();
         if (flist.size() > 0) {
             UploadFile uf = flist.get(0);
@@ -125,11 +127,10 @@ public class LawRecordController extends BaseController {
                 e.printStackTrace();
             }
             String originFileName = uf.getFileName();
-            //String endStr = originFileName.substring(originFileName.lastIndexOf("."), originFileName.length());
-            //String finalFileName = targetName + endStr;
+            String endStr = originFileName.substring(originFileName.lastIndexOf("."), originFileName.length());
+            String finalFileName = targetName + endStr;
             String status_url = PropKit.get("static_url");
-            //String fileUrl = "common/img/" + System.currentTimeMillis() + "/" + finalFileName;
-            String fileUrl = "common/img/" + System.currentTimeMillis() + "/" + originFileName;
+            String fileUrl = "common/img/" + System.currentTimeMillis() + "/" + finalFileName;
             String newFile = PropKit.get("uploadImgsPath") + fileUrl;
             FileUtils.mkdir(newFile, false);
             FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);

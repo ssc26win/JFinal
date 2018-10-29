@@ -9,11 +9,13 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.upload.UploadFile;
 import com.shangsc.platform.core.util.FileUtils;
 import com.shangsc.platform.core.util.IWebUtils;
+import com.shangsc.platform.core.util.RandomUtils;
 import com.shangsc.platform.core.util.VerifyCodeUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Image;
 import com.shangsc.platform.model.SysUser;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
@@ -86,6 +88,29 @@ public class ImageController extends Controller {
             this.setAttr("initialPreview", "notConfig");
             this.setAttr("initialPreviewConfig", "notConfig");
         }
+        Long maxFileCount = 0L;
+        if (StringUtils.isNotEmpty(this.getPara("relaTable"))) {
+            if ("t_ad".equals(this.getPara("relaTable"))) {
+                Image first = Image.dao.findFirst("select count(1) as ImageCount from t_image where rela_type='t_ad' and rela_id=?", relaId);
+                maxFileCount = 1L;
+                if (first != null) {
+                    Long imageCount = first.get("ImageCount");
+                    if (imageCount > 0L) {
+                        maxFileCount = 0L;
+                    }
+                }
+            } else if ("t_law_record".equals(this.getPara("relaTable"))) {
+                Image first = Image.dao.findFirst("select count(1) as ImageCount from t_image where rela_type='t_law_record' and rela_id=?", relaId);
+                maxFileCount = 3L;
+                if (first != null) {
+                    Long imageCount = first.get("ImageCount");
+                    if (imageCount > 0L) {
+                        maxFileCount = maxFileCount >= imageCount ? (maxFileCount - imageCount) : 0L;
+                    }
+                }
+            }
+        }
+        this.setAttr("maxFileCount", this.getParaToInt("maxFileCount"));
         this.setAttr("relaId", relaId);
         render("add_images.jsp");
     }
@@ -100,10 +125,13 @@ public class ImageController extends Controller {
         }
         String memo = this.getPara("memo");
         List<UploadFile> flist = this.getFiles("/temp", 1024 * 1024 * 100);
-        //String targetName = RandomUtils.getRandomDigit(10);
+        String targetName = RandomUtils.getRandomDigit(10);
         Map<String, Object> data = Maps.newHashMap();
         if (flist.size() > 0) {
             UploadFile uf = flist.get(0);
+            String originFileName = uf.getFileName();
+            String endStr = originFileName.substring(originFileName.lastIndexOf("."), originFileName.length());
+            String finalFileName = targetName + endStr;
             File picture = uf.getFile();
             Integer size = 0;
             Integer width = 0;
@@ -116,12 +144,9 @@ public class ImageController extends Controller {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            String originFileName = uf.getFileName();
-            //String endStr = originFileName.substring(originFileName.lastIndexOf("."), originFileName.length());
-            //String finalFileName = targetName + endStr;
             String status_url = PropKit.get("static_url");
-            //String fileUrl = "common/img/" + System.currentTimeMillis() + "/" + finalFileName;
-            String fileUrl = "common/img/" + System.currentTimeMillis() + "/" + originFileName;
+            String fileUrl = "common/img/" + System.currentTimeMillis() + "/" + finalFileName;
+            //String fileUrl = "common/img/" + System.currentTimeMillis() + "/" + originFileName;
             String newFile = PropKit.get("uploadImgsPath") + fileUrl;
             FileUtils.mkdir(newFile, false);
             FileUtils.copy(uf.getFile(), new File(newFile), BUFFER_SIZE);

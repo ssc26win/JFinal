@@ -82,7 +82,7 @@
 
 <script type="text/javascript">
     $(function () {
-                var uploadUrl = '${context_path}/image/uploadData?relaTable=' + $("#relaTable").val();
+                var uploadUrl = '${context_path}/image/uploadData?relaTable=' + $("#relaTable").val() + '&maxFileCount=' + '${maxFileCount}';
                 if ($("#relaId").val() != "") {
                     uploadUrl = uploadUrl + "&relaId=" + $("#relaId").val();
                 }
@@ -94,9 +94,10 @@
                         uploadUrl: uploadUrl,
                         uploadAsync: false,
                         minFileCount: 0,
-                        maxFileCount: 3,
+                        maxFileCount: ${maxFileCount},
                         overwriteInitial: false,
                         showRemove: false,
+                        msgFilesTooMany: "选择上传的文件数量 超过允许的最大数值！",
                         browseClass: 'btn btn-primary btn-lg',
                         uploadClass: 'btn btn-info btn-lg',
                         initialPreview: JSON.parse('${initialPreview}'),
@@ -167,6 +168,7 @@
                         uploadClass: 'btn btn-info btn-lg',
                         showRemove:false,
                         browseOnZoneClick: true,
+                        msgFilesTooMany: "选择上传的文件数量 超过允许的最大数值！",
                         ajaxSettings: {
                             contentType: false
                         }

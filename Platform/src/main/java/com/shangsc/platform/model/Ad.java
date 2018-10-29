@@ -20,19 +20,19 @@ public class Ad extends BaseAd<Ad> {
         if (null != id && id > 0L) {
             Ad ad = this.findById(id);
             if (ad == null) {
-                return InvokeResult.failure("更新广告失败, 该广告不存在");
+                return InvokeResult.failure("更新公告失败, 该公告不存在");
             }
             ad = setProp(ad, title, content, imgUrl, status, userName);
-            if (YesOrNo.isYes(String.valueOf(status))) {
-                offPublishOther();
-            }
+            //if (YesOrNo.isYes(String.valueOf(status))) {
+            //    offPublishOther();
+            //}
             ad.update();
         } else {
             Ad ad = new Ad();
             ad = setProp(ad, title, content, imgUrl, status, userName);
-            if (YesOrNo.isYes(String.valueOf(status))) {
-                offPublishOther();
-            }
+            //if (YesOrNo.isYes(String.valueOf(status))) {
+            //    offPublishOther();
+            //}
             ad.save();
         }
         return InvokeResult.success();
@@ -60,13 +60,23 @@ public class Ad extends BaseAd<Ad> {
         return InvokeResult.success();
     }
 
-    public InvokeResult publish(Long id) {
+    public InvokeResult publish(Long id, Integer isCancel) {
+        if (isCancel == 1) {
+            Ad first = this.findFirst("select count(1) as TotalCount from t_ad where status=1");
+            if (first != null) {
+                Long totalCount = first.get("TotalCount");
+                if (totalCount == 3) {
+                    return InvokeResult.failure("发布公告失败, 发布公告数已达上限3个！");
+                }
+            }
+        }
         Ad ad = this.findById(id);
         if (ad == null) {
-            return InvokeResult.failure("更新广告失败, 该广告不存在");
+            return InvokeResult.failure("更新公告失败, 该公告不存在");
         }
-        ad.setStatus(1);
-        offPublishOther();
+
+        ad.setStatus(isCancel);
+        //offPublishOther();
         ad.update();
         return InvokeResult.success();
     }

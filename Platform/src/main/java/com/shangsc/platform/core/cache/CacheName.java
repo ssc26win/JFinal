@@ -32,4 +32,9 @@ public final class CacheName {
 	 * 用户菜单缓存
 	 */
 	public static final String userMenuCache="userMenuCache";
+
+	/**
+	 * 微信用户菜单缓存
+	 */
+	public static final String wxUserMenuCache="wxUserMenuCache";
 }

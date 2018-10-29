@@ -3,6 +3,7 @@ package com.shangsc.front.wxapp.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
 import com.jfinal.kit.PropKit;
+import com.jfinal.template.ext.directive.Str;
 import com.shangsc.front.util.HttpUtils;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
@@ -13,9 +14,13 @@ import com.shangsc.platform.core.util.MyDigestUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.*;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author ssc
@@ -31,7 +36,16 @@ public class LoginController extends BaseController {
         SysUser byWxAccount = findByWxAccount();
         InvokeResult result = InvokeResult.success(Boolean.FALSE, "未绑定微信账号");
         if (byWxAccount != null && byWxAccount.getStatus() == 1) {
-            result = InvokeResult.success(Boolean.TRUE, "已绑定微信账号");
+            List<SysRes> wxResList = SysRes.me.findWxResList(byWxAccount.getId());
+            if (CollectionUtils.isNotEmpty(wxResList)) {
+                Map<String, String> map = new HashMap<>();
+                for (SysRes sysRes : wxResList) {
+                    map.put(sysRes.getSeq().toString(), sysRes.getName());
+                }
+                result = InvokeResult.success(map, "已绑定微信账号");
+            } else {
+                result = InvokeResult.success(Boolean.FALSE, "未获取绑定微信账号授权资源");
+            }
         }
         if (byWxAccount != null && byWxAccount.getStatus() == 0) {
             result = InvokeResult.success(Boolean.FALSE, "该账号已停用");

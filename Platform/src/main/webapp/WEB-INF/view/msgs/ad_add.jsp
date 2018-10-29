@@ -81,7 +81,7 @@
                                                         </div>
                                                     </div>
                                                 </div>--%>
-                                                <div class="form-group">
+                                               <%-- <div class="form-group">
                                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="status">是否发布:</label>
 
                                                     <div class="col-xs-12 col-sm-9">
@@ -92,7 +92,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div>--%>
                                                 <div class="clearfix form-actions" align="center">
                                                     <div class="col-md-offset-3 col-md-9">
                                                         <button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">
@@ -202,7 +202,7 @@
                     title:$("#title").val(),
                     content: $("#content").val(),
                     //imgUrl:$("#imgUrl").val(),
-                    status:$("#status").val()
+                    //status:$("#status").val()
                 };
                 $btn.addClass("disabled");
                 $.post('/basic/ad/save', submitData,function(data) {

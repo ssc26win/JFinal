@@ -62,7 +62,9 @@
               <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
               <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
               <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
-              <jc:button className="btn btn-success" id="btn-publishData" textName="发布"/>
+              <jc:button className="btn btn-success" id="btn-addImg" textName="公告图片"/>
+              <jc:button className="btn btn-warning" id="btn-publishData" textName="发布"/>
+              <jc:button className="btn btn-danger" id="btn-cancelpublish" textName="取消发布"/>
             </div>
           </div>
           <!-- PAGE CONTENT BEGINS -->
@@ -156,7 +158,10 @@
       deleteData();
     });
     $("#btn-publishData").click(function(){
-      publishData();
+      publishData(0);
+    });
+    $("#btn-cancelPublish").click(function(){
+      publishData(1);
     });
     $("#btn-edit").click(function(){//添加页面
       var rid = getOneSelectedRows();
@@ -178,6 +183,33 @@
           fix: false, //不固定
           maxmin: true,
           content: '${context_path}/basic/ad/add?id='+rid
+        });
+      }
+    });
+    $("#btn-addImg").click(function () {
+      var rid = getOneSelectedRows();
+      if (rid == -1) {
+        layer.msg("请选择一个记录", {
+          icon: 2,
+          time: 1000 //2秒关闭（如果不配置，默认是3秒）
+        });
+      } else if (rid == -2) {
+        layer.msg("只能选择一个记录", {
+          icon: 2,
+          time: 1000 //2秒关闭（如果不配置，默认是3秒）
+        });
+      } else {
+        var url = '${context_path}/image/uploadImgs?relaTable=t_ad&maxFileCount=1';
+        if (rid != "") {
+          url = url + "&relaId=" + rid;
+        }
+        var pIndex = parent.layer.open({
+          title: '处理图片',
+          type: 2,
+          area: ['980px', '780px'],
+          fix: false, //不固定
+          maxmin: true,
+          content: url
         });
       }
     });
@@ -257,7 +289,7 @@
     });
   }
 
-  function publishData(){
+  function publishData(isCancel){
     var grid = $("#grid-table");
     var selectedIDs = grid.getGridParam("selarrrow");
     if(selectedIDs.length != 1) {
@@ -268,7 +300,8 @@
       return;
     }
     var submitData = {
-      "id" : selectedIDs[0]
+      "id" : selectedIDs[0],
+      "isCancel":1
     };
     layer.confirm("确认发布记录？",function(){
       $.post("${context_path}/basic/ad/publish", submitData,function(data) {

@@ -380,4 +380,37 @@ public class SysRes extends BaseSysRes<SysRes> {
         }
     }
 
+    /********************************** WxApp use ***************************************/
+
+    /**
+     * @param uid  用户ID
+     * @param type 菜单1|功能2
+     * @return
+     * @author ssc
+     */
+    public List<SysRes> findWxResList(Integer uid) {
+        List<SysRes> resList = CacheKit.get(CacheName.wxUserMenuCache, "findWxResList_" + uid);
+        if (resList == null || resList.size() == 0) {
+            List<SysRole> sysRoleIds = SysRole.me.getSysRoleIdList(uid);
+            if (sysRoleIds.size() == 0) {
+                return null;
+            }
+            StringBuffer roleIds = new StringBuffer();
+            boolean isAdmin = false;
+            for (SysRole sysRole : sysRoleIds) {
+                if (sysRole.getId().equals(1)) {
+                    isAdmin = true;
+                }
+                roleIds.append(sysRole.getInt("id")).append(",");
+            }
+            roleIds.deleteCharAt(roleIds.length() - 1);
+            if (!isAdmin) {
+                resList = this.find("select * from sys_res where enabled=1 and type=2 and des like '%Wx_%' and id in (select res_id from sys_role_res where role_id in (" + roleIds.toString() + ")) and enabled=1 order by seq asc");
+            } else {
+                resList = this.find("select * from sys_res where enabled=1 and type=2 and des like '%Wx_%' order by seq asc");
+            }
+            CacheKit.put(CacheName.wxUserMenuCache, "findWxResList_" + uid, resList);
+        }
+        return resList;
+    }
 }

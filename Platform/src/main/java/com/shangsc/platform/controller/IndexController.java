@@ -34,12 +34,10 @@ import com.shangsc.platform.model.Ad;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.SysLoginRecord;
 import com.shangsc.platform.model.SysUser;
+import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 首页、登陆、登出
@@ -58,11 +56,15 @@ public class IndexController extends Controller {
 
     public void home() {
         Ad ad = Ad.dao.findFirst("select * from t_ad where status=1");
-
-        this.setAttr("title", ad.getTitle());
-        this.setAttr("content", ad.getContent());
-        this.setAttr("createTime", ad.getCreateTime());
-
+        if (ad != null) {
+            this.setAttr("title", ad.getTitle());
+            this.setAttr("content", ad.getContent());
+            this.setAttr("createTime", ad.getCreateTime());
+        } else {
+            this.setAttr("title", "通州区节水管理平台");
+            this.setAttr("content", "通州区节水管理平台为您服务");
+            this.setAttr("createTime", ToolDateTime.format(new Date(), ToolDateTime.pattern_ymd_hms));
+        }
         render("home.jsp");
     }
 

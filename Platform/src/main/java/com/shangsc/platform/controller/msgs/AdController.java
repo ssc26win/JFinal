@@ -87,7 +87,8 @@ public class AdController extends BaseController {
     @RequiresPermissions(value = {"/basic/ad"})
     public void publish() {
         Long id = this.getParaToLong("id");
-        InvokeResult result = Ad.dao.publish(id);
+        Integer isCancel = this.getParaToInt("isCancel");
+        InvokeResult result = Ad.dao.publish(id, isCancel);
         this.renderJson(result);
     }
 

@@ -44,7 +44,7 @@
 											</div>
 										</div>
 										</c:if>
-										<div class="form-group">
+										<%--<div class="form-group">
 											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="companyName">单位名称</label>
 											<div class="col-xs-12 col-sm-9 search">
 												<div class="clearfix">
@@ -53,7 +53,7 @@
 												<div id="auto_div" style="max-height: 200px; overflow-y: auto;"></div>
 												<input type="hidden" id="innerCode" name="innerCode" value="${item.innerCode}">
 											</div>
-										</div>
+										</div>--%>
 										<div class="form-group">
 											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="des">描述</label>
 											<div class="col-xs-12 col-sm-9">
@@ -79,7 +79,7 @@
 											</div>
 										</div>
 										<div class="form-group">
-											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="wxAccount">微信账号</label>
+											<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="wxAccount">微信账号秘钥</label>
 											<div class="col-xs-12 col-sm-9">
 												<div class="clearfix">
 													<input type="text" id="wxAccount" name="wxAccount" value="${item.wxAccount}" class="col-xs-12 col-sm-8">
@@ -105,7 +105,6 @@
 			</div><!-- /.main-container-inner -->
 		</div><!-- /.main-container -->
 		<jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
-		<jsp:include page="/WEB-INF/view/common/search_cpyname.jsp" flush="true" />
 		<script type="text/javascript">
 		
 			jQuery(function($) {

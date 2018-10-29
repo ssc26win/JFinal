@@ -201,7 +201,7 @@
                     time: 1000 //2秒关闭（如果不配置，默认是3秒）
                 });
             } else {
-                var url = '${context_path}/image/uploadImgs?relaTable=t_law_record';
+                var url = '${context_path}/image/uploadImgs?relaTable=t_law_record&maxFileCount=3';
                 if (rid != "") {
                     url = url + "&relaId=" + rid;
                 }
