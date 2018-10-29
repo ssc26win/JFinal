@@ -6,6 +6,7 @@ import com.shangsc.platform.code.ReadOrNo;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
+import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.Message;
 import com.shangsc.platform.model.MsgReceiver;
 import com.shangsc.platform.model.SysUser;
@@ -65,6 +66,19 @@ public class MsgController extends BaseController {
             }
         }
         this.renderJson(pageInfo);
+    }
+
+    public void setRead() {
+        String ids = this.getPara("ids");
+        SysUser sysUser = findByWxAccount();
+        InvokeResult resp = MsgReceiver.dao.setReading(ids, sysUser.getId());
+        this.renderJson(resp);
+    }
+
+    public void delete() {
+        String ids = this.getPara("ids");
+        InvokeResult resp = MsgReceiver.dao.deleteData(ids);
+        this.renderJson(resp);
     }
 
 }

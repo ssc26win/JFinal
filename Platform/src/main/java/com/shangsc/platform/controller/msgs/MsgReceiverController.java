@@ -79,8 +79,9 @@ public class MsgReceiverController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/msgreceiver"})
     public void setReading() {
+        SysUser user = IWebUtils.getCurrentSysUser(getRequest());
         String ids = this.getPara("ids");
-        InvokeResult resp = MsgReceiver.dao.setReading(ids);
+        InvokeResult resp = MsgReceiver.dao.setReading(ids, user.getId());
         this.renderJson(resp);
     }
 }

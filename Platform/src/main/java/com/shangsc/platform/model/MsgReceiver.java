@@ -196,4 +196,13 @@ public class MsgReceiver extends BaseMsgReceiver<MsgReceiver> {
         return messages;
     }
 
+
+    public InvokeResult setReading(String idStrs, Integer uId) {
+        if (StringUtils.isNotEmpty(idStrs)) {
+            int update = Db.update("update t_msg_receiver set status=1 where receiver_id=" + uId + " and status=0 and id in (?)", idStrs);
+        } else {
+            int update = Db.update("update t_msg_receiver set status=1 where receiver_id=" + uId + " and status=0 ");
+        }
+        return InvokeResult.success();
+    }
 }

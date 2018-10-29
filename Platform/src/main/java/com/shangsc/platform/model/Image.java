@@ -93,7 +93,11 @@ public class Image extends BaseImage<Image> {
     }
 
     public void updateBatch(String ids, Long relaId, String relaTable) {
-        Db.update(" update t_image set rela_id=" + relaId + ",rela_table=" + relaTable + " where id in (" + ids + ");");
+        int update = Db.update(" update t_image set rela_id=" + 0 + ",rela_table=" + relaTable +
+                " where rela_id=" + relaId + " and id not in (" + ids + ");");
+        if (update > 0) {
+            Db.update(" update t_image set rela_id=" + relaId + ",rela_table=" + relaTable + " where id in (" + ids + ");");
+        }
     }
 
 }

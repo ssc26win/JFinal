@@ -2,14 +2,10 @@ package com.shangsc.front.wxapp.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Maps;
 import com.jfinal.aop.Clear;
-import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import com.jfinal.upload.UploadFile;
 import com.shangsc.front.code.DateType;
-import com.shangsc.front.validate.bean.CommonDes;
 import com.shangsc.platform.code.ActualState;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
@@ -17,17 +13,11 @@ import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.DateUtils;
-import com.shangsc.platform.core.util.FileUtils;
-import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,59 +35,22 @@ import java.util.Map;
 public class ActualController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
-    public void findLatestData() {
-        SysUser byWxAccount = findByWxAccount();
-        String companyName = getPara("companyName");
-        Company first = Company.me.findFirst("select * from t_company where name=?", companyName);
-        if (StringUtils.isNotEmpty(companyName) && first == null) {
-            CommonDes commonDes = new CommonDes();
-            commonDes.setCode(-1);
-            commonDes.setMessage("未找到单位名称！");
-            renderJson(commonDes);
-        }
-        String innerCode = "";
-        if (first != null) {
-            innerCode = first.getInnerCode();
-        }
-        if (StringUtils.isEmpty(innerCode)) {
-            innerCode = byWxAccount.getInnerCode();
-        }
-        String meterAddress = getPara("meterAddress");
-
-        StringBuffer sqlExceptSelect = new StringBuffer("select tad.*, tc.name as companyName,tc.real_code from " +
-                " (select * from t_actual_data order by id desc )" +
-                " tad left join t_company tc on tc.inner_code=tad.inner_code where 1=1 ");
-
-        if (StringUtils.isNotEmpty(innerCode)) {
-            sqlExceptSelect.append(" and tad.inner_code='" + innerCode + "'");
-        }
-        if (StringUtils.isNotEmpty(meterAddress)) {
-            sqlExceptSelect.append(" and tad.meter_address='" + meterAddress + "'");
-        }
-
-        sqlExceptSelect.append(" group by tad.inner_code,tad.meter_address");
-
-        List<ActualData> actualDatas = ActualData.me.find(sqlExceptSelect.toString());
-
-        //String s = JsonUtil.obj2Json(actualDatas);
-
-        JSONArray array = new JSONArray();
-        JSONObject result = new JSONObject();
-
-        for (ActualData data : actualDatas) {
-            if (StringUtils.isEmpty(companyName)) {
-                companyName = data.get("companyName");
+    public void findById() {
+        Long id = this.getParaToLong("id");
+        ActualData byId = ActualData.me.findById(id);
+        if (byId != null) {
+            String meterAddress = byId.getMeterAddress();
+            if (StringUtils.isNotEmpty(meterAddress)) {
+                WaterMeter byMeterAddress = WaterMeter.me.findByMeterAddress(meterAddress);
+                byId.put("waterMeter", byMeterAddress);
             }
-            JSONObject object = new JSONObject();
-            object.put("meter_address", data.get("meter_address"));
-            object.put("net_water", data.get("net_water"));
-            object.put("sum_water", data.get("sum_water"));
-            object.put("write_time", data.get("write_time"));
-            array.add(object);
+            String innerCode = byId.getInnerCode();
+            if (StringUtils.isNotEmpty(innerCode)) {
+                Company byInnerCode = Company.me.findByInnerCode(innerCode);
+                byId.put("company", byInnerCode);
+            }
         }
-        result.put("companyName", companyName);
-        result.put("waterUseInfo", array);
-        renderJson(result);
+        renderJson(byId);
     }
 
     @Clear(AuthorityInterceptor.class)
