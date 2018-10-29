@@ -39,14 +39,51 @@ public class ActualController extends BaseController {
         Long id = this.getParaToLong("id");
         ActualData byId = ActualData.me.findById(id);
         if (byId != null) {
+            Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
+            Map<String, Object> mapChargeType = DictData.dao.getDictMap(0, DictCode.ChargeType);
+            Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
+            Map<String, Object> termType = DictData.dao.getDictMap(0, DictCode.Term);
             String meterAddress = byId.getMeterAddress();
             if (StringUtils.isNotEmpty(meterAddress)) {
-                WaterMeter byMeterAddress = WaterMeter.me.findByMeterAddress(meterAddress);
-                byId.put("waterMeter", byMeterAddress);
+                WaterMeter co = WaterMeter.me.findByMeterAddress(meterAddress);
+                if (co.getWatersType() != null && mapWatersType.size() > 0) {
+                    co.put("watersTypeName", String.valueOf(mapWatersType.get(String.valueOf(co.getWatersType()))));
+                }
+                if (co.getChargeType() != null && mapChargeType.size() > 0) {
+                    co.put("chargeTypeName", String.valueOf(mapChargeType.get(String.valueOf(co.getChargeType()))));
+                }
+                if (co.getMeterAttr() != null && meterAttrType.size() > 0) {
+                    co.put("meterAttrName", String.valueOf(meterAttrType.get(String.valueOf(co.getMeterAttr()))));
+                }
+                if (co.getTerm() != null && termType.size() > 0) {
+                    co.put("termName", String.valueOf(termType.get(String.valueOf(co.getTerm()))));
+                }
+                byId.put("waterMeter", co);
             }
             String innerCode = byId.getInnerCode();
             if (StringUtils.isNotEmpty(innerCode)) {
                 Company byInnerCode = Company.me.findByInnerCode(innerCode);
+                if (byInnerCode != null) {
+                    Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
+                    Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictCode.UnitType);
+                    Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
+                    Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
+                    if (byInnerCode.getCustomerType() != null && mapUserType.size() > 0) {
+                        byInnerCode.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(byInnerCode.getCustomerType()))));
+                    }
+                    if (byInnerCode.getWaterUseType() != null && mapWaterUseType.size() > 0) {
+                        byInnerCode.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(byInnerCode.getWaterUseType()))));
+                    }
+                    if (byInnerCode.getUnitType() != null && mapUintType.size() > 0) {
+                        byInnerCode.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(byInnerCode.getUnitType()))));
+                    }
+                    if (byInnerCode.getStreet() != null && mapStreetType.size() > 0) {
+                        byInnerCode.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(byInnerCode.getStreet()))));
+                    }
+                    if (byInnerCode.getTerm() != null && termType.size() > 0) {
+                        byInnerCode.put("termName", String.valueOf(termType.get(String.valueOf(byInnerCode.getTerm()))));
+                    }
+                }
                 byId.put("company", byInnerCode);
             }
         }

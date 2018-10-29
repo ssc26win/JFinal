@@ -26,25 +26,27 @@ public class ComanyController extends BaseController {
     public void findById() {
         Long cId = this.getParaToLong("id");
         Company byId = Company.me.findById(cId);
-        Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
-        Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
-        Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictCode.UnitType);
-        Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
-        Map<String, Object> termType = DictData.dao.getDictMap(0, DictCode.Term);
-        if (byId.getCustomerType() != null && mapUserType.size() > 0) {
-            byId.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(byId.getCustomerType()))));
-        }
-        if (byId.getWaterUseType() != null && mapWaterUseType.size() > 0) {
-            byId.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(byId.getWaterUseType()))));
-        }
-        if (byId.getUnitType() != null && mapUintType.size() > 0) {
-            byId.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(byId.getUnitType()))));
-        }
-        if (byId.getStreet() != null && mapStreetType.size() > 0) {
-            byId.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(byId.getStreet()))));
-        }
-        if (byId.getTerm() != null && termType.size() > 0) {
-            byId.put("termName", String.valueOf(termType.get(String.valueOf(byId.getTerm()))));
+        if (byId != null) {
+            Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
+            Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
+            Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictCode.UnitType);
+            Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
+            Map<String, Object> termType = DictData.dao.getDictMap(0, DictCode.Term);
+            if (byId.getCustomerType() != null && mapUserType.size() > 0) {
+                byId.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(byId.getCustomerType()))));
+            }
+            if (byId.getWaterUseType() != null && mapWaterUseType.size() > 0) {
+                byId.put("waterUseTypeName", String.valueOf(mapWaterUseType.get(String.valueOf(byId.getWaterUseType()))));
+            }
+            if (byId.getUnitType() != null && mapUintType.size() > 0) {
+                byId.put("unitTypeName", String.valueOf(mapUintType.get(String.valueOf(byId.getUnitType()))));
+            }
+            if (byId.getStreet() != null && mapStreetType.size() > 0) {
+                byId.put("streetName", String.valueOf(mapStreetType.get(String.valueOf(byId.getStreet()))));
+            }
+            if (byId.getTerm() != null && termType.size() > 0) {
+                byId.put("termName", String.valueOf(termType.get(String.valueOf(byId.getTerm()))));
+            }
         }
         this.renderJson(byId);
     }
