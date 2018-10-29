@@ -7,12 +7,8 @@ import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
-import com.shangsc.platform.core.util.JqGridModelUtils;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
-import com.shangsc.platform.model.SysUser;
-import com.shangsc.platform.model.WaterMeter;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -90,12 +86,5 @@ public class ComanyController extends BaseController {
                 companies.set(i, co);
             }
         }
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    public void findMeterList() {
-        String keyword = this.getPara("name");
-        Page<WaterMeter> pageInfo = WaterMeter.me.findWxList(getPage(), this.getRows(), keyword, getWxInnerCodeSQLStr());
-        this.renderJson(pageInfo);
     }
 }

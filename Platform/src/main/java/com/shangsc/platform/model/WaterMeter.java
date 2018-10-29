@@ -438,7 +438,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         return result;
     }
 
-    public Page<WaterMeter> findWxList(int page, int rows, String keywords, String innerCodeSQLStr) {
+    public Page<WaterMeter> findWxList(int page, int rows, String keywords, String innerCodeSQLStr, String innerCode) {
         String select = "select twm.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,tc.gb_industry,tc.main_industry,tc.water_use_type";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_water_meter twm inner join " +
                 " t_company tc on twm.inner_code=tc.inner_code ");
@@ -449,6 +449,9 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         }
         if (StringUtils.isNotEmpty(innerCodeSQLStr)) {
             sqlExceptSelect.append(" and twm.inner_code in (" + innerCodeSQLStr + ")");
+        }
+        if (StringUtils.isNotEmpty(innerCode)) {
+            sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
         }
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }

@@ -1,6 +1,5 @@
 package com.shangsc.front.wxapp.controller;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
 import com.jfinal.kit.PropKit;
@@ -12,10 +11,7 @@ import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.MD5Utils;
 import com.shangsc.platform.core.util.MyDigestUtils;
 import com.shangsc.platform.core.view.InvokeResult;
-import com.shangsc.platform.model.AppVersion;
-import com.shangsc.platform.model.Company;
-import com.shangsc.platform.model.SysLoginRecord;
-import com.shangsc.platform.model.SysUser;
+import com.shangsc.platform.model.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 
@@ -114,9 +110,17 @@ public class LoginController extends BaseController {
     public void findMemberInfo() {
         SysUser sysUser = findByWxAccount();
         if (sysUser != null) {
+            SysUserRole sysUserRole = SysUserRole.dao.findFirst("select * from sys_user_role where user_id=" + sysUser.getId());
+            if (sysUserRole != null) {
+                Integer roleId = sysUserRole.getRoleId();
+                SysRole byId = SysRole.me.findById(roleId);
+                if (byId != null) {
+                    sysUser.put("roleInfo", byId);
+                }
+            }
             Company byInnerCode = Company.me.findByInnerCode(sysUser.getInnerCode());
             if (byInnerCode != null) {
-                sysUser.put("companyName", byInnerCode.getName());
+                sysUser.put("company", byInnerCode);
             }
         }
         this.renderJson(sysUser);
