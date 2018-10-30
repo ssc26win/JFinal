@@ -47,6 +47,9 @@ public class MsgController extends BaseController {
     public void findById() {
         Long id = this.getParaToLong("id");
         Message byId = Message.dao.findById(id);
+        if (byId != null && byId.getStatus() != null) {
+            byId.put("statusName", ReadOrNo.getMap().get(String.valueOf(byId.getStatus())));
+        }
         this.renderJson(byId);
     }
 

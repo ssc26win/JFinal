@@ -171,7 +171,7 @@ public class MsgReceiver extends BaseMsgReceiver<MsgReceiver> {
      * @return
      */
     public Page<Message> getWxPageList(int pageNo, int pageSize, Integer uId) {
-        String select = "select tmr.id,tm.title,tm.content,tmr.status,tmr.create_time ";
+        String select = "select tmr.id,tm.id as msgId,tm.title,tm.content,tmr.status,tmr.create_time ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_msg_receiver tmr ");
         sqlExceptSelect.append(" inner join t_message tm on tm.id=tmr.msg_id where tmr.receiver_id=" + uId);
         sqlExceptSelect.append(" order by tmr.status asc, tmr.create_time desc");
