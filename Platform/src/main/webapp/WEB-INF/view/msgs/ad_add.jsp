@@ -52,7 +52,7 @@
 
                                                     <div class="col-xs-12 col-sm-9">
                                                         <div class="clearfix">
-                                                            <input type="text" name="title" id="title" class="col-xs-12 col-sm-6" value="${item.title}"/>
+                                                            <input type="text" name="title" id="title" class="col-xs-12 col-sm-9" value="${item.title}"/>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -60,7 +60,8 @@
                                                     <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="content">内容</label>
                                                     <div class="col-xs-12 col-sm-9">
                                                         <div class="clearfix">
-                                                            <textarea id="content" name="content" class="col-xs-12 col-sm-9" rows="4" cols="16">${item.content}</textarea>
+                                                            <textarea id="content" name="content" class="col-xs-12 col-sm-9" rows="22" cols="20">${item.content}</textarea>
+                                                            <p><span id="text-count">1000</span>/(字数限制1000)</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -145,6 +146,16 @@
                 $('#f_pics').append("<div class=\"pics_con\">" + data + "</div>");
             }
         });*/
+        $("#content").on("input propertychange", function () {
+            var $this = $(this),
+                    _val = $this.val(),
+                    count = "";
+            if (_val.length > 1000) {
+                $this.val(_val.substring(0, 1000));
+            }
+            count = 1000 - $this.val().length;
+            $("#text-count").text(count);
+        });
 
         var $validation = true;
 

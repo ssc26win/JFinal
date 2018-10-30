@@ -230,7 +230,7 @@ public class ActualMeterReadController extends BaseController {
             Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterMonthList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
-        } else if (DateType.YEAR == dateType) {
+        } else if (DateType.DAY == dateType) {
             List<Record> records = ActualDataWx.me.getWxMeterDailyActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
             List<String> day = new ArrayList<String>();
             for (Record record : records) {

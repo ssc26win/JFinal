@@ -360,7 +360,7 @@ public class ActualController extends BaseController {
             Page<ActualData> pageInfo = ActualDataWx.me.findWxMonthList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr);
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
-        } else if (DateType.YEAR == dateType) {
+        } else if (DateType.DAY == dateType) {
             List<Record> records = ActualDataWx.me.getWxDailyActualData(wxInnerCodeSQLStr, startTime, endTime);
             List<String> day = new ArrayList<String>();
             for (Record record : records) {

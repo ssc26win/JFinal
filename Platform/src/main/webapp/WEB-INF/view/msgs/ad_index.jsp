@@ -148,7 +148,7 @@
       parent.layer.open({
         title:'添加广告',
         type: 2,
-        area: ['770px', '500px'],
+        area: ['980px', '780px'],
         fix: false, //不固定
         maxmin: true,
         content: '${context_path}/basic/ad/add'
@@ -179,7 +179,7 @@
         parent.layer.open({
           title:'修改广告信息',
           type: 2,
-          area: ['770px', '500px'],
+          area: ['980px', '780px'],
           fix: false, //不固定
           maxmin: true,
           content: '${context_path}/basic/ad/add?id='+rid
