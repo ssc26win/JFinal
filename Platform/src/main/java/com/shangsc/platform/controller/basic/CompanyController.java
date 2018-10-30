@@ -6,6 +6,7 @@ import com.jfinal.aop.Clear;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
+import com.shangsc.platform.code.CompanyType;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.ExportType;
 import com.shangsc.platform.conf.GlobalConfig;
@@ -215,6 +216,7 @@ public class CompanyController extends BaseController {
 
     private void setVoProp(List<Company> companies, boolean changeAddress) {
         if (CommonUtils.isNotEmpty(companies)) {
+            Map<Integer, String> mapCompanyType = CompanyType.getMap();
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
             Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
             Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictCode.UnitType);
@@ -222,6 +224,9 @@ public class CompanyController extends BaseController {
             Map<String, Object> termType = DictData.dao.getDictMap(0, DictCode.Term);
             for (int i = 0; i < companies.size(); i++) {
                 Company co = companies.get(i);
+                if (co.getCompanyType() != null && mapCompanyType.size() > 0) {
+                    co.put("companyTypeName", String.valueOf(mapCompanyType.get(String.valueOf(co.getCompanyType()))));
+                }
                 if (co.getCustomerType() != null && mapUserType.size() > 0) {
                     co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
                 }

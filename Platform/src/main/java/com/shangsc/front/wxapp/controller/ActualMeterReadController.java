@@ -147,7 +147,7 @@ public class ActualMeterReadController extends BaseController {
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
         String keyword = this.getPara("keyword");
-        Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterDailyList(getPage(), this.getRows(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterDailyList(getPage(), this.getRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
         this.renderJson(pageInfo);
     }
 
@@ -158,7 +158,7 @@ public class ActualMeterReadController extends BaseController {
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
         String keyword = this.getPara("keyword");
-        Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterMonthList(getPage(), this.getRows(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterMonthList(getPage(), this.getRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
         this.renderJson(pageInfo);
     }
 
@@ -169,7 +169,7 @@ public class ActualMeterReadController extends BaseController {
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
         String keyword = this.getPara("keyword");
-        Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterYearList(getPage(), this.getRows(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterYearList(getPage(), this.getRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
         this.renderJson(pageInfo);
     }
 
@@ -212,7 +212,7 @@ public class ActualMeterReadController extends BaseController {
             obj.put("subtitle", subtitle);
             obj.put("seriesName", seriesName);
 
-            Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterYearList(getPage(), this.getWxRows(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterYearList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
         } else if (DateType.MONTH == dateType) {
@@ -227,7 +227,7 @@ public class ActualMeterReadController extends BaseController {
             obj.put("subtitle", subtitle);
             obj.put("seriesName", seriesName);
 
-            Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterMonthList(getPage(), this.getWxRows(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterMonthList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
         } else if (DateType.YEAR == dateType) {
@@ -242,7 +242,7 @@ public class ActualMeterReadController extends BaseController {
             obj.put("subtitle", subtitle);
             obj.put("seriesName", seriesName);
 
-            Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterDailyList(getPage(), this.getWxRows(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterDailyList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
         } else {

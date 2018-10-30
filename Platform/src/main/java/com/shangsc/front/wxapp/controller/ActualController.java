@@ -136,10 +136,17 @@ public class ActualController extends BaseController {
                 exceptionTime = Integer.parseInt(num);
             }
         }
-        pageInfo = ActualDataWx.me.finWxActualData(getPage(), getRows(), keyword, wxInnerCodeSQLStr);
+        if (ActualState.Actual_List().contains(status)) {
+            pageInfo = ActualDataWx.me.getWxActualDataPageByStatus(getPage(), this.getRows(), keyword, this.getOrderbyStr(), status, exceptionTime, wxInnerCodeSQLStr);
+        } else if (ActualState.DISABLE.equals(status)) {
+            pageInfo = ActualDataWx.me.getWxActualDataPageByDisable(getPage(), this.getRows(), keyword, this.getOrderbyStr(), wxInnerCodeSQLStr);
+        } else {
+            pageInfo = ActualDataWx.me.getWxActualDataPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), wxInnerCodeSQLStr);
+        }
         List<ActualData> list = pageInfo.getList();
         setVoProp(list, exceptionTime);
-        this.renderJson(pageInfo);
+        Page<ActualData> pageInfoFinal = new Page<ActualData>(list, pageInfo.getPageNumber(), pageInfo.getPageSize(), pageInfo.getTotalPage(), pageInfo.getTotalRow());
+        this.renderJson(pageInfoFinal);
     }
 
     private void setVoProp(List<ActualData> list, int exceptionTime) {
@@ -179,21 +186,6 @@ public class ActualController extends BaseController {
                 list.set(i, co);
             }
         }
-    }
-
-
-    @Clear(AuthorityInterceptor.class)
-    public void readSearchList() {
-        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
-        String keyword = this.getPara("keyword");
-        Page<ActualData> pageInfo = ActualDataWx.me.findWxReadSearchList(getPage(), getRows(), null, null, keyword, wxInnerCodeSQLStr);
-        this.renderJson(pageInfo);
-    }
-
-    @Clear(AuthorityInterceptor.class)
-    public void readSearchChart() {
-        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
-        String date = this.getPara("date");
     }
 
     @Clear(AuthorityInterceptor.class)
@@ -302,7 +294,7 @@ public class ActualController extends BaseController {
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
         String keyword = this.getPara("keyword");
-        Page<ActualData> pageInfo = ActualDataWx.me.findWxDailyList(getPage(), this.getRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxDailyList(getPage(), this.getRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr);
         this.renderJson(pageInfo);
     }
 
@@ -312,7 +304,7 @@ public class ActualController extends BaseController {
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
         String keyword = this.getPara("keyword");
-        Page<ActualData> pageInfo = ActualDataWx.me.findWxMonthList(getPage(), this.getRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxMonthList(getPage(), this.getRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr);
         this.renderJson(pageInfo);
     }
 
@@ -322,7 +314,7 @@ public class ActualController extends BaseController {
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
         String keyword = this.getPara("keyword");
-        Page<ActualData> pageInfo = ActualDataWx.me.findWxYearList(getPage(), this.getRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
+        Page<ActualData> pageInfo = ActualDataWx.me.findWxYearList(getPage(), this.getRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr);
         this.renderJson(pageInfo);
     }
 
@@ -350,7 +342,7 @@ public class ActualController extends BaseController {
             obj.put("subtitle", subtitle);
             obj.put("seriesName", seriesName);
 
-            Page<ActualData> pageInfo = ActualDataWx.me.findWxYearList(getPage(), this.getWxRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxYearList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr);
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
         } else if (DateType.MONTH == dateType) {
@@ -365,7 +357,7 @@ public class ActualController extends BaseController {
             obj.put("subtitle", subtitle);
             obj.put("seriesName", seriesName);
 
-            Page<ActualData> pageInfo = ActualDataWx.me.findWxMonthList(getPage(), this.getWxRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxMonthList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr);
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
         } else if (DateType.YEAR == dateType) {
@@ -380,7 +372,7 @@ public class ActualController extends BaseController {
             obj.put("subtitle", subtitle);
             obj.put("seriesName", seriesName);
 
-            Page<ActualData> pageInfo = ActualDataWx.me.findWxDailyList(getPage(), this.getWxRows(), startTime, endTime, keyword, wxInnerCodeSQLStr);
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxDailyList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr);
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
         } else {

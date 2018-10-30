@@ -40,7 +40,7 @@ public class CompanyType {
     public static final String COMPANY_STR = "用水单位";
     public static final String SUPPLY_STR = "供水单位";
 
-    public static Map<Integer, String> getYesOrNoMap() {
+    public static Map<Integer, String> getMap() {
         Map<Integer, String> addType = new HashMap<Integer, String>();
         addType.put(COMPANY, COMPANY_STR);
         addType.put(SUPPLY, SUPPLY_STR);

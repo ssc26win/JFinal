@@ -60,14 +60,15 @@
     <!--<tr><td>create_time</td><td>发送时间</td><td></td></tr>-->
 <!--</table>-->
 <div>消息列表接口:
-    <a target="_blank" href="http://www.imeter.online:8081/wxapp/msg/findList?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&page=1&rows=10">
-        http://www.imeter.online:8081/wxapp/msg/findList?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&page=1&rows=10</a>
+    <a target="_blank" href="http://www.imeter.online:8081/wxapp/msg/findList?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&page=1&rows=10&keyword=">
+        http://www.imeter.online:8081/wxapp/msg/findList?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&page=1&rows=10&keyword=</a>
 </div>
 <table>
     <tr><td colspan="3" style="color: #880000">入参</td></tr>
 
     <tr><td>参数名称</td><td>说明</td><td>备注</td></tr>
     <tr><td>wxAccount</td><td>微信账号</td><td>必须</td></tr>
+    <tr><td>keyword</td><td>检索字</td><td>可选</td></tr>
     <tr><td>page</td><td>第几页</td><td>可选</td></tr>
     <tr><td>rows</td><td>每页条数</td><td>可选默认10条</td></tr>
 
@@ -144,18 +145,18 @@
         http://www.imeter.online:8081/wxapp/meter/findMeterList?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&keyword=&innerCode=</a>
 </div>
 <div>水表详情接口:
-    <a target="_blank" href="http://www.imeter.online:8081/wxapp/meter/findById?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&id=">
-        http://www.imeter.online:8081/wxapp/meter/findById?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&id=</a>
+    <a target="_blank" href="http://www.imeter.online:8081/wxapp/meter/findById?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&id=750">
+        http://www.imeter.online:8081/wxapp/meter/findById?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&id=750</a>
 </div>
 
 <div>单位下水表表计地址对应图表接口:
     <a target="_blank" href="http://www.imeter.online:8081/wxapp/actual/actualChart?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&meterAddress=">
         http://www.imeter.online:8081/wxapp/actual/actualChart?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&meterAddress=</a>
 </div>
-
-<div>实时数据列表接口:
-    <a target="_blank" href="http://www.imeter.online:8081/wxapp/actual/findActualList?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&keyword=">
-        http://www.imeter.online:8081/wxapp/actual/findActualList?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&keyword=</a>
+<h2 style="color:red">【通用入参：sidx （字段列属性名称） sord （asc 正序 desc 逆序）】</h2>
+<div>实时数据列表接口(status为状态筛选 0 正常 1 异常 2 停用 3 未启用):
+    <a target="_blank" href="http://www.imeter.online:8081/wxapp/actual/findActualList?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&keyword=&sidx=&sord=&status=">
+        http://www.imeter.online:8081/wxapp/actual/findActualList?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&keyword=&sidx=&sord=&status=</a>
 </div>
 <div>实时数据详情接口:
     <a target="_blank" href="http://www.imeter.online:8081/wxapp/actual/findById?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&id=192621">
@@ -167,8 +168,8 @@
 <!--</div>-->
 <h1 style="color:red">读数查询</h1>
 <div>读数查询-用水量图表及列表接口 (dateType： 1 年 2 月 3 日):
-    <a target="_blank" href="http://www.imeter.online:8081/wxapp/meterread/searchMine?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&meterAddress=201707000000855&dateType=1&startTime=&endTime=">
-        http://www.imeter.online:8081/wxapp/meterread/searchMine?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&meterAddress=201707000000855&dateType=1&startTime=&endTime=</a>
+    <a target="_blank" href="http://www.imeter.online:8081/wxapp/meterread/searchMine?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&meterAddress=201707000000855&dateType=1&keyword=&startTime=&endTime=&sidx=&sord=">
+        http://www.imeter.online:8081/wxapp/meterread/searchMine?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&meterAddress=201707000000855&dateType=1&keyword=&startTime=&endTime=&sidx=&sord=</a>
 </div>
 <h1 style="color:red">读数查询 -start- 暂时废弃</h1>
 <div>读数查询-日用水量图表接口:
@@ -200,8 +201,8 @@
 
 <h1 style="color:red">用量查询</h1>
 <div>用量查询-用水量图表及列表接口(dateType： 1 年 2 月 3 日):
-    <a target="_blank" href="http://www.imeter.online:8081/wxapp/actual/searchMine?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&dateType=1&startTime=&endTime=">
-        http://www.imeter.online:8081/wxapp/actual/searchMine?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&dateType=1&startTime=&endTime=</a>
+    <a target="_blank" href="http://www.imeter.online:8081/wxapp/actual/searchMine?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&dateType=1&keyword=&startTime=&endTime=&sidx=&sord=">
+        http://www.imeter.online:8081/wxapp/actual/searchMine?wxAccount=obV0u5a7RYGvdxgyn-tHluDHFCzk&dateType=1&keyword=&startTime=&endTime=&sidx=&sord=</a>
 </div>
 <h1 style="color:red">用量查询 -start- 暂时废弃</h1>
 <div>用量查询-日用水量图表接口:

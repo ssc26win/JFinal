@@ -2,6 +2,7 @@ package com.shangsc.front.wxapp.controller;
 
 import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
+import com.shangsc.platform.code.CompanyType;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
@@ -27,11 +28,15 @@ public class ComanyController extends BaseController {
         Long cId = this.getParaToLong("id");
         Company byId = Company.me.findById(cId);
         if (byId != null) {
+            Map<Integer, String> mapCompanyType = CompanyType.getMap();
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
             Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
             Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictCode.UnitType);
             Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
             Map<String, Object> termType = DictData.dao.getDictMap(0, DictCode.Term);
+            if (byId.getCompanyType() != null && mapCompanyType.size() > 0) {
+                byId.put("companyTypeName", String.valueOf(mapCompanyType.get(String.valueOf(byId.getCompanyType()))));
+            }
             if (byId.getCustomerType() != null && mapUserType.size() > 0) {
                 byId.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(byId.getCustomerType()))));
             }

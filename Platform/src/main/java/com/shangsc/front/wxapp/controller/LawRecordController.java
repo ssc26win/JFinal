@@ -14,6 +14,7 @@ import com.shangsc.platform.core.util.FileUtils;
 import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.util.RandomUtils;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.Image;
 import com.shangsc.platform.model.LawRecord;
 import com.shangsc.platform.model.SysUser;
@@ -57,7 +58,8 @@ public class LawRecordController extends BaseController {
                 }
             }
         }
-        this.renderJson(pageInfo);
+        Page<LawRecord> pageInfoFinal = new Page<LawRecord>(list, pageInfo.getPageNumber(), pageInfo.getPageSize(), pageInfo.getTotalPage(), pageInfo.getTotalRow());
+        this.renderJson(pageInfoFinal);
     }
 
     @Clear(AuthorityInterceptor.class)
