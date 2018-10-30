@@ -42,7 +42,7 @@ public class Well extends BaseWell<Well> {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
                 sqlExceptSelect.append(" and (tw.name like '%" + keyword + "%' " + " or tc.name like '%" + keyword + "%'"
-                        + " or tw.inner_code='" + keyword + "' or tw.well_num='" + keyword + "') ");
+                        + " or tc.real_code='" + keyword + "' or tw.well_num='" + keyword + "') ");
             }
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {

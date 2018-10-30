@@ -42,7 +42,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
-                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword +
+                sqlExceptSelect.append(" and (tc.real_code='" + keyword + "' or twm.meter_num='" + keyword +
                         "' or twm.meter_address='" + keyword + "' or tc.name like '%" + keyword + "%') ");
             }
         }
@@ -217,7 +217,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
-                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword +
+                sqlExceptSelect.append(" and (tc.real_code='" + keyword + "' or twm.meter_num='" + keyword +
                         "' or twm.meter_address='" + keyword + "' or tc.name like '%" + keyword + "%') ");
             }
         }
@@ -240,7 +240,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
-                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword +
+                sqlExceptSelect.append(" and (tc.real_code='" + keyword + "' or twm.meter_num='" + keyword +
                         "' or twm.meter_address='" + keyword + "' or tc.name like '%" + keyword + "%') ");
             }
         }
@@ -264,7 +264,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
-                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword +
+                sqlExceptSelect.append(" and (tc.real_code='" + keyword + "' or twm.meter_num='" + keyword +
                         "' or twm.meter_address='" + keyword + "' or tc.name like '%" + keyword + "%') ");
             }
         }
@@ -288,7 +288,7 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
-                sqlExceptSelect.append(" and (twm.inner_code='" + keyword + "' or twm.meter_num='" + keyword +
+                sqlExceptSelect.append(" and (tc.real_code='" + keyword + "' or twm.meter_num='" + keyword +
                         "' or twm.meter_address='" + keyword + "' or tc.name like '%" + keyword + "%') ");
             }
         }

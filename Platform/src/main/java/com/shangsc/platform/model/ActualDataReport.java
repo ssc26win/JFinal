@@ -72,7 +72,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
             sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
         if (StringUtils.isNotEmpty(innerCode)) {
-            sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(innerCode) + "' ");
+            sqlExceptSelect.append(" and tc.real_code='" + StringUtils.trim(innerCode) + "' ");
         }
         if (street != null && street > 0) {
             sqlExceptSelect.append(" and tc.street=" + street);
@@ -179,10 +179,9 @@ public class ActualDataReport extends BaseActualData<ActualData> {
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
             sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
-        } else {
-            if (StringUtils.isNotEmpty(innerCode)) {
-                sqlExceptSelect.append(" and tc.inner_code='" + StringUtils.trim(innerCode) + "' ");
-            }
+        }
+        if (StringUtils.isNotEmpty(innerCode)) {
+            sqlExceptSelect.append(" and tc.real_code='" + StringUtils.trim(innerCode) + "' ");
         }
         if (StringUtils.isNotEmpty(type)) {
             type = StringUtils.trim(type);
@@ -213,7 +212,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
                 " inner join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(name) ? " and tc.name='" + name + "'" : "") +
-                (StringUtils.isNotEmpty(innerCode) ? " and tc.inner_code='" + innerCode + "'" : "") +
+                (StringUtils.isNotEmpty(innerCode) ? " and tc.real_code='" + innerCode + "'" : "") +
                 (street != null ? " and tc.street=" + street : "") +
                 (startTime != null ? " and t.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time >='" + start + "'") +
                 (endTime != null ? " and t.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time <='" + end + "'") +
@@ -235,7 +234,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
 
                 (StringUtils.isNotEmpty(name) ? " and tc.name='" + name + "'" : "") +
-                (StringUtils.isNotEmpty(innerCode) ? " and tc.inner_code='" + innerCode + "'" : "") +
+                (StringUtils.isNotEmpty(innerCode) ? " and tc.real_code='" + innerCode + "'" : "") +
                 (street != null ? " and tc.street=" + street : "") +
                 (startTime != null ? " and t.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time >='" + start + "'") +
                 (endTime != null ? " and t.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time <='" + end + "'") +
@@ -255,7 +254,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
 
                 (StringUtils.isNotEmpty(name) ? " and tc.name='" + name + "'" : "") +
-                (StringUtils.isNotEmpty(innerCode) ? " and tc.inner_code='" + innerCode + "'" : "") +
+                (StringUtils.isNotEmpty(innerCode) ? " and tc.real_code='" + innerCode + "'" : "") +
                 (street != null ? " and tc.street=" + street : "") +
                 (startTime != null ? " and t.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " ") +
                 (endTime != null ? " and t.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " ") +

@@ -40,7 +40,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
                 "where tm.meter_address not in (select meter_address from t_actual_data))) alld");
         sqlExceptSelect.append(" where 1=1");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (alld.real_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
                     + "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
@@ -54,14 +54,14 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
 
     public Page<ActualData> getWxActualDataPageByDisable(int page, int rows, String keyword, String orderbyStr, String globalInnerCode) {
         String select = "select * ";
-        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT tad.id,tc.inner_code,tm.meter_address,tad.alarm,tad.net_water,tad.sum_water,tad.state," +
+        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT tad.id,tc.inner_code,tc.real_code,tm.meter_address,tad.alarm,tad.net_water,tad.sum_water,tad.state," +
                 "tad.write_time,tad.voltage,companyName,tc.water_unit,tc.county,tm.line_num,tm.waters_type FROM t_water_meter tm " +
-                "left join (select name as companyName,water_unit,county,inner_code from t_company) tc on tm.inner_code=tc.inner_code " +
+                "left join (select name as companyName,water_unit,county,inner_code,real_code from t_company) tc on tm.inner_code=tc.inner_code " +
                 "left join t_actual_data tad on tad.meter_address=tm.meter_address " +
                 "where tm.meter_address not in (select meter_address from t_actual_data)) alld ");
         sqlExceptSelect.append(" where 1=1");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (alld.real_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
                     + "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
@@ -91,7 +91,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         sqlExceptSelect.append(" where 1=1");
         sqlExceptSelect.append(" and alld.stats = " + status);
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (alld.real_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
                     + "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
@@ -162,7 +162,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
             sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
         }
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (tc.real_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
                     + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(startTime)) {
@@ -195,7 +195,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
             sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
         }
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (tc.real_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
                     + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(startTime)) {
@@ -226,7 +226,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
             sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
         }
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (tc.real_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
                     + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(startTime)) {
@@ -293,7 +293,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
             sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
         }
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (tc.real_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
                     + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(meterAddress)) {
@@ -328,7 +328,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
             sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
         }
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (tc.real_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
                     + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(meterAddress)) {
@@ -362,7 +362,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
             sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
         }
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (tad.inner_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (tc.real_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
                     + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(meterAddress)) {

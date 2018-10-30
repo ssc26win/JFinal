@@ -120,7 +120,7 @@ public class WaterIndex extends BaseWaterIndex<WaterIndex> {
         if (StringUtils.isNotEmpty(keyword)) {
             keyword = StringUtils.trim(keyword);
             if (StringUtils.isNotEmpty(keyword)) {
-                sqlExceptSelect.append(" and (twi.inner_code='" + keyword + "' or tc.name like '%" + keyword + "%') ");
+                sqlExceptSelect.append(" and (tc.real_code='" + keyword + "' or tc.name like '%" + keyword + "%') ");
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {

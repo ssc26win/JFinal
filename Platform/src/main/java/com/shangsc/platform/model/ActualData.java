@@ -102,7 +102,7 @@ public class ActualData extends BaseActualData<ActualData> {
                 "where tm.meter_address not in (select meter_address from t_actual_data))) alld");
         sqlExceptSelect.append(" where 1=1");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (alld.real_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
                     + "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
@@ -116,14 +116,14 @@ public class ActualData extends BaseActualData<ActualData> {
 
     public Page<ActualData> getActualDataPageByDisable(int page, int rows, String keyword, String orderbyStr) {
         String select = "select * ";
-        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT tad.id,tc.inner_code,tm.meter_address,tad.alarm,tad.net_water,tad.sum_water,tad.state," +
+        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT tad.id,tc.inner_code,tc.real_code,tm.meter_address,tad.alarm,tad.net_water,tad.sum_water,tad.state," +
                 "tad.write_time,tad.voltage,companyName,tc.water_unit,tc.county,tm.line_num,tm.waters_type FROM t_water_meter tm " +
-                "left join (select name as companyName,water_unit,county,inner_code from t_company) tc on tm.inner_code=tc.inner_code " +
+                "left join (select name as companyName,water_unit,county,inner_code,real_code from t_company) tc on tm.inner_code=tc.inner_code " +
                 "left join t_actual_data tad on tad.meter_address=tm.meter_address " +
                 "where tm.meter_address not in (select meter_address from t_actual_data)) alld ");
         sqlExceptSelect.append(" where 1=1");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (alld.real_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
                     + "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
@@ -153,7 +153,7 @@ public class ActualData extends BaseActualData<ActualData> {
         sqlExceptSelect.append(" where 1=1");
         sqlExceptSelect.append(" and alld.stats = " + status);
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (alld.inner_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (alld.real_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
                     + "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
@@ -212,7 +212,7 @@ public class ActualData extends BaseActualData<ActualData> {
         if (StringUtils.isNotEmpty(innerCode)) {
             innerCode = StringUtils.trim(innerCode);
             if (StringUtils.isNotEmpty(innerCode)) {
-                sqlExceptSelect.append(" and twm.inner_code ='" + innerCode + "'");
+                sqlExceptSelect.append(" and twm.real_code ='" + innerCode + "'");
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
@@ -272,7 +272,7 @@ public class ActualData extends BaseActualData<ActualData> {
         if (StringUtils.isNotEmpty(innerCode)) {
             innerCode = StringUtils.trim(innerCode);
             if (StringUtils.isNotEmpty(innerCode)) {
-                sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "' ");
+                sqlExceptSelect.append(" and tc.real_code ='" + innerCode + "' ");
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
@@ -355,7 +355,7 @@ public class ActualData extends BaseActualData<ActualData> {
         if (StringUtils.isNotEmpty(innerCode)) {
             innerCode = StringUtils.trim(innerCode);
             if (StringUtils.isNotEmpty(innerCode)) {
-                sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "'");
+                sqlExceptSelect.append(" and tc.real_code ='" + innerCode + "'");
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
@@ -430,7 +430,7 @@ public class ActualData extends BaseActualData<ActualData> {
         if (StringUtils.isNotEmpty(innerCode)) {
             innerCode = StringUtils.trim(innerCode);
             if (StringUtils.isNotEmpty(innerCode)) {
-                sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "'");
+                sqlExceptSelect.append(" and tc.real_code ='" + innerCode + "'");
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
@@ -666,7 +666,7 @@ public class ActualData extends BaseActualData<ActualData> {
         if (StringUtils.isNotEmpty(innerCode)) {
             innerCode = StringUtils.trim(innerCode);
             if (StringUtils.isNotEmpty(innerCode)) {
-                sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "' ");
+                sqlExceptSelect.append(" and tc.real_code ='" + innerCode + "' ");
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
@@ -750,7 +750,7 @@ public class ActualData extends BaseActualData<ActualData> {
         if (StringUtils.isNotEmpty(innerCode)) {
             innerCode = StringUtils.trim(innerCode);
             if (StringUtils.isNotEmpty(innerCode)) {
-                sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "'");
+                sqlExceptSelect.append(" and tc.real_code ='" + innerCode + "'");
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {
@@ -825,7 +825,7 @@ public class ActualData extends BaseActualData<ActualData> {
         if (StringUtils.isNotEmpty(innerCode)) {
             innerCode = StringUtils.trim(innerCode);
             if (StringUtils.isNotEmpty(innerCode)) {
-                sqlExceptSelect.append(" and tc.inner_code ='" + innerCode + "'");
+                sqlExceptSelect.append(" and tc.real_code ='" + innerCode + "'");
             }
         }
         if (StringUtils.isNotEmpty(globalInnerCode)) {

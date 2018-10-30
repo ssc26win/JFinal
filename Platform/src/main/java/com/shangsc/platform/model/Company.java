@@ -237,7 +237,7 @@ public class Company extends BaseCompany<Company> {
             sqlExceptSelect.append("and c.term=" + term);
         }
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.real_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
         }
         if (StringUtils.isNotEmpty(companyType)) {
@@ -339,7 +339,7 @@ public class Company extends BaseCompany<Company> {
         sqlExceptSelect.append(" where company_type=1 ");
         sqlExceptSelect.append(" and inner_code in (" + getWarnExceptionInnerCodeSql(monthDateBetween) + ")");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.real_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -366,7 +366,7 @@ public class Company extends BaseCompany<Company> {
         sqlExceptSelect.append(" where company_type=1 ");
         sqlExceptSelect.append(" and inner_code in (" + getWarnExceptionInnerCodeSql(monthDateBetween) + ")");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.real_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -398,7 +398,7 @@ public class Company extends BaseCompany<Company> {
         sqlExceptSelect.append(" inner join (select name,inner_code,address,water_unit,county,company_type from t_company) tc on tc.inner_code=t.inner_code ");
         sqlExceptSelect.append(" where t.waters_type=twi.waters_type ");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (name like '%" + StringUtils.trim(keyword) + "%' or inner_code='" + StringUtils.trim(keyword) + "') ");
+            sqlExceptSelect.append(" and (name like '%" + StringUtils.trim(keyword) + "%' or real_code='" + StringUtils.trim(keyword) + "') ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
@@ -413,7 +413,7 @@ public class Company extends BaseCompany<Company> {
         sqlExceptSelect.append(" where company_type=1");
         sqlExceptSelect.append(" and inner_code not in (" + getWarnExceptionInnerCodeSql(monthDateBetween) + ")");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.real_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -427,7 +427,7 @@ public class Company extends BaseCompany<Company> {
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c");
         sqlExceptSelect.append(" where company_type=1 and c.inner_code not in (select DISTINCT inner_code from t_actual_data tad )");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.real_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -441,7 +441,7 @@ public class Company extends BaseCompany<Company> {
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c");
         sqlExceptSelect.append(" where company_type=2 ");
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.real_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
@@ -849,7 +849,7 @@ public class Company extends BaseCompany<Company> {
             sqlExceptSelect.append(" and c.inner_code in (" + wxInnerCode + ")");
         }
         if (StringUtils.isNotEmpty(keyword)) {
-            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.inner_code='" + StringUtils.trim(keyword)
+            sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.real_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
         }
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
