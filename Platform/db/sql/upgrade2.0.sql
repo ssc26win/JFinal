@@ -24,6 +24,8 @@ alter table t_water_meter add column `memo` varchar(255) DEFAULT '' COMMENT '备
 alter table app_version add column `wx_app_id` varchar(50) DEFAULT '' COMMENT '微信授权登录公钥';
 alter table app_version add column `wx_app_secret` varchar(100) DEFAULT '' COMMENT '微信授权登录私钥';
 
+alter table t_ad modify column `content` varchar(2500) DEFAULT NULL COMMENT '内容';
+
 insert into dict_type(id, name, remark, update_time) values (15, 'MeterAttr', '水表属性', 1524888888) ;
 
 insert into dict_data(dict_type_id, value, seq, update_time, name, remark) values (15, 1, 1, 1524888888,'未分类属性','未分类属性');
