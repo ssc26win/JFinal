@@ -124,6 +124,13 @@ public abstract class BaseController extends Controller {
         return sysUser;
     }
 
+    public SysUser findByNameToCancel() {
+        String userName = this.getPara("userName");
+        SysUser sysUser = SysUser.me.findFirst("select * from sys_user where name='"
+                + userName + "'");
+        return sysUser;
+    }
+
     public String getWxInnerCode() {
         String wxAccount = this.getPara("wxAccount");
         SysUser sysUser = SysUser.me.findFirst("select * from sys_user where wx_account='"

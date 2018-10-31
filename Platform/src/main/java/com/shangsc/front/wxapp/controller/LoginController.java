@@ -9,6 +9,7 @@ import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.DateUtils;
+import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.util.MD5Utils;
 import com.shangsc.platform.core.util.MyDigestUtils;
 import com.shangsc.platform.core.view.InvokeResult;
@@ -32,25 +33,59 @@ import java.util.Map;
 public class LoginController extends BaseController {
 
     @Clear(AuthorityInterceptor.class)
+    public void roleResList() {
+        SysUser byWxAccount = findByWxAccount();
+        List<SysRes> wxResList = SysRes.me.findWxResList(byWxAccount.getId());
+        if (CollectionUtils.isNotEmpty(wxResList)) {
+            Map<String, String> map = new HashMap<>();
+            for (SysRes sysRes : wxResList) {
+                map.put(sysRes.getSeq().toString(), sysRes.getName());
+            }
+            this.renderJson(InvokeResult.success(map, "授权资源列表"));
+        } else {
+            this.renderJson(InvokeResult.failure("未获取绑定微信账号授权资源"));
+        }
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    public void regist() {
+        String username = this.getPara("username");
+        String password = this.getPara("password");
+        String phone = this.getPara("phone");
+        String email = this.getPara("email");
+        if (StringUtils.isEmpty(username)) {
+            this.renderJson(InvokeResult.failure("用户名不能为空"));
+            return;
+        }
+        if (StringUtils.isEmpty(password)) {
+            this.renderJson(InvokeResult.failure("密码不能为空"));
+            return;
+        }
+        InvokeResult result = SysUser.me.registWx(username, password, phone, email);
+        this.renderJson(result);
+    }
+
+    @Clear(AuthorityInterceptor.class)
     public void binding() {
         SysUser byWxAccount = findByWxAccount();
         InvokeResult result = InvokeResult.success(Boolean.FALSE, "未绑定微信账号");
         if (byWxAccount != null && byWxAccount.getStatus() == 1) {
-            List<SysRes> wxResList = SysRes.me.findWxResList(byWxAccount.getId());
-            if (CollectionUtils.isNotEmpty(wxResList)) {
-                Map<String, String> map = new HashMap<>();
-                for (SysRes sysRes : wxResList) {
-                    map.put(sysRes.getSeq().toString(), sysRes.getName());
-                }
-                result = InvokeResult.success(map, "已绑定微信账号");
-            } else {
-                result = InvokeResult.success(Boolean.FALSE, "未获取绑定微信账号授权资源");
-            }
+            result = InvokeResult.success(Boolean.TRUE, "已绑定微信账号");
         }
         if (byWxAccount != null && byWxAccount.getStatus() == 0) {
             result = InvokeResult.success(Boolean.FALSE, "该账号已停用");
         }
         this.renderJson(result);
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    public void cancelBinding() {
+        SysUser byWxAccount = findByNameToCancel();
+        if (byWxAccount != null) {
+            byWxAccount.setWxAccount("");
+            byWxAccount.update();
+        }
+        this.renderJson(InvokeResult.success(this.getPara("userName"), "解绑成功"));
     }
 
     @Clear(AuthorityInterceptor.class)

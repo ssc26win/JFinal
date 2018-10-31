@@ -106,6 +106,11 @@ public class IndexController extends Controller {
         if (sysUser == null) {
             this.renderJson(InvokeResult.failure("用户不存在"));
             return;
+        } else {
+            if ("Wexin_regist".equals(sysUser.getWxMemo())) {
+                this.renderJson(InvokeResult.failure("微信账号未授权，请联系管理员"));
+                return;
+            }
         }
         if (SysLoginRecord.dao.hasOverLoginErrTimes(sysUser.getId())) {
             this.renderJson(InvokeResult.failure("今天连续输入密码错误次数超过5次"));

@@ -25,6 +25,7 @@ import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
 import com.shangsc.platform.core.view.ZtreeView;
 import com.shangsc.platform.model.base.BaseSysRes;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.*;
 
@@ -389,11 +390,11 @@ public class SysRes extends BaseSysRes<SysRes> {
      * @author ssc
      */
     public List<SysRes> findWxResList(Integer uid) {
-        List<SysRes> resList = CacheKit.get(CacheName.wxUserMenuCache, "findWxResList_" + uid);
-        if (resList == null || resList.size() == 0) {
+        List<SysRes> resList = new ArrayList<>(); //CacheKit.get(CacheName.wxUserMenuCache, "findWxResList_" + uid);
+        if (CollectionUtils.isEmpty(resList)) {
             List<SysRole> sysRoleIds = SysRole.me.getSysRoleIdList(uid);
-            if (sysRoleIds.size() == 0) {
-                return null;
+            if (CollectionUtils.isEmpty(sysRoleIds)) {
+                return resList;
             }
             StringBuffer roleIds = new StringBuffer();
             boolean isAdmin = false;
@@ -409,7 +410,7 @@ public class SysRes extends BaseSysRes<SysRes> {
             } else {
                 resList = this.find("select * from sys_res where enabled=1 and type=2 and des like '%Wx_%' order by seq asc");
             }
-            CacheKit.put(CacheName.wxUserMenuCache, "findWxResList_" + uid, resList);
+            //CacheKit.put(CacheName.wxUserMenuCache, "findWxResList_" + uid, resList);
         }
         return resList;
     }

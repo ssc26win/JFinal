@@ -195,7 +195,7 @@ public class SysUser extends BaseSysUser<SysUser> {
             SysUser sysUser = this.findById(id);
             sysUser.set("des", des).set("phone", phone).set("email", email).set("inner_code", innerCode).set("wx_account", wxAccount).update();
         } else {
-            if (!Company.me.hasExistInnerCode(null, innerCode)) {
+            if (StringUtils.isNotEmpty(innerCode) && !Company.me.hasExistInnerCode(null, innerCode)) {
                 return InvokeResult.failure("公司编码不存在");
             }
             if (this.hasExist(username)) {
@@ -226,6 +226,11 @@ public class SysUser extends BaseSysUser<SysUser> {
      */
     public InvokeResult changeUserRoles(Integer uid, String roleIds) {
         Db.update("delete from sys_user_role where user_id = ?", uid);
+        SysUser byId = SysUser.me.findById(uid);
+        if (byId != null && StringUtils.isNotEmpty(byId.getWxMemo()) && "Wexin_regist".equals(byId.getWxMemo())) {
+            byId.setWxMemo("");
+            byId.update();
+        }
         List<String> sqlList = Lists.newArrayList();
         for (String roleId : roleIds.split(",")) {
             if (CommonUtils.isNotEmpty(roleId)) {
@@ -344,5 +349,19 @@ public class SysUser extends BaseSysUser<SysUser> {
      */
     public void updateByWxLogin(Integer userId, String wxAccount, String token) {
         Db.update("update sys_user set wx_account='" + wxAccount + "',token='" + token + "' where id=" + userId);
+    }
+
+    public InvokeResult registWx(String username, String password, String phone, String email) {
+        if (this.hasExist(username)) {
+            return InvokeResult.failure("用户名已存在");
+        } else {
+            if (StrKit.isBlank(password)) {
+                password = "123456";
+            }
+            SysUser sysUser = new SysUser();
+            sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date())
+                    .set("phone", phone).set("email", email).set("wx_memo", "Wexin_regist").save();
+        }
+        return InvokeResult.success(Boolean.TRUE, "注册成功");
     }
 }
