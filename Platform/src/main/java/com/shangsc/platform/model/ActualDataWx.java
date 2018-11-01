@@ -232,7 +232,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         if (StringUtils.isNotEmpty(startTime)) {
             sqlExceptSelect.append(" and tad.write_time >= '" + startTime + "'");
         }
-        if (endTime != null) {
+        if (StringUtils.isNotEmpty(endTime)) {
             sqlExceptSelect.append(" and tad.write_time <= '" + endTime + "'");
         }
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y') ");
