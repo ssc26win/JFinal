@@ -24,24 +24,6 @@ import java.util.List;
 public class MsgController extends BaseController {
 
     /**
-     * 站内消息列表
-     */
-    public void findRollList() {
-        SysUser sysUser = findByWxAccount();
-        if (sysUser == null) {
-            this.renderJson(new ArrayList<>());
-        }
-        Integer limit = this.getParaToInt("limit", 10);
-        List<Message> rollList = MsgReceiver.dao.getWxRollList(sysUser.getId(), limit);
-        for (Message msgReceiver : rollList) {
-            if (msgReceiver.getStatus() != null) {
-                msgReceiver.put("statusName", ReadOrNo.getMap().get(String.valueOf(msgReceiver.getStatus())));
-            }
-        }
-        this.renderJson(rollList);
-    }
-
-    /**
      * 站内消息详情
      */
     public void findById() {
@@ -50,6 +32,8 @@ public class MsgController extends BaseController {
         if (byId != null && byId.getStatus() != null) {
             byId.put("statusName", ReadOrNo.getMap().get(String.valueOf(byId.getStatus())));
         }
+        SysUser sysUser = findByWxAccount();
+        MsgReceiver.dao.setReadingByLoadMsg(id, sysUser.getId());
         this.renderJson(byId);
     }
 

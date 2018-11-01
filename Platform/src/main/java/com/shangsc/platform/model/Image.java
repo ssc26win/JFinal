@@ -87,17 +87,17 @@ public class Image extends BaseImage<Image> {
      * WxApp use
      ***************************************/
 
-    public InvokeResult deleteByRelaIdWx(Long relaId) {
-        int delete = this.delete(CommonUtils.getConditions(new Condition("rela_id", Operators.EQ, relaId)));
+    public InvokeResult deleteByRelaIdWx(String relaIds) {
+        List<Long> relaIdsLong = CommonUtils.getLongListByStrs(relaIds);
+        for (int i = 0; i < relaIdsLong.size(); i++) {
+            int delete = this.delete(CommonUtils.getConditions(new Condition("rela_id", Operators.EQ, relaIdsLong.get(i))));
+        }
         return InvokeResult.success();
     }
 
     public void updateBatch(String ids, Long relaId, String relaTable) {
-        int update = Db.update(" update t_image set rela_id=" + 0 + ",rela_table=" + relaTable +
-                " where rela_id=" + relaId + " and id not in (" + ids + ");");
-        if (update > 0) {
-            Db.update(" update t_image set rela_id=" + relaId + ",rela_table=" + relaTable + " where id in (" + ids + ");");
-        }
+        Db.update(" update t_image set rela_id=" + 0 + " where rela_id=" + relaId + " and id not in (" + ids + ");");
+        Db.update(" update t_image set rela_id=" + relaId + " where id in (" + ids + ");");
     }
 
 }

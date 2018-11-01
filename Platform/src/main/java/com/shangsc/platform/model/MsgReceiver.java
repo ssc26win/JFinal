@@ -131,7 +131,7 @@ public class MsgReceiver extends BaseMsgReceiver<MsgReceiver> {
         for (int i = 0; i < ids.size(); i++) {
             this.deleteById(ids.get(i));
         }
-        return InvokeResult.success();
+        return InvokeResult.success("删除成功");
     }
 
     public InvokeResult setReading(String idStrs) {
@@ -204,5 +204,11 @@ public class MsgReceiver extends BaseMsgReceiver<MsgReceiver> {
             int update = Db.update("update t_msg_receiver set status=1 where receiver_id=" + uId + " and status=0 ");
         }
         return InvokeResult.success();
+    }
+
+    public void setReadingByLoadMsg(Long msgId, Integer uId) {
+        if (msgId != null && msgId > 0L) {
+            int update = Db.update("update t_msg_receiver set status=1 where receiver_id=" + uId + " and status=0 and msg_id in (?)", msgId);
+        }
     }
 }

@@ -67,13 +67,17 @@ public class LawRecordController extends BaseController {
         SysUser sysUser = findByWxAccount();
         if (StringUtils.isEmpty(this.getPara("id"))) {
             this.renderJson(InvokeResult.failure("id不存在"));
+            return;
         }
         LawRecord lawRecord = LawRecord.dao.findById(this.getParaToLong("id"));
-        if (sysUser != null && sysUser.getId() != lawRecord.getUserId().intValue()) {
+        if (lawRecord == null || (sysUser != null && sysUser.getId() != lawRecord.getUserId().intValue())) {
             this.renderJson(InvokeResult.failure("id不存在"));
+            return;
         }
-        List<Image> images = Image.dao.find("select * from t_image where rela_id=? and rela_type=? ", lawRecord.getId(), "t_law_record");
-        lawRecord.put("images", images);
+        if (lawRecord != null) {
+            List<Image> images = Image.dao.find("select * from t_image where rela_id=? and rela_type=? ", lawRecord.getId(), "t_law_record");
+            lawRecord.put("images", images);
+        }
         this.renderJson(lawRecord);
     }
 
@@ -95,7 +99,7 @@ public class LawRecordController extends BaseController {
         BigDecimal latitude = StringUtils.isEmpty(getPara("latitude")) ? null : CodeNumUtil.getBigDecimal(getPara("latitude"), 6);
         InvokeResult result = LawRecord.dao.saveWx(id, title, content, null, userId, longitude, latitude, sysUser.getInnerCode(), userName, memo);
         Long relaId = Long.parseLong(result.getData().toString());
-        if (StringUtils.isEmpty(imageIds)) {
+        if (StringUtils.isNotEmpty(imageIds)) {
             Image.dao.updateBatch(imageIds, relaId, "t_law_record");
         }
         renderJson(InvokeResult.success(null, "上传成功"));
@@ -146,26 +150,26 @@ public class LawRecordController extends BaseController {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("uploadImgId", imageId);
             jsonObject.put("uploadImgFileName", originFileName);
+
             renderJson(jsonObject);
         }
     }
 
     @Clear(AuthorityInterceptor.class)
     public void deleteImg() {
-        Long relaId = this.getParaToLong("id");
-        Long id = this.getParaToLong("imgId");
-        InvokeResult result = Image.dao.deleteDataByIdAndRelaId(relaId, id);
-        renderJson(result);
+        Long id = this.getParaToLong("id");
+        Boolean result = Image.dao.deleteById(id);
+        renderJson(InvokeResult.success(result, "删除成功"));
     }
 
     @Clear(AuthorityInterceptor.class)
     public void deleteLaw() {
-        Long relaId = this.getParaToLong("id");
-        boolean b = LawRecord.dao.deleteById(relaId);
-        if (b) {
-            Image.dao.deleteByRelaIdWx(relaId);
+        String ids = this.getPara("ids");
+        InvokeResult result = LawRecord.dao.deleteData(ids);
+        if (result.getCode() == 0) {
+            Image.dao.deleteByRelaIdWx(ids);
         }
-        renderJson(InvokeResult.success());
+        renderJson(InvokeResult.success(ids, "删除成功"));
     }
 
 }

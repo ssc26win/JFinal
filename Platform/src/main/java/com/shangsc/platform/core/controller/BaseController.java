@@ -16,10 +16,16 @@
 package com.shangsc.platform.core.controller;
 
 import com.jfinal.core.Controller;
+import com.jfinal.render.JsonRender;
+import com.jfinal.render.Render;
+import com.jfinal.render.RenderManager;
+import com.shangsc.front.util.JsonUtil;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.model.SysUser;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedHashMap;
 
@@ -28,7 +34,7 @@ import java.util.LinkedHashMap;
  */
 public abstract class BaseController extends Controller {
     public static final int BUFFER_SIZE = 1024 * 1024;
-
+    public final Logger logger = LoggerFactory.getLogger(this.getClass());
     /**
      * 获取排序对象
      *
