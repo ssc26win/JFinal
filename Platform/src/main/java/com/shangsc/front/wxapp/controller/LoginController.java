@@ -100,6 +100,12 @@ public class LoginController extends BaseController {
         if (sysUser == null) {
             this.renderJson(InvokeResult.failure("用户不存在"));
             return;
+        } else {
+            List<SysRes> wxResList = SysRes.me.findWxResList(sysUser.getId());
+            if ("Wexin_regist".equals(sysUser.getWxMemo()) && CollectionUtils.isEmpty(wxResList)) {
+                this.renderJson(InvokeResult.failure("微信账号未授权，请联系管理员"));
+                return;
+            }
         }
         if (SysLoginRecord.dao.wxhasOverLoginErrTimes(sysUser.getId())) {
             this.renderJson(InvokeResult.failure("今天连续输入密码错误次数超过10次"));

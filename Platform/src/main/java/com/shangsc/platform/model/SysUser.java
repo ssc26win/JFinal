@@ -227,8 +227,12 @@ public class SysUser extends BaseSysUser<SysUser> {
     public InvokeResult changeUserRoles(Integer uid, String roleIds) {
         Db.update("delete from sys_user_role where user_id = ?", uid);
         SysUser byId = SysUser.me.findById(uid);
-        if (byId != null && StringUtils.isNotEmpty(byId.getWxMemo()) && "Wexin_regist".equals(byId.getWxMemo())) {
-            byId.setWxMemo("");
+        if (byId != null && "Wexin_regist".equals(byId.getWxMemo())) {
+            if ("64".equals(roleIds)) {
+                byId.setWxMemo("Weixin_regist");
+            } else {
+                byId.setWxMemo("");
+            }
             byId.update();
         }
         List<String> sqlList = Lists.newArrayList();
