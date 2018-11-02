@@ -132,8 +132,8 @@ public abstract class BaseController extends Controller {
 
     public SysUser findByNameToCancel() {
         String userName = this.getPara("userName");
-        SysUser sysUser = SysUser.me.findFirst("select * from sys_user where name='"
-                + userName + "'");
+        String wxAccount = this.getPara("wxAccount");
+        SysUser sysUser = SysUser.me.findFirst("select * from sys_user where name='"+ userName + "' and wx_account='" + wxAccount + "'");
         return sysUser;
     }
 

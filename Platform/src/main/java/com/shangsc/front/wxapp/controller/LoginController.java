@@ -53,6 +53,7 @@ public class LoginController extends BaseController {
         String password = this.getPara("password");
         String phone = this.getPara("phone");
         String email = this.getPara("email");
+        String wxAccount = this.getPara("wxAccount");
         if (StringUtils.isEmpty(username)) {
             this.renderJson(InvokeResult.failure("用户名不能为空"));
             return;
@@ -61,7 +62,7 @@ public class LoginController extends BaseController {
             this.renderJson(InvokeResult.failure("密码不能为空"));
             return;
         }
-        InvokeResult result = SysUser.me.registWx(username, password, phone, email);
+        InvokeResult result = SysUser.me.registWx(username, password, phone, email, wxAccount);
         this.renderJson(result);
     }
 

@@ -355,7 +355,7 @@ public class SysUser extends BaseSysUser<SysUser> {
         Db.update("update sys_user set wx_account='" + wxAccount + "',token='" + token + "' where id=" + userId);
     }
 
-    public InvokeResult registWx(String username, String password, String phone, String email) {
+    public InvokeResult registWx(String username, String password, String phone, String email, String wxAccount) {
         if (this.hasExist(username)) {
             return InvokeResult.failure("用户名已存在");
         } else {
@@ -364,7 +364,7 @@ public class SysUser extends BaseSysUser<SysUser> {
             }
             SysUser sysUser = new SysUser();
             sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date())
-                    .set("phone", phone).set("email", email).set("wx_memo", "Wexin_regist").save();
+                    .set("phone", phone).set("email", email).set("wx_account", wxAccount).set("wx_memo", "Wexin_regist").save();
         }
         return InvokeResult.success(Boolean.TRUE, "注册成功");
     }
