@@ -34,8 +34,9 @@ public class LawRecordsController extends BaseController {
     @RequiresPermissions(value = {"/app/law"})
     public void getListData() {
         //TODO LawRecord.dao.setGlobalInnerCode(getInnerCodesSQLStr());
+        SysUser loginUser = getLoginUser();
         String keyword = this.getPara("name");
-        Page<LawRecord> pageInfo = LawRecord.dao.getPageList(getPage(), this.getRows(), keyword, this.getOrderbyStr());
+        Page<LawRecord> pageInfo = LawRecord.dao.getPageList(getPage(), this.getRows(), keyword, this.getOrderbyStr(), loginUser);
         List<LawRecord> list = pageInfo.getList();
         if (CollectionUtils.isNotEmpty(list)) {
             Set<Long> ids = new LinkedHashSet<>();

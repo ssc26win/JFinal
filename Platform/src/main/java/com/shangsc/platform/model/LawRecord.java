@@ -34,7 +34,7 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
             lawRecord.update();
         } else {
             LawRecord lawRecord = new LawRecord();
-            lawRecord = setProp(lawRecord, title, content, status, uId,innerCode, null, null, "");
+            lawRecord = setProp(lawRecord, title, content, status, uId, innerCode, null, null, "");
             lawRecord.setCreateUser(userName);
             lawRecord.setCreateTime(new Date());
             lawRecord.save();
@@ -67,13 +67,18 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
         return InvokeResult.success();
     }
 
-    public Page<LawRecord> getPageList(int page, int rows, String keyword, String orderbyStr) {
+    public Page<LawRecord> getPageList(int page, int rows, String keyword, String orderbyStr, SysUser sysUser) {
         String select = " select tlr.* ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_law_record tlr where 1=1 ");
+
+        if (!sysUser.isAdmin()) {
+            sqlExceptSelect.append(" and tlr.user_id=" + sysUser.getId());
+        }
 
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (tlr.title like '%" + StringUtils.trim(keyword) + "%' or tlr.content like '%" + keyword + "%')");
         }
+
         //if (StringUtils.isNotEmpty(globalInnerCode)) {
         //    sqlExceptSelect.append(" and tlr.inner_code='" + StringUtils.trim(globalInnerCode) + "' ");
         //}

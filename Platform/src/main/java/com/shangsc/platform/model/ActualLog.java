@@ -50,7 +50,6 @@ public class ActualLog extends BaseActualLog<ActualLog> {
     }
 
     public Page<ActualLog> getLogPage(int page, int rows, String keyword, String srcType, String orderbyStr) {
-
         String select = "select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_log c ");
         sqlExceptSelect.append(" where 1=1 ");

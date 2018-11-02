@@ -98,6 +98,11 @@ public abstract class BaseController extends Controller {
         return rows;
     }
 
+    public SysUser getLoginUser() {
+        SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
+        return sysUser;
+    }
+
     public String getInnerCode() {
         SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
         return sysUser.getInnerCode();
