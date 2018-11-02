@@ -241,7 +241,10 @@ public class Company extends BaseCompany<Company> {
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
         }
         if (StringUtils.isNotEmpty(companyType)) {
-            sqlExceptSelect.append(" and company_type=" + companyType);
+            sqlExceptSelect.append(" and c.company_type=" + companyType);
+        }
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and c.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
         }
         if (StringUtils.isNotEmpty(orderbyStr)) {
             sqlExceptSelect.append(orderbyStr);
@@ -336,7 +339,10 @@ public class Company extends BaseCompany<Company> {
         Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(new Date());
         String select = "select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
-        sqlExceptSelect.append(" where company_type=1 ");
+        sqlExceptSelect.append(" where c.company_type=1 ");
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and c.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
+        }
         sqlExceptSelect.append(" and inner_code in (" + getWarnExceptionInnerCodeSql(monthDateBetween) + ")");
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.real_code='" + StringUtils.trim(keyword)
@@ -410,8 +416,11 @@ public class Company extends BaseCompany<Company> {
         Map<String, String> monthDateBetween = ToolDateTime.get2MonthDateBetween(new Date());
         String select = "select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
-        sqlExceptSelect.append(" where company_type=1");
-        sqlExceptSelect.append(" and inner_code not in (" + getWarnExceptionInnerCodeSql(monthDateBetween) + ")");
+        sqlExceptSelect.append(" where c.company_type=1");
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and c.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
+        }
+        sqlExceptSelect.append(" and c.inner_code not in (" + getWarnExceptionInnerCodeSql(monthDateBetween) + ")");
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.real_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
@@ -425,7 +434,10 @@ public class Company extends BaseCompany<Company> {
     public Page<Company> getOtherCompanyPage(int page, int rows, String keyword, String orderbyStr) {
         String select = "select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c");
-        sqlExceptSelect.append(" where company_type=1 and c.inner_code not in (select DISTINCT inner_code from t_actual_data tad )");
+        sqlExceptSelect.append(" where c.company_type=1 and c.inner_code not in (select DISTINCT inner_code from t_actual_data tad )");
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and c.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
+        }
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.real_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
@@ -439,7 +451,10 @@ public class Company extends BaseCompany<Company> {
     public Page<Company> getSupplyCompanyPage(int page, int rows, String keyword, String orderbyStr) {
         String select = "select c.*";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c");
-        sqlExceptSelect.append(" where company_type=2 ");
+        sqlExceptSelect.append(" where c.company_type=2 ");
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and c.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
+        }
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (c.name like '%" + StringUtils.trim(keyword) + "%' or c.real_code='" + StringUtils.trim(keyword)
                     + "' or contact='" + StringUtils.trim(keyword) + "') ");
@@ -731,7 +746,10 @@ public class Company extends BaseCompany<Company> {
     }
 
     public Map<String, String> loadNameList() {
-        String sql = "select name,inner_code from t_company";
+        String sql = "select name,inner_code from t_company where 1=1 ";
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sql = sql + " and inner_code in (" + StringUtils.trim(globalInnerCode) + ") ";
+        }
         List<Company> companies = this.find(sql);
         Map<String, String> names = new HashMap<>();
         for (Company company : companies) {
@@ -742,6 +760,9 @@ public class Company extends BaseCompany<Company> {
 
     public Map<String, String> searchNameList(String name) {
         String sql = "select name,inner_code from t_company where name like '%" + name + "%'";
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sql = sql + " and inner_code in (" + StringUtils.trim(globalInnerCode) + ") ";
+        }
         List<Company> companies = this.find(sql);
         Map<String, String> names = new HashMap<>();
         for (Company company : companies) {
@@ -837,9 +858,11 @@ public class Company extends BaseCompany<Company> {
         return InvokeResult.success(JsonKit.toJson(ztreeViews));
     }
 
-    /***********************************
+    /**
+     * ********************************
      * WxApp use
-     ***************************************/
+     * *************************************
+     */
 
     public Page<Company> findWxList(int page, int rows, String keyword, String wxInnerCode) {
         String select = "select c.*, (select count(net_water) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum";

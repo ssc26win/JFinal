@@ -171,7 +171,7 @@ public class ReportMonthChartController extends BaseController {
         obj.put("sumWater", sumWater);
         obj.put("companies", companies);
 
-        logger.info("--【月用水量明细】 -- \n{}" , JsonUtil.obj2Json(obj));
+        //logger.info("--【月用水量明细】 -- \n{}" , JsonUtil.obj2Json(obj));
 
         this.renderJson(obj);
     }

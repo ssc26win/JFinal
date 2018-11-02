@@ -173,7 +173,7 @@ public class ReportDailyChartController extends BaseController {
         obj.put("sumWater", sumWater);
         obj.put("companies", companies);
 
-        logger.info("--【日用水量明细】 -- \n{}" , JsonUtil.obj2Json(obj));
+        //logger.info("--【日用水量明细】 -- \n{}" , JsonUtil.obj2Json(obj));
 
         this.renderJson(obj);
     }

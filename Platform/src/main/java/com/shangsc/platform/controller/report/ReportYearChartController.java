@@ -6,7 +6,6 @@ import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.front.util.JsonUtil;
-import com.shangsc.platform.code.MonthCode;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
@@ -19,7 +18,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @Author ssc
@@ -163,7 +164,7 @@ public class ReportYearChartController extends BaseController {
         obj.put("sumWater", sumWater);
         obj.put("companies", companies);
 
-        logger.info("--【年用水量明细】 -- \n{}" , JsonUtil.obj2Json(obj));
+        //logger.info("--【年用水量明细】 -- \n{}" , JsonUtil.obj2Json(obj));
 
         this.renderJson(obj);
     }
