@@ -39,7 +39,8 @@
 
                                 <div class="col-xs-12 col-sm-9 search">
                                     <div class="clearfix">
-                                        <input type="text" id="companyName" name="companyName" value="${companyName}" ${id ne null?'readonly':'' }
+                                        <input type="text" id="companyName" name="companyName"
+                                               value="${companyName}" ${id ne null?'readonly':'' }
                                                class="col-xs-12 col-sm-8 cnwth" autocomplete="off">
                                     </div>
                                     <div id="auto_div" style="max-height: 200px; overflow-y: auto;"></div>
@@ -56,7 +57,9 @@
                                         <input type="hidden" id="meterAddressInput" name="meterAddressInput"
                                                value="${item.meterAddress}"/>
                                         <select id="meterAddress" name="meterAddress"
-                                                class="col-xs-12 col-sm-8" ${id ne null?'readonly':'' }></select>
+                                                class="col-xs-12 col-sm-8" ${id ne null?'readonly':'' }>
+                                            <option value="${item.meterAddress}">${item.meterAddress}</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -183,7 +186,7 @@
                     if ($("#companyName").val() == "") {
                         $("#innerCode").val("");
                     }
-                    getAddressData('');
+                    getAddressData('0');
                     $(this).css("background-color", "white");
                 });
                 //鼠标点击文字上屏
@@ -230,7 +233,7 @@
         $("#companyName").keyup(function () {
             AutoComplete("auto_div", "companyName", name_list);
         });
-        $("#auto_div").css("width" , $("#companyName").css("width"));
+        $("#auto_div").css("width", $("#companyName").css("width"));
 
     });
 
@@ -320,23 +323,25 @@
     }
 
     function getAddressData(innerCode) {
-        $("#meterAddress").empty();
-        var submitData = {"innerCode" : innerCode};
-        $.post("${context_path}/basic/meter/findAddress", submitData, function (data) {
-            var addressList = data.addressList;
-            for (var i = 0; i < addressList.length; i++) {
-                if ($("#meterAddressInput").val() == addressList[i]) {
-                    $("#meterAddress").append("<option selected value='" + addressList[i] + "'>" + addressList[i] + "</option>");
-                } else {
-                    if ($("#id").val() == '') {
-                        $("#meterAddress").append("<option value='" + addressList[i] + "'>" + addressList[i] + "</option>");
+        if ("0" != innerCode) {
+            $("#meterAddress").empty();
+            var submitData = {"innerCode": innerCode};
+            $.post("${context_path}/basic/meter/findAddress", submitData, function (data) {
+                var addressList = data.addressList;
+                for (var i = 0; i < addressList.length; i++) {
+                    if ($("#meterAddressInput").val() == addressList[i]) {
+                        $("#meterAddress").append("<option selected value='" + addressList[i] + "'>" + addressList[i] + "</option>");
+                    } else {
+                        if ($("#id").val() == '') {
+                            $("#meterAddress").append("<option value='" + addressList[i] + "'>" + addressList[i] + "</option>");
+                        }
                     }
                 }
-            }
-        }, "json");
+            }, "json");
+        }
     }
     $(function () {
-        getAddressData();
+        getAddressData('0');
     })
 </script>
 </body>
