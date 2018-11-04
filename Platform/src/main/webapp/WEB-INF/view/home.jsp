@@ -61,9 +61,14 @@
 
                 <div class="row" style="text-align: center"><h1 style="color: red">${title}</h1></div>
 
-                <div class="row" style="font-size: 18px; text-indent:2em; color: green; margin: 40px;"><p>公告内容：${content}</p></div>
+                <div class="row" style="margin: 40px; text-align: center;"><p style="align-content: center">
+                    <img src="${image.imgUrl}" width="${image.width}" height="${image.height}"></p></div>
 
-                <div class="row" style="font-size: 18px; text-indent:2em; color: blue; margin: 40px;"><p>发布时间：${createTime}</p></div>
+                <div class="row" style="font-size: 18px; text-indent:2em; color: green; margin: 40px;"><p>
+                    公告内容：${content}</p></div>
+
+                <div class="row" style="font-size: 18px; text-indent:2em; color: blue; margin: 40px;"><p>
+                    发布时间：${createTime}</p></div>
             </div>
             <!-- /.page-content -->
 

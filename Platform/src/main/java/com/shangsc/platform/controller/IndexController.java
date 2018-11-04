@@ -16,7 +16,6 @@
 package com.shangsc.platform.controller;
 
 import com.alibaba.druid.support.json.JSONUtils;
-import com.alibaba.fastjson.JSONObject;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
@@ -30,10 +29,7 @@ import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.util.MyDigestUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.mail.MailKit;
-import com.shangsc.platform.model.Ad;
-import com.shangsc.platform.model.Company;
-import com.shangsc.platform.model.SysLoginRecord;
-import com.shangsc.platform.model.SysUser;
+import com.shangsc.platform.model.*;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.lang3.StringUtils;
 
@@ -55,11 +51,13 @@ public class IndexController extends Controller {
     }
 
     public void home() {
-        Ad ad = Ad.dao.findFirst("select * from t_ad where status=1");
+        Ad ad = Ad.dao.findFirst("select * from t_ad where status=1 order by id desc");
         if (ad != null) {
+            Image image = Image.dao.findFirst("select * from t_image where rela_id=? and rela_type=? order by id desc limit 1", ad.getId(), "t_ad");
             this.setAttr("title", ad.getTitle());
             this.setAttr("content", ad.getContent());
             this.setAttr("createTime", ad.getCreateTime());
+            this.setAttr("image", image);
         } else {
             this.setAttr("title", "通州区节水管理平台");
             this.setAttr("content", "通州区节水管理平台为您服务");
