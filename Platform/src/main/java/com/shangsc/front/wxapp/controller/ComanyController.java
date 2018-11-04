@@ -2,7 +2,6 @@ package com.shangsc.front.wxapp.controller;
 
 import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
-import com.shangsc.platform.code.CompanyType;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
@@ -28,7 +27,7 @@ public class ComanyController extends BaseController {
         Long cId = this.getParaToLong("id");
         Company byId = Company.me.findById(cId);
         if (byId != null) {
-            Map<Integer, String> mapCompanyType = CompanyType.getMap();
+            Map<String, Object> mapCompanyType = DictData.dao.getDictMap(0, DictCode.CompanyType);
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
             Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
             Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictCode.UnitType);
@@ -68,6 +67,7 @@ public class ComanyController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     private void setVoProp(List<Company> companies) {
         if (CommonUtils.isNotEmpty(companies)) {
+            Map<String, Object> mapCompanyType = DictData.dao.getDictMap(0, DictCode.CompanyType);
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
             Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
             Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictCode.UnitType);
@@ -75,6 +75,9 @@ public class ComanyController extends BaseController {
             Map<String, Object> termType = DictData.dao.getDictMap(0, DictCode.Term);
             for (int i = 0; i < companies.size(); i++) {
                 Company co = companies.get(i);
+                if (co.getCompanyType() != null && mapCompanyType.size() > 0) {
+                    co.put("companyTypeName", String.valueOf(mapCompanyType.get(String.valueOf(co.getCompanyType()))));
+                }
                 if (co.getCustomerType() != null && mapUserType.size() > 0) {
                     co.put("customerTypeName", String.valueOf(mapUserType.get(String.valueOf(co.getCustomerType()))));
                 }

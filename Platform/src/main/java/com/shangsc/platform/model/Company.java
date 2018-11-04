@@ -619,7 +619,7 @@ public class Company extends BaseCompany<Company> {
         Set<String> checkRepeat = new HashSet<>();
         for (int i = 0; i < maps.size(); i++) {
             Company company = new Company();
-            Integer company_type = CompanyType.COMPANY;
+            Integer company_type = null;
             Map<Integer, String> map = maps.get(i);
             String realCode = null;
             if (StringUtils.isNotEmpty(map.get(0))) {
@@ -636,9 +636,7 @@ public class Company extends BaseCompany<Company> {
             String name = null;
             if (StringUtils.isNotEmpty(map.get(1))) {
                 name = map.get(1).toString();
-                if (CompanyType.notCompany(name)) {
-                    company_type = CompanyType.SUPPLY;
-                }
+                company_type = CompanyType.getCompanyType(name, DictData.dao.getDictValMap(DictCode.CompanyType));
             }
             String waterUnit = null;
             if (StringUtils.isNotEmpty(map.get(2))) {
@@ -659,9 +657,6 @@ public class Company extends BaseCompany<Company> {
             Integer customerType = null;
             if (StringUtils.isNotEmpty(map.get(6))) {
                 customerType = dictUserType.get(map.get(6).toString());
-                if (CompanyType.notCompany(name)) {
-                    company_type = CompanyType.SUPPLY;
-                }
             }
             String gbIndustry = null;
             if (StringUtils.isNotEmpty(map.get(7))) {

@@ -6,7 +6,6 @@ import com.jfinal.aop.Clear;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.upload.UploadFile;
-import com.shangsc.platform.code.CompanyType;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.code.ExportType;
 import com.shangsc.platform.conf.GlobalConfig;
@@ -43,6 +42,7 @@ public class CompanyController extends BaseController {
     public void index() {
         this.setAttr("term", this.getPara("term"));
         this.setAttr("flag", this.getPara("flag"));
+        this.setAttr("companyType", this.getPara("companyType"));
         render("company_index.jsp");
     }
 
@@ -222,7 +222,7 @@ public class CompanyController extends BaseController {
 
     private void setVoProp(List<Company> companies, boolean changeAddress) {
         if (CommonUtils.isNotEmpty(companies)) {
-            Map<Integer, String> mapCompanyType = CompanyType.getMap();
+            Map<String, Object> mapCompanyType = DictData.dao.getDictMap(0, DictCode.CompanyType);
             Map<String, Object> mapUserType = DictData.dao.getDictMap(0, DictCode.UserType);
             Map<String, Object> mapWaterUseType = DictData.dao.getDictMap(0, DictCode.WaterUseType);
             Map<String, Object> mapUintType = DictData.dao.getDictMap(0, DictCode.UnitType);

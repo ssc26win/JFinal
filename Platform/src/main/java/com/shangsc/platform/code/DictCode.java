@@ -27,12 +27,15 @@ public class DictCode {
     public static final String MeterAttr = "MeterAttr";
     public static final String Term = "Term";
 
+    public static final String CompanyType = "CompanyType";
+
     public static final String ACTUAL_EXCEPTION_TIME_OUT = "ActualExceptionTimeOut";
 
     public static String getCompanyUse() {
         List<String> list = new ArrayList<>();
         list.add("'" + Street + "'");
         list.add("'" + UnitType + "'");
+        list.add("'" + CompanyType + "'");
         list.add("'" + UserType + "'");
         list.add("'" + WaterUseType + "'");
         list.add("'" + Term + "'");

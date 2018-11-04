@@ -213,9 +213,55 @@
             json1.plotOptions = plotOptions1;
             json1.credits = credits;
             $('#containerMeter').highcharts(json1);
-        })
+        });
 
         $.get("${context_path}/chart/circleStatus/company", function (data) {
+            var chart1 = {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            };
+            var title1 = {
+                text: data.totalTitle
+            };
+            var tooltip1 = {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}</b>'
+            };
+            var plotOptions1 = {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    events: {
+                        click: function (e) {
+                            location.href = e.point.url
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            };
+            var series1 = [{
+                type: 'pie',
+                name: '单位数量（%）',
+                data:  data.seriesDataArray
+            }];
+            var credits = {
+                enabled: false // 禁用版权信息
+            }
+            var json1 = {};
+            json1.chart = chart1;
+            json1.title = title1;
+            json1.tooltip = tooltip1;
+            json1.series = series1;
+            json1.plotOptions = plotOptions1;
+            json1.credits = credits;
+            $('#containerCompany').highcharts(json1);
+        })
+    })
+        //暂时废弃
+       /* $.get("/chart/circleStatus/company", function (data) {
             var total2 = data.total;
             var warnTotal2 = data.warnTotal;
             var normalTotal2 = data.normalTotal;
@@ -252,21 +298,21 @@
                 type: 'pie',
                 name: '单位数量（%）',
                 data: [
-                    //{name:'单位总数量' + '(' + total2 + ')', y:total2,url:'${context_path}/basic/company'},
+                    //{name:'单位总数量' + '(' + total2 + ')', y:total2,url:'/basic/company'},
                     {
                         name: '用水单位' + '(' + normalTotal2 + ')',
                         y: normalTotal2,
-                        url: '${context_path}/basic/company?flag=Normal'
+                        url: '/basic/company?flag=Normal'
                     },
                     {
                         name: warnTitle + '单位' + '(' + warnTotal2 + ')',
                         y: warnTotal2,
-                        url: '${context_path}/basic/company?flag=Warn'
+                        url: '/basic/company?flag=Warn'
                     },
                     {
                         name: '供水单位' + '(' + supplyTotal + ')',
                         y: supplyTotal,
-                        url: '${context_path}/basic/company?flag=Supply'
+                        url: '/basic/company?flag=Supply'
                     },
                 ]
             }];
@@ -282,8 +328,8 @@
             json1.credits = credits;
             $('#containerCompany').highcharts(json1);
         })
-    })
-    $(function () {
+    })*/
+    /*$(function () {
         var titHeight = $(".tiphead").height();
         $(".tipfloat").animate({height: "show"}, 500);
         $(".close").click(function () {
@@ -292,9 +338,9 @@
             });
         });
     });
-    /*function getMsgData() {
+   function getMsgData() {
         var submitData = {};
-        $.post("${context_path}/chart/getNewsMsg", submitData, function (data) {
+        $.post("/chart/getNewsMsg", submitData, function (data) {
             var title = data.title;
             var content = data.content;
             if (title == "" || title == undefined || content == "" || content == undefined) {
@@ -307,10 +353,10 @@
                 $(".adbody").show();
             }
         }, "json");
-    }*/
+    }
     $(function () {
         getMsgData();
-    })
+    })*/
 </script>
 </body>
 </html>

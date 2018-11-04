@@ -44,8 +44,6 @@
                                                 日期时间:
                                                 <input type="text" id="startTime" name="startTime" class="form_datetime" style="width: 150px;"/>~<input type="text" id="endTime" name="endTime" class="form_datetime" style="width: 150px;"/>
                                                 <select id="type" name="type" style="margin-left: 5px;width: 150px;height: 34px;"><option value="" selected>请选择单位类型</option>
-                                                    <option value="1">用水单位</option>
-                                                    <option value="2">供水单位</option>
                                                 </select>
                                                 <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;width: 150px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;width: 150px;"/>
@@ -132,7 +130,8 @@
                 { label: '水源类型', name: 'watersTypeName', width: 60, sortable:false},
                 { label: '水表属性', name: 'meterAttrName', width: 80, sortable:false},
                 { label: '查询时间', name: 'write_time', width: 100, sortable:true},
-                { label: '水表读数（立方米）', name: 'sum_water', width: 90, sortable:true},
+                { label: '净用水量（m³）', name: 'net_water', width: 100, sortable:true},
+                { label: '水表读数（m³）', name: 'sum_water', width: 90, sortable:true},
                 { label: '单位地址', name: 'addressMap', width: 150,sortable:false}
             ],
             viewrecords: true,
@@ -309,6 +308,11 @@
             for(var i = 0;i<meterAttr.length;i++) {
                 $("#meterAttr").append("<option value='" + meterAttr[i].value + "'>"+meterAttr[i].name+"</option>");
             }
+            var companyType = data.CompanyType;
+            for(var i = 0;i<companyType.length;i++) {
+                $("#type").append("<option value='" + companyType[i].value + "'>"+companyType[i].name+"</option>");
+            }
+
         },"json");
     }
     $(function(){

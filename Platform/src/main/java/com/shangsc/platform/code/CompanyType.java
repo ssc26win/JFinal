@@ -15,12 +15,25 @@ import java.util.Set;
  */
 public class CompanyType {
 
+    public static Integer getCompanyType(String name, Map<Integer, String> companies) {
+        if (StringUtils.isNotEmpty(name)) {
+            for (Integer type : companies.keySet()) {
+                if (name.indexOf(companies.get(type)) > 0) {
+                    return type;
+                }
+            }
+        }
+        return null;
+    }
+
+
     //导入区分单位类型
-    public static Set<String> likeType= new HashSet<String>();
+    public static Set<String> likeType = new HashSet<String>();
 
     static {
         likeType.add("供水");
         likeType.add("水厂");
+        likeType.add("村委会");
     }
 
     public static boolean notCompany(String str) {
@@ -36,6 +49,7 @@ public class CompanyType {
 
     public static final Integer COMPANY = 1;
     public static final Integer SUPPLY = 2;
+    public static final Integer Village = 3;
 
     public static final String COMPANY_STR = "用水单位";
     public static final String SUPPLY_STR = "供水单位";

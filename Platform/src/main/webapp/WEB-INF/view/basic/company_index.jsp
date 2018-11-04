@@ -43,9 +43,7 @@
                                             <input type="hidden" id="flagType" name="flagType" value="${flag}"/>
                                             <div class="input-group">
                                                     <input type="text" id="name" name="name" class="search-query" style="height: 34px;width: 400px;" placeholder="请输入关键字" />
-                                                    <select id="company_type" name="company_type" style="height: 34px;width: 159px;margin-left: 5px;">
-                                                        <option value="1">用水单位</option>
-                                                        <option value="2">供水单位</option>
+                                                    <select id="company_type" name="company_type" style="height: 34px;width: 159px;margin-left: 5px;"><option value="">请选择单位类型</option>
                                                     </select>
                                                     <span class="" style="margin-left: 10px;margin-bottom: 5px;">
                                                         <button type="button" id="btn_search" class="btn btn-purple btn-sm">
@@ -113,6 +111,13 @@
         if (flag != null && flag != undefined && flag != '') {
             url = '${context_path}/basic/company/get'+flag+'ListData';
         }
+
+        var companyType = '${companyType}';
+        if (companyType != null && companyType != undefined && companyType != '') {
+            url = '${context_path}/basic/company/getListData?companyType=' +companyType;
+            $("#company_type").val(companyType);
+        }
+
         var term = '${term}';
         if (term != null && term != undefined && term != '') {
             url = '${context_path}/basic/company/getListData?term=' +term;
@@ -319,6 +324,24 @@
                 $('#btn_search').click();
             }
         }
+    })
+    function getDictMapData() {
+        var submitData = {};
+        $.post("${context_path}/dict/getCompanyUseDict", submitData, function (data) {
+            var companyType = data.CompanyType;
+            var companyTypeTarget = '${companyType}';
+            if (companyTypeTarget != null && companyTypeTarget != undefined && companyTypeTarget != '') {
+                parseInt(companyTypeTarget);
+            }
+            for(var i = 0;i<companyType.length;i++) {
+                $("#company_type").append("<option value='" + companyType[i].value + "'>"+companyType[i].name+"</option>");
+            }
+            $("#company_type").val(companyTypeTarget);
+        }, "json");
+    }
+
+    $(function () {
+        getDictMapData();
     })
 </script>
 

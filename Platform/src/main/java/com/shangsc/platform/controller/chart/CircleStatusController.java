@@ -76,7 +76,7 @@ public class CircleStatusController extends BaseController {
     }
 
     @RequiresPermissions(value = {"/chart/circleStatus"})
-    public void company() {
+    public void company_bak() {
         JSONObject object = new JSONObject();
         //取得用水指标数据
         int total = Company.me.totalCount();
@@ -101,6 +101,31 @@ public class CircleStatusController extends BaseController {
         } else {
             object.put("warnTitle", "告警");
         }
+        this.renderJson(object.toJSONString());
+    }
+
+    @RequiresPermissions(value = {"/chart/circleStatus"})
+    public void company() {
+        JSONObject object = new JSONObject();
+        String contextPath = this.getRequest().getServletContext().getContextPath();
+        String context_path = contextPath.equals("/") ? "" : contextPath;
+        //取得用水指标数据
+        int total = Company.me.totalCount();
+        object.put("totalTitle", "单位总数量（" + total + "）");//单位总数
+        Map<Integer, String> dictValMap = DictData.dao.getDictValMap(DictCode.CompanyType);
+
+        List<Company> companies = Company.me.find("select count(company_type) as TypeCounts,company_type from t_company group by company_type");
+
+        JSONArray array = new JSONArray();
+        for (Company company : companies) {
+           JSONObject obj = new JSONObject();
+            obj.put("name", dictValMap.get(company.getCompanyType()) + "(" + company.getLong("TypeCounts") + ")");
+            obj.put("y", company.getLong("TypeCounts"));
+            obj.put("url", context_path + "/basic/company?companyType=" + company.getCompanyType());
+            array.add(obj);
+        }
+        object.put("seriesDataArray", array);
+
         this.renderJson(object.toJSONString());
     }
 

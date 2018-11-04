@@ -155,8 +155,6 @@
                                 <div class="col-sm-4">
                                     <input  type="hidden" id="company_typeInput" name="company_typeInput" value="${item.company_type}" />
                                     <select id="company_type" name="company_type" value="${item.companyType}" class="form-control">
-                                        <option value="1">用水单位</option>
-                                        <option value="2">供水单位</option>
                                     </select>
                                 </div>
                                 <label class="col-sm-2 control-label" for="term">周期:</label>
@@ -338,7 +336,10 @@
                 $("#term").append("<option value='" + term[i].value + "'>"+term[i].name+"</option>");
             }
             $("#term").val($("#termInput").val());
-
+            var companyType = data.CompanyType;
+            for(var i = 0;i<companyType.length;i++) {
+                $("#company_type").append("<option value='" + companyType[i].value + "'>"+companyType[i].name+"</option>");
+            }
             $("#company_type").val($("#company_typeInput").val());
 
         },"json");

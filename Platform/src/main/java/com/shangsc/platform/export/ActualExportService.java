@@ -41,6 +41,8 @@ public class ActualExportService extends ExportBaseService {
                 "累计用水量（立方米）",
                 "抄表时间",
                 "电池电压（伏特v）",
+                "厂家",
+                "备注"
         }));
 
         logger.info("导出实时数据信息导出条数为:{}", actualDatas.size());
@@ -55,7 +57,9 @@ public class ActualExportService extends ExportBaseService {
                     actualData.getNetWater(),
                     actualData.getSumWater(),
                     ToolDateTime.format(actualData.getWriteTime(), ToolDateTime.pattern_ymd),
-                    actualData.getVoltage()
+                    actualData.getVoltage(),
+                    actualData.get("vender"),
+                    actualData.get("memo")
             };
             objects.add(obj);
         }
