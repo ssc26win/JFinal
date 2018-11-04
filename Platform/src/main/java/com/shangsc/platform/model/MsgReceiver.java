@@ -3,7 +3,6 @@ package com.shangsc.platform.model;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.model.base.BaseMsgReceiver;
 import org.apache.commons.collections.CollectionUtils;
@@ -18,12 +17,18 @@ import java.util.*;
 public class MsgReceiver extends BaseMsgReceiver<MsgReceiver> {
     public static final MsgReceiver dao = new MsgReceiver();
 
-    public Page<MsgReceiver> getPageInfo(int pageNo, int pageSize, Integer uId, String keyword, String orderBy) {
+    public Page<MsgReceiver> getPageInfo(int pageNo, int pageSize, SysUser sysUser, String keyword, Integer status, String orderBy) {
         String select = "select tmr.*,tm.title,tm.content  ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_msg_receiver tmr ");
         sqlExceptSelect.append(" left join t_message tm on tm.id=tmr.msg_id where 1=1");
+        Integer uId = sysUser.getId();
         if (uId != null && uId > 0L) {
             sqlExceptSelect.append(" and tmr.receiver_id=" + uId);
+        }
+        if (status != null) {
+            sqlExceptSelect.append(" and tmr.status=" + status);
+        } else {
+            sqlExceptSelect.append(" and tmr.status in (0,1) ");
         }
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (title like '%" + keyword + "%' or content like '%" + keyword + "%') ");
@@ -127,10 +132,7 @@ public class MsgReceiver extends BaseMsgReceiver<MsgReceiver> {
     }
 
     public InvokeResult deleteData(String idStrs) {
-        List<Long> ids = CommonUtils.getLongListByStrs(idStrs);
-        for (int i = 0; i < ids.size(); i++) {
-            this.deleteById(ids.get(i));
-        }
+        Db.update("update t_msg_receiver set status=2 where id in (?)", idStrs);
         return InvokeResult.success("删除成功");
     }
 

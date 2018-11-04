@@ -32,7 +32,7 @@
             <div class="row">
                 <div class="col-xs-12">
                     <!-- PAGE CONTENT BEGINS -->
-                   <div class="widget-box">
+                    <div class="widget-box">
                         <div class="widget-header widget-header-small">
                             <h5 class="widget-title lighter">筛选</h5>
                         </div>
@@ -45,8 +45,16 @@
                           <span class="input-group-addon">
                               <i class="ace-icon fa fa-check"></i>
                           </span>
-                                            <input type="text" id="name" name="name" class="form-control search-query"
+                                            <input type="text" id="name" name="name" class="search-query"
+                                                   style="height: 34px;width: 300px;"
                                                    placeholder="请输入关键字"/>
+                                            <select id="status" name="status"
+                                                    style="margin-left: 5px;width: 159px;height: 34px;">
+                                                <option value="">请选择消息状态</option>
+                                                <option value="0">未读</option>
+                                                <option value="1">已读</option>
+                                                <option value="2">已删除</option>
+                                            </select>
                           <span class="input-group-btn">
                               <button type="button" id="btn_search" class="btn btn-purple btn-sm">
                                   <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
@@ -142,9 +150,10 @@
         $("#btn_search").click(function () {
             //此处可以添加对查询数据的合法验证
             var name = $("#name").val();
+            var status = $("#status").val();
             $("#grid-table").jqGrid('setGridParam', {
                 datatype: 'json',
-                postData: {'name': name}, //发送数据
+                postData: {'name': name, 'status': status}, //发送数据
                 page: 1
             }).trigger("reloadGrid"); //重新载入
         });
@@ -271,7 +280,7 @@
         $("#grid-table").trigger("reloadGrid"); //重新载入
     }
 
-    jQuery(function($) {
+    jQuery(function ($) {
         document.onkeydown = function (e) {
             var theEvent = window.event || e;
             var code = theEvent.keyCode || theEvent.which;

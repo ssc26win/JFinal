@@ -163,6 +163,9 @@
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage}</b>'
             },
+            credits: {
+                enabled: false // 禁用版权信息
+            },
             plotOptions: {
                 pie: {
                     allowPointSelect: true,

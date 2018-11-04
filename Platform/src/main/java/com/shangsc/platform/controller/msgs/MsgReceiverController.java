@@ -60,7 +60,8 @@ public class MsgReceiverController extends BaseController {
     public void getUnReadListData() {
         SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
         String keyword = this.getPara("name");
-        Page<MsgReceiver> pageInfo = MsgReceiver.dao.getPageInfo(getPage(), this.getRows(), sysUser.getId(), keyword, getOrderbyStr());
+        Integer status = this.getParaToInt("status");
+        Page<MsgReceiver> pageInfo = MsgReceiver.dao.getPageInfo(getPage(), this.getRows(), sysUser, keyword, status, getOrderbyStr());
         List<MsgReceiver> list = pageInfo.getList();
         for (MsgReceiver msgReceiver : list) {
             if (msgReceiver.getStatus() != null) {
