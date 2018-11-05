@@ -45,7 +45,8 @@ public class MsgController extends BaseController {
         if (sysUser == null) {
             this.renderJson(new ArrayList<>());
         }
-        Page<Message> pageInfo = MsgReceiver.dao.getWxPageList(this.getPage(), this.getRows(), sysUser.getId());
+        Integer status = this.getParaToInt("status");
+        Page<Message> pageInfo = MsgReceiver.dao.getWxPageList(this.getPage(), this.getRows(), sysUser.getId(), status);
         List<Message> list = pageInfo.getList();
         for (Message msgReceiver : list) {
             if (msgReceiver.getStatus() != null) {

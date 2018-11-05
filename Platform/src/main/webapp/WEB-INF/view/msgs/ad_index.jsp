@@ -206,7 +206,7 @@
         var pIndex = parent.layer.open({
           title: '处理图片',
           type: 2,
-          area: ['980px', '780px'],
+          area: ['980px', '580px'],
           fix: false, //不固定
           maxmin: true,
           content: url

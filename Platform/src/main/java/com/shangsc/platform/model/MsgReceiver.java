@@ -172,10 +172,15 @@ public class MsgReceiver extends BaseMsgReceiver<MsgReceiver> {
      * @param uId
      * @return
      */
-    public Page<Message> getWxPageList(int pageNo, int pageSize, Integer uId) {
+    public Page<Message> getWxPageList(int pageNo, int pageSize, Integer uId, Integer status) {
         String select = "select tmr.id,tm.id as msgId,tm.title,tm.content,tmr.status,tmr.create_time ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_msg_receiver tmr ");
         sqlExceptSelect.append(" inner join t_message tm on tm.id=tmr.msg_id where tmr.receiver_id=" + uId);
+        if (status != null) {
+            sqlExceptSelect.append(" and tmr.status=" + status);
+        } else {
+            sqlExceptSelect.append(" and tmr.status in (0,1) ");
+        }
         sqlExceptSelect.append(" order by tmr.status asc, tmr.create_time desc");
         return Message.dao.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }

@@ -27,7 +27,10 @@
     <script src="${res_url}js/layer/layer.js"></script>
 </head>
 <style type="text/css">
-    html { overflow-x: hidden; overflow-y: hidden; }
+    html {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
 </style>
 <body class="no-skin">
 <div class="main-container" id="main-container">
@@ -43,7 +46,7 @@
             <div class="page-content">
                 <div class="row">
                     <div class="col-sm-1"></div>
-                    <div class="col-sm-10" style="height: 80%;">
+                    <div class="col-sm-10" style="height: 60%;">
                         <form enctype="multipart/form-data">
                             <div class="form-group">
                                 <input id="input-700" name="kartik-input-700[]" type="file" multiple
@@ -81,6 +84,7 @@
 </body>
 
 <script type="text/javascript">
+    window.imgTotal = parseInt(${maxFileCount});
     $(function () {
                 var uploadUrl = '${context_path}/image/uploadData?relaTable=' + $("#relaTable").val() + '&maxFileCount=' + '${maxFileCount}';
                 if ($("#relaId").val() != "") {
@@ -94,7 +98,10 @@
                         uploadUrl: uploadUrl,
                         uploadAsync: false,
                         minFileCount: 0,
-                        maxFileCount: ${maxFileCount},
+                        maxFileCount: parseInt(${maxFileCount}),
+                        enctype: 'multipart/form-data',
+                        maxFileSize: 5120,//限制上传大小KB
+                        allowedPreviewTypes: ['image'],
                         overwriteInitial: false,
                         showRemove: false,
                         msgFilesTooMany: "选择上传的文件数量 超过允许的最大数值！",
@@ -122,10 +129,10 @@
                                 data: {} // any other data to send that can be referred in `filecustomerror`
                             };
                         }
+
                     }).on('fileuploaded', function (event, data, id, index) {//上传成功之后的处理
-                        console.log(data);
-                        console.log(data.response.uploadImgId);
-                        console.log(data.response.uploadImgFileName);
+                        window.imgTotal = window.imgTotal - 1;
+                        console.log(window.imgTotal);
                         var targetId = $("#responseImgIds").val();
                         if (targetId != "") {
                             $("#responseImgIds").val(targetId + "," + data.response.uploadImgId);
@@ -144,8 +151,10 @@
                         $('#kv-success-1').fadeIn('slow');
                     }).on('filebatchpreupload', function (event, data, id, index) {
                         $('#kv-success-1').html('<h4>上传状态</h4><ul></ul>').hide();
-                    }).on('filedeleted', function(event, key) {
-                        console.log('Key = ' + key);
+                    }).on('filedeleted', function (event, key) {
+                        window.imgTotal = window.imgTotal + 1;
+                    }).on("filebatchselected", function (event, files) {
+                        window.imgTotal = window.imgTotal - 1;
                     });
 
                 } else {
@@ -154,9 +163,10 @@
                     $("#input-700").fileinput({
                         uploadUrl: '${context_path}/image/uploadData?relaTable=' + $("#relaTable").val() + '&relaId=' + $("#relaId").val(), // server upload action
                         language: 'zh',
+                        theme: 'fa',
                         minFileCount: 0,
-                        uploadAsync: true,
-                        maxFileCount: 3,
+                        uploadAsync: false,
+                        maxFileCount: parseInt(${maxFileCount}),
                         enctype: 'multipart/form-data',
                         maxFileSize: 5120,//限制上传大小KB
                         // overwriteInitial: false,//不覆盖已上传的图片
@@ -166,9 +176,9 @@
                         showBrowse: true,
                         browseClass: 'btn btn-primary btn-lg',
                         uploadClass: 'btn btn-info btn-lg',
-                        showRemove:false,
-                        browseOnZoneClick: true,
+                        showRemove: false,
                         msgFilesTooMany: "选择上传的文件数量 超过允许的最大数值！",
+                        previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
                         ajaxSettings: {
                             contentType: false
                         }
@@ -187,9 +197,7 @@
                             };
                         }
                     }).on('fileuploaded', function (event, data, id, index) {//上传成功之后的处理
-                        console.log(data);
-                        console.log(data.response.uploadImgId);
-                        console.log(data.response.uploadImgFileName);
+                        window.imgTotal = window.imgTotal - 1;
                         var targetId = $("#responseImgIds").val();
                         if (targetId != "") {
                             $("#responseImgIds").val(targetId + "," + data.response.uploadImgId);
@@ -208,13 +216,35 @@
                         $('#kv-success-1').fadeIn('slow');
                     }).on('filebatchpreupload', function (event, data, id, index) {
                         $('#kv-success-1').html('<h4>上传状态</h4><ul></ul>').hide();
-                    }).on('filedeleted', function(event, key) {
-                        console.log('Key = ' + key);
+                    }).on('filedeleted', function (event, key) {
+                        window.imgTotal = window.imgTotal + 1;
+                    }).on("filebatchselected", function (event, files) {
+                        window.imgTotal = window.imgTotal - 1;
                     });
                 }
             }
-    )
-    ;
+    );
 
+    $(function () {
+        $("#input-702").click(function () {
+            if (window.imgTotal <= 0) {
+                layer.msg("不能超出图片限制数量范围", {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return false;
+            }
+
+        });
+        $("#input-700").click(function () {
+            if (window.imgTotal <= 0) {
+                layer.msg("不能超出图片限制数量范围", {
+                    icon: 2,
+                    time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                });
+                return false;
+            }
+        });
+    })
 </script>
 </html>

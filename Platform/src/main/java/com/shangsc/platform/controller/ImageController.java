@@ -7,12 +7,13 @@ import com.google.common.collect.Maps;
 import com.jfinal.core.Controller;
 import com.jfinal.kit.PropKit;
 import com.jfinal.upload.UploadFile;
-import com.shangsc.platform.core.util.FileUtils;
-import com.shangsc.platform.core.util.IWebUtils;
-import com.shangsc.platform.core.util.RandomUtils;
-import com.shangsc.platform.core.util.VerifyCodeUtils;
+import com.shangsc.platform.core.model.Condition;
+import com.shangsc.platform.core.model.Operators;
+import com.shangsc.platform.core.util.*;
 import com.shangsc.platform.core.view.InvokeResult;
+import com.shangsc.platform.model.Ad;
 import com.shangsc.platform.model.Image;
+import com.shangsc.platform.model.LawRecord;
 import com.shangsc.platform.model.SysUser;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +24,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -88,7 +90,7 @@ public class ImageController extends Controller {
             this.setAttr("initialPreview", "notConfig");
             this.setAttr("initialPreviewConfig", "notConfig");
         }
-        Long maxFileCount = 0L;
+        Long maxFileCount = this.getParaToLong("maxFileCount", 0L);
         if (StringUtils.isNotEmpty(this.getPara("relaTable"))) {
             if ("t_ad".equals(this.getPara("relaTable"))) {
                 Image first = Image.dao.findFirst("select count(1) as ImageCount from t_image where rela_type='t_ad' and rela_id=?", relaId);
@@ -110,13 +112,15 @@ public class ImageController extends Controller {
                 }
             }
         }
-        this.setAttr("maxFileCount", this.getParaToInt("maxFileCount"));
+        this.setAttr("maxFileCount", maxFileCount);
         this.setAttr("relaId", relaId);
         render("add_images.jsp");
     }
 
     public void uploadData() {
         SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
+        String relaTable = this.getPara("relaTable");
+        Long relaId = this.getParaToLong("relaId", 0L);
         Integer userId = 0;
         String userName = "";
         if (sysUser != null) {
@@ -154,8 +158,6 @@ public class ImageController extends Controller {
             String imgUrl = status_url + fileUrl;
             data.put("staticUrl", imgUrl);
             data.put("fileUrl", fileUrl);
-            String relaTable = this.getPara("relaTable");
-            Long relaId = this.getParaToLong("relaId", 0L);
             InvokeResult save = Image.dao.save(null, originFileName, originFileName, width, height, size,
                     memo, imgUrl, relaId, relaTable, userId, userName);
             Object imageId = save.getData();
