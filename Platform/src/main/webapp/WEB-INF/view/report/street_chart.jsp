@@ -38,15 +38,15 @@
                             <div class="widget-main">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <form id="exportForm"
+                                        <form id="exportForm" action="${context_path}/report/street/chart"
                                               method="post">
                                             <input type="text" style="display:none"/>
 
                                             <div class="input-group">
                                                 日期时间:
-                                                <input type="text" id="startTime" name="startTime" value=""
+                                                <input type="text" id="startTime" name="startTime" value="${startTime}"
                                                        class="form_date" style="width: 100px;"/>~
-                                                <input type="text" id="endTime" name="endTime" value=""
+                                                <input type="text" id="endTime" name="endTime" value="${endTime}"
                                                        class="form_date" style="width: 100px;"/>
                                                 <select id="type" name="type"
                                                         style="margin-left: 5px;width: 159px;height: 34px;">
@@ -65,7 +65,7 @@
                                                     <option value="">所属乡镇或街道</option>
                                                 </select>
                                                 <span class="input-group-btn">
-                                                    <button type="button" id="btn_search" class="btn btn-purple btn-sm">
+                                                    <button type="submit" id="btn_search" class="btn btn-purple btn-sm">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                                         搜索
                                                     </button>
@@ -244,5 +244,6 @@
         });
     })
 </script>
+<jsp:include page="/WEB-INF/view/common/chartjs.jsp" flush="true"/>
 </body>
 </html>

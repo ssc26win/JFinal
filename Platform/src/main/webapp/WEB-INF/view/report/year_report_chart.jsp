@@ -43,7 +43,7 @@
               <div class="widget-main">
                 <div class="row">
                   <div class="col-xs-12">
-                    <form id="exportForm"
+                    <form id="exportForm" action="${context_path}/report/year/chart"
                           method="post">
                       <input type="text" style="display:none"/>
 
@@ -74,7 +74,7 @@
                           <option value="">所属乡镇或街道</option>
                         </select>
                         <span class="input-group-btn">
-                            <button type="button" id="btn_search" class="btn btn-purple btn-sm">
+                            <button type="submit" id="btn_search" class="btn btn-purple btn-sm">
                               <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                               搜索
                             </button>
@@ -230,6 +230,7 @@
     });
   }
 </script>
+<jsp:include page="/WEB-INF/view/common/chartjs.jsp" flush="true"/>
 </body>
 </html>
 

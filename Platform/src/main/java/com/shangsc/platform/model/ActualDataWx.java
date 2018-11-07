@@ -383,4 +383,55 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         }
         return ActualData.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
+
+    public List<Record> getWxMeterDailyActualDataOnUse(String wxInnerCode, String meterAddress, String startTime, String endTime) {
+        Map<String, String> map = ToolDateTime.getBefore10DateTime();
+        String start = map.get(MonthCode.warn_start_date);
+        String end = map.get(MonthCode.warn_end_date);
+        String sql = "select abs(t.net_water) as sumWater,t.write_time as DAY,t.* from t_actual_data t" +
+                " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
+                (StringUtils.isNotEmpty(meterAddress) ? " and t.meter_address = '" + meterAddress + "'" : " ") +
+                (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
+                (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
+                " GROUP BY t.write_time";
+        return Db.find(sql);
+    }
+
+    public Page<ActualData> findWxMeterDailyListOnUse(int pageNo, int pageSize, String orderbyStr, String startTime, String endTime, String keyword, String wxInnerCode, String meterAddress) {
+        String select = " select abs(tad.net_water) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
+                "tc.county,tc.company_type," +
+                "tad.write_time as todays ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
+                " inner join t_company  tc on tad.inner_code=tc.inner_code " +
+                " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +
+                " where 1=1 ");
+        if (StringUtils.isNotEmpty(wxInnerCode)) {
+            sqlExceptSelect.append(" and tc.inner_code in (" + StringUtils.trim(wxInnerCode) + ") ");
+        }
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (tc.real_code='" + StringUtils.trim(keyword) + "' or tad.meter_address='" + StringUtils.trim(keyword)
+                    + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ");
+        }
+        if (StringUtils.isNotEmpty(meterAddress)) {
+            sqlExceptSelect.append(" and tad.meter_address ='" + meterAddress + "'");
+        }
+        Map<String, String> map = ToolDateTime.getBefore10DateTime();
+        String start = map.get(MonthCode.warn_start_date);
+        String end = map.get(MonthCode.warn_end_date);
+        if (StringUtils.isEmpty(startTime)) {
+            startTime = start;
+        }
+        sqlExceptSelect.append(" and tad.write_time >= '" + startTime + "' ");
+        if (StringUtils.isEmpty(endTime)) {
+            endTime = end;
+        }
+        sqlExceptSelect.append(" and tad.write_time <= '" + endTime + "' ");
+        sqlExceptSelect.append(" group by tad.write_time ");
+        if (StringUtils.isEmpty(orderbyStr)) {
+            sqlExceptSelect.append(" order by tad.write_time desc ");
+        } else {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        return ActualData.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
+    }
 }

@@ -37,7 +37,6 @@ public class ReportStreetChartController extends BaseController {
 
     @RequiresPermissions(value = {"/report/street/chart"})
     public void index() {
-
         Date startTime = null;
         Date endTime = null;
         try {
@@ -154,8 +153,6 @@ public class ReportStreetChartController extends BaseController {
         }
 
         this.setAttr("drilldownJsonData", drilldownJsonData);
-
-        System.out.println(JsonUtil.obj2Json(drilldownJsonData));
 
         Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
         JSONArray meterAttrName = new JSONArray();

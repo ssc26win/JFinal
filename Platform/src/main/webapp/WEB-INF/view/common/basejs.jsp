@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <!--[if !IE]> -->
 <script type="text/javascript">
-    window.jQuery || document.write("<script src='${res_url}ace-1.3.3/assets/js/jquery.js'>"+"<"+"/script>");
+    window.jQuery || document.write("<script src='${res_url}ace-1.3.3/assets/js/jquery.js'>" + "<" + "/script>");
 </script>
 
 <!-- <![endif]-->
@@ -12,22 +12,22 @@ window.jQuery || document.write("<script src='${res_url}ace-1.3.3/assets/js/jque
 </script>
 <![endif]-->
 <script type="text/javascript">
-    if('ontouchstart' in document.documentElement) document.write("<script src='${res_url}ace-1.3.3/assets/js/jquery.mobile.custom.js'>"+"<"+"/script>");
+    if ('ontouchstart' in document.documentElement) document.write("<script src='${res_url}ace-1.3.3/assets/js/jquery.mobile.custom.js'>" + "<" + "/script>");
 
-    (function($){
-        $.fn.serializeJson=function(){
-            var serializeObj={};
-            var array=this.serializeArray();
-            var str=this.serialize();
-            $(array).each(function(){
-                if(serializeObj[this.name]){
-                    if($.isArray(serializeObj[this.name])){
+    (function ($) {
+        $.fn.serializeJson = function () {
+            var serializeObj = {};
+            var array = this.serializeArray();
+            var str = this.serialize();
+            $(array).each(function () {
+                if (serializeObj[this.name]) {
+                    if ($.isArray(serializeObj[this.name])) {
                         serializeObj[this.name].push(this.value);
-                    }else{
-                        serializeObj[this.name]=[serializeObj[this.name],this.value];
+                    } else {
+                        serializeObj[this.name] = [serializeObj[this.name], this.value];
                     }
-                }else{
-                    serializeObj[this.name]=this.value;
+                } else {
+                    serializeObj[this.name] = this.value;
                 }
             });
             return serializeObj;
@@ -84,24 +84,24 @@ window.jQuery || document.write("<script src='${res_url}ace-1.3.3/assets/js/jque
 <script src="${res_url}js/layer/layer.js"></script>
 <%--	<script src="${res_url}js/jquery.mytime.js"></script>--%>
 <script type="text/javascript">
-String.prototype.trim = function() {
+    String.prototype.trim = function () {
         return this.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     }
 </script>
 <script type="text/javascript">
     <%--function openMap(company, address, waterUseNum, innerCode, longitude, latitude) {--%>
-        <%--layer.open({--%>
-            <%--title:company + '水量信息',--%>
-            <%--type: 2,--%>
-            <%--area: ['70%', '75%'],--%>
-            <%--fix: false, //不固定--%>
-            <%--maxmin: true,--%>
-            <%--content: '${context_path}/chart/map?company='+company+'&address='+address+'&waterUseNum='+waterUseNum+'&innerCode=' +--%>
-            <%--+innerCode+'&longitude'+longitude+'&latitude='+latitude--%>
-        <%--});--%>
+    <%--layer.open({--%>
+    <%--title:company + '水量信息',--%>
+    <%--type: 2,--%>
+    <%--area: ['70%', '75%'],--%>
+    <%--fix: false, //不固定--%>
+    <%--maxmin: true,--%>
+    <%--content: '${context_path}/chart/map?company='+company+'&address='+address+'&waterUseNum='+waterUseNum+'&innerCode=' +--%>
+    <%--+innerCode+'&longitude'+longitude+'&latitude='+latitude--%>
+    <%--});--%>
     <%--}--%>
     function openMap(innerCode) {
-        window.location.href="${context_path}/map/baidu?innerCode="+innerCode;
+        window.location.href = "${context_path}/map/baidu?innerCode=" + innerCode;
     }
     $(function () {
         $(".form_datetime").datetimepicker({
@@ -448,14 +448,14 @@ String.prototype.trim = function() {
         });
     });
     /*$(function(){
-        var tempWih = $("#gbox_grid-table").width();
+     var tempWih = $("#gbox_grid-table").width();
 
-        $(".gbox_grid-table").attr("width", "1786px");
-        $("#grid-table").attr("width",  "1786px");
+     $(".gbox_grid-table").attr("width", "1786px");
+     $("#grid-table").attr("width",  "1786px");
 
-    })*/
+     })*/
     /*$(function () {
-        $("#incomegrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "scroll" });
-        $("#incomegrid").closest(".ui-jqgrid-bdiv").css({ "overflow-y" : "scroll" })
-    })*/
+     $("#incomegrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "scroll" });
+     $("#incomegrid").closest(".ui-jqgrid-bdiv").css({ "overflow-y" : "scroll" })
+     })*/
 </script>

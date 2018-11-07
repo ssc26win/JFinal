@@ -187,15 +187,15 @@ public class ActualMeterReadController extends BaseController {
             byInnerCode = Company.me.findByInnerCode(byMeterAddress.getInnerCode());
         }
         Integer type = 1;
-        String subtitle = "月用水量";
-        String seriesName = "月用水量";
+        String subtitle = "用水量";
+        String seriesName = "用水量";
         if (byInnerCode != null) {
             type = byInnerCode.getCompanyType();
-            subtitle = "月用水量";
-            seriesName = "月用水量";
+            subtitle = "用水量";
+            seriesName = "用水量";
             if (type == 2) {
-                subtitle = "月供水量";
-                seriesName = "月供水量";
+                subtitle = "供水量";
+                seriesName = "供水量";
             }
         }
         JSONObject obj = new JSONObject();
@@ -230,8 +230,23 @@ public class ActualMeterReadController extends BaseController {
             Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterMonthList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
+        //} else if (DateType.DAY == dateType) {
+        //    List<Record> records = ActualDataWx.me.getWxMeterDailyActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
+        //    List<String> day = new ArrayList<String>();
+        //    for (Record record : records) {
+        //        sumWater.add(record.get("sumWater"));
+        //        day.add(record.get("DAY").toString());
+        //    }
+        //    obj.put("sumWater", sumWater);
+        //    obj.put("day", day);
+        //    obj.put("subtitle", subtitle);
+        //    obj.put("seriesName", seriesName);
+        //
+        //    Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterDailyList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
+        //    obj.put("jsonList", pageInfo);
+        //    this.renderJson(obj);
         } else if (DateType.DAY == dateType) {
-            List<Record> records = ActualDataWx.me.getWxMeterDailyActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
+            List<Record> records = ActualDataWx.me.getWxMeterDailyActualDataOnUse(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
             List<String> day = new ArrayList<String>();
             for (Record record : records) {
                 sumWater.add(record.get("sumWater"));
@@ -242,9 +257,10 @@ public class ActualMeterReadController extends BaseController {
             obj.put("subtitle", subtitle);
             obj.put("seriesName", seriesName);
 
-            Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterDailyList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterDailyListOnUse(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
+
         } else {
             this.renderJson(InvokeResult.failure("错误日期类型"));
         }

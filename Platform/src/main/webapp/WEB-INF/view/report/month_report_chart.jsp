@@ -43,7 +43,7 @@
               <div class="widget-main">
                 <div class="row">
                   <div class="col-xs-12">
-                    <form id="exportForm"
+                    <form id="exportForm" action="${context_path}/report/month/chart"
                           method="post">
                       <input type="text" style="display:none"/>
 
@@ -230,6 +230,7 @@
     });
   }
 </script>
+<jsp:include page="/WEB-INF/view/common/chartjs.jsp" flush="true"/>
 </body>
 </html>
 

@@ -696,6 +696,23 @@ public abstract class ToolDateTime {
         return target;
     }
 
+    public static Map<String, String> getBefore10DateTime() {
+        Map<String, String> target = new HashMap<>();
+        Date end = getDateTodayEnd(new Date());
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(end);
+        cal.add(Calendar.DATE, -10);
+        Date start = getDateTodayStart(cal.getTime());
+
+        target.put(MonthCode.warn_start_date, DateUtils.format(start, pattern_ymd_hms));
+
+        target.put(MonthCode.warn_end_date, DateUtils.format(end, pattern_ymd_hms));
+
+        return target;
+    }
+
+
     public static Map<String, String> getBefore7DateTime() {
         Map<String, String> target = new HashMap<>();
         Date end = getDateTodayEnd(new Date());
