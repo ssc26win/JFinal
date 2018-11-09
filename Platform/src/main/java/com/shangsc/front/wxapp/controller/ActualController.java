@@ -193,7 +193,7 @@ public class ActualController extends BaseController {
         String startTime = this.getPara("startTime");
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
-        List<Record> records = ActualDataWx.me.getWxDailyActualData(wxInnerCodeSQLStr, startTime, endTime);
+        List<Record> records = ActualDataWx.me.getWxDailyActualData(wxInnerCodeSQLStr, startTime, endTime, "");
         Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
         String subtitle = "日用水量";
         String seriesName = "日用水量";
@@ -225,7 +225,7 @@ public class ActualController extends BaseController {
         String startTime = this.getPara("startTime");
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
-        List<Record> records = ActualDataWx.me.getWxMonthActualData(wxInnerCodeSQLStr, startTime, endTime);
+        List<Record> records = ActualDataWx.me.getWxMonthActualData(wxInnerCodeSQLStr, startTime, endTime, "");
         Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
         Integer type = 1;
         String subtitle = "月用水量";
@@ -259,7 +259,7 @@ public class ActualController extends BaseController {
         String startTime = this.getPara("startTime");
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
-        List<Record> records = ActualDataWx.me.getWxYearActualData(wxInnerCodeSQLStr, startTime, endTime);
+        List<Record> records = ActualDataWx.me.getWxYearActualData(wxInnerCodeSQLStr, startTime, endTime, "");
         Company byInnerCode = Company.me.findByInnerCode(wxInnerCodeSQLStr);
         Integer type = 1;
         String subtitle = "月用水量";
@@ -331,7 +331,7 @@ public class ActualController extends BaseController {
         JSONObject obj = new JSONObject();
         JSONArray sumWater = new JSONArray();
         if (DateType.YEAR == dateType) {
-            List<Record> records = ActualDataWx.me.getWxYearActualData(wxInnerCodeSQLStr, startTime, endTime);
+            List<Record> records = ActualDataWx.me.getWxYearActualData(wxInnerCodeSQLStr, startTime, endTime, keyword);
             List<String> year = new ArrayList<String>();
             for (Record record : records) {
                 sumWater.add(record.get("sumWater"));
@@ -346,7 +346,7 @@ public class ActualController extends BaseController {
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
         } else if (DateType.MONTH == dateType) {
-            List<Record> records = ActualDataWx.me.getWxMonthActualData(wxInnerCodeSQLStr, startTime, endTime);
+            List<Record> records = ActualDataWx.me.getWxMonthActualData(wxInnerCodeSQLStr, startTime, endTime, keyword);
             List<String> month = new ArrayList<String>();
             for (Record record : records) {
                 sumWater.add(record.get("sumWater"));
@@ -361,7 +361,7 @@ public class ActualController extends BaseController {
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
         } else if (DateType.DAY == dateType) {
-            List<Record> records = ActualDataWx.me.getWxDailyActualData(wxInnerCodeSQLStr, startTime, endTime);
+            List<Record> records = ActualDataWx.me.getWxDailyActualData(wxInnerCodeSQLStr, startTime, endTime, keyword);
             List<String> day = new ArrayList<String>();
             for (Record record : records) {
                 sumWater.add(record.get("sumWater"));

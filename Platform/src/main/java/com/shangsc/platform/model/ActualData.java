@@ -248,7 +248,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		and tad.write_time >= '2018-03-18 00:00:00' and tad.write_time < '2019-01-01 00:00:00'
 		group by tad.meter_address,date_format(tad.write_time, '%Y-%m-%d')
 		order by todays desc,tad.meter_address desc*/
-        String select = " select COALESCE(abs(tad.net_water), 0) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
+        String select = " select sum(COALESCE(abs(tad.net_water), 0)) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
                 "twm.waters_type,twm.meter_attr,twm.meter_address,twm.meter_num,twm.line_num,twm.billing_cycle," +
                 "date_format(tad.write_time, '%Y-%m-%d') as todays ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
@@ -641,7 +641,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		and tad.write_time >= '2018-03-18 00:00:00' and tad.write_time < '2019-01-01 00:00:00'
 		group by tad.meter_address,date_format(tad.write_time, '%Y-%m-%d')
 		order by todays desc,tad.meter_address desc*/
-        String select = " select COALESCE(abs(tad.net_water), 0) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
+        String select = " select sum(COALESCE(abs(tad.net_water), 0)) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
                 "tc.county,tc.company_type," +
                 /*"twm.waters_type,twm.meter_attr,twm.meter_address,twm.meter_num,twm.line_num,twm.billing_cycle," +*/
                 "date_format(tad.write_time, '%Y-%m-%d') as todays ";

@@ -31,7 +31,7 @@ public class ActualMeterReadController extends BaseController {
         String startTime = this.getPara("startTime");
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
-        List<Record> records = ActualDataWx.me.getWxMeterDailyActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
+        List<Record> records = ActualDataWx.me.getWxMeterDailyActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime , "");
         WaterMeter byMeterAddress = WaterMeter.me.findByMeterAddress(meterAddress);
         Company byInnerCode = null;
         if (byMeterAddress != null && StringUtils.isNotEmpty(byMeterAddress.getInnerCode())) {
@@ -68,7 +68,7 @@ public class ActualMeterReadController extends BaseController {
         String startTime = this.getPara("startTime");
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
-        List<Record> records = ActualDataWx.me.getWxMeterMonthActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
+        List<Record> records = ActualDataWx.me.getWxMeterMonthActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime, "");
         WaterMeter byMeterAddress = WaterMeter.me.findByMeterAddress(meterAddress);
         Company byInnerCode = null;
         if (byMeterAddress != null && StringUtils.isNotEmpty(byMeterAddress.getInnerCode())) {
@@ -107,7 +107,7 @@ public class ActualMeterReadController extends BaseController {
         String startTime = this.getPara("startTime");
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
-        List<Record> records = ActualDataWx.me.getWxMeterYearActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
+        List<Record> records = ActualDataWx.me.getWxMeterYearActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime, "");
         WaterMeter byMeterAddress = WaterMeter.me.findByMeterAddress(meterAddress);
         Company byInnerCode = null;
         if (byMeterAddress != null && StringUtils.isNotEmpty(byMeterAddress.getInnerCode())) {
@@ -201,7 +201,7 @@ public class ActualMeterReadController extends BaseController {
         JSONObject obj = new JSONObject();
         JSONArray sumWater = new JSONArray();
         if (DateType.YEAR == dateType) {
-            List<Record> records = ActualDataWx.me.getWxMeterYearActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
+            List<Record> records = ActualDataWx.me.getWxMeterYearActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime, keyword);
             List<String> year = new ArrayList<String>();
             for (Record record : records) {
                 sumWater.add(record.get("sumWater"));
@@ -216,7 +216,7 @@ public class ActualMeterReadController extends BaseController {
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
         } else if (DateType.MONTH == dateType) {
-            List<Record> records = ActualDataWx.me.getWxMeterMonthActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
+            List<Record> records = ActualDataWx.me.getWxMeterMonthActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime, keyword);
             List<String> month = new ArrayList<String>();
             for (Record record : records) {
                 sumWater.add(record.get("sumWater"));
@@ -246,7 +246,7 @@ public class ActualMeterReadController extends BaseController {
         //    obj.put("jsonList", pageInfo);
         //    this.renderJson(obj);
         } else if (DateType.DAY == dateType) {
-            List<Record> records = ActualDataWx.me.getWxMeterDailyActualDataOnUse(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
+            List<Record> records = ActualDataWx.me.getWxMeterReadActualDataOnUse(wxInnerCodeSQLStr, meterAddress, startTime, endTime, keyword);
             List<String> day = new ArrayList<String>();
             for (Record record : records) {
                 sumWater.add(record.get("sumWater"));
@@ -257,7 +257,7 @@ public class ActualMeterReadController extends BaseController {
             obj.put("subtitle", subtitle);
             obj.put("seriesName", seriesName);
 
-            Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterDailyListOnUse(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterReadListOnUse(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
 

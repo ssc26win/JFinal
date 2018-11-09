@@ -104,7 +104,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         return ActualData.me.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 
-
+    @Deprecated
     public List<Record> findWxActualChart(String wxInnerCode, String meterAddress) {
         Map<String, String> map = ToolDateTime.getBefore30DateTime();
         String start = map.get(MonthCode.warn_start_date);
@@ -117,41 +117,50 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         return Db.find(sql);
     }
 
-    public List<Record> getWxDailyActualData(String wxInnerCode, String startTime, String endTime) {
+    public List<Record> getWxDailyActualData(String wxInnerCode, String startTime, String endTime, String keyword) {
         Map<String, String> map = ToolDateTime.getBefore30DateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
                 (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
+                (StringUtils.isNotEmpty(keyword) ? (" and (tc.real_code='" + StringUtils.trim(keyword) + "' or t.meter_address='" + StringUtils.trim(keyword)
+                        + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ") : " ") +
                 " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
         return Db.find(sql);
     }
 
-    public List<Record> getWxMonthActualData(String wxInnerCode, String startTime, String endTime) {
+    public List<Record> getWxMonthActualData(String wxInnerCode, String startTime, String endTime, String keyword) {
         Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
                 (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
+                (StringUtils.isNotEmpty(keyword) ? (" and (tc.real_code='" + StringUtils.trim(keyword) + "' or t.meter_address='" + StringUtils.trim(keyword)
+                        + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ") : " ") +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
         return Db.find(sql);
     }
 
-    public List<Record> getWxYearActualData(String wxInnerCode, String startTime, String endTime) {
+    public List<Record> getWxYearActualData(String wxInnerCode, String startTime, String endTime, String keyword) {
         String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
+                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " ") +
                 (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " ") +
+                (StringUtils.isNotEmpty(keyword) ? (" and (tc.real_code='" + StringUtils.trim(keyword) + "' or t.meter_address='" + StringUtils.trim(keyword)
+                        + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ") : " ") +
                 " GROUP BY date_format(t.write_time, '%Y')";
         return Db.find(sql);
     }
 
     public Page<ActualData> findWxDailyList(int pageNo, int pageSize, String orderbyStr, String startTime, String endTime, String keyword, String wxInnerCode) {
-        String select = " select COALESCE(abs(tad.net_water), 0) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
+        String select = " select COALESCE(sum(tad.net_water), 0) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
                 "tc.county,tc.company_type," +
                 "date_format(tad.write_time, '%Y-%m-%d') as todays ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
@@ -245,44 +254,53 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         return ActualData.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
 
-    public List<Record> getWxMeterDailyActualData(String wxInnerCode, String meterAddress, String startTime, String endTime) {
+    public List<Record> getWxMeterDailyActualData(String wxInnerCode, String meterAddress, String startTime, String endTime, String keyword) {
         Map<String, String> map = ToolDateTime.getBefore30DateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(meterAddress) ? " and t.meter_address = '" + meterAddress + "'" : " ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
                 (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
+                (StringUtils.isNotEmpty(keyword) ? (" and (tc.real_code='" + StringUtils.trim(keyword) + "' or t.meter_address='" + StringUtils.trim(keyword)
+                        + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ") : " ") +
                 " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
         return Db.find(sql);
     }
 
-    public List<Record> getWxMeterMonthActualData(String wxInnerCode, String meterAddress, String startTime, String endTime) {
+    public List<Record> getWxMeterMonthActualData(String wxInnerCode, String meterAddress, String startTime, String endTime, String keyword) {
         Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select  COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(meterAddress) ? " and t.meter_address = '" + meterAddress + "'" : " ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
                 (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
+                (StringUtils.isNotEmpty(keyword) ? (" and (tc.real_code='" + StringUtils.trim(keyword) + "' or t.meter_address='" + StringUtils.trim(keyword)
+                        + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ") : " ") +
                 " GROUP BY date_format(t.write_time, '%Y-%m')";
         return Db.find(sql);
     }
 
-    public List<Record> getWxMeterYearActualData(String wxInnerCode, String meterAddress, String startTime, String endTime) {
+    public List<Record> getWxMeterYearActualData(String wxInnerCode, String meterAddress, String startTime, String endTime, String keyword) {
         String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
+                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(meterAddress) ? " and t.meter_address = '" + meterAddress + "'" : " ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " ") +
                 (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " ") +
+                (StringUtils.isNotEmpty(keyword) ? (" and (tc.real_code='" + StringUtils.trim(keyword) + "' or t.meter_address='" + StringUtils.trim(keyword)
+                        + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ") : " ") +
                 " GROUP BY date_format(t.write_time, '%Y')";
         return Db.find(sql);
     }
 
     public Page<ActualData> findWxMeterDailyList(int pageNo, int pageSize, String orderbyStr, String startTime, String endTime, String keyword, String wxInnerCode, String meterAddress) {
-        String select = " select COALESCE(abs(tad.net_water), 0) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
+        String select = " select sum(COALESCE(abs(tad.net_water), 0)) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
                 "tc.county,tc.company_type," +
                 "date_format(tad.write_time, '%Y-%m-%d') as todays ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
@@ -384,20 +402,23 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         return ActualData.me.paginate(pageNo, pageSize, select, sqlExceptSelect.toString());
     }
 
-    public List<Record> getWxMeterDailyActualDataOnUse(String wxInnerCode, String meterAddress, String startTime, String endTime) {
+    public List<Record> getWxMeterReadActualDataOnUse(String wxInnerCode, String meterAddress, String startTime, String endTime, String keyword) {
         Map<String, String> map = ToolDateTime.getBefore10DateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         String sql = "select COALESCE(abs(t.net_water), 0) as sumWater,t.write_time as DAY,t.* from t_actual_data t" +
+                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(meterAddress) ? " and t.meter_address = '" + meterAddress + "'" : " ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
                 (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
+                (StringUtils.isNotEmpty(keyword) ? (" and (tc.real_code='" + StringUtils.trim(keyword) + "' or t.meter_address='" + StringUtils.trim(keyword)
+                        + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ") : " ") +
                 " GROUP BY t.write_time";
         return Db.find(sql);
     }
 
-    public Page<ActualData> findWxMeterDailyListOnUse(int pageNo, int pageSize, String orderbyStr, String startTime, String endTime, String keyword, String wxInnerCode, String meterAddress) {
+    public Page<ActualData> findWxMeterReadListOnUse(int pageNo, int pageSize, String orderbyStr, String startTime, String endTime, String keyword, String wxInnerCode, String meterAddress) {
         String select = " select COALESCE(abs(tad.net_water), 0) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
                 "tc.county,tc.company_type," +
                 "tad.write_time as todays ";
