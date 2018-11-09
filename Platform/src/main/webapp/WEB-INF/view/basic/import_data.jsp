@@ -7,7 +7,7 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Login Example - Semantic</title>
+  <title>通州区节水管理平台</title>
   <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
   <%--<link rel="stylesheet" href="${res_url}js/omui/development-bundle/themes/default/om-fileupload.css" />--%>
   <script src="${res_url}ace-1.3.3/assets/js/jquery.js" ></script>

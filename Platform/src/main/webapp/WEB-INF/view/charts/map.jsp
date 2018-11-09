@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title>单位地址导航</title>
+<title>通州区节水管理平台</title>
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=IDvNBsejl9oqMbPF316iKsXR"></script>
 <%--<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>--%>
 <script type="text/javascript" src="${res_url}map/SearchInfoWindow_min.js"></script>

@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <!-- Site Properities -->
-  <title>Login Example - Semantic</title>
+  <title>通州区节水管理平台</title>
   <link rel="stylesheet" type="text/css" href="${res_url}js/semantic/semantic.min.css">
   <script src="${res_url}js/semantic/assets/library/jquery.min.js"></script>
   <script src="${res_url}js/semantic/semantic.min.js"></script>

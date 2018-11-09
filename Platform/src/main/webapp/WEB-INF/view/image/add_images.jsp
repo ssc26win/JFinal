@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>上传图片</title>
+    <title>通州区节水管理平台</title>
 
     <link rel="stylesheet" href="${res_url}/bootstrap-fileinput/css/fileinput.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

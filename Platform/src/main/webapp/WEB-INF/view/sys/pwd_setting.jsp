@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <!-- Site Properities -->
-  <title>Login Example - Semantic</title>
+  <title>通州区节水管理平台</title>
   <link rel="stylesheet" href="${res_url}ace-1.3.3/assets/css/bootstrap.css" />
   <link rel="stylesheet" href="${res_url}ace-1.3.3/assets/css/font-awesome.css" />
   <link rel="stylesheet" href="${res_url}ace-1.3.3/assets/css/select2.css" />
