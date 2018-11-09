@@ -152,7 +152,7 @@ public class ReportMonthChartController extends BaseController {
                 (street != null ? " and tc.street=" + street : "") +
                 (startTime != null ? " and t.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time >='" + start + "'") +
                 (endTime != null ? " and t.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time <='" + end + "'") +
-                (type != null ? " and tc.company_type=" + type : "") +
+                (StringUtils.isNotEmpty(type) ? " and tc.company_type=" + type : "") +
                 (meterAttr != null ? " and twm.meter_attr=" + meterAttr : "") +
                 (watersType != null ? " and twm.waters_type=" + watersType : "") +
                 " and date_format(t.write_time, '%Y-%m') = '" + date + "' " +

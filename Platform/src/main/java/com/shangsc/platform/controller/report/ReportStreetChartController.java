@@ -93,10 +93,16 @@ public class ReportStreetChartController extends BaseController {
         Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
 
         String sqlSeries = "select lsall.street,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where lsall.street<>'' and lsall.street is not null " +
+                (street != null ? " and lsall.street=" + street : "") +
+                (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
+                (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.street order by lsall.street asc";
 
         List<Record> recordsSeries = Db.find(sqlSeries);
@@ -124,10 +130,16 @@ public class ReportStreetChartController extends BaseController {
         //drilldownJsonData
 
         String sqlSeriesCpy = "select lsall.street,lsall.name,lsall.inner_code,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tc.street,tc.name,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                "(select tc.street,tc.name,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where lsall.inner_code<>'' and lsall.inner_code is not null and lsall.street<>'' and lsall.street is not null " +
+                (street != null ? " and lsall.street=" + street : "") +
+                (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
+                (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.inner_code order by lsall.inner_code asc";
 
         List<Record> recordsSeriesCpy = Db.find(sqlSeriesCpy);
@@ -166,11 +178,17 @@ public class ReportStreetChartController extends BaseController {
         JSONArray meterAttrSeris = new JSONArray();
 
         String sqlMeterAttr = "select COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
+                "(select tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where 1=1 " +
                 " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                (street != null ? " and lsall.street=" + street : "") +
+                (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
+                (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.meter_attr order by lsall.write_time asc";
         List<Record> recordsMeterAttr = Db.find(sqlMeterAttr);
 
@@ -191,6 +209,12 @@ public class ReportStreetChartController extends BaseController {
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where 1=1 " +
                 //" and lsall.waters_type<>'' and lsall.waters_type is not null " +
+                (street != null ? " and lsall.street=" + street : "") +
+                (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
+                (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
+                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
+                (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.waters_type order by TargetAttrTotal desc";
         List<Record> recordsWatersType = Db.find(sqlWatersType);
 

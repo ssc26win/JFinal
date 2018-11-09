@@ -87,14 +87,14 @@ public class ReportCompanyChartController extends BaseController {
         //seriesJsonData
 
         String sqlSeries = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where lsall.inner_code<>'' and lsall.inner_code is not null " +
                 (StringUtils.isNotEmpty(name) ? " and lsall.name='" + name + "'": "") +
                 (StringUtils.isNotEmpty(innerCode) ? " and lsall.inner_code='" + innerCode + "'": "") +
                 (street != null ? " and lsall.street=" + street : "") +
-                (type != null ? " and lsall.company_type=" + type : "") +
+                (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                 (watersType != null ? " and lsall.watersType=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
@@ -117,14 +117,14 @@ public class ReportCompanyChartController extends BaseController {
         //drilldownJsonData
 
         String sqlSeriesMeter = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,twm.waters_type,twm.meter_attr,twm.meter_address from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,twm.waters_type,twm.meter_attr,twm.meter_address from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (StringUtils.isNotEmpty(name) ? " and lsall.name='" + name + "'": "") +
                 (StringUtils.isNotEmpty(innerCode) ? " and lsall.inner_code='" + innerCode + "'": "") +
                 (street != null ? " and lsall.street=" + street : "") +
-                (type != null ? " and lsall.company_type=" + type : "") +
+                (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                 (watersType != null ? " and lsall.watersType=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
@@ -167,14 +167,14 @@ public class ReportCompanyChartController extends BaseController {
         JSONArray meterAttrSeris = new JSONArray();
 
         String sqlMeterAttr = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                 (StringUtils.isNotEmpty(name) ? " and lsall.name='" + name + "'": "") +
                 (StringUtils.isNotEmpty(innerCode) ? " and lsall.inner_code='" + innerCode + "'": "") +
                 (street != null ? " and lsall.street=" + street : "") +
-                (type != null ? " and lsall.company_type=" + type : "") +
+                (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                 (watersType != null ? " and lsall.watersType=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
@@ -194,14 +194,14 @@ public class ReportCompanyChartController extends BaseController {
         JSONArray watersTypeSeris = new JSONArray();
 
         String sqlWatersType = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal,lsall.waters_type from " +
-                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where lsall.waters_type<>'' and lsall.waters_type is not null " +
                 (StringUtils.isNotEmpty(name) ? " and lsall.name='" + name + "'": "") +
                 (StringUtils.isNotEmpty(innerCode) ? " and lsall.inner_code='" + innerCode + "'": "") +
                 (street != null ? " and lsall.street=" + street : "") +
-                (type != null ? " and lsall.company_type=" + type : "") +
+                (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                 (watersType != null ? " and lsall.watersType=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +

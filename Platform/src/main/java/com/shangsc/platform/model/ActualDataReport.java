@@ -216,7 +216,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
                 (street != null ? " and tc.street=" + street : "") +
                 (startTime != null ? " and t.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time >='" + start + "'") +
                 (endTime != null ? " and t.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time <='" + end + "'") +
-                (type != null ? " and tc.company_type=" + type : "") +
+                (StringUtils.isNotEmpty(type) ? " and tc.company_type=" + type : "") +
                 (meterAttr != null ? " and twm.meter_attr=" + meterAttr : "") +
                 (watersType != null ? " and twm.waters_type=" + watersType : "") +
                 " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
@@ -238,7 +238,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
                 (street != null ? " and tc.street=" + street : "") +
                 (startTime != null ? " and t.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time >='" + start + "'") +
                 (endTime != null ? " and t.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and t.write_time <='" + end + "'") +
-                (type != null ? " and tc.company_type=" + type : "") +
+                (StringUtils.isNotEmpty(type) ? " and tc.company_type=" + type : "") +
                 (meterAttr != null ? " and twm.meter_attr=" + meterAttr : "") +
                 (watersType != null ? " and twm.waters_type=" + watersType : "") +
 
@@ -258,7 +258,7 @@ public class ActualDataReport extends BaseActualData<ActualData> {
                 (street != null ? " and tc.street=" + street : "") +
                 (startTime != null ? " and t.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " ") +
                 (endTime != null ? " and t.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " ") +
-                (type != null ? " and tc.company_type=" + type : "") +
+                (StringUtils.isNotEmpty(type) ? " and tc.company_type=" + type : "") +
                 (meterAttr != null ? " and twm.meter_attr=" + meterAttr : "") +
                 (watersType != null ? " and twm.waters_type=" + watersType : "") +
 
