@@ -45,7 +45,7 @@ public class LawRecordController extends BaseController {
     public void findList() {
         SysUser sysUser = findByWxAccount();
         String keyword = getPara("keyword");
-        Page<LawRecord> pageInfo = LawRecord.dao.findWxList(getPage(), this.getRows(), keyword, sysUser.getInnerCode(), sysUser.getId());
+        Page<LawRecord> pageInfo = LawRecord.dao.findWxList(getPage(), this.getRows(), keyword, sysUser);
         List<LawRecord> list = pageInfo.getList();
         if (CollectionUtils.isNotEmpty(list)) {
             Set<Long> ids = new LinkedHashSet<>();

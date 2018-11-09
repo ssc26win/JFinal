@@ -111,19 +111,17 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
         return InvokeResult.success(id);
     }
 
-    public Page<LawRecord> findWxList(int page, int rows, String keyword, String wxInnerCode, Integer userId) {
+    public Page<LawRecord> findWxList(int page, int rows, String keyword, SysUser sysUser) {
         String select = " select tlr.* ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_law_record tlr where 1=1 ");
 
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (tlr.title like '%" + StringUtils.trim(keyword) + "%' or tlr.content like '%" + keyword + "%')");
         }
-        if (StringUtils.isNotEmpty(wxInnerCode)) {
-            sqlExceptSelect.append(" and tlr.inner_code='" + StringUtils.trim(wxInnerCode) + "' ");
+        if (!sysUser.isAdmin()) {
+            sqlExceptSelect.append(" and tlr.user_id=" + sysUser.getId());
         }
-        if (userId != null) {
-            sqlExceptSelect.append(" and tlr.user_id=" + userId);
-        }
+
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 }
