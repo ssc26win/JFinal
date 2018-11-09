@@ -447,6 +447,11 @@
                 parent.location.href = '${context_path}/login';
             });
         }
+        if ('1' == '${noAuth}') {
+            layer.msg('对不起，您没有访问资源的权限！', {time: 1000, area: ['280px','50px']}, function () {
+                parent.location.href = '${context_path}/login';
+            });
+        }
         document.onkeydown = function (e) {
             var theEvent = window.event || e;
             var code = theEvent.keyCode || theEvent.which;

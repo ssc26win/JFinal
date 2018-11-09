@@ -69,6 +69,7 @@ public class IndexController extends Controller {
     @Clear(AuthorityInterceptor.class)
     public void login() {
         this.setAttr("login_time_out", this.getPara("login_time_out"));
+        this.setAttr("noAuth", this.getPara("noAuth"));
         this.setAttr("url", this.getPara("url"));
         if (StringUtils.isNotEmpty(this.getPara("email"))) {
             this.setAttr("email", this.getPara("email"));
