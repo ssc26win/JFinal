@@ -191,7 +191,7 @@ public class IndexController extends Controller {
         }
         List<String> to = new ArrayList<String>();            // 邮件接收者的地址
         to.add(email);
-        String subject = "通州区远传水表采集系统-找回密码";        // 邮件标题
+        String subject = "通州区节水管理平台-找回密码";        // 邮件标题
         StringBuilder content = new StringBuilder("<h2>重置密码</h2>");// 邮件的文本内容
         content.append("<br/>");
         content.append("<a href='");

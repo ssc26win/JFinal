@@ -9,6 +9,7 @@ import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
+import com.shangsc.platform.model.LawRecord;
 
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,8 @@ public class ComanyController extends BaseController {
         Page<Company> pageInfo = Company.me.findWxList(getPage(), this.getRows(), keyword, getWxInnerCodeSQLStr());
         List<Company> companies = pageInfo.getList();
         setVoProp(companies);
-        this.renderJson(pageInfo);
+        Page<Company> pageInfoFinal = new Page<>(companies, pageInfo.getPageNumber(), pageInfo.getPageSize(), pageInfo.getTotalPage(), pageInfo.getTotalRow());
+        this.renderJson(pageInfoFinal);
     }
 
     @Clear(AuthorityInterceptor.class)
