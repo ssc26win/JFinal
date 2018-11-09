@@ -172,7 +172,7 @@ select waters_type from t_water_meter group by waters_type ;
 
 select street,name from t_company where street='' or street is null;
 
-select lsall.street,lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as targetAttrTotal from
+select lsall.street,lsall.waters_type,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as targetAttrTotal from
   (select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad
     left join t_water_meter twm on twm.meter_address=tad.meter_address
     left join t_company tc on tc.inner_code=tad.inner_code) lsall group by lsall.waters_type,lsall.meter_attr order by lsall.street asc

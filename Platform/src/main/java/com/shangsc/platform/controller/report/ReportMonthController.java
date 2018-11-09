@@ -115,7 +115,7 @@ public class ReportMonthController extends BaseController {
             for (Company company : list) {
                 innerCodes.add("'" + company.getInnerCode() + "'");
             }
-            String sql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m') as TargetDT, sum(tad.net_water) as TargetTotal " +
+            String sql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m') as TargetDT, COALESCE(sum(t.net_water), 0) as TargetTotal " +
                     " from t_actual_data tad left join (select meter_address,waters_type,meter_attr from  t_water_meter) twm on twm.meter_address=tad.meter_address " +
                     " where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
 
@@ -192,7 +192,7 @@ public class ReportMonthController extends BaseController {
             for (Company company : list) {
                 innerCodes.add("'" + company.getInnerCode() + "'");
             }
-            String sql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m') as TargetDT, sum(tad.net_water) as TargetTotal " +
+            String sql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m') as TargetDT, COALESCE(sum(t.net_water), 0) as TargetTotal " +
                     " from t_actual_data tad left join (select meter_address,waters_type,meter_attr from  t_water_meter) twm on twm.meter_address=tad.meter_address " +
                     " where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
 

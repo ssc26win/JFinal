@@ -248,7 +248,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		and tad.write_time >= '2018-03-18 00:00:00' and tad.write_time < '2019-01-01 00:00:00'
 		group by tad.meter_address,date_format(tad.write_time, '%Y-%m-%d')
 		order by todays desc,tad.meter_address desc*/
-        String select = " select abs(tad.net_water) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
+        String select = " select COALESCE(abs(tad.net_water), 0) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
                 "twm.waters_type,twm.meter_attr,twm.meter_address,twm.meter_num,twm.line_num,twm.billing_cycle," +
                 "date_format(tad.write_time, '%Y-%m-%d') as todays ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
@@ -317,7 +317,7 @@ public class ActualData extends BaseActualData<ActualData> {
         /*select tad.*,
         tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,
-				date_format(tad.write_time, '%Y-%m') as months,sum(tad.net_water) as monthTotal
+				date_format(tad.write_time, '%Y-%m') as months,COALESCE(sum(t.net_water), 0) as monthTotal
 
 		from t_actual_data tad
 		inner join t_company  tc on tad.inner_code=tc.inner_code
@@ -331,7 +331,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
                 "twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address," +
-                "date_format(tad.write_time, '%Y-%m') as months,sum(abs(tad.net_water)) as monthTotal";
+                "date_format(tad.write_time, '%Y-%m') as months,sum(COALESCE(abs(tad.net_water), 0)) as monthTotal";
 
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
                 " inner join t_company tc on tad.inner_code=tc.inner_code " +
@@ -401,7 +401,7 @@ public class ActualData extends BaseActualData<ActualData> {
         /*select
         tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address,
-				date_format(tad.write_time, '%Y') as years,sum(tad.net_water) as yearTotal
+				date_format(tad.write_time, '%Y') as years,COALESCE(sum(t.net_water), 0) as yearTotal
 
 		from t_actual_data tad
 		inner join t_company tc on tad.inner_code=tc.inner_code
@@ -414,7 +414,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		order by years desc,tad.meter_address desc*/
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type, " +
                 " twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address, " +
-                " date_format(tad.write_time, '%Y') as years,sum(abs(tad.net_water)) as yearTotal ";
+                " date_format(tad.write_time, '%Y') as years,sum(COALESCE(abs(tad.net_water), 0)) as yearTotal ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
                 " inner join t_company tc on tad.inner_code=tc.inner_code " +
                 " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +
@@ -508,7 +508,7 @@ public class ActualData extends BaseActualData<ActualData> {
     }
 
     public List<Record> getMonthActualDataPage(String inner_code) {
-        String select = "select sum(t.net_water) as total ,date_format(t.write_time, '%m') as time ,t.* from t_actual_data t ";
+        String select = "select COALESCE(sum(t.net_water), 0) as total ,date_format(t.write_time, '%m') as time ,t.* from t_actual_data t ";
         StringBuffer sqlExceptSelect = new StringBuffer();
         sqlExceptSelect.append(select);
         sqlExceptSelect.append(" where t.inner_code='" + inner_code + "'");
@@ -519,7 +519,7 @@ public class ActualData extends BaseActualData<ActualData> {
     //select * from `ht_invoice_information` where YEAR(create_date)=YEAR(NOW());
     //net_water
     public Record getYearActual(String inner_code) {
-        String select = "select sum(net_water) as yearTotal from t_actual_data where YEAR(write_time)=YEAR(NOW()) and inner_code=" + inner_code;
+        String select = "select COALESCE(sum(net_water), 0) as yearTotal from t_actual_data where YEAR(write_time)=YEAR(NOW()) and inner_code=" + inner_code;
         return Db.find(select).get(0);
     }
 
@@ -527,7 +527,7 @@ public class ActualData extends BaseActualData<ActualData> {
         Map<String, String> map = ToolDateTime.getBefore30DateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
-        String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+        String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
                 " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where t.inner_code in (select inner_code from t_company where company_type=1)" +
                 " and t.write_time >= '" + start + "' " +
@@ -540,7 +540,7 @@ public class ActualData extends BaseActualData<ActualData> {
         Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
-        String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+        String sql = "select  COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
                 " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where t.inner_code in (select inner_code from t_company where company_type=1)" +
                 " and t.write_time >= '" + start + "' " +
@@ -553,7 +553,7 @@ public class ActualData extends BaseActualData<ActualData> {
         Map<String, String> map = ToolDateTime.getBefore30DateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
-        String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+        String sql = "select  COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
                 " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where t.inner_code in (select inner_code from t_company where company_type=2)" +
                 " and t.write_time >= '" + start + "' " +
@@ -566,7 +566,7 @@ public class ActualData extends BaseActualData<ActualData> {
         Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
-        String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+        String sql = "select  COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
                 " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where t.inner_code in (select inner_code from t_company where company_type=2)" +
                 " and t.write_time >= '" + start + "' " +
@@ -579,7 +579,7 @@ public class ActualData extends BaseActualData<ActualData> {
         Map<String, String> map = ToolDateTime.getBefore30DateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
-        String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+        String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
                 " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 " and t.write_time >= '" + start + "' " +
@@ -592,7 +592,7 @@ public class ActualData extends BaseActualData<ActualData> {
         Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
-        String sql = "select  sum(t.net_water) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
+        String sql = "select  COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
                 " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 " and t.write_time >= '" + start + "' " +
@@ -602,7 +602,7 @@ public class ActualData extends BaseActualData<ActualData> {
     }
 
     public List<Record> getCPAYearActualData() {
-        String sql = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
+        String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
                 " left join (select name,inner_code from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 " GROUP BY date_format(t.write_time, '%Y')";
@@ -641,7 +641,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		and tad.write_time >= '2018-03-18 00:00:00' and tad.write_time < '2019-01-01 00:00:00'
 		group by tad.meter_address,date_format(tad.write_time, '%Y-%m-%d')
 		order by todays desc,tad.meter_address desc*/
-        String select = " select abs(tad.net_water) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
+        String select = " select COALESCE(abs(tad.net_water), 0) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
                 "tc.county,tc.company_type," +
                 /*"twm.waters_type,twm.meter_attr,twm.meter_address,twm.meter_num,twm.line_num,twm.billing_cycle," +*/
                 "date_format(tad.write_time, '%Y-%m-%d') as todays ";
@@ -712,7 +712,7 @@ public class ActualData extends BaseActualData<ActualData> {
         /*select tad.*,
         tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,
-				date_format(tad.write_time, '%Y-%m') as months,sum(tad.net_water) as monthTotal
+				date_format(tad.write_time, '%Y-%m') as months,COALESCE(sum(t.net_water), 0) as monthTotal
 
 		from t_actual_data tad
 		inner join t_company  tc on tad.inner_code=tc.inner_code
@@ -726,7 +726,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
                 /*"twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address," +*/
-                "date_format(tad.write_time, '%Y-%m') as months,sum(abs(tad.net_water)) as monthTotal";
+                "date_format(tad.write_time, '%Y-%m') as months,sum(COALESCE(abs(tad.net_water), 0)) as monthTotal";
 
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
                 " inner join t_company tc on tad.inner_code=tc.inner_code " +
@@ -796,7 +796,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		/*select
 		tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address,
-				date_format(tad.write_time, '%Y') as years,sum(tad.net_water) as yearTotal
+				date_format(tad.write_time, '%Y') as years,COALESCE(sum(t.net_water), 0) as yearTotal
 
 		from t_actual_data tad
 		inner join t_company tc on tad.inner_code=tc.inner_code
@@ -809,7 +809,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		order by years desc,tad.meter_address desc*/
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type, " +
                 /*" twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address, " +*/
-                " date_format(tad.write_time, '%Y') as years,sum(abs(tad.net_water)) as yearTotal ";
+                " date_format(tad.write_time, '%Y') as years,sum(COALESCE(abs(tad.net_water), 0)) as yearTotal ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
                 " inner join t_company tc on tad.inner_code=tc.inner_code " +
                 " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +

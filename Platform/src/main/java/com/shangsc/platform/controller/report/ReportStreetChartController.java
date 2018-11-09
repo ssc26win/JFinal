@@ -92,7 +92,7 @@ public class ReportStreetChartController extends BaseController {
         //seriesJsonData
         Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
 
-        String sqlSeries = "select lsall.street,sum(lsall.net_water) as TargetAttrTotal from " +
+        String sqlSeries = "select lsall.street,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                 "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -123,7 +123,7 @@ public class ReportStreetChartController extends BaseController {
 
         //drilldownJsonData
 
-        String sqlSeriesCpy = "select lsall.street,lsall.name,lsall.inner_code,sum(lsall.net_water) as TargetAttrTotal from " +
+        String sqlSeriesCpy = "select lsall.street,lsall.name,lsall.inner_code,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                 "(select tc.street,tc.name,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -165,7 +165,7 @@ public class ReportStreetChartController extends BaseController {
 
         JSONArray meterAttrSeris = new JSONArray();
 
-        String sqlMeterAttr = "select sum(lsall.net_water) as TargetAttrTotal from " +
+        String sqlMeterAttr = "select COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                 "(select tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -185,7 +185,7 @@ public class ReportStreetChartController extends BaseController {
 
         JSONArray watersTypeSeris = new JSONArray();
 
-        String sqlWatersType = "select sum(lsall.net_water) as TargetAttrTotal,lsall.waters_type from " +
+        String sqlWatersType = "select COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal,lsall.waters_type from " +
                 "(select tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +

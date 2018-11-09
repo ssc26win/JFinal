@@ -136,7 +136,7 @@ public class ReportYearChartController extends BaseController {
         String type = this.getPara("type");
         String globalInnerCode = getInnerCodesSQLStr();
         String date = this.getPara("date");
-        String sqlSeriesDay = "select sum(t.net_water) as sumWater,date_format(t.write_time, '%Y') as year,t.*,tc.name from t_actual_data t " +
+        String sqlSeriesDay = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y') as year,t.*,tc.name from t_actual_data t " +
                 " inner join (select name,inner_code,real_code,street,company_type from t_company) tc on tc.inner_code=t.inner_code " +
                 " inner join (select waters_type,meter_attr,meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " t.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +

@@ -121,7 +121,7 @@ public class ReportStreetController extends BaseController {
             Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
 
-            String sql = "select lsall.street,lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+            String sql = "select lsall.street,lsall.waters_type,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                     "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -170,7 +170,7 @@ public class ReportStreetController extends BaseController {
                 list.set(i, company);
             }
 
-            String sqlZongji = "select lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+            String sqlZongji = "select lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                     "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -203,7 +203,7 @@ public class ReportStreetController extends BaseController {
             companyZongji.put("watersUseTotal", watersUseTotalAll);
             listFinal.add(companyZongji); // TODO 1
 
-            String sqlHejiWaterType = "select lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+            String sqlHejiWaterType = "select lsall.waters_type,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                     "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -250,7 +250,7 @@ public class ReportStreetController extends BaseController {
                 listFinal.add(companyHejiWaterType);//TODO 2
             }
 
-            String sqlXiaoji = "select lsall.street,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+            String sqlXiaoji = "select lsall.street,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                     "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -354,7 +354,7 @@ public class ReportStreetController extends BaseController {
             Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
 
-            String sql = "select lsall.street,lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+            String sql = "select lsall.street,lsall.waters_type,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                     "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -401,7 +401,7 @@ public class ReportStreetController extends BaseController {
                 list.set(i, company);
             }
 
-            String sqlZongji = "select lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+            String sqlZongji = "select lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                     "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -435,7 +435,7 @@ public class ReportStreetController extends BaseController {
             listFinal.add(companyZongji); // TODO 1
 
 
-            String sqlHejiWaterType = "select lsall.waters_type,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+            String sqlHejiWaterType = "select lsall.waters_type,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                     "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -480,7 +480,7 @@ public class ReportStreetController extends BaseController {
                 listFinal.add(companyHejiWaterType);//TODO 2
             }
 
-            String sqlXiaoji = "select lsall.street,lsall.meter_attr,sum(lsall.net_water) as TargetAttrTotal from " +
+            String sqlXiaoji = "select lsall.street,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                     "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +

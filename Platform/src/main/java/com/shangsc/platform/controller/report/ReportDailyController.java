@@ -131,7 +131,7 @@ public class ReportDailyController extends BaseController {
             Map<String, String> monthDateStartAndEnd = ToolDateTime.getMonthDateStartAndEnd(new Date());
             String start = monthDateStartAndEnd.get(MonthCode.warn_start_date);
             String end = monthDateStartAndEnd.get(MonthCode.warn_end_date);
-            String sql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') as TargetDT, sum(tad.net_water) as TargetTotal " +
+            String sql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') as TargetDT, COALESCE(sum(t.net_water), 0) as TargetTotal " +
                     " from t_actual_data tad left join (select meter_address,waters_type,meter_attr from  t_water_meter) twm on twm.meter_address=tad.meter_address " +
                     "where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
 
@@ -210,7 +210,7 @@ public class ReportDailyController extends BaseController {
             Map<String, String> monthDateStartAndEnd = ToolDateTime.getMonthDateStartAndEnd(new Date());
             String start = monthDateStartAndEnd.get(MonthCode.warn_start_date);
             String end = monthDateStartAndEnd.get(MonthCode.warn_end_date);
-            String sql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') as TargetDT, sum(tad.net_water) as TargetTotal " +
+            String sql = "select tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') as TargetDT, COALESCE(sum(t.net_water), 0) as TargetTotal " +
                     " from t_actual_data tad left join (select meter_address,waters_type,meter_attr from  t_water_meter) twm on twm.meter_address=tad.meter_address " +
                     " where tad.inner_code in (" + StringUtils.join(innerCodes, ",") + ")" +
 

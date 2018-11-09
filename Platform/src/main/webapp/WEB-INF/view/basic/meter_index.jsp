@@ -125,7 +125,7 @@
                 { label: '所属区县', name: 'county', width: 70, sortable:false},
                 { label: '路别', name: 'line_num', width: 70, sortable:false},
                 { label: '水表表号', name: 'meter_num', width: 70,sortable:false},
-                { label: '表计地址', name: 'meter_address', width: 90,sortable:false},
+                { label: '表计地址', name: 'meter_address', width: 120,sortable:false},
                 { label: '最小单位', name: 'times', width: 70, sortable:false},
                 { label: '水源类型', name: 'watersTypeName', width: 70, sortable:false},
                 { label: '国标行业', name: 'gb_industry', width: 150, sortable:false},

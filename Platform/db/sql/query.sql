@@ -1,16 +1,16 @@
 
 
-select name,t.inner_code,sum(t.net_water) as total,'一月' as month from
+select name,t.inner_code,COALESCE(sum(t.net_water), 0) as total,'一月' as month from
 (select * from t_actual_data where 1=1 and write_time >= '2018-01-01 00:00:00' and write_time < '2018-02-01 00:00:00' and inner_code in(100697,160051,160058,160059)) t
 LEFT JOIN (select inner_code as ic,name from t_company) c on c.ic=t.inner_code
 group by t.inner_code;
 
-select name,t.inner_code,sum(t.net_water) as total,'二月' as month from
+select name,t.inner_code,COALESCE(sum(t.net_water), 0) as total,'二月' as month from
 (select * from t_actual_data where 1=1 and write_time >= '2018-02-01 00:00:00' and write_time < '2018-03-01 00:00:00' and inner_code in(100697,160051,160058,160059)) t
 LEFT JOIN (select inner_code as ic,name from t_company) c on c.ic=t.inner_code
 group by t.inner_code;
 
-select name,t.inner_code,sum(t.net_water) as total,'三月' as month from
+select name,t.inner_code,COALESCE(sum(t.net_water), 0) as total,'三月' as month from
 (select * from t_actual_data where 1=1 and write_time >= '2018-03-01 00:00:00' and write_time < '2018-04-01 00:00:00' and inner_code in(100697,160051,160058,160059)) t
 LEFT JOIN (select inner_code as ic,name from t_company) c on c.ic=t.inner_code
 group by t.inner_code;
@@ -26,13 +26,13 @@ and tad.write_time >= '2018-03-19 00:00:00'  and tad.write_time < '2018-03-20 00
 group by tad.meter_address,date_format(tad.write_time, '%Y-%m-%d')  order by date_format(tad.write_time, '%Y-%m-%d') desc,tad.meter_address desc ;
 
  select tc.inner_code,tc.name,tc.address,tc.water_unit,tc.county,tc.company_type,twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address,
-date_format(tad.write_time, '%Y-%m') as months,sum(tad.net_water) as monthTotal
+date_format(tad.write_time, '%Y-%m') as months,COALESCE(sum(t.net_water), 0) as monthTotal
  from t_actual_data tad  inner join t_company  tc on tad.inner_code=tc.inner_code  inner join t_water_meter twm on tad.meter_address=twm.meter_address  where 1=1
  group by tad.meter_address,date_format(tad.write_time, '%Y-%m') order by months desc,tad.meter_address desc;
 
 
 
-select *,sum(net_water) from t_actual_data where 1=1 and write_time >= '2018-01-01 00:00:00' and write_time < '2018-04-01 00:00:00' and meter_address='201707000000914'
+select *,COALESCE(sum(net_water), 0) from t_actual_data where 1=1 and write_time >= '2018-01-01 00:00:00' and write_time < '2018-04-01 00:00:00' and meter_address='201707000000914'
 
 
 
@@ -40,7 +40,7 @@ select *,sum(net_water) from t_actual_data where 1=1 and write_time >= '2018-01-
 select tad.*,
 		tc.name,tc.address,tc.water_unit,tc.county,tc.company_type,
 				twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,
-				date_format(tad.write_time, '%Y-%m') as months,sum(tad.net_water) as monthTotal
+				date_format(tad.write_time, '%Y-%m') as months,COALESCE(sum(t.net_water), 0) as monthTotal
 
 		from t_actual_data tad
 		inner join t_company  tc on tad.inner_code=tc.inner_code
@@ -54,7 +54,7 @@ select tad.*,
 
 
 
-select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad
+select * from (select allad.*,COALESCE(sum(allad.net_water), 0) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad
 inner join (select waters_type,meter_address from t_water_meter) twm on twm.meter_address=tad.meter_address) allad
 
 where allad.write_time >='2018-03-01 00:00:00'
@@ -65,7 +65,7 @@ where t.sumWater>(IFNULL(twi.march,0) + IFNULL(twi.april,0)) and t.waters_type=t
 
 
 
-select * from (select allad.*,sum(allad.net_water) as sumWater, from (select tad.inner_code,tad.net_water,tad.meter_address,tad.write_time,twm.waters_type from t_actual_data tad
+select * from (select allad.*,COALESCE(sum(allad.net_water), 0) as sumWater, from (select tad.inner_code,tad.net_water,tad.meter_address,tad.write_time,twm.waters_type from t_actual_data tad
 inner join (select waters_type,meter_address from t_water_meter) twm on twm.meter_address=tad.meter_address) allad
 where allad.write_time >='2018-03-01 00:00:00' and allad.write_time <'2018-03-02 23:59:59' group by allad.inner_code) t
 
@@ -74,4 +74,4 @@ inner join (select name,inner_code,address,water_unit,county,company_type from t
 where  t.waters_type=twi.waters_type
 
 
-select sum(net_water) as sumWater from t_actual_data  where write_time >='2018-03-01 00:00:00' and write_time <'2018-03-02 23:59:59' and inner_code='100002'
+select COALESCE(sum(net_water), 0) as sumWater from t_actual_data  where write_time >='2018-03-01 00:00:00' and write_time <'2018-03-02 23:59:59' and inner_code='100002'

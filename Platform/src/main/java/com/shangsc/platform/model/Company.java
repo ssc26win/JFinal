@@ -230,7 +230,7 @@ public class Company extends BaseCompany<Company> {
     }
 
     public Page<Company> getCompanyPage(int page, int rows, String keyword, String orderbyStr, String companyType, Integer term) {
-        String select = "select c.*, (select count(net_water) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum";
+        String select = "select c.*, (select COALESCE(sum(net_water), 0) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
         sqlExceptSelect.append(" where 1=1 ");
         if (term != null) {
@@ -253,7 +253,7 @@ public class Company extends BaseCompany<Company> {
     }
 
     public List<Record> getCompanyAll(String innerCode) {
-        String select = "select * from t_company c left join (select sum(net_water) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
+        String select = "select * from t_company c left join (select COALESCE(sum(net_water), 0) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
                 " on c.inner_code=tad.innerCode where 1=1 ";
         if (StringUtils.isNotEmpty(innerCode)) {
             select = select + " and c.inner_code='" + innerCode + "'";
@@ -265,7 +265,7 @@ public class Company extends BaseCompany<Company> {
     }
 
     public List<Record> getCompanyByType(String type) {
-        String select = "select * from t_company c left join (select sum(net_water) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
+        String select = "select * from t_company c left join (select COALESCE(sum(net_water), 0) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
                 " on c.inner_code=tad.innerCode";
         if ("1".equals(type)) {
             String innerCodes = getWarnInnerCodes();
@@ -383,7 +383,7 @@ public class Company extends BaseCompany<Company> {
 
     public Page<Company> getAlarmCompanyPage(int page, int rows, String keyword, String orderbyStr, Map<String, String> monthDateBetween) {
         /**
-         select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.inner_code,tad.net_water,tad.meter_address,tad.write_time,twm.waters_type from t_actual_data tad
+         select * from (select allad.*,COALESCE(sum(allad.net_water), 0) as sumWater from (select tad.inner_code,tad.net_water,tad.meter_address,tad.write_time,twm.waters_type from t_actual_data tad
          inner join (select waters_type,meter_address from t_water_meter) twm on twm.meter_address=tad.meter_address) allad
          where allad.write_time >='2018-03-01 00:00:00' and allad.write_time <'2018-03-02 23:59:59' group by allad.inner_code) t
 
@@ -394,7 +394,7 @@ public class Company extends BaseCompany<Company> {
         String start = monthDateBetween.get(MonthCode.warn_start_date);
         String end = monthDateBetween.get(MonthCode.warn_end_date);
         String select = "select * ";
-        StringBuffer sqlExceptSelect = new StringBuffer(" from (select allad.*,sum(allad.net_water) as sumWater from " +
+        StringBuffer sqlExceptSelect = new StringBuffer(" from (select allad.*,COALESCE(sum(allad.net_water), 0) as sumWater from " +
                 " (select tad.inner_code,tad.net_water,tad.meter_address,tad.write_time,twm.waters_type from t_actual_data tad " +
                 " inner join (select waters_type,meter_address from t_water_meter) twm on twm.meter_address=tad.meter_address) allad ");
         sqlExceptSelect.append(" where allad.write_time >='" + start + "' and allad.write_time <'" + end + "' group by allad.inner_code) t");
@@ -551,7 +551,7 @@ public class Company extends BaseCompany<Company> {
         String end = monthDateBetween.get("end");
         String month_str = monthDateBetween.get("month_str");
         Integer month = Integer.parseInt(monthDateBetween.get("month"));
-        String sql = "select t.inner_code from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
+        String sql = "select t.inner_code from (select allad.*,COALESCE(sum(allad.net_water), 0) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
                 " on twm.meter_address=tad.meter_address) allad where allad.write_time >='" + start + "' and allad.write_time <'" + end + "' group by allad.meter_address) t" +
                 " INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
         return sql;
@@ -563,7 +563,7 @@ public class Company extends BaseCompany<Company> {
         String end = monthDateBetween.get("end");
         String month_str = monthDateBetween.get("month_str");
         Integer month = Integer.parseInt(monthDateBetween.get("month"));
-        String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
+        String sql = "select * from (select allad.*,COALESCE(sum(allad.net_water), 0) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
                 " on twm.meter_address=tad.meter_address) allad where allad.write_time >='" + start + "' and allad.write_time <'" + end + "' group by allad.meter_address) t" +
                 " INNER join t_water_index twi on twi.inner_code=t.inner_code where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
         return sql;
@@ -575,7 +575,7 @@ public class Company extends BaseCompany<Company> {
         String end = monthDateBetween.get(MonthCode.warn_end_date);
         String month_str = monthDateBetween.get(MonthCode.warn_month_str);
         Integer month = Integer.parseInt(monthDateBetween.get(MonthCode.warn_month));
-        String sql = "select * from (select allad.*,sum(allad.net_water) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
+        String sql = "select * from (select allad.*,COALESCE(sum(allad.net_water), 0) as sumWater from (select tad.*,twm.waters_type from t_actual_data tad inner join (select waters_type,meter_address from t_water_meter) twm" +
                 " on twm.meter_address=tad.meter_address) allad where allad.write_time >='" + start + "' and allad.write_time <'" + end + "' group by allad.meter_address) t" +
                 " INNER join t_water_index twi on twi.inner_code=t.inner_code left join t_company c on c.inner_code=t.inner_code " +
                 "where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
@@ -860,7 +860,7 @@ public class Company extends BaseCompany<Company> {
      */
 
     public Page<Company> findWxList(int page, int rows, String keyword, String wxInnerCode) {
-        String select = "select c.*, (select count(net_water) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum";
+        String select = "select c.*, (select COALESCE(sum(net_water), 0) from t_actual_data tad where c.inner_code = tad.inner_code) as waterUseNum";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_company c ");
         sqlExceptSelect.append(" where 1=1 ");
         if (StringUtils.isNotEmpty(wxInnerCode)) {

@@ -86,7 +86,7 @@ public class ReportCompanyChartController extends BaseController {
 
         //seriesJsonData
 
-        String sqlSeries = "select lsall.*,sum(lsall.net_water) as TargetAttrTotal from " +
+        String sqlSeries = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                 "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -116,7 +116,7 @@ public class ReportCompanyChartController extends BaseController {
 
         //drilldownJsonData
 
-        String sqlSeriesMeter = "select lsall.*,sum(lsall.net_water) as TargetAttrTotal from " +
+        String sqlSeriesMeter = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                 "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,twm.waters_type,twm.meter_attr,twm.meter_address from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -166,7 +166,7 @@ public class ReportCompanyChartController extends BaseController {
 
         JSONArray meterAttrSeris = new JSONArray();
 
-        String sqlMeterAttr = "select lsall.*,sum(lsall.net_water) as TargetAttrTotal from " +
+        String sqlMeterAttr = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                 "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -193,7 +193,7 @@ public class ReportCompanyChartController extends BaseController {
 
         JSONArray watersTypeSeris = new JSONArray();
 
-        String sqlWatersType = "select lsall.*,sum(lsall.net_water) as TargetAttrTotal,lsall.waters_type from " +
+        String sqlWatersType = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal,lsall.waters_type from " +
                 "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +

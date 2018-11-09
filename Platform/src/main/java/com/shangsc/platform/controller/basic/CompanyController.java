@@ -57,7 +57,7 @@ public class CompanyController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void getListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        Company.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         String companyType = this.getPara("companyType");
         Integer term = this.getParaToInt("term");
@@ -80,7 +80,7 @@ public class CompanyController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/company"})
     public void getWarnListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        Company.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Page<Company> pageInfo = Company.me.getWarnCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
@@ -91,7 +91,7 @@ public class CompanyController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void getOtherListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        Company.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Page<Company> pageInfo = Company.me.getOtherCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
@@ -102,7 +102,7 @@ public class CompanyController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/basic/company"})
     public void getSupplyListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        Company.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String keyword = this.getPara("name");
         Page<Company> pageInfo = Company.me.getSupplyCompanyPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         List<Company> companies = pageInfo.getList();
@@ -199,7 +199,7 @@ public class CompanyController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/company"})
     public void export() {
-        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        Company.me.setGlobalInnerCode(getInnerCodesSQLStr());
         CompanyExportService service = new CompanyExportService();
         String keyword = this.getPara("name");
         String companyType = this.getPara("companyType");
@@ -313,7 +313,7 @@ public class CompanyController extends BaseController {
 
     @RequiresPermissions(value = {"/basic/company"})
     public void searchNameList() {
-        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        Company.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         Map<String, String> nameList = Company.me.searchNameList(name);
         Map<String, Object> result = new HashMap<>();
