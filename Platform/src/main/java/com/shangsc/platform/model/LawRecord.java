@@ -71,7 +71,7 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
         String select = " select tlr.* ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_law_record tlr where 1=1 ");
 
-        if (!sysUser.isAdmin()) {
+        if (!sysUser.isLawAdmin() && !sysUser.isAdmin()) {
             sqlExceptSelect.append(" and tlr.user_id=" + sysUser.getId());
         }
 
@@ -118,7 +118,7 @@ public class LawRecord extends BaseLawRecord<LawRecord> {
         if (StringUtils.isNotEmpty(keyword)) {
             sqlExceptSelect.append(" and (tlr.title like '%" + StringUtils.trim(keyword) + "%' or tlr.content like '%" + keyword + "%')");
         }
-        if (!sysUser.isAdmin()) {
+        if (!sysUser.isLawAdmin() && !sysUser.isAdmin()) {
             sqlExceptSelect.append(" and tlr.user_id=" + sysUser.getId());
         }
 
