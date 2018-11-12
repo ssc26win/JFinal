@@ -123,7 +123,7 @@
         { label: '累计用水量（m³）', name: 'sum_water', width: 100, sortable:true},
         { label: '当前状态', name: 'stateName', width: 50, sortable:false},
         { label: '抄表时间', name: 'write_time', width: 100, sortable:true},
-        { label: '电池电压（伏特v）', name: 'voltage', width: 100, sortable:true},
+        { label: '电池电压（伏特v）', name: 'voltage', width: 100, sortable:false},
         { label: '厂家', name: 'vender', width: 100, sortable:false},
         { label: '备注', name: 'memo', width: 100, sortable:false}
       ],

@@ -65,6 +65,14 @@ public class ReportYearChartController extends BaseController {
             meterAttr = Integer.parseInt(meterAttrStr);
         }
         String type = this.getPara("type");
+        this.setAttr("name", name);
+        this.setAttr("innerCode", innerCode);
+        this.setAttr("startTime", this.getPara("startTime"));
+        this.setAttr("endTime", this.getPara("endTime"));
+        this.setAttr("street", street);
+        this.setAttr("watersType", watersType);
+        this.setAttr("meterAttr", meterAttr);
+        this.setAttr("type", type);
 
         String globalInnerCode = getInnerCodesSQLStr();
         ActualData.me.setGlobalInnerCode(globalInnerCode);

@@ -120,7 +120,7 @@
                 {label: '发布状态', name: 'statusName', width: 100, sortable: false},
                 {label: '接收人', name: 'MsgReceiverNames', width: 350, sortable: false},
                 {label: '创建人', name: 'create_user', width: 100, sortable: false},
-                {label: '创建时间', name: 'create_time', width: 120, sortable: false}
+                {label: '创建时间', name: 'create_time', width: 120, sortable: true}
             ],
             viewrecords: true,
             height: 560,

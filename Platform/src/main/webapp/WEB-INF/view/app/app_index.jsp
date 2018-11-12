@@ -89,7 +89,7 @@
                     { label: '版本号', name: 'version_no', width: 40 ,sortable:false},
                     { label: '自然数版本号', name: 'nature_no', width: 30 ,sortable:false},
                     { label: '强制升级', name: 'is_force',formatter:isForce, width: 30 ,sortable:false},
-                    { label: '下载地址', name: 'url',formatter:download, width:50,sortable:false},
+                   /* { label: '下载地址', name: 'url',formatter:download, width:50,sortable:false},*/
                     { label: '系统', name: 'os', width:40,sortable:false },
                     { label: '状态', name: 'status',formatter:fmatterStatus, width:40,sortable:false }
                 ],

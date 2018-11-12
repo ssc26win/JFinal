@@ -57,6 +57,14 @@ public class ReportCompanyChartController extends BaseController {
             meterAttr = Integer.parseInt(meterAttrStr);
         }
         String type = this.getPara("type");
+        this.setAttr("name", name);
+        this.setAttr("innerCode", innerCode);
+        this.setAttr("startTime", this.getPara("startTime"));
+        this.setAttr("endTime", this.getPara("endTime"));
+        this.setAttr("street", street);
+        this.setAttr("watersType", watersType);
+        this.setAttr("meterAttr", meterAttr);
+        this.setAttr("type", type);
 
         String path = this.getRequest().getServletContext().getContextPath();
         String contextPath = path.equals("/") ? "" : path;
@@ -96,7 +104,7 @@ public class ReportCompanyChartController extends BaseController {
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
-                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.inner_code order by lsall.inner_code asc";
@@ -126,7 +134,7 @@ public class ReportCompanyChartController extends BaseController {
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
-                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.meter_address order by lsall.meter_address asc";
@@ -176,7 +184,7 @@ public class ReportCompanyChartController extends BaseController {
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
-                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.meter_attr order by lsall.write_time asc";
@@ -203,7 +211,7 @@ public class ReportCompanyChartController extends BaseController {
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
-                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.waters_type order by TargetAttrTotal desc";

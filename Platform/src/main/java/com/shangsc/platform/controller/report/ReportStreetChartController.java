@@ -3,29 +3,20 @@ package com.shangsc.platform.controller.report;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
-import com.shangsc.front.util.JsonUtil;
 import com.shangsc.platform.code.DictCode;
-import com.shangsc.platform.code.ReportColType;
-import com.shangsc.platform.code.ReportTypeEnum;
-import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.DateUtils;
-import com.shangsc.platform.core.util.JqGridModelUtils;
-import com.shangsc.platform.export.ExportByDataTypeService;
 import com.shangsc.platform.model.ActualData;
-import com.shangsc.platform.model.ActualDataReport;
-import com.shangsc.platform.model.Company;
 import com.shangsc.platform.model.DictData;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author ssc
@@ -37,6 +28,7 @@ public class ReportStreetChartController extends BaseController {
 
     @RequiresPermissions(value = {"/report/street/chart"})
     public void index() {
+        String innerCodesSQLStr = getInnerCodesSQLStr();
         Date startTime = null;
         Date endTime = null;
         try {
@@ -65,6 +57,12 @@ public class ReportStreetChartController extends BaseController {
             meterAttr = Integer.parseInt(meterAttrStr);
         }
         String type = this.getPara("type");
+        this.setAttr("startTime", this.getPara("startTime"));
+        this.setAttr("endTime", this.getPara("endTime"));
+        this.setAttr("street", street);
+        this.setAttr("watersType", watersType);
+        this.setAttr("meterAttr", meterAttr);
+        this.setAttr("type", type);
 
         String path = this.getRequest().getServletContext().getContextPath();
         String contextPath = path.equals("/") ? "" : path;
@@ -100,7 +98,7 @@ public class ReportStreetChartController extends BaseController {
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
-                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.street order by lsall.street asc";
@@ -137,7 +135,7 @@ public class ReportStreetChartController extends BaseController {
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
-                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.inner_code order by lsall.inner_code asc";
@@ -178,7 +176,7 @@ public class ReportStreetChartController extends BaseController {
         JSONArray meterAttrSeris = new JSONArray();
 
         String sqlMeterAttr = "select COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                "(select tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr,tc.street from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where 1=1 " +
@@ -186,7 +184,7 @@ public class ReportStreetChartController extends BaseController {
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
-                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.meter_attr order by lsall.write_time asc";
@@ -204,7 +202,7 @@ public class ReportStreetChartController extends BaseController {
         JSONArray watersTypeSeris = new JSONArray();
 
         String sqlWatersType = "select COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal,lsall.waters_type from " +
-                "(select tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time from t_actual_data tad " +
+                "(select tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time,tc.street from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where 1=1 " +
@@ -212,7 +210,7 @@ public class ReportStreetChartController extends BaseController {
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
-                (watersType != null ? " and lsall.watersType=" + watersType : "") +
+                (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.waters_type order by TargetAttrTotal desc";

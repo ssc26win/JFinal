@@ -243,6 +243,35 @@
             }]
         });
     })
+    function getDictMapData() {
+        var submitData = {};
+        $.post("${context_path}/dict/getSearchStatisUseDict", submitData, function (data) {
+            var watersType = data.WatersType;
+            for (var i = 0; i < watersType.length; i++) {
+                $("#watersType").append("<option value='" + watersType[i].value + "'>" + watersType[i].name + "</option>");
+            }
+            var street = data.Street;
+            for (var i = 0; i < street.length; i++) {
+                $("#street").append("<option value='" + street[i].value + "'>" + street[i].name + "</option>");
+            }
+            var meterAttr = data.MeterAttr;
+            for (var i = 0; i < meterAttr.length; i++) {
+                $("#meterAttr").append("<option value='" + meterAttr[i].value + "'>" + meterAttr[i].name + "</option>");
+            }
+            var companyType = data.CompanyType;
+            for(var i = 0;i<companyType.length;i++) {
+                $("#type").append("<option value='" + companyType[i].value + "'>"+companyType[i].name+"</option>");
+            }
+            $("#watersType").val(${watersType});
+            $("#street").val(${street});
+            $("#meterAttr").val(${meterAttr});
+            $("#type").val(${type});
+        }, "json");
+    }
+
+    $(function () {
+        getDictMapData();
+    })
 </script>
 <jsp:include page="/WEB-INF/view/common/chartjs.jsp" flush="true"/>
 </body>

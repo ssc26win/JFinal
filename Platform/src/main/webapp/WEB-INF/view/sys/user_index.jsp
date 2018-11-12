@@ -124,7 +124,7 @@
                 {label: '邮箱', name: 'email', width: 120, sortable: false},
                 {label: '拥有角色', name: 'roleNames', width: 200},
                 {label: '描述', name: 'des', width: 120, sortable: false},
-                {label: '注册时间', name: 'createdate', width: 120},
+                {label: '注册时间', name: 'createdate', width: 120, sortable: true},
                 {label: '状态', name: 'status', formatter: fmatterStatus, width: 50},
                 {label: '微信账号', name: 'wx_account', width: 80},
                 /*{label: '所属单位', name: 'companyName', width: 200},*/

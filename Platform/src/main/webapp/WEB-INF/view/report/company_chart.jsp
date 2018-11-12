@@ -49,17 +49,17 @@
 
                                             <div class="input-group">
                                                 日期时间:
-                                                <input type="text" id="startTime" name="startTime" value=""
+                                                <input type="text" id="startTime" name="startTime" value="${startTime}"
                                                        class="form_date" style="width: 100px;"/>~
-                                                <input type="text" id="endTime" name="endTime" value=""
+                                                <input type="text" id="endTime" name="endTime" value="${endTime}"
                                                        class="form_date" style="width: 100px;"/>
                                                 <select id="type" name="type"
                                                         style="margin-left: 5px;width: 159px;height: 34px;">
                                                     <option value="">请选择单位类型</option>
                                                 </select>
-                                                <input type="text" id="name" name="name" class="" placeholder="请输入单位名称"
+                                                <input type="text" id="name" name="name" value="${name}" class="" placeholder="请输入单位名称"
                                                        style="margin-left: 5px;"/>
-                                                <input type="text" id="innerCode" name="innerCode" class=""
+                                                <input type="text" id="innerCode" name="innerCode" value="${innerCode}" class=""
                                                        placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType"
                                                         style="margin-left: 5px;width: 159px; height: 34px;">
@@ -252,6 +252,37 @@
             }]
         });
     })
+
+    function getDictMapData() {
+        var submitData = {};
+        $.post("${context_path}/dict/getSearchStatisUseDict", submitData, function (data) {
+            var watersType = data.WatersType;
+            for (var i = 0; i < watersType.length; i++) {
+                $("#watersType").append("<option value='" + watersType[i].value + "'>" + watersType[i].name + "</option>");
+            }
+            var street = data.Street;
+            for (var i = 0; i < street.length; i++) {
+                $("#street").append("<option value='" + street[i].value + "'>" + street[i].name + "</option>");
+            }
+            var meterAttr = data.MeterAttr;
+            for (var i = 0; i < meterAttr.length; i++) {
+                $("#meterAttr").append("<option value='" + meterAttr[i].value + "'>" + meterAttr[i].name + "</option>");
+            }
+            var companyType = data.CompanyType;
+            for(var i = 0;i<companyType.length;i++) {
+                $("#type").append("<option value='" + companyType[i].value + "'>"+companyType[i].name+"</option>");
+            }
+            $("#watersType").val(${watersType});
+            $("#street").val(${street});
+            $("#meterAttr").val(${meterAttr});
+            $("#type").val(${type});
+        }, "json");
+    }
+
+    $(function () {
+        getDictMapData();
+    })
+
 </script>
 <jsp:include page="/WEB-INF/view/common/chartjs.jsp" flush="true"/>
 </body>

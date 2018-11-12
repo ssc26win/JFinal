@@ -119,7 +119,7 @@
                 { label: '乡', name: 'streetName', width: 150, sortable:false},
                 { label: '村', name: 'village', width: 150, sortable:false},
                 { label: '水井地址', name: 'address', width: 120, sortable:false},
-                { label: '成井时间（年）', name: 'year', width: 90, sortable:true},
+                { label: '成井时间（年）', name: 'year', width: 90, sortable:false},
                 { label: '井深（米）', name: 'well_depth', width: 90, sortable:true},
                 { label: '地下水埋深（米）', name: 'ground_depth', width: 120, sortable:true},
                 { label: '是否为单位自备井', name: 'oneselfWellName', width: 150, sortable:false},

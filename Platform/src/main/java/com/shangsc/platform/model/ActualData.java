@@ -695,7 +695,13 @@ public class ActualData extends BaseActualData<ActualData> {
         }
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') ");
         if (StringUtils.isNotEmpty(orderbyStr)) {
-            sqlExceptSelect.append(orderbyStr);
+            if (orderbyStr.indexOf("absNetWater") > 0) {
+                sqlExceptSelect.append(orderbyStr.replace("absNetWater", "net_water"));
+            } else if (orderbyStr.indexOf("todays") > 0) {
+                sqlExceptSelect.append(orderbyStr.replace("todays", "write_time"));
+            } else {
+                sqlExceptSelect.append(orderbyStr);
+            }
         } else {
             sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m-%d') desc ");
         }
@@ -779,7 +785,13 @@ public class ActualData extends BaseActualData<ActualData> {
         }
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m') ");
         if (StringUtils.isNotEmpty(orderbyStr)) {
-            sqlExceptSelect.append(orderbyStr);
+            if (orderbyStr.indexOf("monthTotal") > 0) {
+                sqlExceptSelect.append(orderbyStr.replace("monthTotal", "sum(COALESCE(abs(tad.net_water), 0))"));
+            } else if (orderbyStr.indexOf("months") > 0) {
+                sqlExceptSelect.append(orderbyStr.replace("months", "write_time"));
+            } else {
+                sqlExceptSelect.append(orderbyStr);
+            }
         } else {
             sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m') desc ");
         }
@@ -859,7 +871,13 @@ public class ActualData extends BaseActualData<ActualData> {
         }
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y') ");
         if (StringUtils.isNotEmpty(orderbyStr)) {
-            sqlExceptSelect.append(orderbyStr);
+            if (orderbyStr.indexOf("yearTotal") > 0) {
+                sqlExceptSelect.append(orderbyStr.replace("yearTotal", "sum(COALESCE(abs(tad.net_water), 0))"));
+            } else if (orderbyStr.indexOf("years") > 0) {
+                sqlExceptSelect.append(orderbyStr.replace("years", "write_time"));
+            } else {
+                sqlExceptSelect.append(orderbyStr);
+            }
         } else {
             sqlExceptSelect.append("order by date_format(tad.write_time, '%Y') desc");
         }

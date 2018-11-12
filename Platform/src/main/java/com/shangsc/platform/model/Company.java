@@ -269,7 +269,7 @@ public class Company extends BaseCompany<Company> {
     public List<Record> getCompanyByType(String type) {
         String select = "select * from t_company c left join (select COALESCE(sum(net_water), 0) as waterUseNum,inner_code as innerCode from t_actual_data GROUP BY inner_code) tad" +
                 " on c.inner_code=tad.innerCode";
-        if ("1".equals(type)) {
+        if (StringUtils.isNotEmpty(type) && !"2".equals(type)) {
             String innerCodes = getWarnInnerCodes();
             select = select + " where c.inner_code not in (" + innerCodes + ")";
         } else if ("2".equals(type)) {
@@ -277,6 +277,9 @@ public class Company extends BaseCompany<Company> {
             select = select + " where c.inner_code in (" + innerCodes + ")";
         } else {
             select = select + " where 1=1 ";
+        }
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            select = select + " and c.inner_code in (" + globalInnerCode + ")";
         }
         return Db.find(select);
     }
@@ -581,6 +584,9 @@ public class Company extends BaseCompany<Company> {
                 " on twm.meter_address=tad.meter_address) allad where allad.write_time >='" + start + "' and allad.write_time <'" + end + "' group by allad.meter_address) t" +
                 " INNER join t_water_index twi on twi.inner_code=t.inner_code left join t_company c on c.inner_code=t.inner_code " +
                 "where t.sumWater>twi." + month_str + " and t.waters_type=twi.waters_type";
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sql = sql + " and c.inner_code in (" + globalInnerCode + ")";
+        }
         List<Record> records = Db.find(sql);
         Set<String> set = new HashSet<>();
         for (Record record : records) {

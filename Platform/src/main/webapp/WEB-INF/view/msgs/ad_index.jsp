@@ -119,7 +119,7 @@
                 {label: '内容', name: 'content', width: 350, sortable: false},
                 /*{ label: '图片地址', name: 'img_url', width: 100, sortable:false},*/
                 {label: '发布状态', name: 'statusName', width: 100, sortable: false},
-                {label: '创建时间', name: 'create_time', width: 100, sortable: false}
+                {label: '创建时间', name: 'create_time', width: 100, sortable: true}
             ],
             viewrecords: true,
             height: 560,

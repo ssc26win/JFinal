@@ -75,7 +75,7 @@ public class ReportStreetController extends BaseController {
 
     @RequiresPermissions(value = {"/report/street"})
     public void getListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        ActualDataReport.me.setGlobalInnerCode(getInnerCodesSQLStr());
         Date startTime = null;
         Date endTime = null;
         try {
