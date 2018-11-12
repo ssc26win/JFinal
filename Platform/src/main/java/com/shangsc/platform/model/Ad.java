@@ -61,12 +61,12 @@ public class Ad extends BaseAd<Ad> {
     }
 
     public InvokeResult publish(Long id, Integer isCancel) {
-        if (isCancel == 1) {
+        if (isCancel == 0) {
             Ad first = this.findFirst("select count(1) as TotalCount from t_ad where status=1");
             if (first != null) {
                 Long totalCount = first.get("TotalCount");
-                if (totalCount == 3) {
-                    return InvokeResult.failure("发布公告失败, 发布公告数已达上限3个！");
+                if (totalCount == 1) {
+                    return InvokeResult.failure("发布公告失败, 发布公告数已达上限1个！");
                 }
             }
         }
@@ -75,7 +75,14 @@ public class Ad extends BaseAd<Ad> {
             return InvokeResult.failure("更新公告失败, 该公告不存在");
         }
 
-        ad.setStatus(isCancel);
+        if (isCancel == 1) {
+            ad.setStatus(0);
+            ad.setMemo("取消发布");
+        }
+        if (isCancel == 0) {
+            ad.setStatus(1);
+            ad.setMemo("已发布");
+        }
         //offPublishOther();
         ad.update();
         return InvokeResult.success();

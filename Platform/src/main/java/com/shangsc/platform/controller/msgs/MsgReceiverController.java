@@ -1,9 +1,11 @@
 package com.shangsc.platform.controller.msgs;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.code.ReadOrNo;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
+import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
@@ -23,7 +25,7 @@ import java.util.List;
  */
 public class MsgReceiverController extends BaseController {
 
-    @RequiresPermissions(value = {"/basic/msgreceiver"})
+    @Clear(AuthorityInterceptor.class)
     public void save() {
         Long mid = this.getParaToLong("mid");
         String para = this.getPara("receiverIds");
@@ -42,7 +44,7 @@ public class MsgReceiverController extends BaseController {
         this.renderJson(result);
     }
 
-    @RequiresPermissions(value = {"/basic/msgreceiver"})
+    @Clear(AuthorityInterceptor.class)
     public void msgCount() {
         SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
         Long unReadCount = MsgReceiver.dao.findUnReadCount(sysUser.getId());
@@ -51,12 +53,12 @@ public class MsgReceiverController extends BaseController {
         renderJson(result);
     }
 
-    @RequiresPermissions(value = {"/basic/msgreceiver"})
+    @Clear(AuthorityInterceptor.class)
     public void myMsgList() {
         render("message_list.jsp");
     }
 
-    @RequiresPermissions(value = {"/basic/msgreceiver"})
+    @Clear(AuthorityInterceptor.class)
     public void getUnReadListData() {
         SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
         String keyword = this.getPara("name");
@@ -71,14 +73,14 @@ public class MsgReceiverController extends BaseController {
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo));
     }
 
-    @RequiresPermissions(value = {"/basic/msgreceiver"})
+    @Clear(AuthorityInterceptor.class)
     public void delete() {
         String ids = this.getPara("ids");
         InvokeResult resp = MsgReceiver.dao.deleteData(ids);
         this.renderJson(resp);
     }
 
-    @RequiresPermissions(value = {"/basic/msgreceiver"})
+    @Clear(AuthorityInterceptor.class)
     public void setReading() {
         SysUser user = IWebUtils.getCurrentSysUser(getRequest());
         String ids = this.getPara("ids");

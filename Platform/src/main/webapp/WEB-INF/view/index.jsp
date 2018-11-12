@@ -123,7 +123,7 @@
                     </button>
                     <nav class="page-tabs J_menuTabs">
                         <div class="page-tabs-content" style="margin-left: 0px;">
-                            <a href="javascript:;" class="J_menuTab active" data-id="/home">控制台</a>
+                            <a href="javascript:;" class="J_menuTab active" data-id="/home">通知公告</a>
                         </div>
                     </nav>
                     <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>

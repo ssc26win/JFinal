@@ -38,7 +38,7 @@ public class AdController extends BaseController {
     public void findList() {
         List<Ad> ads = Ad.dao.find("select ta.*,ti.img_url as imgUrl from t_ad ta inner join " +
                 "(select id as imgId,rela_id,img_url from t_image where rela_type='t_ad') ti on ti.rela_id=ta.id " +
-                "where status=1 order by ti.imgId desc limit 3");
+                "where status=1 order by ti.imgId desc limit 1");
         if (CollectionUtils.isNotEmpty(ads)) {
             this.renderJson(ads);
         } else {
