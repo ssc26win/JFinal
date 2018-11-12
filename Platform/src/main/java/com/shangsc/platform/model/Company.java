@@ -172,7 +172,7 @@ public class Company extends BaseCompany<Company> {
             if (company == null) {
                 return InvokeResult.failure("更新失败单位, 该单位不存在");
             }
-            company = setProp(company, name, realCode, innerCode, waterUnit, county, street, streetSrc, address, customerType, waterUseType,
+            company = setProp(company, name, realCode, "", waterUnit, county, street, streetSrc, address, customerType, waterUseType,
                     gbIndustry, mainIndustry, contact, phone, postalCode, department, wellCount, firstWatermeterCount,
                     remotemeterCount, unitType, longitude, latitude, createTime, self_well_price, surface_price,
                     self_free_price, company_type, memo, term);
@@ -195,7 +195,9 @@ public class Company extends BaseCompany<Company> {
                             BigDecimal self_well_price, BigDecimal surface_price, BigDecimal self_free_price, Integer company_type, String memo, Integer term) {
         company.setName(name);
         company.setRealCode(realCode);
-        company.setInnerCode(innerCode);
+        if (StringUtils.isNotEmpty(innerCode)) {
+            company.setInnerCode(innerCode);
+        }
         company.setWaterUnit(waterUnit);
         company.setCounty(county);
         company.setStreet(street);

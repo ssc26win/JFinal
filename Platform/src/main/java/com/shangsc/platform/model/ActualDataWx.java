@@ -419,7 +419,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
     }
 
     public Page<ActualData> findWxMeterReadListOnUse(int pageNo, int pageSize, String orderbyStr, String startTime, String endTime, String keyword, String wxInnerCode, String meterAddress) {
-        String select = " select COALESCE(abs(tad.net_water), 0) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
+        String select = " select COALESCE(abs(tad.net_water), 0) as absNetWater,tad.sum_water,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
                 "tc.county,tc.company_type," +
                 "tad.write_time as todays ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
