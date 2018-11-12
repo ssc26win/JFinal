@@ -54,12 +54,21 @@ public class SysUser extends BaseSysUser<SysUser> {
     }
 
     /**
+     * 是否有执法管理员权限
+     */
+    public boolean isLawAdmin() {
+        long count = Db.queryLong("select count(*) from sys_user_role where role_id=? and user_id=?", 1, this.getId());
+        return count > 0 ? true : false;
+    }
+
+    /**
      * 是否有管理员权限
      */
     public boolean isAdmin() {
         long count = Db.queryLong("select count(*) from sys_user_role where role_id=? and user_id=?", 1, this.getId());
         return count > 0 ? true : false;
     }
+
 
     /**
      * 用户登陆

@@ -31,7 +31,7 @@ public class ActualMeterReadController extends BaseController {
         String startTime = this.getPara("startTime");
         String endTime = this.getPara("endTime");
         String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
-        List<Record> records = ActualDataWx.me.getWxMeterDailyActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime , "");
+        List<Record> records = ActualDataWx.me.getWxMeterDailyActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime, "");
         WaterMeter byMeterAddress = WaterMeter.me.findByMeterAddress(meterAddress);
         Company byInnerCode = null;
         if (byMeterAddress != null && StringUtils.isNotEmpty(byMeterAddress.getInnerCode())) {
@@ -230,27 +230,31 @@ public class ActualMeterReadController extends BaseController {
             Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterMonthList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
             obj.put("jsonList", pageInfo);
             this.renderJson(obj);
-        //} else if (DateType.DAY == dateType) {
-        //    List<Record> records = ActualDataWx.me.getWxMeterDailyActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
-        //    List<String> day = new ArrayList<String>();
-        //    for (Record record : records) {
-        //        sumWater.add(record.get("sumWater"));
-        //        day.add(record.get("DAY").toString());
-        //    }
-        //    obj.put("sumWater", sumWater);
-        //    obj.put("day", day);
-        //    obj.put("subtitle", subtitle);
-        //    obj.put("seriesName", seriesName);
-        //
-        //    Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterDailyList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
-        //    obj.put("jsonList", pageInfo);
-        //    this.renderJson(obj);
+            //} else if (DateType.DAY == dateType) {
+            //    List<Record> records = ActualDataWx.me.getWxMeterDailyActualData(wxInnerCodeSQLStr, meterAddress, startTime, endTime);
+            //    List<String> day = new ArrayList<String>();
+            //    for (Record record : records) {
+            //        sumWater.add(record.get("sumWater"));
+            //        day.add(record.get("DAY").toString());
+            //    }
+            //    obj.put("sumWater", sumWater);
+            //    obj.put("day", day);
+            //    obj.put("subtitle", subtitle);
+            //    obj.put("seriesName", seriesName);
+            //
+            //    Page<ActualData> pageInfo = ActualDataWx.me.findWxMeterDailyList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr, meterAddress);
+            //    obj.put("jsonList", pageInfo);
+            //    this.renderJson(obj);
         } else if (DateType.DAY == dateType) {
             List<Record> records = ActualDataWx.me.getWxMeterReadActualDataOnUse(wxInnerCodeSQLStr, meterAddress, startTime, endTime, keyword);
             List<String> day = new ArrayList<String>();
             for (Record record : records) {
                 sumWater.add(record.get("sumWater"));
-                day.add(record.get("DAY").toString());
+                String dayStr = record.get("DAY").toString();
+                if (StringUtils.isNotEmpty(dayStr)) {
+                    dayStr = dayStr.substring(0, dayStr.length() - 2);
+                }
+                day.add(dayStr);
             }
             obj.put("sumWater", sumWater);
             obj.put("day", day);
