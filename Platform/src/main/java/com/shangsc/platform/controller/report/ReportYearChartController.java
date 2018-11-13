@@ -12,6 +12,7 @@ import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.ActualDataReport;
+import com.shangsc.platform.model.Company;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -75,7 +76,19 @@ public class ReportYearChartController extends BaseController {
         this.setAttr("type", type);
 
         String globalInnerCode = getInnerCodesSQLStr();
-        ActualData.me.setGlobalInnerCode(globalInnerCode);
+        Long width = 1080L;
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            String[] split = StringUtils.split(globalInnerCode, ",");
+            if (split.length > 90) {
+                width = Long.parseLong(split.length * 10 + "");
+            }
+        } else {
+            Long count = Company.me.getCount();
+            width = count * 10;
+        }
+        this.setAttr("widthSum", width);
+
+        ActualDataReport.me.setGlobalInnerCode(globalInnerCode);
         List<ActualData> datas = ActualData.me.find("select date_format(write_time, '%Y') as targetTime from t_actual_data " +
                 " where write_time is not null and write_time<>'' " +
 

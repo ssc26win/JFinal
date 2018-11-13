@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html style="min-width: 5000px;">
+<html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
@@ -92,12 +92,12 @@
             </div>
             <div class="row" style="">
                 <div class="col-sm-12">
-                    <div id="companyUseDAll" style="min-width: 5000px;margin: 0 auto"></div>
+                    <div id="companyUseDAll" style="min-width: ${widthSum}px;margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row" style="">
                 <div class="col-sm-12">
-                    <div id="companyUseD" style="min-width: 5000px; margin: 0 auto"></div>
+                    <div id="companyUseD" style="min-width: ${widthSum}px; margin: 0 auto"></div>
                 </div>
             </div>
         </div>

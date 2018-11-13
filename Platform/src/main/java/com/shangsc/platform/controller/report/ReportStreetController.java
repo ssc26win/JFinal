@@ -75,7 +75,8 @@ public class ReportStreetController extends BaseController {
 
     @RequiresPermissions(value = {"/report/street"})
     public void getListData() {
-        ActualDataReport.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        String globalInnerCode = getInnerCodesSQLStr();
+        ActualDataReport.me.setGlobalInnerCode(globalInnerCode);
         Date startTime = null;
         Date endTime = null;
         try {
@@ -125,7 +126,8 @@ public class ReportStreetController extends BaseController {
                     "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
-                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                    " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null" +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
@@ -174,7 +176,8 @@ public class ReportStreetController extends BaseController {
                     "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
-                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                    " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
@@ -207,7 +210,8 @@ public class ReportStreetController extends BaseController {
                     "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
-                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                    " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
@@ -254,7 +258,8 @@ public class ReportStreetController extends BaseController {
                     "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
-                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                    " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
@@ -306,7 +311,8 @@ public class ReportStreetController extends BaseController {
 
     @RequiresPermissions(value = {"/report/street"})
     public void exportData() {
-        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        String globalInnerCode = getInnerCodesSQLStr();
+        ActualDataReport.me.setGlobalInnerCode(globalInnerCode);
         Date startTime = null;
         Date endTime = null;
         try {
@@ -358,7 +364,8 @@ public class ReportStreetController extends BaseController {
                     "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
-                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                    " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null" +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
@@ -405,7 +412,8 @@ public class ReportStreetController extends BaseController {
                     "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
-                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                    " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
@@ -439,7 +447,8 @@ public class ReportStreetController extends BaseController {
                     "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
-                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                    " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
@@ -484,7 +493,8 @@ public class ReportStreetController extends BaseController {
                     "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
-                    " where lsall.street in (" + StringUtils.join(streets, ",") + ")" +
+                    " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                    " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
                     " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +

@@ -92,12 +92,12 @@
             </div>
             <div class="row" style="max-width: 1200px;">
                 <div class="col-sm-12">
-                    <div id="companyUseDAll" style="width: 1200px;margin: 0 auto"></div>
+                    <div id="companyUseDAll" style="min-width:100%;max-width: 1200px;margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row" style="">
                 <div class="col-sm-12">
-                    <div id="companyUseD" style="min-width: 5000px; margin: 0 auto"></div>
+                    <div id="companyUseD" style="min-width:100%;max-width: 5000px; margin: 0 auto"></div>
                 </div>
             </div>
         </div>

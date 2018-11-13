@@ -90,14 +90,14 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <div id="streetUse" style="min-width: 8000px; height: 400px; margin: 0 auto"></div>
+                    <div id="streetUse" style="min-width: ${widthSum}px; height: 400px; margin: 0 auto"></div>
                 </div>
                 <div class="col-sm-12">
-                    <div id="meterAttrUse" style="min-width: 8000px; height: 400px; margin: 0 auto"></div>
+                    <div id="meterAttrUse" style="min-width: ${widthSum}px; height: 400px; margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row" style="text-align: left;">
-                <div id="watersTypeUse" style="min-width: 8000px; margin-right: 7600px; text-align: left;height: 400px"></div>
+                <div id="watersTypeUse" style="min-width: ${widthSum}px; text-align: left;height: 400px"></div>
             </div>
         </div>
     </div>
@@ -119,7 +119,7 @@
             },
             yAxis: {
                 title: {
-                    text: '各乡镇总的用水量.单位（立方米）'
+                    text: '各单位总的用水量.单位（立方米）'
                 }
             },
             legend: {
@@ -142,7 +142,7 @@
                 pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}</b><br/>'
             },
             series: [{
-                name: '所属乡镇',
+                name: '所属单位',
                 colorByPoint: true,
                 data: JSON.parse('${seriesJsonData}')
             }],

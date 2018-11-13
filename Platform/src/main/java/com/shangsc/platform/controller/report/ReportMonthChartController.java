@@ -13,6 +13,7 @@ import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.ActualDataReport;
+import com.shangsc.platform.model.Company;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -74,12 +75,13 @@ public class ReportMonthChartController extends BaseController {
         this.setAttr("type", type);
 
         String globalInnerCode = getInnerCodesSQLStr();
-        ActualData.me.setGlobalInnerCode(globalInnerCode);
+        ActualDataReport.me.setGlobalInnerCode(globalInnerCode);
         Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
         List<ActualData> datas = ActualData.me.find("select date_format(write_time, '%Y-%m') as targetTime from t_actual_data " +
-                " where write_time is not null and write_time<>'' " +
+                " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                " and write_time is not null and write_time<>'' " +
 
                 (startTime != null ? " and write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and write_time >='" + start + "'") +
                 (endTime != null ? " and write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : " and write_time <='" + end + "'") +
@@ -146,6 +148,17 @@ public class ReportMonthChartController extends BaseController {
         String type = this.getPara("type");
 
         String globalInnerCode = getInnerCodesSQLStr();
+        Long width = 1080L;
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            String[] split = StringUtils.split(globalInnerCode, ",");
+            if (split.length > 90) {
+                width = Long.parseLong(split.length * 10 + "");
+            }
+        } else {
+            Long count = Company.me.getCount();
+            width = count * 10;
+        }
+        this.setAttr("widthSum", width);
         Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
