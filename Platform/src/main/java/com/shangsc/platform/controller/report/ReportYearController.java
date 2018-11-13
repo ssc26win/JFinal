@@ -65,7 +65,7 @@ public class ReportYearController extends BaseController {
 
     @RequiresPermissions(value = {"/report/year"})
     public void getListData() {
-        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        ActualDataReport.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         if (StringUtils.isNotEmpty(this.getPara("byName")) && "yes".equals(this.getPara("byName"))) {
             name = this.getUrlUtf8Para("name");
@@ -144,7 +144,7 @@ public class ReportYearController extends BaseController {
 
     @RequiresPermissions(value = {"/report/year"})
     public void exportData() {
-        ActualData.me.setGlobalInnerCode(getInnerCodesSQLStr());
+        ActualDataReport.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         Date startTime = null;
