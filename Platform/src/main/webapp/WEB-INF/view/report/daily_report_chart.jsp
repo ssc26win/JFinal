@@ -17,7 +17,7 @@
 <style type="text/css">
     html {
         overflow-x: auto;
-        overflow-y: hidden;
+        overflow-y: auto;
     }
 </style>
 <body class="no-skin">
