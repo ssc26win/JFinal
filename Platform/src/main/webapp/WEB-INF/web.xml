@@ -3,7 +3,7 @@
 xmlns="http://java.sun.com/xml/ns/javaee" 
 xmlns:web="http://java.sun.com/xml/ns/javaee" 
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" 
-id="jcbase" version="2.5">
+id="platform" version="2.5">
   <filter>
     <filter-name>jfinal</filter-name>
     <filter-class>com.jfinal.core.JFinalFilter</filter-class>

@@ -41,19 +41,19 @@ public class ReportStreetController extends BaseController {
         street.put("label", "所属乡镇");
         street.put("name", "streetName");
         street.put("width", "120");
-        street.put("sortable", "false");
+        street.put("sortable", false);
         array.add(street);
         JSONObject company = new JSONObject();
         company.put("label", "水源类型");
         company.put("name", "watersTypeName");
         company.put("width", "100");
-        company.put("sortable", "false");
+        company.put("sortable", false);
         array.add(company);
         JSONObject waterUseTotal = new JSONObject();
         waterUseTotal.put("label", "总用水量");
         waterUseTotal.put("name", "watersUseTotal");
         waterUseTotal.put("width", "100");
-        waterUseTotal.put("sortable", "false");
+        waterUseTotal.put("sortable", false);
         array.add(waterUseTotal);
         for (String value : meterAttrType.keySet()) {
             JSONObject column = new JSONObject();
@@ -64,7 +64,7 @@ public class ReportStreetController extends BaseController {
             } else {
                 column.put("width", 50);
             }
-            column.put("sortable", "false");
+            column.put("sortable", false);
             array.add(column);
         }
         this.setAttr("columnsMeterAttr", array);
@@ -122,13 +122,14 @@ public class ReportStreetController extends BaseController {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
 
             String sql = "select lsall.street,lsall.waters_type,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null" +
+                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
@@ -172,13 +173,14 @@ public class ReportStreetController extends BaseController {
             }
 
             String sqlZongji = "select lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
@@ -206,13 +208,14 @@ public class ReportStreetController extends BaseController {
             listFinal.add(companyZongji); // TODO 1
 
             String sqlHejiWaterType = "select lsall.waters_type,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
@@ -254,13 +257,14 @@ public class ReportStreetController extends BaseController {
             }
 
             String sqlXiaoji = "select lsall.street,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
@@ -360,13 +364,14 @@ public class ReportStreetController extends BaseController {
             Map<String, Object> mapWatersType = DictData.dao.getDictMap(0, DictCode.WatersType);
 
             String sql = "select lsall.street,lsall.waters_type,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null" +
+                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
@@ -408,13 +413,14 @@ public class ReportStreetController extends BaseController {
             }
 
             String sqlZongji = "select lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
@@ -443,13 +449,14 @@ public class ReportStreetController extends BaseController {
 
 
             String sqlHejiWaterType = "select lsall.waters_type,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
@@ -489,13 +496,14 @@ public class ReportStreetController extends BaseController {
             }
 
             String sqlXiaoji = "select lsall.street,lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
                     (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +

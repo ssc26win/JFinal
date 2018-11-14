@@ -49,14 +49,14 @@ public class ReportMonthController extends BaseController {
         company.put("label", "单位名称");
         company.put("name", "companyName");
         company.put("width", "120");
-        company.put("sortable", "false");
+        company.put("sortable", false);
         array.add(company);
         for (String value : months.keySet()) {
             JSONObject column = new JSONObject();
             column.put("label", value);
             column.put("name", value);
             column.put("width", "90");
-            column.put("sortable", "false");
+            column.put("sortable", false);
             array.add(column);
         }
         this.setAttr("columnsMonth", array);

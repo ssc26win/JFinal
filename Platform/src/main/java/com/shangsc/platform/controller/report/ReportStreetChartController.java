@@ -91,11 +91,12 @@ public class ReportStreetChartController extends BaseController {
         Map<String, Object> mapStreetType = DictData.dao.getDictMap(0, DictCode.Street);
 
         String sqlSeries = "select lsall.street,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tc.street,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,tad.meter_address,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                 " and lsall.street<>'' and lsall.street is not null " +
+                " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
@@ -129,11 +130,12 @@ public class ReportStreetChartController extends BaseController {
         //drilldownJsonData
 
         String sqlSeriesCpy = "select lsall.street,lsall.name,lsall.inner_code,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tc.street,tc.name,tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,tad.meter_address,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
-                " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.street<>'' and lsall.street is not null " +
+                " and lsall.street<>'' and lsall.street is not null " +
+                " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
@@ -178,11 +180,12 @@ public class ReportStreetChartController extends BaseController {
         JSONArray meterAttrSeris = new JSONArray();
 
         String sqlMeterAttr = "select COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tad.net_water,tad.inner_code,tad.write_time,twm.waters_type,twm.meter_attr,tc.street from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,tad.meter_address,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
-                " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                " and lsall.street<>'' and lsall.street is not null " +
+                " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
@@ -204,10 +207,12 @@ public class ReportStreetChartController extends BaseController {
         JSONArray watersTypeSeris = new JSONArray();
 
         String sqlWatersType = "select COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal,lsall.waters_type from " +
-                "(select tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.write_time,tc.street from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,tad.meter_address,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                " and lsall.street<>'' and lsall.street is not null " +
+                " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
                 (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +

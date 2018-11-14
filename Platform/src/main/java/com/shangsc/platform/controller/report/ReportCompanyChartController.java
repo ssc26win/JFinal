@@ -29,19 +29,6 @@ public class ReportCompanyChartController extends BaseController {
     @RequiresPermissions(value = {"/report/company/chart"})
     public void index() {
         String globalInnerCode = getInnerCodesSQLStr();
-
-        Long width = 1080L;
-        if (StringUtils.isNotEmpty(globalInnerCode)) {
-            String[] split = StringUtils.split(globalInnerCode, ",");
-            if (split.length > 90) {
-                width = Long.parseLong(split.length * 10 + "");
-            }
-        } else {
-            Long count = Company.me.getCount();
-            width = count * 10;
-        }
-        this.setAttr("widthSum", width);
-
         String name = this.getUrlUtf8Para("name");
         String innerCode = this.getUrlUtf8Para("innerCode");
         Date startTime = null;
@@ -110,11 +97,12 @@ public class ReportCompanyChartController extends BaseController {
         //seriesJsonData
 
         String sqlSeries = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
-                " and lsall.inner_code<>'' and lsall.inner_code is not null " +
+                " and lsall.street<>'' and lsall.street is not null " +
+                " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (StringUtils.isNotEmpty(name) ? " and lsall.name='" + name + "'" : "") +
                 (StringUtils.isNotEmpty(innerCode) ? " and lsall.inner_code='" + innerCode + "'" : "") +
                 (street != null ? " and lsall.street=" + street : "") +
@@ -126,6 +114,18 @@ public class ReportCompanyChartController extends BaseController {
                 " group by lsall.inner_code order by lsall.inner_code asc";
 
         List<Record> recordsSeries = Db.find(sqlSeries);
+
+        Long width = 1080L;
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            String[] split = StringUtils.split(globalInnerCode, ",");
+            if (CollectionUtils.isNotEmpty(recordsSeries)) {
+                width = Long.parseLong(split.length * 10 + "");
+            }
+        } else {
+            Long count = Company.me.getCount();
+            width = count * 10;
+        }
+        this.setAttr("widthSum", width);
 
         JSONArray seriesJsonData = new JSONArray();
         for (Record record : recordsSeries) {
@@ -141,10 +141,11 @@ public class ReportCompanyChartController extends BaseController {
         //drilldownJsonData
 
         String sqlSeriesMeter = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,twm.waters_type,twm.meter_attr,twm.meter_address from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
+                " and lsall.street<>'' and lsall.street is not null " +
                 " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (StringUtils.isNotEmpty(name) ? " and lsall.name='" + name + "'" : "") +
                 (StringUtils.isNotEmpty(innerCode) ? " and lsall.inner_code='" + innerCode + "'" : "") +
@@ -192,11 +193,12 @@ public class ReportCompanyChartController extends BaseController {
         JSONArray meterAttrSeris = new JSONArray();
 
         String sqlMeterAttr = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
-                " and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
+                " and lsall.street<>'' and lsall.street is not null " +
+                " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (StringUtils.isNotEmpty(name) ? " and lsall.name='" + name + "'" : "") +
                 (StringUtils.isNotEmpty(innerCode) ? " and lsall.inner_code='" + innerCode + "'" : "") +
                 (street != null ? " and lsall.street=" + street : "") +
@@ -220,11 +222,12 @@ public class ReportCompanyChartController extends BaseController {
         JSONArray watersTypeSeris = new JSONArray();
 
         String sqlWatersType = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal,lsall.waters_type from " +
-                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,twm.waters_type,twm.meter_attr from t_actual_data tad " +
+                "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
-                " and lsall.waters_type<>'' and lsall.waters_type is not null " +
+                " and lsall.street<>'' and lsall.street is not null " +
+                " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (StringUtils.isNotEmpty(name) ? " and lsall.name='" + name + "'" : "") +
                 (StringUtils.isNotEmpty(innerCode) ? " and lsall.inner_code='" + innerCode + "'" : "") +
                 (street != null ? " and lsall.street=" + street : "") +
