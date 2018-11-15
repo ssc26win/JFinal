@@ -13,8 +13,8 @@
     <script src="https://img.hcharts.cn/highcharts/modules/exporting.js"></script>
     <script src="https://img.hcharts.cn/highcharts/modules/drilldown.js"></script>
     <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
-
 </head>
+
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
@@ -81,14 +81,17 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <div id="streetUse" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    <div id="streetUse" style="min-width: 1080px; height: 400px; margin: 0 auto"></div>
                 </div>
                 <div class="col-sm-12">
-                    <div id="meterAttrUse" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    <div id="meterAttrUse" style="min-width: 1080px; height: 400px; margin: 0 auto"></div>
                 </div>
-                <div class="col-sm-12">
-                    <div id="watersTypeUse" style="height: 400px"></div>
+            </div>
+            <div class="row" style="text-align: center; margin-top: 100px;">
+                <div class="col-sm-6">
+                    <div id="watersTypeUse" style="text-align: center;height: 400px;margin: 0 auto"></div>
                 </div>
+                <div class="col-sm-6"></div>
             </div>
         </div>
     </div>
@@ -259,8 +262,8 @@
                 $("#meterAttr").append("<option value='" + meterAttr[i].value + "'>" + meterAttr[i].name + "</option>");
             }
             var companyType = data.CompanyType;
-            for(var i = 0;i<companyType.length;i++) {
-                $("#type").append("<option value='" + companyType[i].value + "'>"+companyType[i].name+"</option>");
+            for (var i = 0; i < companyType.length; i++) {
+                $("#type").append("<option value='" + companyType[i].value + "'>" + companyType[i].name + "</option>");
             }
             $("#watersType").val(${watersType});
             $("#street").val(${street});

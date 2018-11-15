@@ -29,8 +29,12 @@ public class ReportCompanyChartController extends BaseController {
     @RequiresPermissions(value = {"/report/company/chart"})
     public void index() {
         String globalInnerCode = getInnerCodesSQLStr();
-        String name = this.getUrlUtf8Para("name");
-        String innerCode = this.getUrlUtf8Para("innerCode");
+        String name = this.getPara("name");
+        String innerCode = this.getPara("innerCode");
+        //if ("get".equals(this.getPara("reqType"))) {
+        //    name = this.getUrlUtf8Para("name");
+        //    innerCode = this.getUrlUtf8Para("innerCode");
+        //}
         Date startTime = null;
         Date endTime = null;
         try {
@@ -119,11 +123,11 @@ public class ReportCompanyChartController extends BaseController {
         if (StringUtils.isNotEmpty(globalInnerCode)) {
             String[] split = StringUtils.split(globalInnerCode, ",");
             if (CollectionUtils.isNotEmpty(recordsSeries)) {
-                width = Long.parseLong(split.length * 10 + "");
+                width = Long.parseLong(split.length * 15 + "");
             }
         } else {
             Long count = Company.me.getCount();
-            width = count * 10;
+            width = count * 15;
         }
         this.setAttr("widthSum", width);
 

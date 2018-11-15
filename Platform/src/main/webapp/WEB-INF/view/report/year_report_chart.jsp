@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html style="min-width: 5000px;">
+<html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
@@ -92,12 +92,12 @@
             </div>
             <div class="row" style="max-width: 1200px;">
                 <div class="col-sm-12">
-                    <div id="companyUseDAll" style="min-width:100%;max-width: 1200px;margin: 0 auto"></div>
+                    <div id="companyUseDAll" style="min-width: ${widthSum}px;margin: 0 auto"></div>
                 </div>
             </div>
             <div class="row" style="">
                 <div class="col-sm-12">
-                    <div id="companyUseD" style="min-width:100%;max-width: 5000px; margin: 0 auto"></div>
+                    <div id="companyUseD" style="min-width: ${widthSum}px;margin: 0 auto"></div>
                 </div>
             </div>
         </div>
@@ -159,11 +159,58 @@
         var myDate = new Date();
         var time = myDate.toLocaleDateString().split('/').join('-');
         time = time.substr(0, 4);
+        getDictMapData();
         setOneYear(time);
     })
     function setOneYear(date) {
         console.log(date);
-        $.get("${context_path}/report/year/chart/setOneYear?date=" + date, function (data) {
+        var street = $("#street").val();
+        var watersType = $("#watersType").val();
+        var type = $("#type").val();
+
+        var name = $("#name").val();
+        var innerCode = $("#innerCode").val();
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+        var meterAttr = $("#meterAttr").val();
+
+        var url = "${context_path}/report/year/chart/setOneYear?date=" + date;
+
+        if (street != "" && street != undefined) {
+            url = url + "&street=" + street;
+        } else if ('${street}' != '') {
+            url = url + "&street=" + "${street}";
+        }
+        if (watersType != "" && watersType != undefined) {
+            url = url + "&watersType=" + watersType;
+        } else if ('${watersType}' != '') {
+            url = url + "&watersType=" + "${watersType}";
+        }
+        if (type != "" && type != undefined) {
+            url = url + "&type=" + type;
+        } else if ('${type}' != '') {
+            url = url + "&type=" + "${type}";
+        }
+        if (name != "" && name != undefined) {
+            url = url + "&name=" + name;
+        }
+        if (innerCode != "" && innerCode != undefined) {
+            url = url + "&innerCode=" + innerCode;
+        }
+        if (startTime != "" && startTime != undefined) {
+            url = url + "&startTime=" + startTime;
+        }
+        if (endTime != "" && endTime != undefined) {
+            url = url + "&endTime=" + endTime;
+        }
+        if (meterAttr != "" && meterAttr != undefined) {
+            url = url + "&meterAttr=" + meterAttr;
+        } else if ('${meterAttr}' != '') {
+            url = url + "&meterAttr=" + "${meterAttr}";
+        }
+        url = encodeURI(url);
+
+        $.get(url, function (data) {
             var title = {
                 text: ''
             };
@@ -194,6 +241,7 @@
             var series = [
                 {
                     name: '各单位用水量',
+                    colorByPoint: true,
                     data: data.sumWater
                 }
             ];
@@ -228,6 +276,10 @@
             json.series = series;
             json.plotOptions = plotOptions;
             json.credits = credits;
+            json.chart = {type: 'column'};
+            $('#companyUseD').css("max-width",data.widthSum);
+            $('#companyUseD').css("width",data.widthSum);
+            $('#companyUseD').css("min-width",data.widthSum);
             $('#companyUseD').highcharts(json);
         });
     }
@@ -250,16 +302,21 @@
             for (var i = 0; i < companyType.length; i++) {
                 $("#type").append("<option value='" + companyType[i].value + "'>" + companyType[i].name + "</option>");
             }
-            $("#watersType").val(${watersType});
-            $("#street").val(${street});
-            $("#meterAttr").val(${meterAttr});
-            $("#type").val(${type});
+            if ('${watersType}' != '') {
+                $("#watersType").val(${watersType});
+            }
+            if ('${street}' != '') {
+                $("#street").val(${street});
+            }
+            if ('${meterAttr}' != '') {
+                $("#meterAttr").val(${meterAttr});
+            }
+            if ('${type}' != '') {
+                $("#type").val(${type});
+            }
         }, "json");
     }
 
-    $(function () {
-        getDictMapData();
-    })
 </script>
 <jsp:include page="/WEB-INF/view/common/chartjs.jsp" flush="true"/>
 </body>

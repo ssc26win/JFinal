@@ -36,8 +36,12 @@ public class ReportYearChartController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/report/year/chart"})
     public void index() {
-        String name = this.getUrlUtf8Para("name");
-        String innerCode = this.getUrlUtf8Para("innerCode");
+        String name = this.getPara("name");
+        String innerCode = this.getPara("innerCode");
+        //if ("get".equals(this.getPara("reqType"))) {
+        //    name = this.getUrlUtf8Para("name");
+        //    innerCode = this.getUrlUtf8Para("innerCode");
+        //}
         Date startTime = null;
         Date endTime = null;
         try {
@@ -80,11 +84,11 @@ public class ReportYearChartController extends BaseController {
         if (StringUtils.isNotEmpty(globalInnerCode)) {
             String[] split = StringUtils.split(globalInnerCode, ",");
             if (split.length > 90) {
-                width = Long.parseLong(split.length * 10 + "");
+                width = Long.parseLong(split.length * 15 + "");
             }
         } else {
             Long count = Company.me.getCount();
-            width = count * 10;
+            width = count * 15;
         }
         this.setAttr("widthSum", width);
 
@@ -102,7 +106,7 @@ public class ReportYearChartController extends BaseController {
             if (datas.size() == 1) {
                 strTime = datas.get(0).get("targetTime");
             } else {
-                strTime = datas.get(0).get("targetTime") + "—" + datas.get(datas.size() - 1).get("targetTime");
+                strTime = datas.get(0).get("targetTime") + "~" + datas.get(datas.size() - 1).get("targetTime");
             }
             companyTitle = strTime + companyTitle;
         }
@@ -125,8 +129,8 @@ public class ReportYearChartController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/report/year/chart"})
     public void setOneYear() {
-        String name = this.getUrlUtf8Para("name");
-        String innerCode = this.getUrlUtf8Para("innerCode");
+        String name = this.getPara("name");
+        String innerCode = this.getPara("innerCode");
         Date startTime = null;
         Date endTime = null;
         try {
@@ -185,6 +189,19 @@ public class ReportYearChartController extends BaseController {
         obj.put("sumWater", sumWater);
         obj.put("companies", companies);
 
+        Long width = 1080L;
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            String[] split = StringUtils.split(globalInnerCode, ",");
+            if (split.length > 90) {
+                width = Long.parseLong(split.length * 15 + "");
+            }
+        } else {
+            if (companies.size() > 90) {
+                Long count = Long.parseLong(companies.size() + "");
+                width = count * 15;
+            }
+        }
+        obj.put("widthSum", width);
         //logger.info("--【年用水量明细】 -- \n{}" , JsonUtil.obj2Json(obj));
 
         this.renderJson(obj);

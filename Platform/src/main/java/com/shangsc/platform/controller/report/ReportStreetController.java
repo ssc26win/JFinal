@@ -173,7 +173,7 @@ public class ReportStreetController extends BaseController {
             }
 
             String sqlZongji = "select lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.write_time,tad.inner_code,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
@@ -273,7 +273,7 @@ public class ReportStreetController extends BaseController {
 
             List<Record> recordsXiaoji = Db.find(sqlXiaoji);
 
-            List<Record> listStreet = Db.find("select street from t_company where street is not null group by street ");
+            List<Record> listStreet = Db.find("select street from t_company where street is not null and street in (" + StringUtils.join(streets, ",") + ") group by street ");
 
             for (int i = 0; i < listStreet.size(); i++) {
                 Record streetXiaoji = listStreet.get(i);
@@ -413,7 +413,7 @@ public class ReportStreetController extends BaseController {
             }
 
             String sqlZongji = "select lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
-                    "(select tc.street,tad.net_water,tad.inner_code,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
+                    "(select tc.street,tad.net_water,tad.write_time,tad.inner_code,twm.waters_type,twm.meter_attr,tad.meter_address from t_actual_data tad " +
                     " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                     " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
@@ -512,7 +512,7 @@ public class ReportStreetController extends BaseController {
 
             List<Record> recordsXiaoji = Db.find(sqlXiaoji);
 
-            List<Record> listStreet = Db.find("select street from t_company where street is not null group by street ");
+            List<Record> listStreet = Db.find("select street from t_company where street is not null and street in (" + StringUtils.join(streets, ",") + ") group by street ");
 
             for (int i = 0; i < listStreet.size(); i++) {
                 Record streetXiaoji = listStreet.get(i);

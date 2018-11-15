@@ -96,8 +96,11 @@
                     <div id="meterAttrUse" style="min-width: ${widthSum}px; height: 400px; margin: 0 auto"></div>
                 </div>
             </div>
-            <div class="row" style="text-align: left;">
-                <div id="watersTypeUse" style="min-width: ${widthSum}px; text-align: left;height: 400px"></div>
+            <div class="row" style="text-align: center; margin-top: 100px;">
+                <div class="col-sm-6">
+                    <div id="watersTypeUse" style="text-align: center;height: 400px;margin: 0 auto"></div>
+                </div>
+                <div class="col-sm-6"></div>
             </div>
         </div>
     </div>
@@ -278,10 +281,6 @@
             $("#type").val(${type});
         }, "json");
     }
-
-    $(function () {
-        getDictMapData();
-    })
 
 </script>
 <jsp:include page="/WEB-INF/view/common/chartjs.jsp" flush="true"/>

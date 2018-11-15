@@ -204,7 +204,7 @@
             var endTime = $("#endTime").val();
             var meterAttr = $("#meterAttr").val();
 
-            var url = "${context_path}/report/daily/chart?time=" + new Date().getTime();
+            var url = "${context_path}/report/daily/chart?reqType=get&time=" + new Date().getTime();
 
             if (street != "" && street != undefined) {
                 url = url + "&street=" + street;

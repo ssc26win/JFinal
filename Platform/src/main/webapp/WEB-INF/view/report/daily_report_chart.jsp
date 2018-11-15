@@ -76,7 +76,7 @@
                                                     <option value="">所属乡镇或街道</option>
                                                 </select>
                                                 <span class="input-group-btn">
-                                                    <button type="button" id="btn_search" class="btn btn-purple btn-sm">
+                                                    <button type="submit" id="btn_search" class="btn btn-purple btn-sm">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                                         搜索
                                                     </button>
@@ -104,6 +104,9 @@
     </div>
 </div>
 <script language="JavaScript">
+    $(function () {
+        getDictMapData();
+    })
     $(document).ready(function () {
         Highcharts.chart('companyUseDAll', {
             chart: {
@@ -162,7 +165,53 @@
     })
     function setOne(date) {
         console.log(date);
-        $.get("${context_path}/report/daily/chart/setOneDaily?date=" + date, function (data) {
+        var street = $("#street").val();
+        var watersType = $("#watersType").val();
+        var type = $("#type").val();
+
+        var name = $("#name").val();
+        var innerCode = $("#innerCode").val();
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+        var meterAttr = $("#meterAttr").val();
+
+        var url = "${context_path}/report/daily/chart/setOneDaily?date=" + date;
+
+        if (street != "" && street != undefined) {
+            url = url + "&street=" + street;
+        } else if ('${street}' != '') {
+            url = url + "&street=" + "${street}";
+        }
+        if (watersType != "" && watersType != undefined) {
+            url = url + "&watersType=" + watersType;
+        } else if ('${watersType}' != '') {
+            url = url + "&watersType=" + "${watersType}";
+        }
+        if (type != "" && type != undefined) {
+            url = url + "&type=" + type;
+        } else if ('${type}' != '') {
+            url = url + "&type=" + "${type}";
+        }
+        if (name != "" && name != undefined) {
+            url = url + "&name=" + name;
+        }
+        if (innerCode != "" && innerCode != undefined) {
+            url = url + "&innerCode=" + innerCode;
+        }
+        if (startTime != "" && startTime != undefined) {
+            url = url + "&startTime=" + startTime;
+        }
+        if (endTime != "" && endTime != undefined) {
+            url = url + "&endTime=" + endTime;
+        }
+        if (meterAttr != "" && meterAttr != undefined) {
+            url = url + "&meterAttr=" + meterAttr;
+        } else if ('${meterAttr}' != '') {
+            url = url + "&meterAttr=" + "${meterAttr}";
+        }
+        url = encodeURI(url);
+
+        $.get(url, function (data) {
             var title = {
                 text: ''
             };
@@ -193,6 +242,7 @@
             var series = [
                 {
                     name: '各单位用水量',
+                    colorByPoint: true,
                     data: data.sumWater
                 }
             ];
@@ -227,7 +277,12 @@
             json.series = series;
             json.plotOptions = plotOptions;
             json.credits = credits;
+            json.chart = {type: 'column'};
+            $('#companyUseD').css("max-width",data.widthSum);
+            $('#companyUseD').css("width",data.widthSum);
+            $('#companyUseD').css("min-width",data.widthSum);
             $('#companyUseD').highcharts(json);
+            //$('#companyUseD').attr("min-width", data.widthSum + "px");
         });
     }
     function getDictMapData() {
@@ -249,16 +304,21 @@
             for (var i = 0; i < companyType.length; i++) {
                 $("#type").append("<option value='" + companyType[i].value + "'>" + companyType[i].name + "</option>");
             }
-            $("#watersType").val(${watersType});
-            $("#street").val(${street});
-            $("#meterAttr").val(${meterAttr});
-            $("#type").val(${type});
+            if ('${watersType}' != '') {
+                $("#watersType").val(${watersType});
+            }
+            if ('${street}' != '') {
+                $("#street").val(${street});
+            }
+            if ('${meterAttr}' != '') {
+                $("#meterAttr").val(${meterAttr});
+            }
+            if ('${type}' != '') {
+                $("#type").val(${type});
+            }
         }, "json");
     }
 
-    $(function () {
-        getDictMapData();
-    })
 </script>
 <jsp:include page="/WEB-INF/view/common/chartjs.jsp" flush="true"/>
 </body>
