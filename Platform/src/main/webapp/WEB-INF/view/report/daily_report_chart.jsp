@@ -242,7 +242,7 @@
             var series = [
                 {
                     name: '各单位用水量',
-                    colorByPoint: true,
+                    //colorByPoint: true,
                     data: data.sumWater
                 }
             ];
@@ -277,7 +277,7 @@
             json.series = series;
             json.plotOptions = plotOptions;
             json.credits = credits;
-            json.chart = {type: 'column'};
+            //json.chart = {type: 'column'};
             $('#companyUseD').css("max-width",data.widthSum);
             $('#companyUseD').css("width",data.widthSum);
             $('#companyUseD').css("min-width",data.widthSum);

@@ -80,15 +80,6 @@ public class ReportMonthChartController extends BaseController {
 
         String globalInnerCode = getInnerCodesSQLStr();
         Long width = 1080L;
-        if (StringUtils.isNotEmpty(globalInnerCode)) {
-            String[] split = StringUtils.split(globalInnerCode, ",");
-            if (split.length > 90) {
-                width = Long.parseLong(split.length * 15 + "");
-            }
-        } else {
-            Long count = Company.me.getCount();
-            width = count * 15;
-        }
         this.setAttr("widthSum", width);
 
         ActualDataReport.me.setGlobalInnerCode(globalInnerCode);

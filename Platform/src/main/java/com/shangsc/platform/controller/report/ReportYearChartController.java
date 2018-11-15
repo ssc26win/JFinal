@@ -80,17 +80,6 @@ public class ReportYearChartController extends BaseController {
         this.setAttr("type", type);
 
         String globalInnerCode = getInnerCodesSQLStr();
-        Long width = 1080L;
-        if (StringUtils.isNotEmpty(globalInnerCode)) {
-            String[] split = StringUtils.split(globalInnerCode, ",");
-            if (split.length > 90) {
-                width = Long.parseLong(split.length * 15 + "");
-            }
-        } else {
-            Long count = Company.me.getCount();
-            width = count * 15;
-        }
-        this.setAttr("widthSum", width);
 
         ActualDataReport.me.setGlobalInnerCode(globalInnerCode);
         List<ActualData> datas = ActualData.me.find("select date_format(write_time, '%Y') as targetTime from t_actual_data " +
@@ -120,7 +109,8 @@ public class ReportYearChartController extends BaseController {
             data.put("drilldown", record.getStr("year"));
             seriesJsonData.add(data);
         }
-
+        Long width = 1080L;
+        this.setAttr("widthSum", width);
         this.setAttr("seriesJsonData", JsonUtil.obj2Json(seriesJsonData));
 
         render("year_report_chart.jsp");
