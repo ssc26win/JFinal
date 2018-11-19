@@ -104,9 +104,6 @@
     </div>
 </div>
 <script language="JavaScript">
-    $(function () {
-        getDictMapData();
-    })
     $(document).ready(function () {
         Highcharts.chart('companyUseDAll', {
             chart: {
@@ -159,6 +156,7 @@
                 }
             }]
         });
+        getDictMapData();
         var myDate = new Date();
         var time = myDate.toLocaleDateString().split('/').join('-');
         setOne(time);

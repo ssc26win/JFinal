@@ -566,7 +566,7 @@ public class ReportCompanyController extends BaseController {
             columnsKey.add(ReportColType.street_col + value);
         }
         ExportByDataTypeService service = new ExportByDataTypeService();
-        String path = service.exportCompanyStatis(listFinal, type, columnsTitle, new ArrayList<>(columnsKey), ReportTypeEnum.STREET);
+        String path = service.exportCompanyStatis(listFinal, type, columnsTitle, new ArrayList<>(columnsKey), ReportTypeEnum.COMPANY);
         renderFile(new File(path));
     }
 }

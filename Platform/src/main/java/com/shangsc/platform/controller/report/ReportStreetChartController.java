@@ -14,9 +14,7 @@ import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author ssc
@@ -168,18 +166,9 @@ public class ReportStreetChartController extends BaseController {
 
         this.setAttr("drilldownJsonData", drilldownJsonData);
 
-        Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
-        JSONArray meterAttrName = new JSONArray();
-        for (String key : meterAttrType.keySet()) {
-            if (meterAttrType.get(key) != null) {
-                meterAttrName.add(meterAttrType.get(key).toString());
-            }
-        }
-        this.setAttr("meterAttrName", meterAttrName);
-
         JSONArray meterAttrSeris = new JSONArray();
 
-        String sqlMeterAttr = "select COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
+        String sqlMeterAttr = "select lsall.meter_attr,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
                 "(select tc.name,tc.inner_code,tc.company_type,tc.real_code,tc.street,tad.net_water,tad.write_time,tad.meter_address,twm.waters_type,twm.meter_attr from t_actual_data tad " +
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
@@ -194,6 +183,19 @@ public class ReportStreetChartController extends BaseController {
                 (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.meter_attr order by lsall.write_time asc";
         List<Record> recordsMeterAttr = Db.find(sqlMeterAttr);
+
+        Set<Integer> meterAttrs = new HashSet<>();
+        for (Record record : recordsMeterAttr) {
+            meterAttrs.add(record.getInt("meter_attr"));
+        }
+        Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
+        JSONArray meterAttrName = new JSONArray();
+        for (String key : meterAttrType.keySet()) {
+            if (meterAttrType.get(key) != null && meterAttrs.contains(Integer.parseInt(key))) {
+                meterAttrName.add(meterAttrType.get(key).toString());
+            }
+        }
+        this.setAttr("meterAttrName", meterAttrName);
 
         for (int i = 0; i < recordsMeterAttr.size(); i++) {
             if (recordsMeterAttr.get(i).getBigDecimal("TargetAttrTotal") != null) {

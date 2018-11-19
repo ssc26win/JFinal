@@ -15,9 +15,7 @@ import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author ssc
@@ -185,15 +183,6 @@ public class ReportCompanyChartController extends BaseController {
 
         this.setAttr("drilldownJsonData", drilldownJsonData);
 
-        Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
-        JSONArray meterAttrName = new JSONArray();
-        for (String key : meterAttrType.keySet()) {
-            if (meterAttrType.get(key) != null) {
-                meterAttrName.add(meterAttrType.get(key).toString());
-            }
-        }
-        this.setAttr("meterAttrName", meterAttrName);
-
         JSONArray meterAttrSeris = new JSONArray();
 
         String sqlMeterAttr = "select lsall.*,COALESCE(sum(lsall.net_water), 0) as TargetAttrTotal from " +
@@ -213,6 +202,19 @@ public class ReportCompanyChartController extends BaseController {
                 (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 " group by lsall.meter_attr order by lsall.write_time asc";
         List<Record> recordsMeterAttr = Db.find(sqlMeterAttr);
+
+        Set<Integer> meterAttrs = new HashSet<>();
+        for (Record record : recordsMeterAttr) {
+            meterAttrs.add(record.getInt("meter_attr"));
+        }
+        Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
+        JSONArray meterAttrName = new JSONArray();
+        for (String key : meterAttrType.keySet()) {
+            if (meterAttrType.get(key) != null && meterAttrs.contains(Integer.parseInt(key))) {
+                meterAttrName.add(meterAttrType.get(key).toString());
+            }
+        }
+        this.setAttr("meterAttrName", meterAttrName);
 
         for (int i = 0; i < recordsMeterAttr.size(); i++) {
             if (recordsMeterAttr.get(i).getBigDecimal("TargetAttrTotal") != null) {

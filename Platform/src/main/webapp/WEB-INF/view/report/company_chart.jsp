@@ -107,6 +107,7 @@
 </div>
 <script language="JavaScript">
     $(document).ready(function () {
+        getDictMapData();
         Highcharts.chart('streetUse', {
             chart: {
                 type: 'column'
@@ -275,10 +276,18 @@
             for(var i = 0;i<companyType.length;i++) {
                 $("#type").append("<option value='" + companyType[i].value + "'>"+companyType[i].name+"</option>");
             }
-            $("#watersType").val(${watersType});
-            $("#street").val(${street});
-            $("#meterAttr").val(${meterAttr});
-            $("#type").val(${type});
+            if ('${watersType}' != '') {
+                $("#watersType").val(${watersType});
+            }
+            if ('${street}' != '') {
+                $("#street").val(${street});
+            }
+            if ('${meterAttr}' != '') {
+                $("#meterAttr").val(${meterAttr});
+            }
+            if ('${type}' != '') {
+                $("#type").val(${type});
+            }
         }, "json");
     }
 

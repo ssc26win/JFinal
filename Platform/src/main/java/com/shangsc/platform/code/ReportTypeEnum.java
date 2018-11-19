@@ -11,6 +11,7 @@ import java.util.Map;
 public enum ReportTypeEnum {
 
     STREET(0, "所属乡镇"),
+    COMPANY(4, "所属单位"),
     YEAR(1, "年"),
     MONTH(2, "月"),
     DAY(3, "日");

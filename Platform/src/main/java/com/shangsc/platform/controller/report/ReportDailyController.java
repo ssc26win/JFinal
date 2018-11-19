@@ -80,6 +80,45 @@ public class ReportDailyController extends BaseController {
         this.setAttr("companyName", this.getUrlUtf8Para("companyName"));
         render("daily_report.jsp");
     }
+    @Clear(AuthorityInterceptor.class)
+    @RequiresPermissions(value = {"/report/daily"})
+    public void getColumns() {
+        JSONArray array = new JSONArray();
+        Date startTime = null;
+        Date endTime = null;
+        if (StringUtils.isEmpty(this.getUrlUtf8Para("date"))) {
+            try {
+                if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                    startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+                }
+                if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                    endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            String date = this.getUrlUtf8Para("date");
+            startTime = DateUtils.getDate(date + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+            endTime = DateUtils.getDate(date + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+        }
+        Map<String, String> days = ActualDataReport.me.getDayColumns(startTime, endTime);
+        JSONObject company = new JSONObject();
+        company.put("label", "单位名称");
+        company.put("name", "companyName");
+        company.put("width", "120");
+        company.put("sortable", false);
+        array.add(company);
+        for (String value : days.keySet()) {
+            JSONObject column = new JSONObject();
+            column.put("label", value);
+            column.put("name", value);
+            column.put("width", "100");
+            column.put("sortable", false);
+            array.add(column);
+        }
+        this.renderJson("columnsDay", array);
+    }
 
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/report/daily"})

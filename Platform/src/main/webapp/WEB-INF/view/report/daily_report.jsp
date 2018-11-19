@@ -183,13 +183,19 @@
             var startTime = $("#startTime").val();
             var endTime = $("#endTime").val();
             var meterAttr = $("#meterAttr").val();
+            var submitData = {'street': street, 'watersType': watersType, 'type': type, 'name': name, 'innerCode': innerCode,
+                'startTime': startTime, 'endTime': endTime, 'meterAttr': meterAttr};
+
+            <%--$.post("${context_path}/report/daily/getColumns", submitData, function (data) {--%>
+                <%--jQuery("#grid-table").GridUnload();--%>
+                <%--jQuery("#grid-table").jqGrid(jQuery.extend(true, {}, {--%>
+                    <%--colModel:data.columnsDay--%>
+                <%--}));--%>
+            <%--});--%>
 
             $("#grid-table").jqGrid('setGridParam', {
                 datatype: 'json',
-                postData: {
-                    'street': street, 'watersType': watersType, 'type': type, 'name': name, 'innerCode': innerCode,
-                    'startTime': startTime, 'endTime': endTime, 'meterAttr': meterAttr
-                }, //发送数据
+                postData: submitData, //发送数据
                 page: 1
             }).trigger("reloadGrid"); //重新载入
         });
@@ -303,8 +309,8 @@
                 $("#meterAttr").append("<option value='" + meterAttr[i].value + "'>" + meterAttr[i].name + "</option>");
             }
             var companyType = data.CompanyType;
-            for(var i = 0;i<companyType.length;i++) {
-                $("#type").append("<option value='" + companyType[i].value + "'>"+companyType[i].name+"</option>");
+            for (var i = 0; i < companyType.length; i++) {
+                $("#type").append("<option value='" + companyType[i].value + "'>" + companyType[i].name + "</option>");
             }
         }, "json");
     }
@@ -322,6 +328,8 @@
             }
         }
     })
+
+
 </script>
 
 </body>

@@ -42,4 +42,14 @@ public final class JqGridModelUtils {
         jqGridView.setTotal(pageInfo.getTotalPage());
         return jqGridView;
     }
+
+    public static JqGridModel toJqGridView(Page pageInfo, List<?> changeList, String columnsJSONStr) {
+        JqGridModel jqGridView = new JqGridModel();
+        jqGridView.setPage(pageInfo.getPageNumber());
+        jqGridView.setRecords(pageInfo.getTotalRow());
+        jqGridView.setRows(changeList);
+        jqGridView.setTotal(pageInfo.getTotalPage());
+        jqGridView.setColumnsJSONStr(columnsJSONStr);
+        return jqGridView;
+    }
 }
