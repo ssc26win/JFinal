@@ -75,9 +75,9 @@ public class DictData extends BaseDictData<DictData> {
                 typeId = dictType.getId();
             }
         }
-        Map<String, Object> allMap = new HashMap<String, Object>();
+        Map<String, Object> allMap = new LinkedHashMap<>();
         if (typeId > 0L) {
-            List<DictData> list = this.find("select value,name from dict_data where dict_type_id=" + typeId);
+            List<DictData> list = this.find("select value,name from dict_data where dict_type_id=" + typeId + " order by seq asc");
             if (CollectionUtils.isNotEmpty(list)) {
                 for (DictData dictData : list) {
                     allMap.put(dictData.getValue(), dictData.getName());
@@ -92,11 +92,11 @@ public class DictData extends BaseDictData<DictData> {
             DictType dictType = DictType.dao.findFirst("select * from dict_type where name='" + typeName + "'");
             typeId = dictType.getId();
         }
-        List<DictData> list = this.find("select value,name from dict_data where dict_type_id=" + typeId);
+        List<DictData> list = this.find("select value,name from dict_data where dict_type_id=" + typeId + " order by seq asc");
         List<Map<String, Object>> allList = new ArrayList<Map<String, Object>>();
         if (CollectionUtils.isNotEmpty(list)) {
             for (DictData dictData : list) {
-                Map<String, Object> dictDataMap = new HashMap<String, Object>();
+                Map<String, Object> dictDataMap = new LinkedHashMap<String, Object>();
                 dictDataMap.put("value", dictData.getValue());
                 dictDataMap.put("name", dictData.getName());
                 allList.add(dictDataMap);
@@ -114,7 +114,7 @@ public class DictData extends BaseDictData<DictData> {
             }
             typeIds.addAll(typeIdSet);
         }
-        List<DictData> list = this.find("select value,name from dict_data where dict_type_id in (" + StringUtils.join(typeIds, ",") + ")");
+        List<DictData> list = this.find("select value,name from dict_data where dict_type_id in (" + StringUtils.join(typeIds, ",") + ")" + " order by seq asc");
         List<Map<String, Object>> allList = new ArrayList<Map<String, Object>>();
         if (CollectionUtils.isNotEmpty(list)) {
             for (DictData dictData : list) {
@@ -134,8 +134,8 @@ public class DictData extends BaseDictData<DictData> {
             DictType dictType = DictType.dao.findFirst("select * from dict_type where name='" + typeName + "'");
             typeId = dictType.getId();
         }
-        List<DictData> list = this.find("select value,name from dict_data where dict_type_id=" + typeId);
-        Map<String, Integer> all = new HashMap<>();
+        List<DictData> list = this.find("select value,name from dict_data where dict_type_id=" + typeId + " order by seq asc");
+        Map<String, Integer> all = new LinkedHashMap<>();
         if (CollectionUtils.isNotEmpty(list)) {
             for (DictData dictData : list) {
                 all.put(StringUtils.trim(dictData.getName()), Integer.parseInt(StringUtils.trim(dictData.getValue())));
@@ -151,8 +151,8 @@ public class DictData extends BaseDictData<DictData> {
             DictType dictType = DictType.dao.findFirst("select * from dict_type where name='" + typeName + "'");
             typeId = dictType.getId();
         }
-        List<DictData> list = this.find("select value,name from dict_data where dict_type_id=" + typeId);
-        Map<Integer, String> all = new HashMap<>();
+        List<DictData> list = this.find("select value,name from dict_data where dict_type_id=" + typeId + " order by seq asc");
+        Map<Integer, String> all = new LinkedHashMap<>();
         if (CollectionUtils.isNotEmpty(list)) {
             for (DictData dictData : list) {
                 all.put(Integer.parseInt(StringUtils.trim(dictData.getValue())), dictData.getName());

@@ -15,6 +15,7 @@ import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -200,10 +201,10 @@ public class ReportCompanyChartController extends BaseController {
                 (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
-                " group by lsall.meter_attr order by lsall.write_time asc";
+                " group by lsall.meter_attr order by lsall.meter_attr asc";
         List<Record> recordsMeterAttr = Db.find(sqlMeterAttr);
 
-        Set<Integer> meterAttrs = new HashSet<>();
+        Set<Integer> meterAttrs = new LinkedHashSet<>();
         for (Record record : recordsMeterAttr) {
             meterAttrs.add(record.getInt("meter_attr"));
         }
@@ -211,14 +212,24 @@ public class ReportCompanyChartController extends BaseController {
         JSONArray meterAttrName = new JSONArray();
         for (String key : meterAttrType.keySet()) {
             if (meterAttrType.get(key) != null && meterAttrs.contains(Integer.parseInt(key))) {
-                meterAttrName.add(meterAttrType.get(key).toString());
+                for (Integer mA : meterAttrs) {
+                    if (key.equals(mA.toString())) {
+                        meterAttrName.add(meterAttrType.get(key).toString());
+                    }
+                }
             }
         }
         this.setAttr("meterAttrName", meterAttrName);
 
         for (int i = 0; i < recordsMeterAttr.size(); i++) {
-            if (recordsMeterAttr.get(i).getBigDecimal("TargetAttrTotal") != null) {
-                meterAttrSeris.add(recordsMeterAttr.get(i).getBigDecimal("TargetAttrTotal"));
+            Integer meter_attr = recordsMeterAttr.get(i).getInt("meter_attr");
+            BigDecimal targetAttrTotal = recordsMeterAttr.get(i).getBigDecimal("TargetAttrTotal");
+            if (targetAttrTotal != null && meterAttrs.contains(meter_attr)) {
+                for (Integer mA : meterAttrs) {
+                    if (meter_attr == mA.intValue()) {
+                        meterAttrSeris.add(targetAttrTotal);
+                    }
+                }
             }
         }
         this.setAttr("meterAttrSeris", meterAttrSeris);
@@ -254,7 +265,39 @@ public class ReportCompanyChartController extends BaseController {
             }
             recordsWatersType.set(i, record);
         }
-
+        String url = contextPath + "/#/report/company?time=" + System.currentTimeMillis();
+        this.setAttr("name", name);
+        this.setAttr("innerCode", innerCode);
+        this.setAttr("startTime", this.getPara("startTime"));
+        this.setAttr("endTime", this.getPara("endTime"));
+        this.setAttr("street", street);
+        this.setAttr("watersType", watersType);
+        this.setAttr("meterAttr", meterAttr);
+        this.setAttr("type", type);
+        if (StringUtils.isNotEmpty(name)) {
+            url = url + "&name=" + name;
+        }
+        if (StringUtils.isNotEmpty(innerCode)) {
+            url = url + "&innerCode=" + innerCode;
+        }
+        if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+            url = url + "&startTime=" + this.getPara("startTime");
+        }
+        if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+            url = url + "&endTime=" + this.getPara("endTime");
+        }
+        if (street != null) {
+            url = url + "&street=" + street;
+        }
+        if (watersType != null) {
+            url = url + "&watersType=" + watersType;
+        }
+        if (meterAttr != null) {
+            url = url + "&meterAttr=" + meterAttr;
+        }
+        if (StringUtils.isNotEmpty(type)) {
+            url = url + "&type=" + type;
+        }
 
         for (int i = 0; i < recordsWatersType.size(); i++) {
             Record record = recordsWatersType.get(i);
@@ -266,7 +309,7 @@ public class ReportCompanyChartController extends BaseController {
                 JSONObject data = new JSONObject();
                 data.put("name", record.getStr("watersTypeName"));
                 data.put("y", record.getBigDecimal("TargetAttrTotal"));
-                data.put("url", contextPath + "/#/report/company");
+                data.put("url", url);
                 data.put("sliced", true);
                 data.put("selected", true);
                 watersTypeSeris.add(data);
@@ -274,7 +317,7 @@ public class ReportCompanyChartController extends BaseController {
                 JSONObject data = new JSONObject();
                 data.put("name", record.getStr("watersTypeName"));
                 data.put("y", record.getBigDecimal("TargetAttrTotal"));
-                data.put("url", contextPath + "/#/report/company");
+                data.put("url", url);
                 data.put("sliced", false);
                 data.put("selected", false);
                 watersTypeSeris.add(data);

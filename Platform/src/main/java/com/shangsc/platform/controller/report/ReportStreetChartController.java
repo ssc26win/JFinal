@@ -14,6 +14,7 @@ import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -181,10 +182,10 @@ public class ReportStreetChartController extends BaseController {
                 (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                 (startTime != null ? " and lsall.write_time >= '" + ToolDateTime.format(startTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
                 (endTime != null ? " and lsall.write_time <= '" + ToolDateTime.format(endTime, "yyyy-MM-dd HH:mm:ss") + "' " : "") +
-                " group by lsall.meter_attr order by lsall.write_time asc";
+                " group by lsall.meter_attr order by lsall.meter_attr asc";
         List<Record> recordsMeterAttr = Db.find(sqlMeterAttr);
 
-        Set<Integer> meterAttrs = new HashSet<>();
+        Set<Integer> meterAttrs = new LinkedHashSet<>();
         for (Record record : recordsMeterAttr) {
             meterAttrs.add(record.getInt("meter_attr"));
         }
@@ -192,14 +193,24 @@ public class ReportStreetChartController extends BaseController {
         JSONArray meterAttrName = new JSONArray();
         for (String key : meterAttrType.keySet()) {
             if (meterAttrType.get(key) != null && meterAttrs.contains(Integer.parseInt(key))) {
-                meterAttrName.add(meterAttrType.get(key).toString());
+                for (Integer mA : meterAttrs) {
+                    if (key.equals(mA.toString())) {
+                        meterAttrName.add(meterAttrType.get(key).toString());
+                    }
+                }
             }
         }
         this.setAttr("meterAttrName", meterAttrName);
 
         for (int i = 0; i < recordsMeterAttr.size(); i++) {
-            if (recordsMeterAttr.get(i).getBigDecimal("TargetAttrTotal") != null) {
-                meterAttrSeris.add(recordsMeterAttr.get(i).getBigDecimal("TargetAttrTotal"));
+            Integer meter_attr = recordsMeterAttr.get(i).getInt("meter_attr");
+            BigDecimal targetAttrTotal = recordsMeterAttr.get(i).getBigDecimal("TargetAttrTotal");
+            if (targetAttrTotal != null && meterAttrs.contains(meter_attr)) {
+                for (Integer mA : meterAttrs) {
+                    if (meter_attr == mA.intValue()) {
+                        meterAttrSeris.add(targetAttrTotal);
+                    }
+                }
             }
         }
         this.setAttr("meterAttrSeris", meterAttrSeris);

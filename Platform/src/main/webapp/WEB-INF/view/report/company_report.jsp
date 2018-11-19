@@ -46,17 +46,17 @@
 
                                             <div class="input-group">
                                                 日期时间:
-                                                <input type="text" id="startTime" name="startTime" value=""
+                                                <input type="text" id="startTime" name="startTime" value="${startTime}"
                                                        class="form_date" style="width: 100px;"/>~
-                                                <input type="text" id="endTime" name="endTime" value=""
+                                                <input type="text" id="endTime" name="endTime" value="${endTime}"
                                                        class="form_date" style="width: 100px;"/>
                                                 <select id="type" name="type"
                                                         style="margin-left: 5px;width: 159px;height: 34px;">
                                                     <option value="">请选择单位类型</option>
                                                 </select>
-                                                <input type="text" id="name" name="name" class="" placeholder="请输入单位名称"
+                                                <input type="text" id="name" name="name" value="${name}" class="" placeholder="请输入单位名称"
                                                        style="margin-left: 5px;"/>
-                                                <input type="text" id="innerCode" name="innerCode" class=""
+                                                <input type="text" id="innerCode" name="innerCode" value="${innerCode}" class=""
                                                        placeholder="请输入单位编号" style="margin-left: 5px;"/>
                                                 <select id="watersType" name="watersType"
                                                         style="margin-left: 5px;width: 159px; height: 34px;">
