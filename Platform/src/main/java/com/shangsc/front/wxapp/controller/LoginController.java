@@ -18,10 +18,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author ssc
@@ -35,16 +32,28 @@ public class LoginController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     public void roleResList() {
         SysUser byWxAccount = findByWxAccount();
-        List<SysRes> wxResList = SysRes.me.findWxResList(byWxAccount.getId());
-        if (CollectionUtils.isNotEmpty(wxResList)) {
-            Map<String, String> map = new HashMap<>();
-            for (SysRes sysRes : wxResList) {
-                map.put(sysRes.getSeq().toString(), sysRes.getName());
+        if (byWxAccount != null) {
+            List<SysRes> wxResList = SysRes.me.findWxResList(byWxAccount.getId());
+            Long unReadCount = MsgReceiver.dao.findUnReadCount(byWxAccount.getId());
+            List<Map<String, String>> result = new ArrayList<>();
+            Map<String, String> mapUnRead = new HashMap<>();
+            mapUnRead.put("unReadMsgNum", unReadCount.toString());
+            result.add(mapUnRead);
+            if (CollectionUtils.isNotEmpty(wxResList)) {
+                Map<String, String> map = new LinkedHashMap<>();
+                for (SysRes sysRes : wxResList) {
+                    map.put(sysRes.getSeq().toString(), sysRes.getName());
+                }
+                result.add(map);
+                this.renderJson(InvokeResult.success(result, "授权资源列表"));
+                return;
+            } else {
+                this.renderJson(InvokeResult.failure("未获取绑定微信账号授权资源"));
+                return;
             }
-            this.renderJson(InvokeResult.success(map, "授权资源列表"));
-        } else {
-            this.renderJson(InvokeResult.failure("未获取绑定微信账号授权资源"));
         }
+        this.renderJson(InvokeResult.failure("未获取绑定微信账号授权资源"));
+        return;
     }
 
     @Clear(AuthorityInterceptor.class)

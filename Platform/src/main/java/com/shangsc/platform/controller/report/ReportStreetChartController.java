@@ -94,7 +94,7 @@ public class ReportStreetChartController extends BaseController {
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
-                " and lsall.street<>'' and lsall.street is not null " +
+                " and lsall.street<>'' and lsall.street is not null  and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                 " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
@@ -133,7 +133,7 @@ public class ReportStreetChartController extends BaseController {
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
-                " and lsall.street<>'' and lsall.street is not null " +
+                " and lsall.street<>'' and lsall.street is not null  and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                 " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
@@ -174,7 +174,7 @@ public class ReportStreetChartController extends BaseController {
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
-                " and lsall.street<>'' and lsall.street is not null " +
+                " and lsall.street<>'' and lsall.street is not null and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                 " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
@@ -187,7 +187,9 @@ public class ReportStreetChartController extends BaseController {
 
         Set<Integer> meterAttrs = new LinkedHashSet<>();
         for (Record record : recordsMeterAttr) {
-            meterAttrs.add(record.getInt("meter_attr"));
+            if (record.getInt("meter_attr") != null) {
+                meterAttrs.add(record.getInt("meter_attr"));
+            }
         }
         Map<String, Object> meterAttrType = DictData.dao.getDictMap(0, DictCode.MeterAttr);
         JSONArray meterAttrName = new JSONArray();
@@ -224,7 +226,7 @@ public class ReportStreetChartController extends BaseController {
                 " left join t_water_meter twm on twm.meter_address=tad.meter_address " +
                 " left join t_company tc on tc.inner_code=tad.inner_code) lsall " +
                 " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
-                " and lsall.street<>'' and lsall.street is not null " +
+                " and lsall.street<>'' and lsall.street is not null  and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                 " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                 (street != null ? " and lsall.street=" + street : "") +
                 (StringUtils.isNotEmpty(type) ? " and lsall.company_type=" + type : "") +
@@ -245,18 +247,37 @@ public class ReportStreetChartController extends BaseController {
             recordsWatersType.set(i, record);
         }
 
+        String url = contextPath + "/report/street?watersType=";
+        //if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+        //    url = url + "&startTime=" + this.getPara("startTime");
+        //}
+        //if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+        //    url = url + "&endTime=" + this.getPara("endTime");
+        //}
+        //if (street != null) {
+        //    url = url + "&street=" + street;
+        //}
+        //if (watersType != null) {
+        //    url = url + "&watersType=" + watersType;
+        //}
+        //if (meterAttr != null) {
+        //    url = url + "&meterAttr=" + meterAttr;
+        //}
+        //if (StringUtils.isNotEmpty(type)) {
+        //    url = url + "&type=" + type;
+        //}
 
         for (int i = 0; i < recordsWatersType.size(); i++) {
             Record record = recordsWatersType.get(i);
             Object waters_type = record.get("waters_type");
             if (waters_type == null) {
-                waters_type = "0";
+                waters_type = "";
             }
             if (i == 0) {
                 JSONObject data = new JSONObject();
                 data.put("name", record.getStr("watersTypeName"));
                 data.put("y", record.getBigDecimal("TargetAttrTotal"));
-                data.put("url", contextPath + "/#/report/street");
+                data.put("url", url + waters_type);
                 data.put("sliced", true);
                 data.put("selected", true);
                 watersTypeSeris.add(data);
@@ -264,7 +285,7 @@ public class ReportStreetChartController extends BaseController {
                 JSONObject data = new JSONObject();
                 data.put("name", record.getStr("watersTypeName"));
                 data.put("y", record.getBigDecimal("TargetAttrTotal"));
-                data.put("url", contextPath + "/#/report/street");
+                data.put("url", url + waters_type);
                 data.put("sliced", false);
                 data.put("selected", false);
                 watersTypeSeris.add(data);

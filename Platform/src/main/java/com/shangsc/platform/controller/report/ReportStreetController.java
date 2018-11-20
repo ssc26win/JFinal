@@ -69,6 +69,12 @@ public class ReportStreetController extends BaseController {
         }
         this.setAttr("columnsMeterAttr", array);
         this.setAttr("watersType", this.getPara("watersType"));
+        this.setAttr("startTime", this.getPara("startTime"));
+        this.setAttr("endTime", this.getPara("endTime"));
+        this.setAttr("street", this.getPara("street"));
+        this.setAttr("meterAttr", this.getPara("meterAttr"));
+        this.setAttr("meterAttrName", this.getPara("meterAttrName"));
+        this.setAttr("type", this.getPara("type"));
         render("street_report.jsp");
     }
 
@@ -99,9 +105,15 @@ public class ReportStreetController extends BaseController {
             watersType = Integer.parseInt(watersTypeStr);
         }
         Integer meterAttr = null;
+        String meterAttrName = this.getPara("meterAttrName");
         if (StringUtils.isNotEmpty(this.getPara("meterAttr"))) {
             String meterAttrStr = StringUtils.trim(this.getPara("meterAttr"));
             meterAttr = Integer.parseInt(meterAttrStr);
+        } else if (StringUtils.isNotEmpty(meterAttrName)) {
+            DictData first = DictData.dao.findFirst("select * from dict_data where dict_type_id=15 and name='" + meterAttrName + "'");
+            if (first != null && StringUtils.isNotEmpty(first.getValue())) {
+                meterAttr = Integer.parseInt(first.getValue());
+            }
         }
         String type = this.getPara("type");
 
@@ -128,7 +140,7 @@ public class ReportStreetController extends BaseController {
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.street<>'' and lsall.street is not null  and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
@@ -179,7 +191,7 @@ public class ReportStreetController extends BaseController {
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.street<>'' and lsall.street is not null  and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
@@ -214,7 +226,7 @@ public class ReportStreetController extends BaseController {
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.street<>'' and lsall.street is not null  and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
@@ -263,7 +275,7 @@ public class ReportStreetController extends BaseController {
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.street<>'' and lsall.street is not null  and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
@@ -370,7 +382,7 @@ public class ReportStreetController extends BaseController {
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.street<>'' and lsall.street is not null  and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
@@ -419,7 +431,7 @@ public class ReportStreetController extends BaseController {
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.street<>'' and lsall.street is not null  and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
@@ -455,7 +467,7 @@ public class ReportStreetController extends BaseController {
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.street<>'' and lsall.street is not null  and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +
@@ -502,7 +514,7 @@ public class ReportStreetController extends BaseController {
                     " where " + (StringUtils.isNotEmpty(globalInnerCode) ? " lsall.inner_code in (" + globalInnerCode + ") " : " 1=1 ") +
                     " and lsall.street in (" + StringUtils.join(streets, ",") + ")" +
                     " and lsall.waters_type in (" + StringUtils.join(watersTypes, ",") + ")" +
-                    " and lsall.street<>'' and lsall.street is not null " +
+                    " and lsall.street<>'' and lsall.street is not null  and lsall.meter_attr<>'' and lsall.meter_attr is not null " +
                     " and lsall.inner_code<>'' and lsall.inner_code is not null and lsall.meter_address<>'' and lsall.meter_address is not null " +
                     (watersType != null ? " and lsall.waters_type=" + watersType : "") +
                     (meterAttr != null ? " and lsall.meter_attr=" + meterAttr : "") +

@@ -184,7 +184,34 @@
                 data: JSON.parse('${meterAttrSeris}'),
                 events: {
                     click: function (event) {
-                        window.location.href = "${context_path}/report/street";
+                        var url = "${context_path}/report/street?meterAttrName=" + event.point.category;
+                        var street = $("#street").val();
+                        var watersType = $("#watersType").val();
+                        var type = $("#type").val();
+
+                        var startTime = $("#startTime").val();
+                        var endTime = $("#endTime").val();
+                        var meterAttr = $("#meterAttr").val();
+
+                        if (street != "" && street != undefined) {
+                            url = url + "&street=" + street;
+                        }
+                        if (watersType != "" && watersType != undefined) {
+                            url = url + "&watersType=" + watersType;
+                        }
+                        if (type != "" && type != undefined) {
+                            url = url + "&type=" + type;
+                        }
+                        if (startTime != "" && startTime != undefined) {
+                            url = url + "&startTime=" + startTime;
+                        }
+                        if (endTime != "" && endTime != undefined) {
+                            url = url + "&endTime=" + endTime;
+                        }
+                        if (meterAttr != "" && meterAttr != undefined) {
+                            url = url + "&meterAttr=" + meterAttr;
+                        }
+                        window.location.href = encodeURI(url);
                     }
                 }
             }],
@@ -233,8 +260,36 @@
                     },
                     events: {
                         click: function (e) {
-                            parent.location.href = e.point.url;
-                            parent.location.reload();
+                            //parent.location.href = encodeURI(e.point.url);
+                            //window.location.href = encodeURI(e.point.url);
+                            var url = e.point.url;
+                            var street = $("#street").val();
+                            var watersType = $("#watersType").val();
+                            var type = $("#type").val();
+
+                            var startTime = $("#startTime").val();
+                            var endTime = $("#endTime").val();
+                            var meterAttr = $("#meterAttr").val();
+
+                            if (street != "" && street != undefined) {
+                                url = url + "&street=" + street;
+                            }
+                            //if (watersType != "" && watersType != undefined) {
+                            //    url = url + "&watersType=" + watersType;
+                            //}
+                            if (type != "" && type != undefined) {
+                                url = url + "&type=" + type;
+                            }
+                            if (startTime != "" && startTime != undefined) {
+                                url = url + "&startTime=" + startTime;
+                            }
+                            if (endTime != "" && endTime != undefined) {
+                                url = url + "&endTime=" + endTime;
+                            }
+                            if (meterAttr != "" && meterAttr != undefined) {
+                                url = url + "&meterAttr=" + meterAttr;
+                            }
+                            window.location.href = encodeURI(url);
                         }
                     }
                 }
@@ -265,10 +320,18 @@
             for (var i = 0; i < companyType.length; i++) {
                 $("#type").append("<option value='" + companyType[i].value + "'>" + companyType[i].name + "</option>");
             }
-            $("#watersType").val(${watersType});
-            $("#street").val(${street});
-            $("#meterAttr").val(${meterAttr});
-            $("#type").val(${type});
+            if ('${watersType}' != '') {
+                $("#watersType").val(${watersType});
+            }
+            if ('${street}' != '') {
+                $("#street").val(${street});
+            }
+            if ('${meterAttr}' != '') {
+                $("#meterAttr").val(${meterAttr});
+            }
+            if ('${type}' != '') {
+                $("#type").val(${type});
+            }
         }, "json");
     }
 

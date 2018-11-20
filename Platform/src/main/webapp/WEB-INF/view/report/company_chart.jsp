@@ -154,41 +154,6 @@
                 series: JSON.parse('${drilldownJsonData}')
             }
         });
-        var url = "${context_path}/report/company";
-        var street = $("#street").val();
-        var watersType = $("#watersType").val();
-        var type = $("#type").val();
-
-        var name = $("#name").val();
-        var innerCode = $("#innerCode").val();
-        var startTime = $("#startTime").val();
-        var endTime = $("#endTime").val();
-        var meterAttr = $("#meterAttr").val();
-
-        if (street != "" && street != undefined) {
-            url = url + "&street=" + street;
-        }
-        if (watersType != "" && watersType != undefined) {
-            url = url + "&watersType=" + watersType;
-        }
-        if (type != "" && type != undefined) {
-            url = url + "&type=" + type;
-        }
-        if (name != "" && name != undefined) {
-            url = url + "&name=" + name;
-        }
-        if (innerCode != "" && innerCode != undefined) {
-            url = url + "&innerCode=" + innerCode;
-        }
-        if (startTime != "" && startTime != undefined) {
-            url = url + "&startTime=" + startTime;
-        }
-        if (endTime != "" && endTime != undefined) {
-            url = url + "&endTime=" + endTime;
-        }
-        if (meterAttr != "" && meterAttr != undefined) {
-            url = url + "&meterAttr=" + meterAttr;
-        }
         Highcharts.chart('meterAttrUse', {
             credits: {
                 enabled: false // 禁用版权信息
@@ -229,6 +194,41 @@
                 data: JSON.parse('${meterAttrSeris}'),
                 events: {
                     click: function (event) {
+                        var url = "${context_path}/report/company?meterAttrName=" + event.point.category;
+                        var street = $("#street").val();
+                        var watersType = $("#watersType").val();
+                        var type = $("#type").val();
+
+                        var name = $("#name").val();
+                        var innerCode = $("#innerCode").val();
+                        var startTime = $("#startTime").val();
+                        var endTime = $("#endTime").val();
+                        var meterAttr = $("#meterAttr").val();
+
+                        if (street != "" && street != undefined) {
+                            url = url + "&street=" + street;
+                        }
+                        if (watersType != "" && watersType != undefined) {
+                            url = url + "&watersType=" + watersType;
+                        }
+                        if (type != "" && type != undefined) {
+                            url = url + "&type=" + type;
+                        }
+                        if (name != "" && name != undefined) {
+                            url = url + "&name=" + name;
+                        }
+                        if (innerCode != "" && innerCode != undefined) {
+                            url = url + "&innerCode=" + innerCode;
+                        }
+                        if (startTime != "" && startTime != undefined) {
+                            url = url + "&startTime=" + startTime;
+                        }
+                        if (endTime != "" && endTime != undefined) {
+                            url = url + "&endTime=" + endTime;
+                        }
+                        if (meterAttr != "" && meterAttr != undefined) {
+                            url = url + "&meterAttr=" + meterAttr;
+                        }
                         window.location.href = encodeURI(url);
                     }
                 }
@@ -278,8 +278,45 @@
                     },
                     events: {
                         click: function (e) {
-                            parent.location.href = e.point.url;
-                            parent.location.reload();
+                            //window.location.href = encodeURI(e.point.url);
+                            //parent.location.href = encodeURI(e.point.url);
+                            //parent.location.reload();
+                            var url = e.point.url;
+                            var street = $("#street").val();
+                            var watersType = $("#watersType").val();
+                            var type = $("#type").val();
+
+                            var name = $("#name").val();
+                            var innerCode = $("#innerCode").val();
+                            var startTime = $("#startTime").val();
+                            var endTime = $("#endTime").val();
+                            var meterAttr = $("#meterAttr").val();
+
+                            if (street != "" && street != undefined) {
+                                url = url + "&street=" + street;
+                            }
+                            //if (watersType != "" && watersType != undefined) {
+                            //    url = url + "&watersType=" + watersType;
+                            //}
+                            if (type != "" && type != undefined) {
+                                url = url + "&type=" + type;
+                            }
+                            if (name != "" && name != undefined) {
+                                url = url + "&name=" + name;
+                            }
+                            if (innerCode != "" && innerCode != undefined) {
+                                url = url + "&innerCode=" + innerCode;
+                            }
+                            if (startTime != "" && startTime != undefined) {
+                                url = url + "&startTime=" + startTime;
+                            }
+                            if (endTime != "" && endTime != undefined) {
+                                url = url + "&endTime=" + endTime;
+                            }
+                            if (meterAttr != "" && meterAttr != undefined) {
+                                url = url + "&meterAttr=" + meterAttr;
+                            }
+                            window.location.href = encodeURI(url);
                         }
                     }
                 }

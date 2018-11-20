@@ -128,9 +128,30 @@
                 }, 0);
             }
         });
-
+        var urlStr = '${context_path}/report/street/getListData?time=' + new Date();
+        if ("${street}" != "" && "${street}" != undefined) {
+            urlStr = urlStr + "&street=" + "${street}";
+        }
+        if ("${watersType}" != "" && "${watersType}" != undefined) {
+            urlStr = urlStr + "&watersType=" + "${watersType}";
+        }
+        if ("${type}" != "" && "${type}" != undefined) {
+            urlStr = urlStr + "&type=" + "${type}";
+        }
+        if ("${startTime}" != "" && "${startTime}" != undefined) {
+            urlStr = urlStr + "&startTime=" + "${startTime}";
+        }
+        if ("${endTime}" != "" && "${endTime}" != undefined) {
+            urlStr = urlStr + "&endTime=" + "${endTime}";
+        }
+        if ("${meterAttr}" != "" && "${meterAttr}" != undefined) {
+            urlStr = urlStr + "&meterAttr=" + "${meterAttr}";
+        }
+        if ("${meterAttrName}" != "" && "${meterAttrName}" != undefined) {
+            urlStr = urlStr + "&meterAttrName=" + "${meterAttrName}";
+        }
         $("#grid-table").jqGrid({
-            url: '${context_path}/report/street/getListData',
+            url: encodeURI(urlStr),
             mtype: "GET",
             datatype: "json",
             colModel: jQuery.parseJSON('${columnsMeterAttr}'),
@@ -275,8 +296,20 @@
                 $("#meterAttr").append("<option value='" + meterAttr[i].value + "'>" + meterAttr[i].name + "</option>");
             }
             var companyType = data.CompanyType;
-            for(var i = 0;i<companyType.length;i++) {
-                $("#type").append("<option value='" + companyType[i].value + "'>"+companyType[i].name+"</option>");
+            for (var i = 0; i < companyType.length; i++) {
+                $("#type").append("<option value='" + companyType[i].value + "'>" + companyType[i].name + "</option>");
+            }
+            if ('${watersType}' != '') {
+                $("#watersType").val(${watersType});
+            }
+            if ('${street}' != '') {
+                $("#street").val(${street});
+            }
+            if ('${meterAttr}' != '') {
+                $("#meterAttr").val(${meterAttr});
+            }
+            if ('${type}' != '') {
+                $("#type").val(${type});
             }
         }, "json");
     }
