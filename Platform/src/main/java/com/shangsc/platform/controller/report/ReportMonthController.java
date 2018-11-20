@@ -36,8 +36,8 @@ public class ReportMonthController extends BaseController {
         JSONArray array = new JSONArray();
         Date startTime = null;
         Date endTime = null;
-        if (StringUtils.isNotEmpty(this.getUrlUtf8Para("date"))) {
-            String date = this.getUrlUtf8Para("date");
+        if (StringUtils.isNotEmpty(this.getPara("date"))) {
+            String date = this.getPara("date");
             startTime = DateUtils.getDate(date + "-01 00:00:00", ToolDateTime.pattern_ymd_hms);
             Integer year = Integer.parseInt(date.split("-")[0]);
             Integer month = Integer.parseInt(date.split("-")[1]);
@@ -64,8 +64,8 @@ public class ReportMonthController extends BaseController {
         if (StringUtils.isNotEmpty(type)) {
             this.setAttr("type", type);
         }
-        this.setAttr("date", this.getUrlUtf8Para("date"));
-        this.setAttr("companyName", this.getUrlUtf8Para("companyName"));
+        this.setAttr("date", this.getPara("date"));
+        this.setAttr("companyName", this.getPara("companyName"));
         render("month_report.jsp");
     }
 
@@ -73,9 +73,9 @@ public class ReportMonthController extends BaseController {
     public void getListData() {
         ActualDataReport.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
-        if (StringUtils.isNotEmpty(this.getPara("byName")) && "yes".equals(this.getPara("byName"))) {
-            name = this.getUrlUtf8Para("name");
-        }
+        //if (StringUtils.isNotEmpty(this.getPara("byName")) && "yes".equals(this.getPara("byName"))) {
+        //    name = this.getUrlUtf8Para("name");
+        //}
         String innerCode = this.getPara("innerCode");
         Date startTime = null;
         Date endTime = null;

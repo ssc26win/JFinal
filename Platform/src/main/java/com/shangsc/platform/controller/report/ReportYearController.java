@@ -37,8 +37,8 @@ public class ReportYearController extends BaseController {
         JSONArray array = new JSONArray();
         Date startTime = null;
         Date endTime = null;
-        if (StringUtils.isNotEmpty(this.getUrlUtf8Para("date"))) {
-            String date = this.getUrlUtf8Para("date");
+        if (StringUtils.isNotEmpty(this.getPara("date"))) {
+            String date = this.getPara("date");
             startTime = DateUtils.getDate(date + "-01-01 00:00:00", ToolDateTime.pattern_ymd_hms);
             endTime = DateUtils.getDate(date + "-12-31 23:59:59", ToolDateTime.pattern_ymd_hms);
         }
@@ -58,8 +58,8 @@ public class ReportYearController extends BaseController {
             array.add(column);
         }
         this.setAttr("columnsYear", array);
-        this.setAttr("date", this.getUrlUtf8Para("date"));
-        this.setAttr("companyName", this.getUrlUtf8Para("companyName"));
+        this.setAttr("date", this.getPara("date"));
+        this.setAttr("companyName", this.getPara("companyName"));
         render("year_report.jsp");
     }
 
@@ -67,9 +67,9 @@ public class ReportYearController extends BaseController {
     public void getListData() {
         ActualDataReport.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
-        if (StringUtils.isNotEmpty(this.getPara("byName")) && "yes".equals(this.getPara("byName"))) {
-            name = this.getUrlUtf8Para("name");
-        }
+        //if (StringUtils.isNotEmpty(this.getPara("byName")) && "yes".equals(this.getPara("byName"))) {
+        //    name = this.getUrlUtf8Para("name");
+        //}
         String innerCode = this.getPara("innerCode");
         Date startTime = null;
         Date endTime = null;

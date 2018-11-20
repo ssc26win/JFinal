@@ -40,7 +40,7 @@ public class ReportDailyController extends BaseController {
         JSONArray array = new JSONArray();
         Date startTime = null;
         Date endTime = null;
-        if (StringUtils.isEmpty(this.getUrlUtf8Para("date"))) {
+        if (StringUtils.isEmpty(this.getPara("date"))) {
             try {
                 if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
                     startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
@@ -76,8 +76,8 @@ public class ReportDailyController extends BaseController {
         if (StringUtils.isNotEmpty(type)) {
             this.setAttr("type", type);
         }
-        this.setAttr("date", this.getUrlUtf8Para("date"));
-        this.setAttr("companyName", this.getUrlUtf8Para("companyName"));
+        this.setAttr("date", this.getPara("date"));
+        this.setAttr("companyName", this.getPara("companyName"));
         render("daily_report.jsp");
     }
     @Clear(AuthorityInterceptor.class)
@@ -125,9 +125,9 @@ public class ReportDailyController extends BaseController {
     public void getListData() {
         ActualDataReport.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
-        if (StringUtils.isNotEmpty(this.getPara("byName")) && "yes".equals(this.getPara("byName"))) {
-            name = this.getUrlUtf8Para("name");
-        }
+        //if (StringUtils.isNotEmpty(this.getPara("byName")) && "yes".equals(this.getPara("byName"))) {
+        //    name = this.getUrlUtf8Para("name");
+        //}
         String innerCode = this.getPara("innerCode");
         Date startTime = null;
         Date endTime = null;
