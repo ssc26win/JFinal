@@ -52,7 +52,7 @@ public class ReportDailyController extends BaseController {
                 e.printStackTrace();
             }
         } else {
-            String date = this.getUrlUtf8Para("date");
+            String date = this.getPara("date");
             startTime = DateUtils.getDate(date + " 00:00:00", ToolDateTime.pattern_ymd_hms);
             endTime = DateUtils.getDate(date + " 23:59:59", ToolDateTime.pattern_ymd_hms);
         }
@@ -60,7 +60,7 @@ public class ReportDailyController extends BaseController {
         JSONObject company = new JSONObject();
         company.put("label", "单位名称");
         company.put("name", "companyName");
-        company.put("width", "120");
+        company.put("width", "300");
         company.put("sortable", false);
         array.add(company);
         for (String value : days.keySet()) {
@@ -78,46 +78,17 @@ public class ReportDailyController extends BaseController {
         }
         this.setAttr("date", this.getPara("date"));
         this.setAttr("companyName", this.getPara("companyName"));
+
+        this.setAttr("name", this.getPara("name"));
+        this.setAttr("innerCode", this.getPara("innerCode"));
+        this.setAttr("startTime", this.getPara("startTime"));
+        this.setAttr("endTime", this.getPara("endTime"));
+        this.setAttr("street", this.getPara("street"));
+        this.setAttr("watersType", this.getPara("watersType"));
+        this.setAttr("meterAttr", this.getPara("meterAttr"));
+        this.setAttr("meterAttrName", this.getPara("meterAttrName"));
+
         render("daily_report.jsp");
-    }
-    @Clear(AuthorityInterceptor.class)
-    @RequiresPermissions(value = {"/report/daily"})
-    public void getColumns() {
-        JSONArray array = new JSONArray();
-        Date startTime = null;
-        Date endTime = null;
-        if (StringUtils.isEmpty(this.getUrlUtf8Para("date"))) {
-            try {
-                if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
-                    startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
-                }
-                if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
-                    endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            String date = this.getUrlUtf8Para("date");
-            startTime = DateUtils.getDate(date + " 00:00:00", ToolDateTime.pattern_ymd_hms);
-            endTime = DateUtils.getDate(date + " 23:59:59", ToolDateTime.pattern_ymd_hms);
-        }
-        Map<String, String> days = ActualDataReport.me.getDayColumns(startTime, endTime);
-        JSONObject company = new JSONObject();
-        company.put("label", "单位名称");
-        company.put("name", "companyName");
-        company.put("width", "120");
-        company.put("sortable", false);
-        array.add(company);
-        for (String value : days.keySet()) {
-            JSONObject column = new JSONObject();
-            column.put("label", value);
-            column.put("name", value);
-            column.put("width", "100");
-            column.put("sortable", false);
-            array.add(column);
-        }
-        this.renderJson("columnsDay", array);
     }
 
     @Clear(AuthorityInterceptor.class)

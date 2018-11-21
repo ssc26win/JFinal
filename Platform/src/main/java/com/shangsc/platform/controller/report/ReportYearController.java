@@ -3,12 +3,14 @@ package com.shangsc.platform.controller.report;
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.aop.Clear;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.shangsc.platform.code.ReportTypeEnum;
 import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
+import com.shangsc.platform.core.auth.interceptor.AuthorityInterceptor;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.core.util.JqGridModelUtils;
@@ -41,25 +43,51 @@ public class ReportYearController extends BaseController {
             String date = this.getPara("date");
             startTime = DateUtils.getDate(date + "-01-01 00:00:00", ToolDateTime.pattern_ymd_hms);
             endTime = DateUtils.getDate(date + "-12-31 23:59:59", ToolDateTime.pattern_ymd_hms);
+        } else {
+            try {
+                if (StringUtils.isNotEmpty(this.getPara("startTime"))) {
+                    startTime = DateUtils.getDate(this.getPara("startTime") + " 00:00:00", ToolDateTime.pattern_ymd_hms);
+                }
+                if (StringUtils.isNotEmpty(this.getPara("endTime"))) {
+                    endTime = DateUtils.getDate(this.getPara("endTime") + " 23:59:59", ToolDateTime.pattern_ymd_hms);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         Map<String, String> years = ActualDataReport.me.getYearColumns(startTime, endTime);
         JSONObject company = new JSONObject();
         company.put("label", "单位名称");
         company.put("name", "companyName");
-        company.put("width", "150");
+        company.put("width", "300");
         company.put("sortable", false);
         array.add(company);
         for (String value : years.keySet()) {
             JSONObject column = new JSONObject();
             column.put("label", value);
             column.put("name", value);
-            column.put("width", "100");
+            column.put("width", "200");
             column.put("sortable", false);
             array.add(column);
         }
         this.setAttr("columnsYear", array);
+        String type = this.getPara("type");
+        if (StringUtils.isNotEmpty(type)) {
+            this.setAttr("type", type);
+        }
         this.setAttr("date", this.getPara("date"));
         this.setAttr("companyName", this.getPara("companyName"));
+
+        this.setAttr("name", this.getPara("name"));
+        this.setAttr("innerCode", this.getPara("innerCode"));
+        this.setAttr("startTime", this.getPara("startTime"));
+        this.setAttr("endTime", this.getPara("endTime"));
+        this.setAttr("street", this.getPara("street"));
+        this.setAttr("watersType", this.getPara("watersType"));
+        this.setAttr("meterAttr", this.getPara("meterAttr"));
+        this.setAttr("meterAttrName", this.getPara("meterAttrName"));
+
+
         render("year_report.jsp");
     }
 

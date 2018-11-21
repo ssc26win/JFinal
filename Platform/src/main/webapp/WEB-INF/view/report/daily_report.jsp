@@ -35,7 +35,7 @@
                             <div class="widget-main">
                                 <div class="row">
                                     <div class="col-xs-12">
-                                        <form id="exportForm" action="${context_path}/report/daily/exportData"
+                                        <form id="exportForm" action=""
                                               method="post">
                                             <input type="text" style="display:none"/>
 
@@ -128,7 +128,7 @@
             }
         });
 
-        var url = '${context_path}/report/daily/getListData';
+        var url = '${context_path}/report/daily/getListData?time=' + new Date().getMilliseconds();
         var sTime = '${date}';
         var eTime = '${date}';
         var companyName = '${companyName}';
@@ -137,16 +137,45 @@
             var eTime = '${date}' + ' 23:59:59';
             $("#startTime").val(sTime);
             $("#endTime").val(eTime);
-            url = '${context_path}/report/daily/getListData?time=' + new Date().getTime();
+            url = '${context_path}/report/daily/getListData?time=' + new Date().getMilliseconds();
             url = url + '&startTime=' + sTime + '&endTime=' + eTime;
+        } else {
+            if ("${startTime}" != "" && "${startTime}" != undefined) {
+                url = url + "&startTime=" + "${startTime}";
+                $("#startTime").val("${startTime}");
+            }
+            if ("${endTime}" != "" && "${endTime}" != undefined) {
+                url = url + "&endTime=" + "${endTime}";
+                $("#endTime").val("${endTime}");
+            }
         }
         if (companyName != undefined && companyName != null && companyName != '') {
             $("#name").val(companyName);
-            url = encodeURI(url + '&byName=yes&name=' + companyName);
+            url = url + '&byName=yes&name=' + companyName;
+        } else if ("${name}" != "" && "${name}" != undefined) {
+            url = url + "&name=" + "${name}";
+        }
+        if ("${innerCode}" != "" && "${innerCode}" != undefined) {
+            url = url + "&innerCode=" + "${innerCode}";
+        }
+        if ("${street}" != "" && "${street}" != undefined) {
+            url = url + "&street=" + "${street}";
+        }
+        if ("${watersType}" != "" && "${watersType}" != undefined) {
+            url = url + "&watersType=" + "${watersType}";
+        }
+        if ("${type}" != "" && "${type}" != undefined) {
+            url = url + "&type=" + "${type}";
+        }
+        if ("${meterAttr}" != "" && "${meterAttr}" != undefined) {
+            url = url + "&meterAttr=" + "${meterAttr}";
+        }
+        if ("${meterAttrName}" != "" && "${meterAttrName}" != undefined) {
+            url = url + "&meterAttrName=" + "${meterAttrName}";
         }
 
         $("#grid-table").jqGrid({
-            url: url,
+            url: encodeURI(url),
             mtype: "GET",
             datatype: "json",
             colModel: JSON.parse('${columnsDay}'),
@@ -155,6 +184,7 @@
             rowNum: 20,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
+            shrinkToFit:false,
             autoScroll: true,
             recordtext: "{0} - {1} 共 {2} 条",
             pgtext: "第 {0} 页 共 {1} 页",
@@ -174,30 +204,25 @@
         });
         $("#btn_search").click(function () {
             //此处可以添加对查询数据的合法验证
-            var street = $("#street").val();
-            var watersType = $("#watersType").val();
-            var type = $("#type").val();
+//            var street = $("#street").val();
+//            var watersType = $("#watersType").val();
+//            var type = $("#type").val();
+//
+//            var name = $("#name").val();
+//            var innerCode = $("#innerCode").val();
+//            var startTime = $("#startTime").val();
+//            var endTime = $("#endTime").val();
+//            var meterAttr = $("#meterAttr").val();
+//            var submitData = {'street': street, 'watersType': watersType, 'type': type, 'name': name, 'innerCode': innerCode,
+//                'startTime': startTime, 'endTime': endTime, 'meterAttr': meterAttr};
 
-            var name = $("#name").val();
-            var innerCode = $("#innerCode").val();
-            var startTime = $("#startTime").val();
-            var endTime = $("#endTime").val();
-            var meterAttr = $("#meterAttr").val();
-            var submitData = {'street': street, 'watersType': watersType, 'type': type, 'name': name, 'innerCode': innerCode,
-                'startTime': startTime, 'endTime': endTime, 'meterAttr': meterAttr};
+            formAction("${context_path}/report/daily");
 
-            <%--$.post("${context_path}/report/daily/getColumns", submitData, function (data) {--%>
-                <%--jQuery("#grid-table").GridUnload();--%>
-                <%--jQuery("#grid-table").jqGrid(jQuery.extend(true, {}, {--%>
-                    <%--colModel:data.columnsDay--%>
-                <%--}));--%>
-            <%--});--%>
-
-            $("#grid-table").jqGrid('setGridParam', {
-                datatype: 'json',
-                postData: submitData, //发送数据
-                page: 1
-            }).trigger("reloadGrid"); //重新载入
+//            $("#grid-table").jqGrid('setGridParam', {
+//                datatype: 'json',
+//                postData: submitData, //发送数据
+//                page: 1
+//            }).trigger("reloadGrid"); //重新载入
         });
         $("#btn-chart").click(function () {
             var street = $("#street").val();
@@ -239,9 +264,14 @@
             window.location.href = encodeURI(url);
         });
         $("#btn-exportData").click(function () {
-            $("#exportForm").submit();
+            formAction("${context_path}/report/daily/exportData");
         });
     });
+
+    function formAction(url) {
+        $("#exportForm").attr("action", url);
+        $("#exportForm").submit();
+    }
     //replace icons with FontAwesome icons like above
     function updatePagerIcons(table) {
         var replacement =
@@ -311,6 +341,18 @@
             var companyType = data.CompanyType;
             for (var i = 0; i < companyType.length; i++) {
                 $("#type").append("<option value='" + companyType[i].value + "'>" + companyType[i].name + "</option>");
+            }
+            if ('${watersType}' != '') {
+                $("#watersType").val(${watersType});
+            }
+            if ('${street}' != '') {
+                $("#street").val(${street});
+            }
+            if ('${meterAttr}' != '') {
+                $("#meterAttr").val(${meterAttr});
+            }
+            if ('${type}' != '') {
+                $("#type").val(${type});
             }
         }, "json");
     }
