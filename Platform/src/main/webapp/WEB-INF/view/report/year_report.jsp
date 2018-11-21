@@ -132,8 +132,8 @@
         var eTime = '${date}';
         var companyName = '${companyName}';
         if ((sTime != undefined && sTime != null && sTime != '') && (eTime != undefined && eTime != null && eTime != '')) {
-            var sTime = '${date}' + ' 00:00:00';
-            var eTime = '${date}' + ' 23:59:59';
+            var sTime = '${date}' + '-01-01 00:00:00';
+            var eTime = '${date}' + '-12-31 23:59:59';
             $("#startTime").val(sTime);
             $("#endTime").val(eTime);
             url = '${context_path}/report/year/getListData?time=' + new Date().getMilliseconds();
@@ -201,26 +201,8 @@
             $("#grid-table").setGridHeight($(window).height() - 200);
         });
         $("#btn_search").click(function () {
-            formAction("${context_path}/report/year");
             //此处可以添加对查询数据的合法验证
-//            var street = $("#street").val();
-//            var watersType = $("#watersType").val();
-//            var type = $("#type").val();
-//
-//            var name = $("#name").val();
-//            var innerCode = $("#innerCode").val();
-//            var startTime = $("#startTime").val();
-//            var endTime = $("#endTime").val();
-//            var meterAttr = $("#meterAttr").val();
-//
-//            $("#grid-table").jqGrid('setGridParam', {
-//                datatype: 'json',
-//                postData: {
-//                    'street': street, 'watersType': watersType, 'type': type, 'name': name, 'innerCode': innerCode,
-//                    'startTime': startTime, 'endTime': endTime, 'meterAttr': meterAttr
-//                }, //发送数据
-//                page: 1
-//            }).trigger("reloadGrid"); //重新载入
+            formAction("${context_path}/report/year");
         });
         $("#btn-chart").click(function () {
             var street = $("#street").val();

@@ -203,26 +203,7 @@
             $("#grid-table").setGridHeight($(window).height() - 200);
         });
         $("#btn_search").click(function () {
-            //此处可以添加对查询数据的合法验证
-//            var street = $("#street").val();
-//            var watersType = $("#watersType").val();
-//            var type = $("#type").val();
-//
-//            var name = $("#name").val();
-//            var innerCode = $("#innerCode").val();
-//            var startTime = $("#startTime").val();
-//            var endTime = $("#endTime").val();
-//            var meterAttr = $("#meterAttr").val();
-//            var submitData = {'street': street, 'watersType': watersType, 'type': type, 'name': name, 'innerCode': innerCode,
-//                'startTime': startTime, 'endTime': endTime, 'meterAttr': meterAttr};
-
             formAction("${context_path}/report/daily");
-
-//            $("#grid-table").jqGrid('setGridParam', {
-//                datatype: 'json',
-//                postData: submitData, //发送数据
-//                page: 1
-//            }).trigger("reloadGrid"); //重新载入
         });
         $("#btn-chart").click(function () {
             var street = $("#street").val();
@@ -370,7 +351,6 @@
             }
         }
     })
-
 
 </script>
 
