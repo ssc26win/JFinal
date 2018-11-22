@@ -118,9 +118,9 @@
                 {label: '内容', name: 'content', width: 350, sortable: false},
                 /*{ label: '图片地址', name: 'img_url', width: 100, sortable:false},*/
                 {label: '发布状态', name: 'statusName', width: 100, sortable: false},
-                {label: '接收人', name: 'MsgReceiverNames', width: 350, sortable: false},
+                {label: '接收人', name: 'MsgReceiverNames', width: 300, sortable: false},
                 {label: '创建人', name: 'create_user', width: 100, sortable: false},
-                {label: '创建时间', name: 'create_time', width: 120, sortable: true}
+                {label: '创建时间', name: 'create_time', width: 150, sortable: true}
             ],
             viewrecords: true,
             height: 560,

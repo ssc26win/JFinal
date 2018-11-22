@@ -45,27 +45,27 @@
                                             <div class="input-group">
                                                 日期时间:
                                                 <input type="text" id="startTime" name="startTime" value="${startTime}"
-                                                       class="form_date" style="width: 100px;"/>~
+                                                       class="form_date" style="width: 90px;"/>~
                                                 <input type="text" id="endTime" name="endTime" value="${endTime}"
-                                                       class="form_date" style="width: 100px;"/>
+                                                       class="form_date" style="width: 90px;"/>
                                                 <select id="type" name="type"
-                                                        style="margin-left: 5px;width: 159px;height: 34px;">
-                                                    <option value="">请选择单位类型</option>
+                                                        style="margin-left: 5px;width: 140px;height: 34px;">
+                                                    <option value="">选择单位类型</option>
                                                 </select>
                                                 <select id="watersType" name="watersType"
-                                                        style="margin-left: 5px;width: 159px; height: 34px;">
-                                                    <option value="">请选择水源类型</option>
+                                                        style="margin-left: 5px;width: 140px; height: 34px;">
+                                                    <option value="">选择水源类型</option>
                                                 </select>
                                                 <select id="meterAttr" name="meterAttr"
-                                                        style="margin-left: 5px;width: 159px; height: 34px;">
-                                                    <option value="">请选择水表属性</option>
+                                                        style="margin-left: 5px;width: 140px; height: 34px;">
+                                                    <option value="">选择水表属性</option>
                                                 </select>
                                                 <select id="street" name="street"
-                                                        style="margin-left: 5px;width: 159px; height: 34px;">
+                                                        style="margin-left: 5px;width: 150px; height: 34px;">
                                                     <option value="">所属乡镇或街道</option>
                                                 </select>
                                                 <span class="input-group-btn">
-                                                    <button type="submit" id="btn_search" class="btn btn-purple btn-sm">
+                                                    <button type="submit" id="btn_search" class="btn btn-purple btn-xs">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                                         搜索
                                                     </button>
@@ -113,7 +113,7 @@
             },
             yAxis: {
                 title: {
-                    text: '各乡镇总的用水量.单位（立方米）'
+                    text: '各乡镇总的用水量.单位（m³）'
                 }
             },
             legend: {
@@ -159,7 +159,7 @@
             },
             yAxis: {
                 title: {
-                    text: '水量单位（立方米）'
+                    text: '水量单位（m³）'
                 }
             },
             legend: {

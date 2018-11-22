@@ -167,14 +167,14 @@
             map.addOverlay(marker[i]);
             //marker[i].setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
             //显示marker的title，marker多的话可以注释掉
-            var title = "<span style='font-size:10px;color: #0CC415;' title='立方米'>用水量: <b>"+markerArr[i].waterUseNum+" m³</b></span>";
+            var title = "<span style='font-size:10px;color: #0CC415;' title='m³'>用水量: <b>"+markerArr[i].waterUseNum+" m³</b></span>";
             if (state == 1) {
-                title = "<span style='font-size:10px;color: #FFD306;' title='立方米'>用水量: <b>"+markerArr[i].waterUseNum+" m³</b></span>";
+                title = "<span style='font-size:10px;color: #FFD306;' title='m³'>用水量: <b>"+markerArr[i].waterUseNum+" m³</b></span>";
             } else if (state == 2) {
-                title = "<span style='font-size:10px;color: #FF0000;' title='立方米'>用水量: <b>"+markerArr[i].waterUseNum+" m³</b></span>";
+                title = "<span style='font-size:10px;color: #FF0000;' title='m³'>用水量: <b>"+markerArr[i].waterUseNum+" m³</b></span>";
             }
             if (markerArr[i].waterUseNum == 0) {
-                title = "<span style='font-size:10px;color: #FF8040;' title='立方米'>用水量: <b>"+markerArr[i].waterUseNum+" m³</b></span>";
+                title = "<span style='font-size:10px;color: #FF8040;' title='m³'>用水量: <b>"+markerArr[i].waterUseNum+" m³</b></span>";
             }
             var label = new window.BMap.Label(title, {
                 offset : new window.BMap.Size(20, -10)

@@ -13,7 +13,7 @@
 <style type="text/css">
     html {
         overflow-x: auto;
-        overflow-y: hidden;
+        overflow-y: auto;
     }
 </style>
 <body class="no-skin">
@@ -52,7 +52,7 @@
             };
             var yAxis = {
                 title: {
-                    text: '水量单位（立方米）'
+                    text: '水量单位（m³）'
                 },
                 plotLines: [{
                     value: 0,
@@ -120,7 +120,7 @@
             };
             var yAxis = {
                 title: {
-                    text: '水量单位（立方米）'
+                    text: '水量单位（m³）'
                 },
                 plotLines: [{
                     value: 0,

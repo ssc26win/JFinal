@@ -12,11 +12,6 @@
     <!-- bootstrap & fontawesome -->
     <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true"/>
 </head>
-<style type="text/css">
-    html {
-        overflow-y: hidden;
-    }
-</style>
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
@@ -45,37 +40,37 @@
                                             <input type="text" style="display:none"/>
 
                                             <div class="input-group">
-                                                日期时间:
+                                                日期:
                                                 <input type="text" id="startTime" name="startTime" value=""
-                                                       class="form_date" style="width: 100px;"/>~
+                                                       class="form_date" style="width: 90px;"/>~
                                                 <input type="text" id="endTime" name="endTime" value=""
-                                                       class="form_date" style="width: 100px;"/>
+                                                       class="form_date" style="width: 90px;"/>
                                                 <select id="type" name="type"
-                                                        style="margin-left: 5px;width: 159px;height: 34px;">
-                                                    <option value="">请选择单位类型</option>
+                                                        style="margin-left: 5px;width: 140px;height: 34px;">
+                                                    <option value="">选择单位类型</option>
                                                 </select>
                                                 <select id="watersType" name="watersType"
-                                                        style="margin-left: 5px;width: 159px; height: 34px;">
-                                                    <option value="">请选择水源类型</option>
+                                                        style="margin-left: 5px;width: 140px; height: 34px;">
+                                                    <option value="">选择水源类型</option>
                                                 </select>
                                                 <select id="meterAttr" name="meterAttr"
-                                                        style="margin-left: 5px;width: 159px; height: 34px;">
-                                                    <option value="">请选择水表属性</option>
+                                                        style="margin-left: 5px;width: 140px; height: 34px;">
+                                                    <option value="">选择水表属性</option>
                                                 </select>
                                                 <select id="street" name="street"
-                                                        style="margin-left: 5px;width: 159px; height: 34px;">
+                                                        style="margin-left: 5px;width: 150px; height: 34px;">
                                                     <option value="">所属乡镇或街道</option>
                                                 </select>
                                                 <span class="input-group-btn">
-                                                    <button type="button" id="btn_search" class="btn btn-purple btn-sm">
+                                                    <button type="button" id="btn_search" class="btn btn-purple btn-xs">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                                         搜索
                                                     </button>
                                                     <button type="button" id="btn-exportData"
-                                                            class="btn btn-success btn-sm" style="margin-left:10px;">
+                                                            class="btn btn-success btn-xs" style="margin-left:10px;">
                                                         导出
                                                     </button>
-                                                    <button type="button" id="btn-chart" class="btn btn-primary btn-sm"
+                                                    <button type="button" id="btn-chart" class="btn btn-primary btn-xs"
                                                             style="margin-left:10px;">
                                                         查看图表
                                                     </button>

@@ -41,26 +41,26 @@
                                         <form id="exportForm" action="${context_path}/statis/cpamonth/exportData" method="post">
                                             <input type="text" style="display:none"/>
                                             <div class="input-group">
-                                                日期时间:
-                                                <input type="text" id="startTime" name="startTime" class="form_month" style="width: 100px;"/>~<input type="text" id="endTime" name="endTime" class="form_month"  style="width: 100px;"/>
-                                                <select id="type" name="type" style="margin-left: 5px;width: 159px;height: 34px;"><option value="">请选择单位类型</option>
+                                                日期:
+                                                <input type="text" id="startTime" name="startTime" class="form_month" style="width: 70px;"/>~<input type="text" id="endTime" name="endTime" class="form_month"  style="width: 70px;"/>
+                                                <select id="type" name="type" style="margin-left: 5px;width: 110px;height: 34px;"><option value="">选择单位类型</option>
                                                 </select>
-                                                <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;"/>
-                                                <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;"/>
-                                                <select id="watersType" name="watersType" style="margin-left: 5px;width: 159px;height: 34px;">
-                                                    <option value="">请选择水源类型</option></select>
-                                                <select id="meterAttr" name="meterAttr" style="margin-left: 5px;width: 159px; height: 34px;">
-                                                    <option value="">请选择水表属性</option>
+                                                <input type="text" id="name" name="name" class="" placeholder="请输入单位名称" style="margin-left: 5px;width: 120px;"/>
+                                                <input type="text" id="innerCode" name="innerCode" class="" placeholder="请输入单位编号" style="margin-left: 5px;width: 120px;"/>
+                                                <select id="watersType" name="watersType" style="margin-left: 5px;width: 110px;height: 34px;">
+                                                    <option value="">选择水源类型</option></select>
+                                                <select id="meterAttr" name="meterAttr" style="margin-left: 5px;width: 110px; height: 34px;">
+                                                    <option value="">选择水表属性</option>
                                                 </select>
-                                                <select id="street" name="street" style="margin-left: 5px;width: 159px; height: 34px;">
+                                                <select id="street" name="street" style="margin-left: 5px;width: 140px; height: 34px;">
                                                     <option value="">所属乡镇或街道</option>
                                                 </select>
                                                 <span class="input-group-btn">
-                                                    <button type="button" id="btn_search" class="btn btn-purple btn-sm">
+                                                    <button type="button" id="btn_search" class="btn btn-purple btn-xs">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                                         搜索
                                                     </button>
-                                                    <button type="button" id="btn-exportData" class="btn btn-success btn-sm" style="margin-left:10px;">
+                                                    <button type="button" id="btn-exportData" class="btn btn-success btn-xs" style="margin-left:10px;">
                                                         导出
                                                     </button>
                                                 </span>
@@ -135,7 +135,7 @@
                 { label: '表计地址', name: 'meter_address', width: 90,sortable:false},
                 { label: '水表属性', name: 'meterAttrName', width: 100, sortable:false},*/
                 { label: '查询月份', name: 'months', width: 60, sortable:true},
-                { label: '月用水量（立方米）', name: 'monthTotal', width: 100, sortable:true},
+                { label: '月用水量（m³）', name: 'monthTotal', width: 100, sortable:true},
                 /*{ label: '计费周期', name: 'billing_cycle', width: 60, sortable:false},*/
                 { label: '单位地址', name: 'addressMap', width: 150,sortable:false}
             ],

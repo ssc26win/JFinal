@@ -116,8 +116,8 @@
                 {label: '标题', name: 'title', width: 150, sortable: false},
                 {label: '内容', name: 'content', width: 200, sortable: false},
                 { label: '拍照图片', name: 'imgNames', width: 350, sortable:false},
-                {label: '创建人', name: 'create_user', width: 60, sortable: false},
-                {label: '创建时间', name: 'create_time', width: 100, sortable: true}
+                {label: '创建人', name: 'create_user', width: 90, sortable: false},
+                {label: '创建时间', name: 'create_time', width: 120, sortable: true}
             ],
             viewrecords: true,
             height: 560,

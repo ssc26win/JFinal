@@ -52,7 +52,7 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterIndex">年用水指标(立方米):</label>
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="waterIndex">年用水指标(m³):</label>
                 <div class="col-xs-12 col-sm-9">
                   <div class="clearfix">
                     <input type="number" id="waterIndex" name="waterIndex" value="${item.waterIndex}" class="col-xs-12 col-sm-8">

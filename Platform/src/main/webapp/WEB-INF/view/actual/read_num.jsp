@@ -46,41 +46,41 @@
                                             <input type="text" style="display:none"/>
 
                                             <div class="input-group">
-                                                日期时间:
+                                                时间:
                                                 <input type="text" id="startTime" name="startTime" class="form_datetime"
-                                                       style="width: 150px;"/>~<input type="text" id="endTime"
+                                                       style="width: 110px;"/>~<input type="text" id="endTime"
                                                                                       name="endTime"
                                                                                       class="form_datetime"
-                                                                                      style="width: 150px;"/>
+                                                                                      style="width: 110px;"/>
                                                 <select id="type" name="type"
-                                                        style="margin-left: 5px;width: 150px;height: 34px;">
-                                                    <option value="" selected>请选择单位类型</option>
+                                                        style="margin-left: 5px;width: 83px;height: 34px;">
+                                                    <option value="" selected>单位类型</option>
                                                 </select>
-                                                <input type="text" id="name" name="name" class="" placeholder="请输入单位名称"
-                                                       style="margin-left: 5px;width: 150px;"/>
+                                                <input type="text" id="name" name="name" class="" placeholder="输入单位名称"
+                                                       style="margin-left: 5px;width: 100px;"/>
                                                 <input type="text" id="innerCode" name="innerCode" class=""
-                                                       placeholder="请输入单位编号" style="margin-left: 5px;width: 150px;"/>
+                                                       placeholder="输入单位编号" style="margin-left: 5px;width: 100px;"/>
                                                 <input type="text" id="meterAddress" name="meterAddress" class=""
-                                                       placeholder="请输入表计地址" style="margin-left: 5px;width: 150px;"/>
+                                                       placeholder="输入表计地址" style="margin-left: 5px;width: 100px;"/>
                                                 <select id="watersType" name="watersType"
-                                                        style="margin-left: 5px;width: 159px; height: 34px;">
-                                                    <option value="">请选择水源类型</option>
+                                                        style="margin-left: 5px;width: 83px; height: 34px;">
+                                                    <option value="">水源类型</option>
                                                 </select>
                                                 <select id="meterAttr" name="meterAttr"
-                                                        style="margin-left: 5px;width: 159px; height: 34px;">
-                                                    <option value="">请选择水表属性</option>
+                                                        style="margin-left: 5px;width: 83px; height: 34px;">
+                                                    <option value="">水表属性</option>
                                                 </select>
                                                 <select id="street" name="street"
-                                                        style="margin-left: 5px;width: 150px; height: 34px;">
+                                                        style="margin-left: 5px;width: 130px; height: 34px;">
                                                     <option value="">所属乡镇或街道</option>
                                                 </select>
                                                 <span class="input-group-btn">
-                                                    <button type="button" id="btn_search" class="btn btn-purple btn-sm">
+                                                    <button type="button" id="btn_search" class="btn btn-purple btn-xs">
                                                         <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
                                                         搜索
                                                     </button>
                                                     <button type="button" id="btn-exportData"
-                                                            class="btn btn-success btn-sm" style="margin-left:10px;">
+                                                            class="btn btn-success btn-xs" style="margin-left:10px;">
                                                         导出
                                                     </button>
                                                 </span>
@@ -147,24 +147,26 @@
             mtype: "GET",
             datatype: "json",
             colModel: [
-                {label: '所属节水办', name: 'water_unit', width: 100, sortable: false},
-                {label: '单位名称', name: 'name', width: 200, sortable: false},
-                {label: '单位编号', name: 'inner_code', width: 80, sortable: false},
-                {label: '路别', name: 'line_num', width: 60, sortable: false},
-                {label: '水表编号', name: 'meter_num', width: 90, sortable: false},
-                {label: '表计地址', name: 'meter_address', width: 90, sortable: false},
-                {label: '水源类型', name: 'watersTypeName', width: 60, sortable: false},
-                {label: '水表属性', name: 'meterAttrName', width: 80, sortable: false},
-                {label: '查询时间', name: 'write_time', width: 100, sortable: false},
-                {label: '净用水量（m³）', name: 'net_water', width: 100, sortable: true},
-                {label: '水表读数（m³）', name: 'sum_water', width: 90, sortable: true},
-                {label: '单位地址', name: 'addressMap', width: 150, sortable: false}
+                {label: '所属节水办', name: 'water_unit', width: 120, sortable: false},
+                {label: '单位名称', name: 'name', width: 250, sortable: false},
+                {label: '单位编号', name: 'inner_code', width: 90, sortable: false},
+                {label: '路别', name: 'line_num', width: 80, sortable: false},
+                {label: '水表编号', name: 'meter_num', width: 100, sortable: false},
+                {label: '表计地址', name: 'meter_address', width: 120, sortable: false},
+                {label: '水源类型', name: 'watersTypeName', width: 110, sortable: false},
+                {label: '水表属性', name: 'meterAttrName', width: 110, sortable: false},
+                {label: '查询时间', name: 'write_time', width: 150, sortable: false},
+                {label: '净用水量（m³）', name: 'net_water', width: 120, sortable: true},
+                {label: '水表读数（m³）', name: 'sum_water', width: 130, sortable: true},
+                {label: '单位地址', name: 'addressMap', width: 250, sortable: false}
             ],
             viewrecords: true,
-            height: 560,
+            height: 540,
             rowNum: 20,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
+            shrinkToFit:false,
+            autoScroll: true,
             recordtext: "{0} - {1} 共 {2} 条",
             pgtext: "第 {0} 页 共 {1} 页",
             pager: pager_selector,
