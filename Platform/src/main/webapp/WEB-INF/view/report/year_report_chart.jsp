@@ -50,8 +50,7 @@
                                             <div class="input-group">
                                                 日期:
                                                 <input type="text" id="startTime" name="startTime" value="${startTime}"
-                                                       class="form_date" style="width: 90px;"/>~
-                                                <input type="text" id="endTime" name="endTime" value="${endTime}"
+                                                       class="form_date" style="width: 90px;"/>~<input type="text" id="endTime" name="endTime" value="${endTime}"
                                                        class="form_date" style="width: 90px;"/>
                                                 <select id="type" name="type"
                                                         style="margin-left: 5px;width: 110px;height: 34px;">
