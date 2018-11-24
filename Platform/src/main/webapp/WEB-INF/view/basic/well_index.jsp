@@ -159,10 +159,13 @@
             }
         });
         $(window).triggerHandler('resize.jqGrid');
-
+        setTimeout(function () {
+            $("#jqgrid").setGridWidth($(window).width()*0.75);
+            $("#grid-table").setGridHeight($(window).height()-240);
+        }, 500);
         $(window).bind('resize', function() {
-            //$("#jqgrid").setGridWidth($(window).width()*0.75);
-            //	$("#grid-table").setGridHeight($(window).height()-200);
+            $("#jqgrid").setGridWidth($(window).width()*0.75);
+            $("#grid-table").setGridHeight($(window).height()-200);
         });
         $("#btn_search").click(function(){
             //此处可以添加对查询数据的合法验证

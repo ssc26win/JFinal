@@ -173,7 +173,7 @@
             autoScroll: true,
             recordtext: "{0} - {1} 共 {2} 条",
             pgtext: "第 {0} 页 共 {1} 页",
-            /*pager: pager_selector,*/
+            //pager: pager_selector,
             loadComplete: function () {
                 var table = this;
                 setTimeout(function () {
@@ -182,7 +182,10 @@
             }
         });
         $(window).triggerHandler('resize.jqGrid');
-
+        setTimeout(function () {
+            $("#jqgrid").setGridWidth($(window).width()*0.75);
+            $("#grid-table").setGridHeight($(window).height()-150);
+        }, 500);
         $(window).bind('resize', function () {
             $("#jqgrid").setGridWidth($(window).width() * 0.75);
             $("#grid-table").setGridHeight($(window).height() - 200);

@@ -128,7 +128,10 @@
 				}
             });
 			$(window).triggerHandler('resize.jqGrid');
-			
+            setTimeout(function () {
+                $("#jqgrid").setGridWidth($(window).width()*0.75);
+                $("#grid-table").setGridHeight($(window).height()-280);
+            }, 500);
 			$("#btn_search").click(function(){  
 			    //此处可以添加对查询数据的合法验证  
 			    var keyword = $("#keyword").val();  

@@ -70,10 +70,10 @@
                         </div>
                     </div>
                     <!-- PAGE CONTENT BEGINS -->
-                    <div style="overflow-x:auto">
-                        <table id="grid-table"></table>
-                    </div>
 
+                    <table id="grid-table"></table>
+                </div>
+                <div class="col-xs-12">
                     <div id="grid-pager"></div>
 
                     <script type="text/javascript">
@@ -155,7 +155,7 @@
                 { label: '备注信息', name: 'memo', width: 150, sortable:false}
             ],
             viewrecords: true,
-            height: 560,
+            height:560,
             rowNum: 20,
             multiselect: true,//checkbox多选
             altRows: true,//隔行变色
@@ -172,10 +172,13 @@
             }
         });
         $(window).triggerHandler('resize.jqGrid');
-
+        setTimeout(function () {
+            $("#jqgrid").setGridWidth($(window).width()*0.75);
+            $("#grid-table").setGridHeight($(window).height()-240);
+        }, 500);
         $(window).bind('resize', function() {
-            $("#jqgrid").setGridWidth($(window).width());
-            $("#grid-table").setGridHeight($(window).height());
+            $("#jqgrid").setGridWidth($(window).width()*0.75);
+            $("#grid-table").setGridHeight($(window).height()-200);
         });
         $("#btn_search").click(function(){
             //此处可以添加对查询数据的合法验证

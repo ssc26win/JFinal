@@ -147,7 +147,10 @@
             });
             //$("#grid-table").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
 			$(window).triggerHandler('resize.jqGrid');
-			
+            setTimeout(function () {
+                $("#jqgrid").setGridWidth($(window).width()*0.75);
+                $("#grid-table").setGridHeight($(window).height()-100);
+            }, 500);
 			$("#bnt-add").click(function(){
 				parent.layer.open({
 				    type: 2,

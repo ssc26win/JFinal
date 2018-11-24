@@ -12,6 +12,12 @@
     <!-- bootstrap & fontawesome -->
     <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
 </head>
+<style type="text/css">
+    html {
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+</style>
 <body class="no-skin">
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
@@ -138,10 +144,13 @@
             }
         });
         $(window).triggerHandler('resize.jqGrid');
-
+        setTimeout(function () {
+            $("#jqgrid").setGridWidth($(window).width()*0.75);
+            $("#grid-table").setGridHeight($(window).height()-240);
+        }, 500);
         $(window).bind('resize', function() {
-            //$("#jqgrid").setGridWidth($(window).width()*0.75);
-            //	$("#grid-table").setGridHeight($(window).height()-200);
+            $("#jqgrid").setGridWidth($(window).width()*0.75);
+            $("#grid-table").setGridHeight($(window).height()-200);
         });
         $("#btn_search").click(function(){
             //此处可以添加对查询数据的合法验证

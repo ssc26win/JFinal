@@ -157,7 +157,10 @@
             }
         });
         $(window).triggerHandler('resize.jqGrid');
-
+        setTimeout(function () {
+            $("#jqgrid").setGridWidth($(window).width()*0.75);
+            $("#grid-table_meter").setGridHeight($(window).height()-240);
+        }, 500);
         $(window).bind('resize', function() {
             $("#jqgrid").setGridWidth($(window).width()*0.75);
             $("#grid-table_meter").setGridHeight($(window).height()-200);

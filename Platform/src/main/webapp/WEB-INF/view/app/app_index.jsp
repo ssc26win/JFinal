@@ -52,11 +52,6 @@
 				</div>
 			</div><!-- /.main-content -->
 
-			<jsp:include page="/WEB-INF/view/common/footer.jsp" flush="true" />
-
-			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
-				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
-			</a>
 		</div><!-- /.main-container -->
 
 		<!-- basic scripts -->
@@ -109,7 +104,10 @@
 				}
             });
 			$(window).triggerHandler('resize.jqGrid');
-
+            setTimeout(function () {
+                $("#jqgrid").setGridWidth($(window).width()*0.75);
+                $("#grid-table").setGridHeight($(window).height()-200);
+            }, 500);
 			$("#btn-add").click(function(){//添加页面
 				parent.layer.open({
 					title:'添加应用',
