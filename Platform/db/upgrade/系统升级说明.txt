@@ -26,3 +26,9 @@ mysql -uroot -proot yc_platform < /usr/local/mysql/mysqldb-backup/p_platform.dum
 */5 * * * * root /usr/local/tomcat7/monitor/tomcat_monitor_prod.sh
 
 service crond restart
+
+
+# 设置 阿里云 tomcat https
+# https://blog.csdn.net/zhangxing52077/article/details/72827770
+# 设置防火墙开放端口
+# https://blog.csdn.net/irokay/article/details/72717132
