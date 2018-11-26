@@ -105,7 +105,8 @@ public class IWebUtils {
     }
 
     public static void removeCurrentSysUser(HttpServletRequest request, HttpServletResponse response) {
-        CookieUtils.delCookie("", request, response);
+        CookieUtils.delCookie("/", request, response);
+        CookieUtils.delCookieByName("/", "token", request, response);
         removeCurrentSysUserFromSession(request.getSession());
     }
 
