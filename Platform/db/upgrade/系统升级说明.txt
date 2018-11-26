@@ -32,3 +32,15 @@ service crond restart
 # https://blog.csdn.net/zhangxing52077/article/details/72827770
 # 设置防火墙开放端口
 # https://blog.csdn.net/irokay/article/details/72717132
+# tomcat7.tomcat8配置强制跳转https https://blog.csdn.net/a_xi_baa/article/details/79196693
+tomcat7编辑tomcat/conf/web.xml  在</welcome-file-list>后面加入以下这段话
+<security-constraint>
+    <!-- Authorization setting for SSL -->
+    <web-resource-collection >
+        <web-resource-name >SSL</web-resource-name>
+        <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+</security-constraint>
