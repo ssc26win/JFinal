@@ -1,6 +1,6 @@
 alter table sys_log modify column `from` varchar(1000) DEFAULT NULL COMMENT '来源 url';
 
-alter table sys_user add column `inner_code` varchar(1000) DEFAULT '' COMMENT '所属公司编码(多个逗号隔开)';
+alter table sys_user add column `inner_code` varchar(2000) DEFAULT '' COMMENT '所属公司编码(多个逗号隔开)';
 alter table sys_user add column `wx_account` varchar(100) DEFAULT '' COMMENT '微信账号';
 alter table sys_user add column `wx_memo` varchar(100) DEFAULT '' COMMENT '微信账号备用';
 alter table sys_user modify column `token` varchar(255) DEFAULT NULL COMMENT 'cookieid';
