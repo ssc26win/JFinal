@@ -15,10 +15,12 @@ StartTomcat=/usr/local/tomcat7/tomcat-test/bin/startup.sh
 # 定义要监控的页面地址
 WebUrl=http://www.imeter.online:8081/login
 
+cur_month="`date +%Y-%m`"
+
 # 日志输出
 GetPageInfo=/usr/local/tomcat7/monitor/logs/Test_GetPageInfo.log
 
-TomcatMonitorLog=/usr/local/tomcat7/monitor/logs/Test_TomcatMonitor.log
+TomcatMonitorLog=/usr/local/tomcat7/monitor/logs/Test_TomcatMonitor.$cur_month.log
  
 Monitor()
 {

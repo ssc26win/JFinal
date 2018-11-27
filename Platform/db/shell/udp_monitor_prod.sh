@@ -9,7 +9,9 @@ UdpID=$(ps --no-heading -C java -f --width 1000 | grep "actual-udp.jar" | awk '{
 # udp_startup
 StartUdp=/usr/local/tomcat7/actual-udp/bin/start.sh
 
-UdpMonitorLog=/usr/local/tomcat7/monitor/logs/Prod_UdpMonitor.log
+cur_month="`date +%Y-%m`"
+
+UdpMonitorLog=/usr/local/tomcat7/monitor/logs/Prod_UdpMonitor.$cur_month.log
  
 Monitor()
 {

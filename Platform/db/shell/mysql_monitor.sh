@@ -9,9 +9,10 @@ MysqlID=$(ps -ef | grep "mysqld" | grep -v "mysqld_safe"| grep -v "grep" | awk '
 # mysql_startup
 StartMysql=$(/etc/init.d/mysqld start)
  
-# 日志输出
+cur_month="`date +%Y-%m`"
 
-MysqlMonitorLog=/usr/local/tomcat7/monitor/logs/MonitorMysql.log
+# 日志输出
+MysqlMonitorLog=/usr/local/tomcat7/monitor/logs/MonitorMysql.$cur_month.log
  
 Monitor()
 {
