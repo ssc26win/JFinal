@@ -57,7 +57,7 @@ public class SysUser extends BaseSysUser<SysUser> {
      * 是否有执法管理员权限
      */
     public boolean isLawAdmin() {
-        long count = Db.queryLong("select count(*) from sys_user_role where role_id=? and user_id=?", 65, this.getId());
+        long count = Db.queryLong("select count(*) from sys_user_role where role_id=? and user_id=?", 2, this.getId());
         return count > 0 ? true : false;
     }
 
