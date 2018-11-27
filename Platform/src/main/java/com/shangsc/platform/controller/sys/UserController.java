@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 系统用户管理.
@@ -45,6 +47,8 @@ import java.util.Set;
  * @author ssc
  */
 public class UserController extends BaseController {
+
+    private final ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
 
     @RequiresPermissions(value = {"/sys/user"})
     public void index() {
@@ -169,8 +173,7 @@ public class UserController extends BaseController {
 
     @RequiresPermissions(value = {"/sys/user"})
     public void saveCompanies() {
-        Integer uId = this.getParaToInt("uId");
-        String innerCodes = "";
+        final Integer uId = this.getParaToInt("uId");
         String companiesIds = this.getPara("companiesIds");
         String[] split = StringUtils.split(companiesIds, ",");
         List<Integer> cIdsList = new ArrayList<>();
@@ -180,19 +183,25 @@ public class UserController extends BaseController {
                 cIdsList.add(targetId);
             }
         }
+        final List<Integer> cIdsListFinal = cIdsList;
         if (CollectionUtils.isNotEmpty(cIdsList)) {
-            List<Company> companies = Company.me.find("select * from t_company where id in (" + StringUtils.join(cIdsList, ",") + ")");
-            if (CollectionUtils.isNotEmpty(companies)) {
-                List<String> innerCodesList = new ArrayList<>();
-                for (Company c : companies) {
-                    innerCodesList.add(c.getInnerCode());
+            singleThreadExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    List<Company> companies = Company.me.find("select * from t_company where id in (" + StringUtils.join(cIdsListFinal, ",") + ")");
+                    if (CollectionUtils.isNotEmpty(companies)) {
+                        List<String> innerCodesList = new ArrayList<>();
+                        for (Company c : companies) {
+                            innerCodesList.add(c.getInnerCode());
+                        }
+                        String innerCodes = StringUtils.join(innerCodesList, ",");
+                        SysUser byId = SysUser.me.findById(uId);
+                        byId.setInnerCode(innerCodes);
+                        byId.update();
+                    }
                 }
-                innerCodes = StringUtils.join(innerCodesList, ",");
-            }
+            });
         }
-        SysUser byId = SysUser.me.findById(uId);
-        byId.setInnerCode(innerCodes);
-        byId.update();
         renderJson(InvokeResult.success());
     }
 }
