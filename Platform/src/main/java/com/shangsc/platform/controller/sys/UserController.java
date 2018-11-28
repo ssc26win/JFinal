@@ -188,19 +188,28 @@ public class UserController extends BaseController {
             singleThreadExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
-                    List<Company> companies = Company.me.find("select * from t_company where id in (" + StringUtils.join(cIdsListFinal, ",") + ")");
+                    List<Company> companies = Company.me.find("select inner_code from t_company where id in (" + StringUtils.join(cIdsListFinal, ",") + ")");
+                    String innerCodes = "";
                     if (CollectionUtils.isNotEmpty(companies)) {
                         List<String> innerCodesList = new ArrayList<>();
                         for (Company c : companies) {
                             innerCodesList.add(c.getInnerCode());
                         }
-                        String innerCodes = StringUtils.join(innerCodesList, ",");
-                        SysUser byId = SysUser.me.findById(uId);
-                        byId.setInnerCode(innerCodes);
-                        byId.update();
+                        if (CollectionUtils.isNotEmpty(innerCodesList)) {
+                            innerCodes = StringUtils.join(innerCodesList, ",");
+                        }
                     }
+                    logger.info("【分配管辖范围】 uId={} ==> {}", uId, innerCodes);
+                    SysUser byId = SysUser.me.findById(uId);
+                    byId.setInnerCode(innerCodes);
+                    byId.update();
                 }
             });
+        } else {
+            logger.info("【分配管辖范围】 uId={} ==> {}", uId, "");
+            SysUser byId = SysUser.me.findById(uId);
+            byId.setInnerCode("");
+            byId.update();
         }
         renderJson(InvokeResult.success());
     }
