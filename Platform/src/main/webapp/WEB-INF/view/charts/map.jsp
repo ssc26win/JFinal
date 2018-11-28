@@ -4,11 +4,11 @@
 <html lang="en">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 <title>通州区节水管理平台</title>
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=IDvNBsejl9oqMbPF316iKsXR"></script>
+<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=IDvNBsejl9oqMbPF316iKsXR"></script>
 <%--<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>--%>
 <script type="text/javascript" src="${res_url}map/SearchInfoWindow_min.js"></script>
 <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
-<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+<link rel="stylesheet" href="https://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
 <style type="text/css">
     html {
         overflow-x: hidden;
@@ -244,7 +244,7 @@
     //异步调用百度js
     function map_load() {
         var load = document.createElement("script");
-        load.src = "http://api.map.baidu.com/api?v=2.0&ak=IDvNBsejl9oqMbPF316iKsXR&callback=map_init";
+        load.src = "https://api.map.baidu.com/api?v=2.0&ak=IDvNBsejl9oqMbPF316iKsXR&callback=map_init";
         document.body.appendChild(load);
     }
     window.onload = map_load;

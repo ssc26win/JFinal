@@ -65,12 +65,13 @@
                 <div class="col-xs-12">
                     <div class="row-fluid" style="margin-bottom: 5px;">
                         <div class="span12 control-group">
-                            <jc:button className="btn btn-success" id="btn-visible" textName="启用"/>
-                            <jc:button className="btn btn-danger" id="btn-unvisible" textName="禁用"/>
-                            <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
-                            <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
-                            <jc:button className="btn" id="bnt-grant" textName="分配角色" permission="/sys/user"/>
-                            <jc:button className="btn btn-warning" id="btn-grant-manage" textName="分配管辖范围"/>
+                            <jc:button className="btn btn-success" id="btn-visible" permission="/sys/user/setVisible" textName="启用"/>
+                            <jc:button className="btn btn-danger" id="btn-unvisible" permission="/sys/user/setVisible" textName="禁用"/>
+                            <jc:button className="btn btn-primary" id="btn-add" permission="/sys/user/save" textName="添加"/>
+                            <jc:button className="btn btn-info" id="btn-edit" permission="/sys/user/save" textName="编辑"/>
+                            <jc:button className="btn btn-danger" id="btn-deleteData" permission="/sys/user/delete" textName="删除"/>
+                            <jc:button className="btn" id="bnt-grant" permission="/sys/user/saveUserRoles" textName="分配角色"/>
+                            <jc:button className="btn btn-warning" id="btn-grant-manage" permission="/sys/user/saveCompanies" textName="分配管辖范围"/>
                         </div>
                     </div>
                     <!-- PAGE CONTENT BEGINS -->
@@ -102,7 +103,6 @@
         $(window).on('resize.jqGrid', function () {
             $(grid_selector).jqGrid('setGridWidth', $(".page-content").width());
         });
-//resize on sidebar collapse/expand
         var parent_column = $(grid_selector).closest('[class*="col-"]');
         $(document).on('settings.ace.jqGrid', function (ev, event_name, collapsed) {
             if (event_name === 'sidebar_collapsed' || event_name === 'main_container_fixed') {
@@ -250,7 +250,43 @@
                 });
             }
         });
+        $("#btn-deleteData").click(function(){
+            deleteData();
+        });
     });
+
+    function deleteData(){
+        var rid = getOneSelectedRows();
+        if(rid == -1) {
+            layer.msg("请选择一个记录", {
+                icon: 2,
+                time: 1000 //2秒关闭（如果不配置，默认是3秒）
+            });
+            return;
+        }
+        var submitData = {
+            "ids" : getSelectedRows()
+        };
+        layer.confirm("确认删除记录？",function(){
+            $.post("${context_path}/sys/user/delete", submitData,function(data) {
+                if (data.code == 0) {
+                    layer.msg("操作成功", {
+                        icon: 1,
+                        time: 1000 //1秒关闭（如果不配置，默认是3秒）
+                    },function(){
+                        reloadGrid();
+                    });
+                }  else {
+                    if (data.msg != "") {
+                        layer.alert(data.msg);
+                    } else {
+                        layer.alert("操作失败");
+                    }
+                }
+            },"json");
+        });
+    }
+
     //replace icons with FontAwesome icons like above
     function updatePagerIcons(table) {
         var replacement =

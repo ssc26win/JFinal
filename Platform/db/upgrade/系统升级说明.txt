@@ -20,10 +20,20 @@ mysql -uroot -proot yc_platform < /usr/local/mysql/mysqldb-backup/p_platform.dum
 
 
 
-#五分钟监控一次tomcat是否启动
+#监控各个服务是否启动正常运行
 
-*/5 * * * * root /usr/local/tomcat7/monitor/tomcat_monitor_test.sh
-*/5 * * * * root /usr/local/tomcat7/monitor/tomcat_monitor_prod.sh
+*/5  *  *  *  *  root /usr/local/tomcat7/monitor/mysql_monitor.sh
+
+0  2  *  *  *  root /usr/local/mysql/mysqldb-backup/mysql_backup.sh
+
+*/60  *  *  *  *  root /usr/local/tomcat7/monitor/tomcat_monitor_test.sh
+
+*/30  *  *  *  *  root /usr/local/tomcat7/monitor/tomcat_monitor_prod.sh
+
+*/20  *  *  *  *  root /usr/local/tomcat7/monitor/tcp_monitor_prod.sh
+
+*/20  *  *  *  *  root /usr/local/tomcat7/monitor/udp_monitor_prod.sh
+
 
 service crond restart
 

@@ -383,4 +383,15 @@ public class SysUser extends BaseSysUser<SysUser> {
         }
         return InvokeResult.success(Boolean.TRUE, "注册成功");
     }
+
+    public InvokeResult deleteData(String idStrs) {
+        List<Integer> ids = CommonUtils.getIntegerListByStrs(idStrs);
+        if (ids.contains(1)) {
+            return InvokeResult.failure("admin账户禁止删除，删除失败！");
+        }
+        for (int i = 0; i < ids.size(); i++) {
+            this.deleteById(ids.get(i));
+        }
+        return InvokeResult.success();
+    }
 }

@@ -20,8 +20,6 @@ import com.jfinal.aop.Before;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.plugin.activerecord.tx.Tx;
-import com.jfinal.template.ext.directive.Str;
-import com.shangsc.front.util.JsonUtil;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.IWebUtils;
@@ -213,6 +211,14 @@ public class UserController extends BaseController {
         }
         renderJson(InvokeResult.success());
     }
+
+    @RequiresPermissions(value = {"/sys/user"})
+    public void delete() {
+        String ids = this.getPara("ids");
+        InvokeResult result = SysUser.me.deleteData(ids);
+        this.renderJson(result);
+    }
+
 }
 
 
