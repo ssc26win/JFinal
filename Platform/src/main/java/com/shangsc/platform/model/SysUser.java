@@ -374,6 +374,12 @@ public class SysUser extends BaseSysUser<SysUser> {
             SysUser sysUser = new SysUser();
             sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date())
                     .set("phone", phone).set("email", email).set("wx_account", wxAccount).set("wx_memo", "Wexin_regist").save();
+
+            // 默认角色
+            SysUserRole sysUserRole = new SysUserRole();
+            sysUserRole.setRoleId(64);
+            sysUserRole.setUserId(sysUser.getInt("id"));
+            sysUserRole.save();
         }
         return InvokeResult.success(Boolean.TRUE, "注册成功");
     }
