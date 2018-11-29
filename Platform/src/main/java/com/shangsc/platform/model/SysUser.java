@@ -308,6 +308,11 @@ public class SysUser extends BaseSysUser<SysUser> {
                     sqlList.add("insert into sys_user_role (user_id,role_id) values (" + sysUser.getId() + "," + Integer.valueOf(roleId) + ")");
                 }
             }
+            Integer id = sysUser.getInt("id");
+            // 默认系统消息
+            Message first = Message.dao.findFirst(" select * from t_message order by id asc limit 1 ");
+            MsgReceiver.dao.saveList(first.getId(), Arrays.asList(new Long[]{Long.parseLong(id + "")}));
+
             Db.batch(sqlList, 5);
             CacheClearUtils.clearUserMenuCache();
         }
