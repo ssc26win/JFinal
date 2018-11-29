@@ -115,7 +115,7 @@
             colModel: [
                 { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
                 { label: '单位名称', name: 'name', width: 200, sortable:false},
-                { label: '单位编号', name: 'inner_code', width: 80, sortable:false},
+                { label: '单位编号', name: 'real_code', width: 80, sortable:false},
                 { label: '路别', name: 'line_num', width: 50, sortable:false},
                 { label: '水表编号', name: 'meter_num', width: 90,sortable:false},
                 { label: '表计地址', name: 'meter_address', width: 90,sortable:false},

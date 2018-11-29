@@ -93,7 +93,7 @@
       colModel: [
         { label: '所属节水办', name: 'water_unit', width: 100, sortable:false},
         { label: '单位名称', name: 'name', width: 200, sortable:false},
-        { label: '单位编号', name: 'inner_code', width: 70, sortable:false},
+        { label: '单位编号', name: 'real_code', width: 70, sortable:false},
         { label: '当前状态', name: 'alarmName', width: 60, sortable:false},
         { label: '用水量', name: 'sumWater', width: 50, sortable:true},
         { label: '一月指标', name: 'january', width: 60, sortable:false},
