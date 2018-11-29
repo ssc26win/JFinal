@@ -13,14 +13,16 @@ import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.ActualDataReport;
-import com.shangsc.platform.model.Company;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Author ssc
@@ -35,6 +37,7 @@ public class ReportMonthChartController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/report/month/chart"})
     public void index() {
+        Long startS = System.currentTimeMillis();
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         //if ("get".equals(this.getPara("reqType"))) {
@@ -116,7 +119,8 @@ public class ReportMonthChartController extends BaseController {
         }
 
         this.setAttr("seriesJsonData", JsonUtil.obj2Json(seriesJsonData));
-
+        Long endS = System.currentTimeMillis();
+        logger.info("查询单位按月统计图表耗时：{}", endS - startS);
         render("month_report_chart.jsp");
     }
 

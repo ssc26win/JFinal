@@ -12,7 +12,6 @@ import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.util.DateUtils;
 import com.shangsc.platform.model.ActualData;
 import com.shangsc.platform.model.ActualDataReport;
-import com.shangsc.platform.model.Company;
 import com.shangsc.platform.util.ToolDateTime;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,6 +35,7 @@ public class ReportYearChartController extends BaseController {
     @Clear(AuthorityInterceptor.class)
     @RequiresPermissions(value = {"/report/year/chart"})
     public void index() {
+        Long startS = System.currentTimeMillis();
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
         //if ("get".equals(this.getPara("reqType"))) {
@@ -112,7 +112,8 @@ public class ReportYearChartController extends BaseController {
         Long width = 1080L;
         this.setAttr("widthSum", width);
         this.setAttr("seriesJsonData", JsonUtil.obj2Json(seriesJsonData));
-
+        Long endS = System.currentTimeMillis();
+        logger.info("查询单位按月统计图表耗时：{}", endS - startS);
         render("year_report_chart.jsp");
     }
 

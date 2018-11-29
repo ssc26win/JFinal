@@ -27,6 +27,7 @@ public class ReportStreetChartController extends BaseController {
 
     @RequiresPermissions(value = {"/report/street/chart"})
     public void index() {
+        Long start = System.currentTimeMillis();
         String globalInnerCode = getInnerCodesSQLStr();
         Date startTime = null;
         Date endTime = null;
@@ -292,6 +293,8 @@ public class ReportStreetChartController extends BaseController {
             }
         }
         this.setAttr("watersTypeSeris", watersTypeSeris);
+        Long end = System.currentTimeMillis();
+        logger.info("查询按乡镇统计图表耗时：{}", end - start);
         render("street_chart.jsp");
     }
 }

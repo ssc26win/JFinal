@@ -27,6 +27,7 @@ public class ReportCompanyChartController extends BaseController {
 
     @RequiresPermissions(value = {"/report/company/chart"})
     public void index() {
+        Long start = System.currentTimeMillis();
         String globalInnerCode = getInnerCodesSQLStr();
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
@@ -316,6 +317,8 @@ public class ReportCompanyChartController extends BaseController {
             }
         }
         this.setAttr("watersTypeSeris", watersTypeSeris);
+        Long end = System.currentTimeMillis();
+        logger.info("查询按单位统计图表耗时：{}", end - start);
         render("company_chart.jsp");
     }
 }

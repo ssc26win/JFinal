@@ -95,6 +95,7 @@ public class ReportCompanyController extends BaseController {
 
     @RequiresPermissions(value = {"/report/company"})
     public void getListData() {
+        Long start = System.currentTimeMillis();
         ActualDataReport.me.setGlobalInnerCode(getInnerCodesSQLStr());
         String name = this.getPara("name");
         String innerCode = this.getPara("innerCode");
@@ -335,6 +336,8 @@ public class ReportCompanyController extends BaseController {
                 }
             }
         }
+        Long end = System.currentTimeMillis();
+        logger.info("查询按单位统计耗时：{}", end - start);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, listFinal));
     }
 

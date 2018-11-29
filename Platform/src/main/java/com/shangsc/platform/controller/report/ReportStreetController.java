@@ -80,6 +80,7 @@ public class ReportStreetController extends BaseController {
 
     @RequiresPermissions(value = {"/report/street"})
     public void getListData() {
+        Long start = System.currentTimeMillis();
         String globalInnerCode = getInnerCodesSQLStr();
         ActualDataReport.me.setGlobalInnerCode(globalInnerCode);
         Date startTime = null;
@@ -321,6 +322,8 @@ public class ReportStreetController extends BaseController {
                 }
             }
         }
+        Long end = System.currentTimeMillis();
+        logger.info("查询按乡镇统计耗时：{}", end - start);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, listFinal));
     }
 
