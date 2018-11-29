@@ -63,12 +63,12 @@
                 <div class="col-xs-12">
                     <div class="row-fluid" style="margin-bottom: 5px;">
                         <div class="span12 control-group">
-                            <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
-                            <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
-                            <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
-                            <jc:button className="btn btn-success" id="btn-addImg" textName="公告图片"/>
-                            <jc:button className="btn btn-warning" id="btn-publishData" textName="发布"/>
-                            <jc:button className="btn btn-danger" id="btn-cancelPublish" textName="取消发布"/>
+                            <jc:button className="btn btn-primary" id="btn-add" permission="/basic/ad/save" textName="添加"/>
+                            <jc:button className="btn btn-info" id="btn-edit" permission="/basic/ad/save" textName="编辑"/>
+                            <jc:button className="btn btn-danger" id="btn-deleteData" permission="/basic/ad/delete" textName="删除"/>
+                            <jc:button className="btn btn-success" id="btn-addImg" permission="/basic/ad/save" textName="公告图片"/>
+                            <jc:button className="btn btn-warning" id="btn-publishData" permission="/basic/ad/publish" textName="发布"/>
+                            <jc:button className="btn btn-danger" id="btn-cancelPublish" permission="/basic/ad/publish" textName="取消发布"/>
                         </div>
                     </div>
                     <!-- PAGE CONTENT BEGINS -->

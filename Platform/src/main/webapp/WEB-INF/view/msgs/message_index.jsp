@@ -63,11 +63,11 @@
                 <div class="col-xs-12">
                     <div class="row-fluid" style="margin-bottom: 5px;">
                         <div class="span12 control-group">
-                            <jc:button className="btn btn-primary" id="btn-add" textName="添加"/>
-                            <jc:button className="btn btn-info" id="btn-edit" textName="编辑"/>
-                            <jc:button className="btn btn-danger" id="btn-deleteData" textName="删除"/>
-                            <jc:button className="btn" id="bnt-grant" textName="添加接收人"/>
-                            <jc:button className="btn btn-success" id="btn-publishData" textName="发布"/>
+                            <jc:button className="btn btn-primary" id="btn-add" permission="/basic/msg/save" textName="添加"/>
+                            <jc:button className="btn btn-info" id="btn-edit" permission="/basic/msg/save" textName="编辑"/>
+                            <jc:button className="btn btn-danger" id="btn-deleteData" permission="/basic/msg/delete" textName="删除"/>
+                            <jc:button className="btn" id="bnt-grant" permission="/basic/msg/save" textName="添加接收人"/>
+                            <jc:button className="btn btn-success" id="btn-publishData" permission="/basic/msg/publish" textName="发布"/>
                         </div>
                     </div>
                     <!-- PAGE CONTENT BEGINS -->
