@@ -144,7 +144,7 @@
         $(window).triggerHandler('resize.jqGrid');
         setTimeout(function () {
             $("#jqgrid").setGridWidth($(window).width()*0.75);
-            $("#grid-table").setGridHeight($(window).height()-240);
+            $("#grid-table").setGridHeight($(window).height()-250);
         }, 500);
         $(window).bind('resize', function () {
             $("#jqgrid").setGridWidth($(window).width() * 0.75);

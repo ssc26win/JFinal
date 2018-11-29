@@ -375,11 +375,18 @@ public class SysUser extends BaseSysUser<SysUser> {
             sysUser.set("name", username).set("pwd", MyDigestUtils.shaDigestForPasswrod(password)).set("createdate", new Date())
                     .set("phone", phone).set("email", email).set("wx_account", wxAccount).set("wx_memo", "Wexin_regist").save();
 
-            // 默认角色
-            SysUserRole sysUserRole = new SysUserRole();
-            sysUserRole.setRoleId(64);
-            sysUserRole.setUserId(sysUser.getInt("id"));
-            sysUserRole.save();
+            Integer id = sysUser.getInt("id");
+            if (id != null) {
+                // 默认角色
+                SysUserRole sysUserRole = new SysUserRole();
+                sysUserRole.setRoleId(64);
+                sysUserRole.setUserId(sysUser.getInt("id"));
+                sysUserRole.save();
+                // 默认系统消息
+                Message first = Message.dao.findFirst(" select * from t_message order by id asc limit 1 ");
+                MsgReceiver.dao.saveList(first.getId(), Arrays.asList(new Long[]{Long.parseLong(id + "")}));
+            }
+
         }
         return InvokeResult.success(Boolean.TRUE, "注册成功");
     }

@@ -104,9 +104,9 @@ public class MessageController extends BaseController {
         Long id = this.getParaToLong("id");
         String title = this.getPara("title");
         String content = this.getPara("content");
-        String imgUrl = this.getPara("imgUrl");
+        String memo = this.getPara("memo");
         Integer status = this.getParaToInt("status", 0);
-        InvokeResult result = Message.dao.save(id, title, content, imgUrl, status, sysUser.getInnerCode(),
+        InvokeResult result = Message.dao.save(id, title, content, memo, status, sysUser.getInnerCode(),
                 sysUser.getId(), sysUser.getName(), new ArrayList<Long>());
         this.renderJson(result);
     }

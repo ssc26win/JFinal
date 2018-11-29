@@ -10,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,18 +22,40 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
     public static final ActualDataWx me = new ActualDataWx();
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    public Page<ActualData> getWxActualDataPage(int page, int rows, String keyword, String orderbyStr, String globalInnerCode) {
+        String select = "select * ";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from (" +
+                "select tad.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,twm.line_num,twm.waters_type from (select t.* from (select id,inner_code,meter_address,net_water,sum_water,write_time from t_actual_data order by write_time desc) t group by t.meter_address)  tad " +
+                "left join t_company tc on tad.inner_code=tc.inner_code " +
+                "left join t_water_meter twm on tad.meter_address=twm.meter_address where 1=1) alld ");
+        sqlExceptSelect.append(" where 1=1");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (alld.real_code='" + StringUtils.trim(keyword) + "' or alld.meter_address='" + StringUtils.trim(keyword)
+                    + "' or alld.companyName like '%" + StringUtils.trim(keyword) + "%') ");
+        }
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and alld.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        return ActualData.me.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
+
+
     /**********************************
      * WxApp use
      ***************************************/
 
-    public Page<ActualData> getWxActualDataPage(int page, int rows, String keyword, String orderbyStr, String globalInnerCode) {
+    public Page<ActualData> getWxActualDataPageAll(int page, int rows, String keyword, String orderbyStr, String globalInnerCode) {
         String select = "select * ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from (" +
-                "select tad.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,twm.line_num,twm.waters_type   from (select * from t_actual_data order by write_time desc)  tad " +
+                "select tad.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,twm.line_num,twm.waters_type,twm.memo,twm.vender from " +
+                "(select t.* from (select id,inner_code,meter_address,net_water,sum_water,state,write_time from t_actual_data order by write_time desc) t group by t.meter_address) tad " +
                 "left join  t_company tc on tad.inner_code=tc.inner_code " +
-                "left join t_water_meter twm on tad.meter_address=twm.meter_address where 1=1 group by tad.meter_address " +
-                "union all (SELECT tad.id,tc.inner_code,tm.meter_address,tad.alarm,tad.net_water,tad.sum_water,tad.state," +
-                "tad.write_time,tad.voltage,companyName,tc.real_code,tc.water_unit,tc.county,tm.line_num,tm.waters_type FROM t_water_meter tm " +
+                "left join t_water_meter twm on tad.meter_address=twm.meter_address where 1=1 " +
+                "union all (SELECT tad.id,tc.inner_code,tm.meter_address,tad.net_water,tad.sum_water,tad.state," +
+                "tad.write_time,companyName,tc.real_code,tc.water_unit,tc.county,tm.line_num,tm.waters_type,tm.memo,tm.vender FROM t_water_meter tm " +
                 "left join (select name as companyName,water_unit,county,inner_code,real_code from t_company) tc on tm.inner_code=tc.inner_code " +
                 "left join t_actual_data tad on tad.meter_address=tm.meter_address " +
                 "where tm.meter_address not in (select meter_address from t_actual_data))) alld");
@@ -54,10 +75,10 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
 
     public Page<ActualData> getWxActualDataPageByDisable(int page, int rows, String keyword, String orderbyStr, String globalInnerCode) {
         String select = "select * ";
-        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT tad.id,tc.inner_code,tc.real_code,tm.meter_address,tad.alarm,tad.net_water,tad.sum_water,tad.state," +
-                "tad.write_time,tad.voltage,companyName,tc.water_unit,tc.county,tm.line_num,tm.waters_type FROM t_water_meter tm " +
+        StringBuffer sqlExceptSelect = new StringBuffer("from (SELECT tad.id,tc.inner_code,tc.real_code,tm.meter_address,tad.net_water,tad.sum_water,tad.state," +
+                "tad.write_time,companyName,tc.water_unit,tc.county,tm.line_num,tm.waters_type,tm.memo,tm.vender FROM t_water_meter tm " +
                 "left join (select name as companyName,water_unit,county,inner_code,real_code from t_company) tc on tm.inner_code=tc.inner_code " +
-                "left join t_actual_data tad on tad.meter_address=tm.meter_address " +
+                "left join (select * from t_actual_data where 1<>1) tad on tad.meter_address=tm.meter_address " +
                 "where tm.meter_address not in (select meter_address from t_actual_data)) alld ");
         sqlExceptSelect.append(" where 1=1");
         if (StringUtils.isNotEmpty(keyword)) {
@@ -80,14 +101,14 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
                 "select al.*," +
                 "(case" +
                 "  when (unix_timestamp(NOW())-unix_timestamp(al.write_time))>" + 3600 * exceptionTime + " then 1" +
-                "  when net_water<=0 then 2" +
+                "  when net_water=0 then 2" +
                 "  else 0" +
                 "  end) as stats" +
                 " from " +
-                "(select tad.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,twm.line_num,twm.waters_type from " +
-                "(select * from t_actual_data order by write_time desc)  tad " +
-                "left join  t_company tc on tad.inner_code=tc.inner_code " +
-                "left join t_water_meter twm on tad.meter_address=twm.meter_address where 1=1 group by tad.meter_address) al) alld ");
+                "(select tad.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,twm.line_num,twm.waters_type,twm.memo,twm.vender from " +
+                "(select t.* from (select id,inner_code,meter_address,net_water,sum_water,state,write_time from t_actual_data order by write_time desc) t group by t.meter_address) tad " +
+                "left join t_company tc on tad.inner_code=tc.inner_code " +
+                "left join t_water_meter twm on tad.meter_address=twm.meter_address) al) alld ");
         sqlExceptSelect.append(" where 1=1");
         sqlExceptSelect.append(" and alld.stats = " + status);
         if (StringUtils.isNotEmpty(keyword)) {

@@ -136,13 +136,16 @@ public class ActualController extends BaseController {
                 exceptionTime = Integer.parseInt(num);
             }
         }
+        Long start = System.currentTimeMillis();
         if (ActualState.Actual_List().contains(status)) {
             pageInfo = ActualDataWx.me.getWxActualDataPageByStatus(getPage(), this.getRows(), keyword, this.getOrderbyStr(), status, exceptionTime, wxInnerCodeSQLStr);
         } else if (ActualState.DISABLE.equals(status)) {
             pageInfo = ActualDataWx.me.getWxActualDataPageByDisable(getPage(), this.getRows(), keyword, this.getOrderbyStr(), wxInnerCodeSQLStr);
         } else {
-            pageInfo = ActualDataWx.me.getWxActualDataPage(getPage(), this.getRows(), keyword, this.getOrderbyStr(), wxInnerCodeSQLStr);
+            pageInfo = ActualDataWx.me.getWxActualDataPageAll(getPage(), this.getRows(), keyword, this.getOrderbyStr(), wxInnerCodeSQLStr);
         }
+        Long end = System.currentTimeMillis();
+        logger.info("查询实时数据耗时：{}", end - start);
         List<ActualData> list = pageInfo.getList();
         setVoProp(list, exceptionTime);
         Page<ActualData> pageInfoFinal = new Page<ActualData>(list, pageInfo.getPageNumber(), pageInfo.getPageSize(), pageInfo.getTotalPage(), pageInfo.getTotalRow());

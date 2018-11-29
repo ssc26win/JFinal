@@ -119,6 +119,7 @@
                 /*{ label: '图片地址', name: 'img_url', width: 100, sortable:false},*/
                 {label: '发布状态', name: 'statusName', width: 100, sortable: false},
                 {label: '接收人', name: 'MsgReceiverNames', width: 300, sortable: false},
+                {label: '备注', name: 'memo', width: 150, sortable: false},
                 {label: '创建人', name: 'create_user', width: 100, sortable: false},
                 {label: '创建时间', name: 'create_time', width: 150, sortable: true}
             ],
@@ -288,7 +289,11 @@
                         reloadGrid();
                     });
                 } else {
-                    layer.alert("操作失败");
+                    if (data.msg != "") {
+                        layer.alert(data.msg);
+                    } else {
+                        layer.alert("操作失败");
+                    }
                 }
             }, "json");
         });

@@ -54,6 +54,7 @@ public class ActualController extends BaseController {
                 exceptionTime = Integer.parseInt(num);
             }
         }
+        Long start = System.currentTimeMillis();
         if (ActualState.Actual_List().contains(status)) {
             pageInfo = ActualData.me.getActualDataPageByStatus(getPage(), this.getRows(), keyword, this.getOrderbyStr(), status, exceptionTime);
         } else if (ActualState.DISABLE.equals(status)) {
@@ -61,6 +62,8 @@ public class ActualController extends BaseController {
         } else {
             pageInfo = ActualData.me.getActualDataPage(getPage(), this.getRows(), keyword, this.getOrderbyStr());
         }
+        Long end = System.currentTimeMillis();
+        logger.info("查询实时数据耗时：{}", end - start);
         List<ActualData> list = pageInfo.getList();
         setVoProp(list, exceptionTime);
         this.renderJson(JqGridModelUtils.toJqGridView(pageInfo, list));
