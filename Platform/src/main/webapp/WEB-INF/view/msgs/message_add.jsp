@@ -9,12 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>通州区节水管理平台</title>
     <jsp:include page="/WEB-INF/view/common/basecss.jsp" flush="true" />
-    <link rel="stylesheet" href="${res_url}js/omui/development-bundle/themes/default/om-fileupload.css" />
-    <script src="${res_url}ace-1.3.3/assets/js/jquery.js" ></script>
-    <script src="${res_url}ace-1.3.3/assets/js/ace-extra.js"></script>
-    <script src="${res_url}js/semantic/assets/library/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="${res_url}uploadify/uploadify.css">
-    <script src="${res_url}uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
     <style type="text/css">
         .uploadify-button{
             background-color: white;
@@ -64,44 +58,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <%--<div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" style="color:green;" for="receivers" id="bnt-grant"><b style="font-color:green;">接收人</b></label>
-                                                    <div class="col-xs-12 col-sm-9">
-                                                        <div class="clearfix">
-                                                            <input type="hidden" id="receiversIds" name="receiversIds">
-                                                            <textarea id="receivers" name="receivers" class="col-xs-12 col-sm-9" rows="4" cols="16">${item.receivers}</textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>--%>
-                                                <%--<div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="file_upload">图片:</label>
-                                                    <div class="col-xs-12 col-sm-9">
-                                                        <div class="clearfix">
-                                                            <div class="cover-area" style="border: 1px solid #e0e0e0;width: 80%;border-radius:5px;padding: 5px 0 0 5px;">
-                                                                <div class="cover-hd">
-                                                                    <input id="file_upload" name="file_upload" type="file" />
-                                                                    <input id="imgUrl" class="cover-input" value="${item.imgUrl}" name="imgUrl" type="hidden" />
-                                                                </div>
-                                                                <p id="upload-tip" class="upload-tip"></p>
-                                                                <p id="imgArea" class="cover-bd" style="display: ${action eq 'add'?'none':''}">
-                                                                    <a class="vb cover-del" href="#" style="width: 600px;">${item.imgUrl}</a>
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>--%>
-                                                <%--<div class="form-group">
-                                                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="status">是否发布:</label>
-
-                                                    <div class="col-xs-12 col-sm-9">
-                                                        <div class="clearfix">
-                                                            <select name="status" id="status" class="span3">
-                                                                <option value="0" ${item.status eq 0?'selected':''}>否</option>
-                                                                <option value="1" ${item.status eq 1?'selected':''}>是</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>--%>
                                                 <div class="clearfix form-actions" align="center">
                                                     <div class="col-md-offset-3 col-md-9">
                                                         <button id="submit-btn" class="btn btn-info" type="submit" data-last="Finish">
@@ -131,31 +87,6 @@
 <jsp:include page="/WEB-INF/view/common/basejs.jsp" flush="true" />
 <script type="text/javascript">
     jQuery(function($) {
-        /*$('#file_upload').uploadify({
-            //校验数据
-            'swf' : '${res_url}uploadify/uploadify.swf', //指定上传控件的主体文件，默认‘uploader.swf’
-            'uploader' : '/basic/ad/uploadImg', //指定服务器端上传处理文件，默认‘upload.php’
-            'auto' : true, //手动上传
-            'buttonImage' : '${res_url}uploadify/uploadify-upload.png', //浏览按钮背景图片
-            'width' :110,
-            'height' :30,
-            'cancelImg': 'uploadify/uploadify-cancel.png',
-            //'buttonText': '选 择应用',
-            'multi' : false, //单文件上传
-            'fileTypeExts' : '*.jpg;*.jpeg;*.png;*.gif;*.swf;', //允许上传的文件后缀
-            'fileSizeLimit' : '50MB', //上传文件的大小限制，单位为B, KB, MB, 或 GB
-            'successTimeout' : 30, //成功等待时间
-            'onUploadSuccess' : function(file, data,response) {//每成功完成一次文件上传时触发一次
-                data=eval("["+data+"]")[0];
-                $("#imgArea").show().find(".cover-del").html(data.fileUrl);
-                $("#imgUrl").val(data.fileUrl);
-            },
-            'onUploadError' : function(file, data, response) {//当上传返回错误时触发
-                $('#f_pics').append("<div class=\"pics_con\">" + data + "</div>");
-            }
-        });*/
-
-        var $validation = true;
 
         $('#validation-form').validate({
             errorElement: 'div',

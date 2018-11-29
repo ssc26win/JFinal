@@ -45,7 +45,7 @@ public class Message extends BaseMessage<Message> {
         message.setContent(content);
         message.setImgUrl(imgUrl);
         message.setStatus(status);
-        message.setInnerCode(innerCode);
+        //message.setInnerCode(innerCode);
         message.setUserId(userId);
         message.setCreateUser(userName);
         return message;
