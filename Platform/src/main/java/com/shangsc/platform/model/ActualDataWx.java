@@ -51,7 +51,8 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         String select = "select * ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from (" +
                 "select tad.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,twm.line_num,twm.waters_type,twm.memo,twm.vender from " +
-                "(select t.* from (select id,inner_code,meter_address,net_water,sum_water,state,write_time from t_actual_data order by write_time desc) t group by t.meter_address) tad " +
+                "(select t.* from (select id,inner_code,meter_address,net_water,sum_water,state,write_time from t_actual_data" +
+                " where " + (StringUtils.isNotEmpty(globalInnerCode) ? "inner_code in (" + StringUtils.trim(globalInnerCode) + ") " : "1=1") + " order by write_time desc) t group by t.meter_address) tad " +
                 "left join  t_company tc on tad.inner_code=tc.inner_code " +
                 "left join t_water_meter twm on tad.meter_address=twm.meter_address where 1=1 " +
                 "union all (SELECT tad.id,tc.inner_code,tm.meter_address,tad.net_water,tad.sum_water,tad.state," +
@@ -106,7 +107,8 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
                 "  end) as stats" +
                 " from " +
                 "(select tad.*,tc.name as companyName,tc.real_code,tc.water_unit,tc.county,twm.line_num,twm.waters_type,twm.memo,twm.vender from " +
-                "(select t.* from (select id,inner_code,meter_address,net_water,sum_water,state,write_time from t_actual_data order by write_time desc) t group by t.meter_address) tad " +
+                "(select t.* from (select id,inner_code,meter_address,net_water,sum_water,state,write_time from t_actual_data " +
+                " where " + (StringUtils.isNotEmpty(globalInnerCode) ? "inner_code in (" + StringUtils.trim(globalInnerCode) + ") " : "1=1") + " order by write_time desc) t group by t.meter_address) tad " +
                 "left join t_company tc on tad.inner_code=tc.inner_code " +
                 "left join t_water_meter twm on tad.meter_address=twm.meter_address) al) alld ");
         sqlExceptSelect.append(" where 1=1");
