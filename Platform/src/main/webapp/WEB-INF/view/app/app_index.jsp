@@ -29,10 +29,10 @@
 							<div class="col-xs-12">
 								<div class="row-fluid" style="margin-bottom: 5px;">
 									<div class="span12 control-group">
-										<jc:button className="btn btn-primary" id="btn-add" textName="添加应用"/>
-										<jc:button className="btn btn-info" id="btn-edit" textName="修改应用"/>
-										<jc:button className="btn btn-success" id="btn-visible" textName="启用"/>
-										<jc:button className="btn btn-danger" id="btn-unvisible" textName="禁用"/>
+										<jc:button className="btn btn-primary" id="btn-add" permission="/app/saveApp" textName="添加应用"/>
+										<jc:button className="btn btn-info" id="btn-edit" permission="/app/saveApp" textName="修改应用"/>
+										<jc:button className="btn btn-success" id="btn-visible" permission="/app/setVisible" textName="启用"/>
+										<jc:button className="btn btn-danger" id="btn-unvisible" permission="/app/setVisible" textName="禁用"/>
 									</div>
 								</div>
 								<!-- PAGE CONTENT BEGINS -->
