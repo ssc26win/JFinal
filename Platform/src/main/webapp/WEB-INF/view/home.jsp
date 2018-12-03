@@ -21,9 +21,9 @@
     </script>
 
     <div class="main-container-inner">
-        <a class="menu-toggler" id="menu-toggler" href="#">
+        <%--<a class="menu-toggler" id="menu-toggler" href="#">
             <span class="menu-text"></span>
-        </a>
+        </a>--%>
 
         <div class="main-content">
             <div class="breadcrumbs" id="breadcrumbs">

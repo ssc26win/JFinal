@@ -18,6 +18,7 @@ package com.shangsc.platform.controller.sys;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.shangsc.platform.conf.GlobalConfig;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
 import com.shangsc.platform.core.model.Condition;
@@ -51,11 +52,7 @@ public class RoleController extends BaseController {
     @RequiresPermissions(value = {"/sys/role"})
     public void getListData() {
         String name = this.getPara("name");
-        Set<Condition> conditions = new HashSet<Condition>();
-        if (CommonUtils.isNotEmpty(name)) {
-            conditions.add(new Condition("name", Operators.LIKE, name));
-        }
-        Page<SysRole> pageInfo = SysRole.me.getPage(this.getPage(), this.getRows(), conditions, this.getOrderby());
+        Page<SysRole> pageInfo = SysRole.me.getPageInfo(this.getPage(), this.getRows(), name, this.getOrderbyStr());
         this.renderJson(SysRole.me.toJqGridView(pageInfo));
     }
 
@@ -91,7 +88,12 @@ public class RoleController extends BaseController {
 
     @RequiresPermissions(value = {"/sys/role"})
     public void save() {
-        InvokeResult result = SysRole.me.save(this.getParaToInt("id"), this.getPara("name"), this.getPara("des"));
+        if (GlobalConfig.blackList.contains(this.getParaToInt("id"))) {
+            InvokeResult failure = InvokeResult.failure("特殊角色，请勿改动，修改请联系开发人员");
+            this.renderJson(failure);
+            return;
+        }
+        InvokeResult result = SysRole.me.save(this.getParaToInt("id"), this.getPara("name"), this.getPara("des"), this.getParaToInt("seq", 1));
         this.renderJson(result);
     }
 

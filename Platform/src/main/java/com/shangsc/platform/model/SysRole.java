@@ -18,6 +18,7 @@ package com.shangsc.platform.model;
 import com.google.common.collect.Lists;
 import com.jfinal.kit.JsonKit;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Page;
 import com.shangsc.platform.core.cache.CacheClearUtils;
 import com.shangsc.platform.core.model.Condition;
 import com.shangsc.platform.core.model.Operators;
@@ -25,6 +26,7 @@ import com.shangsc.platform.core.util.CommonUtils;
 import com.shangsc.platform.core.view.InvokeResult;
 import com.shangsc.platform.core.view.ZtreeView;
 import com.shangsc.platform.model.base.BaseSysRole;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -46,12 +48,26 @@ public class SysRole extends BaseSysRole<SysRole> {
      * @author ssc
      */
     public List<SysRole> getSysRoleList(int uid) {
-
         return this.find("select * from sys_role where id in(select role_id from sys_user_role where user_id =?)", uid);
     }
 
     public List<SysRole> getSysRoleIdList(int uid) {
         return this.find("select id from sys_role where id in(select role_id from sys_user_role where user_id =?)", uid);
+    }
+
+    public Page<SysRole> getPageInfo(int page, int rows, String keyword, String orderbyStr) {
+        String select = "select *";
+        StringBuffer sqlExceptSelect = new StringBuffer(" from sys_role ");
+        sqlExceptSelect.append(" where 1=1 ");
+        if (StringUtils.isNotEmpty(keyword)) {
+            sqlExceptSelect.append(" and (name like '%" + keyword + "%' or des like '%" + keyword + "%')");
+        }
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        } else {
+            sqlExceptSelect.append(" order by seq asc ");
+        }
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 
     public InvokeResult setVisible(String idStrs, Integer visible) {
@@ -113,7 +129,7 @@ public class SysRole extends BaseSysRole<SysRole> {
     }
 
     public List<SysRole> getSysRoles(Integer uid) {
-        List<SysRole> list = this.find("SELECT *,(CASE WHEN re.id IN (SELECT rr.role_id from sys_user_role rr WHERE rr.user_id=" + uid + " ) THEN 1 ELSE 0 END) as selected FROM sys_role re where re.status=1");
+        List<SysRole> list = this.find("SELECT *,(CASE WHEN re.id IN (SELECT rr.role_id from sys_user_role rr WHERE rr.user_id=" + uid + " ) THEN 1 ELSE 0 END) as selected FROM sys_role re where re.status=1 order by re.seq asc");
         return list;
     }
 
@@ -137,18 +153,18 @@ public class SysRole extends BaseSysRole<SysRole> {
         return InvokeResult.success();
     }
 
-    public InvokeResult save(Integer id, String name, String des) {
+    public InvokeResult save(Integer id, String name, String des, Integer seq) {
         if (id != null) {
             SysRole role = this.findById(id);
-            role.set("name", name).set("des", des).update();
+            role.set("name", name).set("des", des).set("seq", seq).update();
         } else {
-            new SysRole().set("name", name).set("des", des).set("createdate", new Date()).save();
+            new SysRole().set("name", name).set("des", des).set("seq", seq).set("createdate", new Date()).save();
         }
         return InvokeResult.success();
     }
 
     public List<SysRole> getSysRoleNamelist() {
-        return this.find("select id,name from sys_role where status = 1");
+        return this.find("select id,name from sys_role where status = 1 order by seq asc");
     }
 
     public String getRoleNames(String roleIds) {

@@ -61,6 +61,14 @@ public class InvokeResult {
         return result;
     }
 
+    public static InvokeResult failure(int code, String msg, Object data) {
+        InvokeResult result = new InvokeResult();
+        result.msg = msg;
+        result.code = code;
+        result.data = data;
+        return result;
+    }
+
     public Object getData() {
         return data;
     }

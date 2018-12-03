@@ -37,11 +37,15 @@ import com.shangsc.platform.core.util.IWebUtils;
 import com.shangsc.platform.mail.MailPlugin;
 import com.shangsc.platform.model.SysUser;
 import com.shangsc.platform.model._MappingKit;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * API引导式配置
@@ -49,6 +53,9 @@ import java.io.Serializable;
 public class GlobalConfig extends JFinalConfig implements Serializable {
 
     private static final long serialVersionUID = 853477578384441419L;
+
+    //角色黑名单
+    public static List<Integer> blackList = new ArrayList<>();
 
     public static final int EXPORT_SUM = 65535; //excel office 2003 支持最大行数
 
@@ -69,6 +76,15 @@ public class GlobalConfig extends JFinalConfig implements Serializable {
         me.setViewType(ViewType.JSP);
         me.setError404View("/page/404.jsp");
         me.setError500View("/page/500.jsp");
+        String blackListStr = PropKit.get("role.black.list");
+        if (StringUtils.isNotEmpty(blackListStr)) {
+            String[] split = blackListStr.split(",");
+            List<String> idList = Arrays.asList(split);
+            for (String id : idList) {
+                blackList.add(Integer.valueOf(id));
+            }
+        }
+        logger.info("加载角色ID黑名单 ==> {}", blackList);
     }
 
     /**

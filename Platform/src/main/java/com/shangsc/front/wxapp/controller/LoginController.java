@@ -48,7 +48,9 @@ public class LoginController extends BaseController {
                 this.renderJson(InvokeResult.success(result, "授权资源列表"));
                 return;
             } else {
-                this.renderJson(InvokeResult.failure("未获取绑定微信账号授权资源"));
+                Map<String, String> map = new LinkedHashMap<>();
+                result.add(map);
+                this.renderJson(InvokeResult.failure(-1, "未获取绑定微信账号授权资源", result));
                 return;
             }
         }
@@ -126,7 +128,7 @@ public class LoginController extends BaseController {
             this.renderJson(InvokeResult.failure("用户密码输入有误"));
             return;
         }
-        if (sysUser.getStatus() == 2) {
+        if (sysUser.getStatus() == 2 || sysUser.getStatus() == 0) {
             this.renderJson(InvokeResult.failure("用户被冻结，请联系管理员"));
             return;
         }

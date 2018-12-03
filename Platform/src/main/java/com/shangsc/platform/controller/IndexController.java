@@ -120,7 +120,7 @@ public class IndexController extends Controller {
             this.renderJson(InvokeResult.failure("用户密码输入有误"));
             return;
         }
-        if (sysUser.getInt("status") == 2) {
+        if (sysUser.getStatus() == 0) {
             this.renderJson(InvokeResult.failure("用户被冻结，请联系管理员"));
             return;
         }

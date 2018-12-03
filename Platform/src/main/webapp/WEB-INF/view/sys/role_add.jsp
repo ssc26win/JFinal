@@ -48,6 +48,14 @@
 															</div>
 														</div>
 													</div>
+													<div class="form-group">
+														<label class="control-label col-xs-12 col-sm-3 no-padding-right" for="seq">序号</label>
+														<div class="col-xs-12 col-sm-9">
+															<div class="clearfix">
+																<input type="number" id="seq" name="seq" min="1" value="${item.seq}" class="col-xs-12 col-sm-6">
+															</div>
+														</div>
+													</div>
 													<div class="clearfix form-actions" align="center">
 														<div class="col-md-offset-3 col-md-9">
 															<button id="submit-btn" class="btn btn-info btn-sm" type="submit" data-last="Finish">
@@ -123,7 +131,8 @@
 						var postData = {
 								id:"${id}",
 								name:$("#name").val(),
-								des: $("#des").val()
+								des: $("#des").val(),
+							    seq: $("#seq").val()
 						};
 						$btn.addClass("disabled");
 						$.post('/sys/role/save', postData,function(data) {

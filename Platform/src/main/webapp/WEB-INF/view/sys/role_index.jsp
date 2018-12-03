@@ -102,7 +102,7 @@
                 mtype: "GET",
                 datatype: "json",
                 colModel: [
-                    { label: '角色ID', name: 'id', key: true, width: 75 },
+                    /*{ label: '角色ID', name: 'id', key: true, width: 75 },*/
                     { label: '角色名称', name: 'name', width: 150 },
                     { label: '描述', name: 'des', width: 150 ,sortable:false},
                     { label: '状态', name: 'status',formatter:fmatterStatus, width:50}
@@ -140,7 +140,7 @@
 				parent.layer.open({
 					title:'添加角色',
 				    type: 2,
-				    area: ['370px', '430px'],
+				    area: ['400px', '480px'],
 				    fix: false, //不固定
 				    maxmin: true,
 				    content: '${context_path}/sys/role/add'
@@ -207,7 +207,7 @@
 					parent.layer.open({
 						title:'修改角色',
 					    type: 2,
-					    area: ['370px', '430px'],
+					    area: ['400px', '480px'],
 					    fix: false, //不固定
 					    maxmin: true,
 					    content: '${context_path}/sys/role/add?id='+rid

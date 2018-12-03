@@ -365,7 +365,6 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
             if (StringUtils.isNotEmpty(map.get(7)) || hasExistMeterNum(null, StringUtils.trim(map.get(7)))) {
                 meter.setMeterNum(map.get(7));
             }
-            Company.me.updateMeterNum(map.get(0), true);
             if (StringUtils.isNotEmpty(map.get(8))) {
                 meter.setWatersType(dictNameMap.get(map.get(8)));
             }
@@ -391,6 +390,8 @@ public class WaterMeter extends BaseWaterMeter<WaterMeter> {
             }
             if (StringUtils.isEmpty(meter.getInnerCode()) && StringUtils.isEmpty(meter.getMeterNum()) && StringUtils.isEmpty(meter.getMeterAddress())) {
                 continue;
+            } else {
+                Company.me.updateMeterNum(meter.getInnerCode(), true);
             }
             Date registDate = null;
             Object createDateObj = map.get(14);
