@@ -1,9 +1,6 @@
 package com.shangsc.platform.code;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Author ssc
@@ -24,7 +21,7 @@ public class ActualState {
 
 
     public static Set<String> Actual_List() {
-        Set<String> Actual_List = new HashSet<>();
+        Set<String> Actual_List = new LinkedHashSet<>();
         Actual_List.add(NORMAL);
         Actual_List.add(EXCEPTION);
         Actual_List.add(STOP);

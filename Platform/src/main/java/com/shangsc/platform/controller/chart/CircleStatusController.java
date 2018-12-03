@@ -2,7 +2,9 @@ package com.shangsc.platform.controller.chart;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
+import com.shangsc.platform.code.ActualState;
 import com.shangsc.platform.code.DictCode;
 import com.shangsc.platform.core.auth.anno.RequiresPermissions;
 import com.shangsc.platform.core.controller.BaseController;
@@ -13,6 +15,7 @@ import com.shangsc.platform.model.WaterMeter;
 import com.shangsc.platform.util.CodeNumUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.*;
 
@@ -118,7 +121,7 @@ public class CircleStatusController extends BaseController {
 
         JSONArray array = new JSONArray();
         for (Company company : companies) {
-           JSONObject obj = new JSONObject();
+            JSONObject obj = new JSONObject();
             obj.put("name", dictValMap.get(company.getCompanyType()) + "(" + company.getLong("TypeCounts") + ")");
             obj.put("y", company.getLong("TypeCounts"));
             obj.put("url", context_path + "/basic/company?companyType=" + company.getCompanyType());
@@ -136,7 +139,7 @@ public class CircleStatusController extends BaseController {
         int total = waterMeters.size();
         object.put("total", total);
         // 异常水表数量24小时之内都会接收到数据 否则就异常
-        List<Record> normalMeter = ActualData.me.getNormalMeter();
+       /* List<Record> normalMeter = ActualData.me.getNormalMeter();
         Set<String> normalMeterSets = new HashSet<>();
         for (Record record : normalMeter) {
             String meter_address = record.getStr("meter_address");
@@ -153,14 +156,38 @@ public class CircleStatusController extends BaseController {
                 stopMeterSets.add(meter_address);
             }
         }
-        int stopTotal = stopMeterSets.size();//停用水表
+        int stopTotal = stopMeterSets.size();//停用水表*/
         int disableTotal = ActualData.me.getDisableMeter().size();//未启用水表
 
+        Page<ActualData> pageInfo = new Page<>();
+        int exceptionTime = 24;
+        Map<String, Object> dictMap = DictData.dao.getDictMap(null, DictCode.ACTUAL_EXCEPTION_TIME_OUT);
+        if (dictMap.size() == 1) {
+            Object[] objects = dictMap.keySet().toArray();
+            String num = objects[0].toString();
+            if (NumberUtils.isDigits(num)) {
+                exceptionTime = Integer.parseInt(num);
+            }
+        }
+        int normalTotal = 0;
+        int exptionTotal = 0;
+        int stopTotal = 0;
+        for (String status : ActualState.Actual_List()) {
+            if (!ActualState.EXCEPTION.equals(status)) {
+                pageInfo = ActualData.me.getActualDataStatusForCircle(1, 1, "", this.getOrderbyStr(), status, exceptionTime);
+                if (ActualState.NORMAL.equals(status)) {
+                    normalTotal = pageInfo.getTotalRow();
+                } else if (ActualState.EXCEPTION.equals(status)) {
+                    exptionTotal = pageInfo.getTotalRow();
+                } else if (ActualState.STOP.equals(status)) {
+                    stopTotal = pageInfo.getTotalRow();
+                }
+            }
+        }
         object.put("normalTotal", normalTotal);
         object.put("stopTotal", stopTotal);
         object.put("disableTotal", disableTotal);
         object.put("exptionTotal", total - normalTotal - stopTotal - disableTotal);//异常水表
-
         this.renderJson(object.toJSONString());
     }
 }

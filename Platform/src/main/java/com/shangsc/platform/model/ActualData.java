@@ -170,6 +170,34 @@ public class ActualData extends BaseActualData<ActualData> {
         return this.paginate(page, rows, select, sqlExceptSelect.toString());
     }
 
+    public Page<ActualData> getActualDataStatusForCircle(int page, int rows, String keyword, String orderbyStr, String status, int exceptionTime) {
+        //select * from (select * from t_actual_data order by write_time desc) a group by a.meter_address order by write_time desc
+        String select = "select stats ";
+        StringBuffer sqlExceptSelect = new StringBuffer("from (" +
+                "select al.inner_code,al.meter_address," +
+                "(case" +
+                "  when (unix_timestamp(NOW())-unix_timestamp(al.write_time))>" + 3600 * exceptionTime + " then 1" +
+                "  when net_water=0 then 2" +
+                "  else 0" +
+                "  end) as stats" +
+                " from " +
+                "(select tad.*,tc.name as companyName,tc.real_code,twm.line_num,twm.waters_type from " +
+                "(select t.* from (select id,inner_code,meter_address,net_water,sum_water,state,write_time from t_actual_data " +
+                " where " + (StringUtils.isNotEmpty(globalInnerCode) ? "inner_code in (" + StringUtils.trim(globalInnerCode) + ") " : "1=1") + " order by write_time desc) t group by t.meter_address) tad " +
+                "left join t_company tc on tad.inner_code=tc.inner_code " +
+                "left join t_water_meter twm on tad.meter_address=twm.meter_address) al) alld ");
+        sqlExceptSelect.append(" where 1=1");
+        sqlExceptSelect.append(" and alld.stats = " + status);
+        if (StringUtils.isNotEmpty(globalInnerCode)) {
+            sqlExceptSelect.append(" and alld.inner_code in (" + StringUtils.trim(globalInnerCode) + ") ");
+        }
+        sqlExceptSelect.append(" group by alld.meter_address ");
+        if (StringUtils.isNotEmpty(orderbyStr)) {
+            sqlExceptSelect.append(orderbyStr);
+        }
+        return this.paginate(page, rows, select, sqlExceptSelect.toString());
+    }
+
     public Page<ActualData> getReadnumStatis(int pageNo, int pageSize, String orderbyStr, Date startTime, Date endTime,
                                              String name, String innerCode, Integer street, Integer watersType, String meterAttr, String meterAddress, String companyType) {
         String select = " select twm.*,tc.name,tc.real_code,tc.address,tc.street,tc.water_unit,tc.county,tc.company_type,tm.waters_type,tm.meter_attr," +
@@ -505,7 +533,7 @@ public class ActualData extends BaseActualData<ActualData> {
     }
 
     public List<Record> getDisableMeter() {
-        StringBuffer sqlExceptSelect = new StringBuffer("select * from t_water_meter where meter_address not in (select meter_address from t_actual_data) ");
+        StringBuffer sqlExceptSelect = new StringBuffer("select id from t_water_meter where meter_address not in (select meter_address from t_actual_data) ");
         sqlExceptSelect.append(" GROUP BY meter_address");
         return Db.find(sqlExceptSelect.toString());
     }
