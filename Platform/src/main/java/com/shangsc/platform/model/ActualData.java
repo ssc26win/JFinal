@@ -279,7 +279,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		and tad.write_time >= '2018-03-18 00:00:00' and tad.write_time < '2019-01-01 00:00:00'
 		group by tad.meter_address,date_format(tad.write_time, '%Y-%m-%d')
 		order by todays desc,tad.meter_address desc*/
-        String select = " select sum(COALESCE(abs(tad.net_water), 0)) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
+        String select = " select sum(COALESCE(tad.net_water, 0)) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
                 "twm.waters_type,twm.meter_attr,twm.meter_address,twm.meter_num,twm.line_num,twm.billing_cycle," +
                 "date_format(tad.write_time, '%Y-%m-%d') as todays ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
@@ -362,7 +362,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
                 "twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address," +
-                "date_format(tad.write_time, '%Y-%m') as months,sum(COALESCE(abs(tad.net_water), 0)) as monthTotal";
+                "date_format(tad.write_time, '%Y-%m') as months,sum(COALESCE(tad.net_water, 0)) as monthTotal";
 
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
                 " inner join t_company tc on tad.inner_code=tc.inner_code " +
@@ -445,7 +445,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		order by years desc,tad.meter_address desc*/
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type, " +
                 " twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address, " +
-                " date_format(tad.write_time, '%Y') as years,sum(COALESCE(abs(tad.net_water), 0)) as yearTotal ";
+                " date_format(tad.write_time, '%Y') as years,sum(COALESCE(tad.net_water, 0)) as yearTotal ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
                 " inner join t_company tc on tad.inner_code=tc.inner_code " +
                 " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +
@@ -672,7 +672,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		and tad.write_time >= '2018-03-18 00:00:00' and tad.write_time < '2019-01-01 00:00:00'
 		group by tad.meter_address,date_format(tad.write_time, '%Y-%m-%d')
 		order by todays desc,tad.meter_address desc*/
-        String select = " select sum(COALESCE(abs(tad.net_water), 0)) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
+        String select = " select sum(COALESCE(tad.net_water, 0)) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
                 "tc.county,tc.company_type," +
                 /*"twm.waters_type,twm.meter_attr,twm.meter_address,twm.meter_num,twm.line_num,twm.billing_cycle," +*/
                 "date_format(tad.write_time, '%Y-%m-%d') as todays ";
@@ -763,7 +763,7 @@ public class ActualData extends BaseActualData<ActualData> {
 
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
                 /*"twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address," +*/
-                "date_format(tad.write_time, '%Y-%m') as months,sum(COALESCE(abs(tad.net_water), 0)) as monthTotal";
+                "date_format(tad.write_time, '%Y-%m') as months,sum(COALESCE(tad.net_water, 0)) as monthTotal";
 
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
                 " inner join t_company tc on tad.inner_code=tc.inner_code " +
@@ -817,7 +817,7 @@ public class ActualData extends BaseActualData<ActualData> {
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m') ");
         if (StringUtils.isNotEmpty(orderbyStr)) {
             if (orderbyStr.indexOf("monthTotal") > 0) {
-                sqlExceptSelect.append(orderbyStr.replace("monthTotal", "sum(COALESCE(abs(tad.net_water), 0))"));
+                sqlExceptSelect.append(orderbyStr.replace("monthTotal", "sum(COALESCE(tad.net_water, 0))"));
             } else if (orderbyStr.indexOf("months") > 0) {
                 sqlExceptSelect.append(orderbyStr.replace("months", "write_time"));
             } else {
@@ -852,7 +852,7 @@ public class ActualData extends BaseActualData<ActualData> {
 		order by years desc,tad.meter_address desc*/
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type, " +
                 /*" twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address, " +*/
-                " date_format(tad.write_time, '%Y') as years,sum(COALESCE(abs(tad.net_water), 0)) as yearTotal ";
+                " date_format(tad.write_time, '%Y') as years,sum(COALESCE(tad.net_water, 0)) as yearTotal ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
                 " inner join t_company tc on tad.inner_code=tc.inner_code " +
                 " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +
@@ -903,7 +903,7 @@ public class ActualData extends BaseActualData<ActualData> {
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y') ");
         if (StringUtils.isNotEmpty(orderbyStr)) {
             if (orderbyStr.indexOf("yearTotal") > 0) {
-                sqlExceptSelect.append(orderbyStr.replace("yearTotal", "sum(COALESCE(abs(tad.net_water), 0))"));
+                sqlExceptSelect.append(orderbyStr.replace("yearTotal", "sum(COALESCE(tad.net_water, 0))"));
             } else if (orderbyStr.indexOf("years") > 0) {
                 sqlExceptSelect.append(orderbyStr.replace("years", "write_time"));
             } else {

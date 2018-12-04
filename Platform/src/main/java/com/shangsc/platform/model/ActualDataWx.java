@@ -132,7 +132,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         Map<String, String> map = ToolDateTime.getBefore30DateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
-        String sql = "select COALESCE(abs(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
+        String sql = "select COALESCE(t.net_water, 0) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 " and t.write_time >= '" + start + "' " +
                 " and t.write_time <= '" + end + "' " +
@@ -217,7 +217,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
 
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
                 /*"twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address," +*/
-                "date_format(tad.write_time, '%Y-%m') as months,sum(COALESCE(abs(tad.net_water), 0)) as monthTotal";
+                "date_format(tad.write_time, '%Y-%m') as months,sum(COALESCE(tad.net_water, 0)) as monthTotal";
 
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
                 " inner join t_company tc on tad.inner_code=tc.inner_code " +
@@ -249,7 +249,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
     public Page<ActualData> findWxYearList(int pageNo, int pageSize, String orderbyStr, String startTime, String endTime, String keyword, String wxInnerCode) {
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type, " +
                 /*" twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address, " +*/
-                " date_format(tad.write_time, '%Y') as years,sum(COALESCE(abs(tad.net_water), 0)) as yearTotal ";
+                " date_format(tad.write_time, '%Y') as years,sum(COALESCE(tad.net_water, 0)) as yearTotal ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
                 " inner join t_company tc on tad.inner_code=tc.inner_code " +
                 " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +
@@ -323,7 +323,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
     }
 
     public Page<ActualData> findWxMeterDailyList(int pageNo, int pageSize, String orderbyStr, String startTime, String endTime, String keyword, String wxInnerCode, String meterAddress) {
-        String select = " select sum(COALESCE(abs(tad.net_water), 0)) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
+        String select = " select sum(COALESCE(tad.net_water, 0)) as absNetWater,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
                 "tc.county,tc.company_type," +
                 "date_format(tad.write_time, '%Y-%m-%d') as todays ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
@@ -359,7 +359,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
 
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type," +
                 /*"twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address," +*/
-                "date_format(tad.write_time, '%Y-%m') as months,sum(COALESCE(abs(tad.net_water), 0)) as monthTotal";
+                "date_format(tad.write_time, '%Y-%m') as months,sum(COALESCE(tad.net_water, 0)) as monthTotal";
 
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
                 " inner join t_company tc on tad.inner_code=tc.inner_code " +
@@ -394,7 +394,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
     public Page<ActualData> findWxMeterYearList(int pageNo, int pageSize, String orderbyStr, String startTime, String endTime, String keyword, String wxInnerCode, String meterAddress) {
         String select = " select tc.inner_code,tc.name,tc.real_code,tc.address,tc.water_unit,tc.county,tc.company_type, " +
                 /*" twm.waters_type,twm.meter_attr,twm.meter_num,twm.line_num,twm.meter_address, " +*/
-                " date_format(tad.write_time, '%Y') as years,sum(COALESCE(abs(tad.net_water), 0)) as yearTotal ";
+                " date_format(tad.write_time, '%Y') as years,sum(COALESCE(tad.net_water, 0)) as yearTotal ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
                 " inner join t_company tc on tad.inner_code=tc.inner_code " +
                 " inner join t_water_meter twm on tad.meter_address=twm.meter_address " +
@@ -429,7 +429,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         Map<String, String> map = ToolDateTime.getBefore10DateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
-        String sql = "select COALESCE(abs(t.net_water), 0) as sumWater,t.write_time as DAY,t.* from t_actual_data t" +
+        String sql = "select COALESCE(t.net_water, 0) as sumWater,t.write_time as DAY,t.* from t_actual_data t" +
                 " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(meterAddress) ? " and t.meter_address = '" + meterAddress + "'" : " ") +
@@ -442,7 +442,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
     }
 
     public Page<ActualData> findWxMeterReadListOnUse(int pageNo, int pageSize, String orderbyStr, String startTime, String endTime, String keyword, String wxInnerCode, String meterAddress) {
-        String select = " select COALESCE(abs(tad.net_water), 0) as absNetWater,tad.sum_water,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
+        String select = " select COALESCE(tad.net_water, 0) as absNetWater,tad.sum_water,tc.name,tc.real_code,tc.inner_code,tc.address,tc.water_unit," +
                 "tc.county,tc.company_type," +
                 "tad.write_time as todays ";
         StringBuffer sqlExceptSelect = new StringBuffer(" from t_actual_data tad " +
