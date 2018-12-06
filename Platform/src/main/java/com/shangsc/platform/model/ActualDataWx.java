@@ -101,7 +101,8 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         StringBuffer sqlExceptSelect = new StringBuffer("from (" +
                 "select al.*," +
                 "(case" +
-                "  when (unix_timestamp(NOW())-unix_timestamp(al.write_time))>" + 3600 * exceptionTime + " then 1" +
+                "  when (al.write_time < date_sub(now(), interval " + exceptionTime + " hour)) then 1" +
+                //"  when (unix_timestamp(NOW())-unix_timestamp(al.write_time))>" + 3600 * exceptionTime + " then 1" +
                 "  when net_water=0 then 2" +
                 "  else 0" +
                 "  end) as stats" +
