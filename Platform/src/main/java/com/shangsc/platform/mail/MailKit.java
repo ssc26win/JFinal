@@ -62,7 +62,7 @@ public class MailKit {
 
     public static String sendEmail465(String subject, String content, final String toEmailAddress) {
 
-        final String fromEmailAddress = "ssc23win@163.com";
+        final String fromEmailAddress = "";
 
         // Properties properties = System.getProperties();// 获取系统属性
         Properties props = System.getProperties();
@@ -73,8 +73,8 @@ public class MailKit {
         props.setProperty("mail.smtp.port", "465");
         props.setProperty("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.auth", "true");// 发送服务器需要身份验证
-        final String username = "ssc23win@163.com";
-        final String password = "shichao1990";
+        final String username = "";
+        final String password = "";
 
         Session session = Session.getDefaultInstance(props, new Authenticator() {
             @Override

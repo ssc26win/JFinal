@@ -207,7 +207,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m-%d') ");
 
         if (StringUtils.isEmpty(orderbyStr)) {
-            sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m-%d') desc ");
+            sqlExceptSelect.append(" order by tad.write_time asc ");
         } else {
             sqlExceptSelect.append(orderbyStr);
         }
@@ -240,7 +240,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y-%m') ");
 
         if (StringUtils.isEmpty(orderbyStr)) {
-            sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y-%m') desc ");
+            sqlExceptSelect.append(" order by tad.write_time asc ");
         } else {
             sqlExceptSelect.append(orderbyStr);
         }
@@ -271,7 +271,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y') ");
 
         if (StringUtils.isEmpty(orderbyStr)) {
-            sqlExceptSelect.append("order by date_format(tad.write_time, '%Y') desc");
+            sqlExceptSelect.append("order by tad.write_time asc");
         } else {
             sqlExceptSelect.append(orderbyStr);
         }

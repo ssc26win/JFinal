@@ -1,10 +1,10 @@
 package com.shangsc.platform.mail;
 
-import java.util.Properties;
-
 import com.jfinal.kit.LogKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.IPlugin;
+
+import java.util.Properties;
 
 /**
  * 发送邮件插件
@@ -31,14 +31,14 @@ public class MailPlugin implements IPlugin {
     @Override
     public boolean start() {
         if (StrKit.isBlank(props.getProperty("host"))) {
-            throw new RuntimeException("未设置邮箱服务器");
+            LogKit.warn("未设置邮箱服务器");
         }
         if (StrKit.isBlank(props.getProperty("protocol"))) {
             props.setProperty("protocol", "smtp");
             LogKit.warn("未设置协议protocol，使用默认值:" + "smtp");
         }
         if (StrKit.isBlank(props.getProperty("port"))) {
-            throw new RuntimeException("未设置端口port");
+            LogKit.warn("未设置端口port");
         }
         if (StrKit.isBlank(props.getProperty("mail.smtp.ssl.enable"))) {
             props.setProperty("mail.smtp.ssl.enable", "false");
@@ -49,7 +49,7 @@ public class MailPlugin implements IPlugin {
             LogKit.warn("未设置mail.smtp.auth，使用默认值:" + "true");
         }
         if (StrKit.isBlank(props.getProperty("username"))) {
-            throw new RuntimeException("未设置用户名");
+            LogKit.warn("未设置用户名");
         }
         if (StrKit.isBlank(props.getProperty("password"))) {
             LogKit.warn("未设置密码");
