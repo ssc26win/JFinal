@@ -254,7 +254,6 @@
                 </configuration>
             </plugin>-->
 
-
                     <plugin>
                         <groupId>com.github.wvengen</groupId>
                         <artifactId>proguard-maven-plugin</artifactId>
@@ -297,7 +296,7 @@
                                 <option>-keep class SSRuntimeEasyJava.** { *;}</option>
                                 <!--保持 Bean 类，（由于很多框架会对 Bean 中的内容做反射处理，请根据自己的业务调整） -->
                                 <!-- 不混淆job包下的所有类名，且类中的方法也不混淆-->
-                                <option>-keep class com.shangsc.platform.model.** { &lt;methods&gt;; }</option>
+                                <!--<option>-keep class com.shangsc.platform.model.** { &lt;methods&gt;; }</option>-->
                                 <!-- 不混淆filter包下的所有类名，这里主要是对Shiro的路踢人过滤器混淆，对类的属性和方法进行了混淆-->
                                 <option>-keep class com.shangsc.platform.controller.** </option>
                                 <option>-keep class com.shangsc.platform.core.** </option>
