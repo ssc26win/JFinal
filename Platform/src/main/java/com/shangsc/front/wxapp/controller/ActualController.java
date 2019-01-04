@@ -321,6 +321,82 @@ public class ActualController extends BaseController {
         this.renderJson(pageInfo);
     }
 
+    @Clear(AuthorityInterceptor.class)
+    public void searchMineChart() {
+        int dateType = this.getParaToInt("dateType", 1).intValue();
+        String startTime = this.getPara("startTime");
+        String endTime = this.getPara("endTime");
+        String keyword = this.getPara("keyword");
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        String subtitle = "用水量";
+        String seriesName = "用水量";
+        JSONObject obj = new JSONObject();
+        JSONArray sumWater = new JSONArray();
+        if (DateType.YEAR == dateType) {
+            List<Record> records = ActualDataWx.me.getWxYearActualData(wxInnerCodeSQLStr, startTime, endTime, keyword);
+            List<String> year = new ArrayList<String>();
+            for (Record record : records) {
+                sumWater.add(record.get("sumWater"));
+                year.add(record.get("year").toString());
+            }
+            obj.put("sumWater", sumWater);
+            obj.put("year", year);
+            obj.put("subtitle", subtitle);
+            obj.put("seriesName", seriesName);
+            this.renderJson(obj);
+        } else if (DateType.MONTH == dateType) {
+            List<Record> records = ActualDataWx.me.getWxMonthActualData(wxInnerCodeSQLStr, startTime, endTime, keyword);
+            List<String> month = new ArrayList<String>();
+            for (Record record : records) {
+                sumWater.add(record.get("sumWater"));
+                month.add(record.get("month").toString());
+            }
+            obj.put("sumWater", sumWater);
+            obj.put("month", month);
+            obj.put("subtitle", subtitle);
+            obj.put("seriesName", seriesName);
+            this.renderJson(obj);
+        } else if (DateType.DAY == dateType) {
+            List<Record> records = ActualDataWx.me.getWxDailyActualData(wxInnerCodeSQLStr, startTime, endTime, keyword);
+            List<String> day = new ArrayList<String>();
+            for (Record record : records) {
+                sumWater.add(record.get("sumWater"));
+                day.add(record.get("DAY").toString());
+            }
+            obj.put("sumWater", sumWater);
+            obj.put("day", day);
+            obj.put("subtitle", subtitle);
+            obj.put("seriesName", seriesName);
+            this.renderJson(obj);
+        } else {
+            this.renderJson(InvokeResult.failure("错误日期类型"));
+        }
+    }
+
+    @Clear(AuthorityInterceptor.class)
+    public void searchMineList() {
+        int dateType = this.getParaToInt("dateType", 1).intValue();
+        String startTime = this.getPara("startTime");
+        String endTime = this.getPara("endTime");
+        String keyword = this.getPara("keyword");
+        String wxInnerCodeSQLStr = getWxInnerCodeSQLStr();
+        JSONObject obj = new JSONObject();
+        if (DateType.YEAR == dateType) {
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxYearList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr);
+            obj.put("jsonList", pageInfo);
+            this.renderJson(obj);
+        } else if (DateType.MONTH == dateType) {
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxMonthList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr);
+            obj.put("jsonList", pageInfo);
+            this.renderJson(obj);
+        } else if (DateType.DAY == dateType) {
+            Page<ActualData> pageInfo = ActualDataWx.me.findWxDailyList(getPage(), this.getWxRows(), this.getOrderbyStr(), startTime, endTime, keyword, wxInnerCodeSQLStr);
+            obj.put("jsonList", pageInfo);
+            this.renderJson(obj);
+        } else {
+            this.renderJson(InvokeResult.failure("错误日期类型"));
+        }
+    }
 
     @Clear(AuthorityInterceptor.class)
     public void searchMine() {
