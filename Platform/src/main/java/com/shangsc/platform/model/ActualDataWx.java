@@ -145,14 +145,15 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         Map<String, String> map = ToolDateTime.getBefore30DateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
-        String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.* from t_actual_data t" +
-                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
+        String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m-%d') as DAY,t.inner_code,t.meter_address,t.write_time from t_actual_data t" +
+                " inner join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
+                " inner join (select meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
                 (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
                 (StringUtils.isNotEmpty(keyword) ? (" and (tc.real_code='" + StringUtils.trim(keyword) + "' or t.meter_address='" + StringUtils.trim(keyword)
                         + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ") : " ") +
-                " GROUP BY date_format(t.write_time, '%Y-%m-%d')";
+                " GROUP BY date_format(t.write_time, '%Y-%m-%d') order by t.write_time asc ";
         return Db.find(sql);
     }
 
@@ -160,26 +161,28 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
-        String sql = "select  COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
-                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
+        String sql = "select  COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.inner_code,t.meter_address,t.write_time from t_actual_data t" +
+                " inner join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
+                " inner join (select meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
                 (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
                 (StringUtils.isNotEmpty(keyword) ? (" and (tc.real_code='" + StringUtils.trim(keyword) + "' or t.meter_address='" + StringUtils.trim(keyword)
                         + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ") : " ") +
-                " GROUP BY date_format(t.write_time, '%Y-%m')";
+                " GROUP BY date_format(t.write_time, '%Y-%m') order by t.write_time asc ";
         return Db.find(sql);
     }
 
     public List<Record> getWxYearActualData(String wxInnerCode, String startTime, String endTime, String keyword) {
-        String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
-                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
+        String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y') as year,t.inner_code,t.meter_address,t.write_time from t_actual_data t" +
+                " inner join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
+                " inner join (select meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " ") +
                 (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " ") +
                 (StringUtils.isNotEmpty(keyword) ? (" and (tc.real_code='" + StringUtils.trim(keyword) + "' or t.meter_address='" + StringUtils.trim(keyword)
                         + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ") : " ") +
-                " GROUP BY date_format(t.write_time, '%Y')";
+                " GROUP BY date_format(t.write_time, '%Y') order by date_format(t.write_time, '%Y') asc ";
         return Db.find(sql);
     }
 
@@ -271,7 +274,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         sqlExceptSelect.append(" group by tad.inner_code,date_format(tad.write_time, '%Y') ");
 
         if (StringUtils.isEmpty(orderbyStr)) {
-            sqlExceptSelect.append("order by tad.write_time asc");
+            sqlExceptSelect.append(" order by date_format(tad.write_time, '%Y') asc ");
         } else {
             sqlExceptSelect.append(orderbyStr);
         }
@@ -298,8 +301,9 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         Map<String, String> map = ToolDateTime.getBefore12MonthDateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
-        String sql = "select  COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.* from t_actual_data t" +
-                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
+        String sql = "select  COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y-%m') as month,t.inner_code,t.meter_address,t.write_time from t_actual_data t" +
+                " inner join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
+                " inner join (select meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(meterAddress) ? " and t.meter_address = '" + meterAddress + "'" : " ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
@@ -311,8 +315,9 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
     }
 
     public List<Record> getWxMeterYearActualData(String wxInnerCode, String meterAddress, String startTime, String endTime, String keyword) {
-        String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y') as year,t.* from t_actual_data t" +
-                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
+        String sql = "select COALESCE(sum(t.net_water), 0) as sumWater,date_format(t.write_time, '%Y') as year,t.inner_code,t.meter_address,t.write_time from t_actual_data t" +
+                " inner join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
+                " inner join (select meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(meterAddress) ? " and t.meter_address = '" + meterAddress + "'" : " ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " ") +
@@ -430,8 +435,9 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
         Map<String, String> map = ToolDateTime.getBefore10DateTime();
         String start = map.get(MonthCode.warn_start_date);
         String end = map.get(MonthCode.warn_end_date);
-        String sql = "select COALESCE(t.net_water, 0) as sumWater,t.write_time as DAY,t.* from t_actual_data t" +
-                " left join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
+        String sql = "select COALESCE(t.net_water, 0) as sumWater,t.write_time as DAY,t.inner_code,t.meter_address,t.write_time from t_actual_data t" +
+                " inner join (select real_code,inner_code,name from t_company) tc on tc.inner_code=t.inner_code " +
+                " inner join (select meter_address from t_water_meter) twm on twm.meter_address=t.meter_address " +
                 " where " + (StringUtils.isNotEmpty(wxInnerCode) ? " t.inner_code in (" + wxInnerCode + ") " : " 1=1 ") +
                 (StringUtils.isNotEmpty(meterAddress) ? " and t.meter_address = '" + meterAddress + "'" : " ") +
                 (StringUtils.isNotEmpty(startTime) ? " and t.write_time >= '" + startTime + "'" : " and t.write_time >= '" + start + "' ") +
