@@ -35,6 +35,7 @@ import java.util.LinkedHashMap;
 public abstract class BaseController extends Controller {
     public static final int BUFFER_SIZE = 1024 * 1024;
     public final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     /**
      * 获取排序对象
      *
@@ -110,14 +111,16 @@ public abstract class BaseController extends Controller {
 
     public String getInnerCodesSQLStr() {
         SysUser sysUser = IWebUtils.getCurrentSysUser(getRequest());
-        String innerCodes = sysUser.getInnerCode();
-        if (StringUtils.isNotEmpty(innerCodes)) {
-            String[] split = innerCodes.split(",");
-            for (int i = 0; i < split.length; i++) {
-                split[i] = "'" + split[i] + "'";
+        if (sysUser != null) {
+            String innerCodes = sysUser.getInnerCode();
+            if (StringUtils.isNotEmpty(innerCodes)) {
+                String[] split = innerCodes.split(",");
+                for (int i = 0; i < split.length; i++) {
+                    split[i] = "'" + split[i] + "'";
+                }
+                String result = StringUtils.join(split, ",");
+                return result;
             }
-            String result = StringUtils.join(split, ",");
-            return result;
         }
         return "";
     }
@@ -138,7 +141,7 @@ public abstract class BaseController extends Controller {
     public SysUser findByNameToCancel() {
         String userName = this.getPara("userName");
         String wxAccount = this.getPara("wxAccount");
-        SysUser sysUser = SysUser.me.findFirst("select * from sys_user where name='"+ userName + "' and wx_account='" + wxAccount + "'");
+        SysUser sysUser = SysUser.me.findFirst("select * from sys_user where name='" + userName + "' and wx_account='" + wxAccount + "'");
         return sysUser;
     }
 
@@ -153,14 +156,16 @@ public abstract class BaseController extends Controller {
         String wxAccount = this.getPara("wxAccount");
         SysUser sysUser = SysUser.me.findFirst("select * from sys_user where wx_account='"
                 + wxAccount + "' and token <>'' and token is not null");
-        String innerCodes = sysUser.getInnerCode();
-        if (StringUtils.isNotEmpty(innerCodes)) {
-            String[] split = innerCodes.split(",");
-            for (int i = 0; i < split.length; i++) {
-                split[i] = "'" + split[i] + "'";
+        if (sysUser != null) {
+            String innerCodes = sysUser.getInnerCode();
+            if (StringUtils.isNotEmpty(innerCodes)) {
+                String[] split = innerCodes.split(",");
+                for (int i = 0; i < split.length; i++) {
+                    split[i] = "'" + split[i] + "'";
+                }
+                String result = StringUtils.join(split, ",");
+                return result;
             }
-            String result = StringUtils.join(split, ",");
-            return result;
         }
         return "";
     }
