@@ -62,19 +62,19 @@ public class MailKit {
 
     public static String sendEmail465(String subject, String content, final String toEmailAddress) {
 
-        final String fromEmailAddress = "";
+        final String fromEmailAddress = "1059684453@qq.com";
 
         // Properties properties = System.getProperties();// 获取系统属性
         Properties props = System.getProperties();
-        props.setProperty("mail.smtp.host", "smtp.163.com"); // 设置邮件服务器
+        props.setProperty("mail.smtp.host", "smtp.qq.com"); // 设置邮件服务器
         props.setProperty("mail.smtp.socketFactory.class", SSL_FACTORY);
         props.setProperty("mail.smtp.socketFactory.fallback", "false");
         props.setProperty("mail.transport.protocol", "smtp");
         props.setProperty("mail.smtp.port", "465");
         props.setProperty("mail.smtp.socketFactory.port", "465");
         props.put("mail.smtp.auth", "true");// 发送服务器需要身份验证
-        final String username = "";
-        final String password = "";
+        final String username = "1059684453@qq.com";
+        final String password = "muwneagganbabegf";
 
         Session session = Session.getDefaultInstance(props, new Authenticator() {
             @Override
