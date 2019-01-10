@@ -444,7 +444,7 @@ public class ActualDataWx extends BaseActualData<ActualDataWx> {
                 (StringUtils.isNotEmpty(endTime) ? " and t.write_time <= '" + endTime + "'" : " and t.write_time <= '" + end + "' ") +
                 (StringUtils.isNotEmpty(keyword) ? (" and (tc.real_code='" + StringUtils.trim(keyword) + "' or t.meter_address='" + StringUtils.trim(keyword)
                         + "' or tc.name like '%" + StringUtils.trim(keyword) + "%') ") : " ") +
-                " GROUP BY t.write_time";
+                " GROUP BY t.write_time order by t.write_time asc";
         return Db.find(sql);
     }
 
